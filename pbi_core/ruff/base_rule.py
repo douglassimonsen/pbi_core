@@ -1,8 +1,15 @@
+import enum
 from collections.abc import Iterable
 from typing import Any
 
 from colorama import Fore, Style
 from pbi_parsers.dax.utils import Context
+
+
+class Fixable(enum.Enum):
+    NOT_FIXABLE = "Not Automatically Fixable"
+    UNSAFE_FIXABLE = "Unsafe Fixable"
+    SAFE_FIXABLE = "Safe Fixable"
 
 
 class RuleGroup:
@@ -87,6 +94,7 @@ class BaseRule:
     id: str
     name: str
     description: str
+    fixable: Fixable = Fixable.NOT_FIXABLE
 
     @classmethod
     def check(cls, *args: Any, **kwargs: Any) -> list[RuleResult]:

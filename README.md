@@ -14,8 +14,7 @@ pre-commit install
 
 ```shell
 python -m pip install .[docs]
-sphinx-autobuild docs/source docs/build/html
-# http://127.0.0.1:8000
+mkdocs serve -f docs/mkdocs.yml
 ```
 
 ## Testing
