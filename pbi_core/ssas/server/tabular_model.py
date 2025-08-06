@@ -170,7 +170,7 @@ class SsasTable(pydantic.BaseModel):  # type: ignore
     tabular_model: "BaseTabularModel"
     _read_only_fields: ClassVar[tuple[str, ...]] = tuple()
     id: int
-    _commands: Any
+    _commands: Any  # Needed for the logic in model_post_init to not create ~35 mypy errors. This is find, since all the subclasses define the real _commands type
 
     @classmethod
     def _db_type_name(cls) -> str:
