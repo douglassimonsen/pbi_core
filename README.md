@@ -123,3 +123,13 @@ Added
     }
 
 to vscode settings
+
+# Prototype Query
+
+Property:Microsoft.InfoNav.Explore.VisualContracts.SingleVisualConfig.PrototypeQuery
+Click on QueryDefinition
+C:\Program Files\Microsoft Power BI Desktop\bin\Microsoft.InfoNav.Explore.VisualContracts.dll
+
+
+# PBI SSAS definitions
+"C:\Program Files\Microsoft Power BI Desktop\bin\Microsoft.PowerBI.Tabular.dll"
