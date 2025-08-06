@@ -37,18 +37,35 @@ class Relationship(SsasRenameTable):
     modified_time: datetime.datetime
 
     def from_table(self) -> "Table":
+        """Returns the table the relationship is using as a filter.
+
+        Note:
+        ----
+            In the bi-directional case, this table is also filtered
+
+        """
         return self.tabular_model.tables.find({"id": self.from_table_id})
 
     def to_table(self) -> "Table":
+        """Returns the table the relationship is being filtered.
+
+        Note:
+        ----
+            In the bi-directional case, this table is also used as a filter
+
+        """
         return self.tabular_model.tables.find({"id": self.to_table_id})
 
     def from_column(self) -> "Column":
+        """The column in the from_table used to join with the to_table."""
         return self.tabular_model.columns.find({"id": self.from_column_id})
 
     def to_column(self) -> "Column":
+        """The column in the to_table used to join with the from_table."""
         return self.tabular_model.columns.find({"id": self.to_column_id})
 
     def model(self) -> "Model":
+        """The DB model this entity exists in."""
         return self.tabular_model.model
 
     def variations(self) -> list["Variation"]:

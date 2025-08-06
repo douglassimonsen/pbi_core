@@ -26,6 +26,13 @@ class Annotation(SsasRenameTable):
     modified_time: datetime.datetime
 
     def parent(self) -> "SsasTable":  # noqa: PLR0911
+        """Returns the object the annotation is describing.
+
+        Raises
+        ------
+            TypeError: When the Object Type doesn't map to a know SSAS entity type
+
+        """
         match self.object_type:
             case ObjectType.MODEL:
                 return self.tabular_model.model
@@ -43,7 +50,7 @@ class Annotation(SsasRenameTable):
                 return self.tabular_model.query_groups.find({"id": self.object_id})
             case _:
                 msg = "No Matching Object ID"
-                raise ValueError(msg)
+                raise TypeError(msg)
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":

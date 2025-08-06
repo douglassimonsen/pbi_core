@@ -18,6 +18,7 @@ class KPI(SsasBaseTable):
     modified_time: datetime.datetime
 
     def pbi_core_name(self) -> str:
+        """Returns the name displayed in the PBIX report."""
         return self.measure().pbi_core_name()
 
     def measure(self) -> "Measure":

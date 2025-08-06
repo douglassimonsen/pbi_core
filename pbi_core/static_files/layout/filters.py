@@ -133,6 +133,7 @@ class PrototypeQuery(LayoutNode):
         raise ValueError
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+        """Returns the SSAS elements (columns and measures) this query is directly dependent on."""
         ret: set[ColumnSource | MeasureSource] = set()
         for select in self.Select:
             ret.update(self.unwrap_source(select))
@@ -265,6 +266,7 @@ class Filter(LayoutNode):
         return super().__str__()
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+        """Returns the SSAS elements (columns and measures) this filter is directly dependent on."""
         if self.filter is None:
             return set()
         return self.filter.get_ssas_elements()

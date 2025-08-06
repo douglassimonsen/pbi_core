@@ -267,7 +267,7 @@ class SsasTable(pydantic.BaseModel):
         return cls.__name__ + "s"
 
     def pbi_core_name(self) -> str:
-        """Returns the value of the name field of the record (not type).
+        """Returns the name displayed in the PBIX report.
 
         Uses the _repr_name_field to determine the field to use.
         Defaults to self.name

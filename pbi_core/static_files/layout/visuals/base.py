@@ -51,6 +51,7 @@ class BaseVisual(LayoutNode):
         return self.visualType
 
     def pbi_core_name(self) -> str:
+        """Returns the name displayed in the PBIX report."""
         return self.__class__.__name__
 
     def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:

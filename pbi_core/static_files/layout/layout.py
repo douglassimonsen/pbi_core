@@ -82,6 +82,7 @@ class Layout(LayoutNode):
     _xpath = []
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+        """Returns the SSAS elements (columns and measures) this report is directly dependent on."""
         ret: set[ModelColumnReference | ModelMeasureReference] = set()
         for f in self.filters:
             ret.update(f.get_ssas_elements())

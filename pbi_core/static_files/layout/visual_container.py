@@ -124,7 +124,8 @@ class Query(LayoutNode):
     Commands: list[QueryCommand]
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
-        ret = set()
+        """Returns the SSAS elements (columns and measures) this query is directly dependent on."""
+        ret: set[ModelColumnReference | ModelMeasureReference] = set()
         for command in self.Commands:
             if isinstance(command, QueryCommand1):
                 ret.update(command.Query.get_ssas_elements())
@@ -134,6 +135,12 @@ class Query(LayoutNode):
 
 
 class VisualContainer(LayoutNode):
+    """A Container for visuals in a report page.
+
+    Generally, this is 1-1 with a real visual (bar chart, etc.), but can contain 0 (text boxes) or >1.
+    It's at this level that the report connects with the SSAS model to get data for each visual.
+    """
+
     _parent: "Section"  # pyright: ignore reportIncompatibleVariableOverride=false
     _name_field = "name"
 
@@ -156,6 +163,13 @@ class VisualContainer(LayoutNode):
         return None
 
     def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult | None:
+        """Gets data that would populate this visual from the SSAS DB.
+
+        Uses the PrototypeQuery found within query to generate a DAX statement that then gets passed to SSAS.
+
+        Returns None for non-data visuals such as static text boxes
+
+        """
         if self.query is None:
             return None
         if len(self.query.Commands) == 0:
@@ -173,9 +187,10 @@ class VisualContainer(LayoutNode):
         return query.get_data(model)
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+        """Returns the SSAS elements (columns and measures) this visual is directly dependent on."""
         if self.query is None:
             return set()
-        ret = set()
+        ret: set[ModelColumnReference | ModelMeasureReference] = set()
         ret.update(self.query.get_ssas_elements())
         for f in self.filters:
             ret.update(f.get_ssas_elements())

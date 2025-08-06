@@ -56,14 +56,23 @@ class LocalReport(BaseReport):
 
         Args:
         ----
-            path (StrPath): The absolute or local path to the PBIX report
-            kill_ssas_on_exit (bool, optional): The LocalReport object depends on a ``msmdsrv.exe`` process that is
-                independent of the Python session process. If this function creates a new ``msmdsrv.exe`` instance
-                and kill_ssas_on_exit is true, the process will be killed on exit.
+                path (StrPath): The absolute or local path to the PBIX report
+                kill_ssas_on_exit (bool, optional): The LocalReport object depends on a ``msmdsrv.exe`` process that is
+                    independent of the Python session process. If this function creates a new ``msmdsrv.exe`` instance
+                    and kill_ssas_on_exit is true, the process will be killed on exit.
+
+        Examples:
+        --------
+            .. code-block:: python
+               :linenos:
+
+               from pbi_core import LocalReport
+
+               report = LocalReport.load_pbix("example.pbix")
 
         Returns:
         -------
-            LocalReport: the local PBIX class
+                LocalReport: the local PBIX class
 
         """
         logger.info("Loading PBIX", path=path)
@@ -75,16 +84,37 @@ class LocalReport(BaseReport):
     def save_pbix(self, path: "StrPath") -> None:
         """Creates a new PBIX with the information in this class to the given path.
 
+        Examples:
+        --------
+            .. code-block:: python
+               :linenos:
+
+               from pbi_core import LocalReport
+
+               report = LocalReport.load_pbix("example.pbix")
+               report.save_pbix("example_out.pbix")
+
         Args:
         ----
-            path (StrPath): the path (relative or absolute) to save the PBIX to
+                path (StrPath): the path (relative or absolute) to save the PBIX to
 
         """
         self.ssas.save_pbix(path)
         self.static_files.save_pbix(path)
 
     def cleanse_ssas_model(self) -> None:
-        """Removes all unused tables, columns, and measures in an SSAS model."""
+        """Removes all unused tables, columns, and measures in an SSAS model.
+
+        1. Uses the layout to identify all Measures and Columns being used by the report visuals and filters.
+        2. Uses SSAS relationships to identify additional columns and tables used for cross-table filtering.
+        3. Traces calculation dependencies (on measures and calculated columns) to identify measures and columns used
+             to create report fields
+        4. Removes any measure/column that is:
+            1. Not in results of 1-3
+            2. Not part of a system table
+        5. Removes any table that has no column/measure used in the report and no active relationship with a rep
+            orting table
+        """
         report_references = self.static_files.layout.get_ssas_elements()
         model_values = (
             [

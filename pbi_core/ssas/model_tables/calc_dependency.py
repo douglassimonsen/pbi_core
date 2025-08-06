@@ -13,4 +13,5 @@ class CalcDependency(SsasReadonlyTable):
     referenced_expression: str | None = None
 
     def pbi_core_name(self) -> str:
+        """Returns the name displayed in the PBIX report."""
         return f"{self.object_type}[{self.object}] -> {self.referenced_object_type}[{self.referenced_object}]"

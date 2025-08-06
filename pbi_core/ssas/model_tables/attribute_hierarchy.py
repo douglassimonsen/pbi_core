@@ -18,6 +18,7 @@ class AttributeHierarchy(SsasReadonlyTable):
     refreshed_time: datetime.datetime
 
     def pbi_core_name(self) -> str:
+        """Returns the name displayed in the PBIX report."""
         return self.column().pbi_core_name()
 
     def column(self) -> "Column":

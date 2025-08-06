@@ -32,6 +32,7 @@ class LineageProtocol(Protocol):
     id: str
 
     def pbi_core_name(self) -> str:
+        """Returns the name displayed in the PBIX report."""
         raise NotImplementedError
 
 

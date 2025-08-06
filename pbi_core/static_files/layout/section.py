@@ -41,6 +41,7 @@ class Section(LayoutNode):
     id: int | None = None
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+        """Returns the SSAS elements (columns and measures) this report page is directly dependent on."""
         ret: set[ModelColumnReference | ModelMeasureReference] = set()
         for viz in self.visualContainers:
             ret.update(viz.get_ssas_elements())
