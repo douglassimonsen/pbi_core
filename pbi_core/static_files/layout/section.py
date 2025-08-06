@@ -34,7 +34,7 @@ class Section(LayoutNode):
     config: Json[SectionConfig]
     objectId: UUID | None = None
     visualContainers: list[VisualContainer]
-    ordinal: int
+    ordinal: int = 0
     filters: Json[list[PageFilter]]
     displayName: str
     name: str

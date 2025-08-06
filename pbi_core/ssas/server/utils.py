@@ -33,6 +33,7 @@ def get_msmdsrv_info(process: psutil.Process) -> ServerInfo | None:
     """Parses ``ServerInfo`` information from PID information.
 
     Note:
+    ----
         This function currently assumes that the SSAS Process is called like
         ``pbi_core`` calls it. If you don't include the ``-s`` flag in the command,
         this function will fail
@@ -77,17 +78,19 @@ def python_to_xml(text: Any) -> str:
     - True/False to true/false
 
     Args:
+    ----
         text (Any): a value to be sent to SSAS
 
     Returns:
+    -------
         str: A stringified, xml-safe version of the value
 
     """
     if text in {True, False}:
         return str(text).lower()
-    if isinstance(text, str):
-        text = escape(text)
-    return str(text)
+    if not isinstance(text, str):
+        text = str(text)
+    return escape(text)
 
 
 ROW_TEMPLATE = jinja2.Template(

@@ -31,6 +31,7 @@ class Orderby(LayoutNode):
     Expression: Source
 
 
+# TODO: remove Any
 class PrototypeQueryResult(BaseModel):
     data: list[dict[str, Any]]
     dax_query: str

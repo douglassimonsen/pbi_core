@@ -2,18 +2,18 @@ from collections.abc import Callable
 from typing import Any, Protocol, TypeVar
 
 
-class IdThing(Protocol):
+class IdProtocol(Protocol):
     id: int
 
 
-T = TypeVar("T", bound=IdThing)
+T = TypeVar("T", bound=IdProtocol)
 
 
 class RowNotFoundError(Exception):
     pass
 
 
-class Group(list[T]):  # noqa: FURB189
+class Group(list[T]):
     def find(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> T:
         """Gets a matching value from the group.
 
@@ -23,7 +23,8 @@ class Group(list[T]):  # noqa: FURB189
             It returns the first record to match all items
         3. If match_val is a function, it returns the first record to return true when passed to the function
 
-        Raises:
+        Raises
+        ------
             RowNotFoundError: when no value matches the match_val
 
         """

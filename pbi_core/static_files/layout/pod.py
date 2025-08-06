@@ -27,6 +27,7 @@ class PodType(IntEnum):
     NA2 = 2
 
 
+# TODO: remove Anys
 class Pod(LayoutNode):
     _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
 

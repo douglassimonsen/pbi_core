@@ -1,6 +1,6 @@
 import datetime
 from typing import TYPE_CHECKING
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.server.tabular_model import SsasRenameTable
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class Level(SsasRenameTable):
     column_id: int
     hierarchy_id: int
-    lineage_tag: UUID
+    lineage_tag: UUID = uuid4()
     name: str
     ordinal: int
 

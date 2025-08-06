@@ -83,8 +83,7 @@ class Cursor:
         ret = bs4.BeautifulSoup("".join(lines), "xml")
         for node in ret.find_all():
             assert isinstance(node, bs4.element.Tag)
-            if node.name is not None:
-                node.name = _clean_name(node.name)
+            node.name = _clean_name(node.name)
         return ret
 
     def execute_dax(self, query: str, query_name: str | None = None) -> Self:

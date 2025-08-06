@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.server.tabular_model import SsasRenameTable
@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class Variation(SsasRenameTable):
-    column: Any | None = None
+    column: int | None = None
     column_id: int
     default_hierarchy_id: int
     is_default: bool

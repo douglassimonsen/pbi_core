@@ -53,6 +53,7 @@ class FromEntity(LayoutNode):
     Type: EntityType
 
 
+# TODO: remove Anys
 class PrimaryProjections(LayoutNode):
     Projections: list[int]
     SuppressedProjections: list[int] | None = None
@@ -144,6 +145,7 @@ class VisualContainer(LayoutNode):
     tabOrder: int | None = None
     dataTransforms: Json[Any] | None = None
     query: Json[Query] | None = None
+    queryHash: int | None = None
     filters: Json[list[VisualFilter]] = []
     config: Json[VisualConfig]
     id: int | None = None

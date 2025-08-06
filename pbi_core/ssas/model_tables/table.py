@@ -1,6 +1,6 @@
 import datetime
 from typing import TYPE_CHECKING
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.server.tabular_model import RefreshType, SsasRefreshTable
@@ -22,7 +22,7 @@ class Table(SsasRefreshTable):
     exclude_from_model_refresh: bool
     is_hidden: bool
     is_private: bool
-    lineage_tag: UUID
+    lineage_tag: UUID = uuid4()
     model_id: int
     name: str
     show_as_variations_only: bool
@@ -37,9 +37,11 @@ class Table(SsasRefreshTable):
         """Extracts records from the table in SSAS.
 
         Args:
+        ----
             head (int): The number of records to return from the table.
 
         Returns:
+        -------
             list[dict[str, int | float | str]]: A list of SSAS records in dictionary form.
                 The keys are the field names and the values are the record values
 
@@ -52,7 +54,8 @@ class Table(SsasRefreshTable):
     def partitions(self) -> list[Partition]:
         """Get associated dependent partitions.
 
-        Returns:
+        Returns
+        -------
             (list[Partition]): A list of the partitions containing data for this table
 
         """
@@ -61,7 +64,8 @@ class Table(SsasRefreshTable):
     def columns(self) -> list[Column]:
         """Get associated dependent partitions.
 
-        Returns:
+        Returns
+        -------
             (list[Column]): A list of the columns in this table
 
         """
@@ -71,9 +75,11 @@ class Table(SsasRefreshTable):
         """Get measures saved to this table.
 
         Returns:
+        -------
             (list[Measure]): A list of measures saved to this table
 
         Note:
+        ----
             These measures do not necessarily have calculations that depend on this table.
                 For that use `table.measures()`
 
@@ -84,6 +90,7 @@ class Table(SsasRefreshTable):
         """Get measures that logically depend on this table.
 
         Examples:
+        --------
             .. code-block:: python
             :linenos:
 
@@ -92,9 +99,11 @@ class Table(SsasRefreshTable):
             # Therefore, this measure would be returned by Table(name=example).measures()
 
         Returns:
+        -------
             (list[Measure]): A list of measures that logically depend this table
 
         Note:
+        ----
             These measures are not necessarily saved physically to this table. For that use `table.table_measures()`
 
         """

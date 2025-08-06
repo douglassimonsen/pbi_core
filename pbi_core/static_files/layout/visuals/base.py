@@ -29,6 +29,7 @@ class Display(LayoutNode):
     mode: DisplayMode
 
 
+# TODO: remove Anys
 class BaseVisual(LayoutNode):
     model_config = ConfigDict(extra="allow")
 

@@ -2,15 +2,15 @@ from collections.abc import Callable
 from typing import TypeVar
 
 
-class IdThing:
+class IdProtocol:
     def id(self) -> str:
         raise NotImplementedError
 
 
-T = TypeVar("T", bound=IdThing)
+T = TypeVar("T", bound=IdProtocol)
 
 
-class Group(list[T]):  # noqa: FURB189
+class Group(list[T]):
     def get(self, match_val: str | Callable[[T], bool]) -> T:
         if isinstance(match_val, str):
             for val in self:

@@ -1,6 +1,6 @@
 import datetime
 from typing import TYPE_CHECKING
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from pbi_core.ssas.server.tabular_model import SsasRenameTable, SsasTable
 
@@ -14,7 +14,7 @@ class Expression(SsasRenameTable):
     description: str | None = None
     expression: str
     kind: int
-    lineage_tag: UUID
+    lineage_tag: UUID = uuid4()
     model_id: int
     name: str
     query_group_id: int | None = None

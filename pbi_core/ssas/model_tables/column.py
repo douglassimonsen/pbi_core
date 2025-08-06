@@ -1,6 +1,6 @@
 import datetime
 from typing import TYPE_CHECKING, ClassVar, Literal
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.server.tabular_model import SsasRenameTable, SsasTable
@@ -44,7 +44,7 @@ class Column(SsasRenameTable):
     is_nullable: bool
     is_unique: bool
     keep_unique_rows: bool
-    lineage_tag: UUID | None = None
+    lineage_tag: UUID = uuid4()
     sort_by_column_id: int | None = None
     source_column: str | None = None
     state: int

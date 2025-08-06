@@ -30,6 +30,7 @@ class HighlightSelection(LayoutNode):
     metadata: list[str] | None = None
 
 
+# TODO: remove Anys
 class Highlight(LayoutNode):
     selection: list[HighlightSelection]
     filterExpressionMetadata: Any | None = None

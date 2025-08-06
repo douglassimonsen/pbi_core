@@ -63,6 +63,7 @@ class VisualHeadersPropertiesGroup(LayoutNode):
     properties: VisualHeaderProperties
 
 
+# TODO: remove Anys
 class BarChartVCObjects(LayoutNode):
     background: Any = None
     general: Any = None

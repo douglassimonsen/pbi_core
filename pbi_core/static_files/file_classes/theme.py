@@ -1,5 +1,4 @@
 # ruff: noqa: N815
-from typing import Any
 
 from pydantic_extra_types.color import Color
 
@@ -19,6 +18,14 @@ class TextClasses(BaseFileModel):
     title: TextClass
     header: TextClass
     label: TextClass
+
+
+class ColorName(BaseFileModel):
+    color: Color
+
+
+class ColorThemeData(BaseFileModel):
+    solid: ColorName
 
 
 class Theme(BaseFileModel):
@@ -47,4 +54,4 @@ class Theme(BaseFileModel):
     visitedHyperlink: Color | None = None
 
     textClasses: TextClasses | None = None
-    visualStyles: Any
+    visualStyles: dict[str, dict[str, dict[str, list[dict[str, bool | int | str | ColorThemeData]]]]]

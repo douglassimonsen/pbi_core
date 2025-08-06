@@ -25,7 +25,7 @@ def ssas_diff(
     parent_table: "Iterable[SsasTable]",
     child_table: "Iterable[SsasTable]",
     bad_cols: tuple[str, ...],
-) -> SsasDifference:  # -> list[Any] | None:
+) -> SsasDifference:
     parent_items = {obj.id: obj for obj in parent_table}
     child_items = {obj.id: obj for obj in child_table}
     parent_keys = set(parent_items.keys())

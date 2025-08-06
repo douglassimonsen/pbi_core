@@ -37,11 +37,12 @@ class ResourcePackageDetailsType(IntEnum):
 
 class ResourcePackageDetails(LayoutNode):
     _parent: "ResourcePackage"  # pyright: ignore reportIncompatibleVariableOverride=false
-    disabled: bool
+    disabled: bool = False
     items: list[ResourcePackageItem] = []
     type: ResourcePackageDetailsType
     name: str
     id: int | None = None
+    reportId: int | None = None
 
 
 class ResourcePackage(LayoutNode):

@@ -1,4 +1,4 @@
-from typing import Any, Literal
+from typing import Any, Literal, Protocol
 
 from mermaid import Link, MermaidDiagram, Node
 from mermaid.node import NodeShape
@@ -28,6 +28,13 @@ CLASS_STYLES = {
 }
 
 
+class LineageProtocol(Protocol):
+    id: str
+
+    def pbi_core_name(self) -> str:
+        raise NotImplementedError
+
+
 class LineageNode:
     """Class used to track DAX dependencies from visuals to measures to PowerQueries."""
 
@@ -42,7 +49,7 @@ class LineageNode:
         self.lineage_type = lineage_type
 
     @staticmethod
-    def _create_node(value: Any) -> Node:
+    def _create_node(value: LineageProtocol) -> Node:
         return Node(
             id=f"{value.__class__.__name__}-{value.id}",
             content=value.pbi_core_name(),

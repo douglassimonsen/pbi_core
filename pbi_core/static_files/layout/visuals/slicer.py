@@ -6,6 +6,7 @@ from pydantic import ConfigDict
 from .base import BaseVisual
 
 
+# TODO: remove Anys
 class Slicer(BaseVisual):
     visualType: str = "slicer"
     model_config = ConfigDict(extra="forbid")

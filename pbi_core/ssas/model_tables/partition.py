@@ -23,6 +23,7 @@ class PartitionMode(IntEnum):
 class PartitionType(IntEnum):
     """Source: https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions."""
 
+    NA = 1  # not verified
     Calculated = 2  # not verified
     Query = 4  # not verified
 
@@ -34,6 +35,7 @@ class Partition(SsasRefreshTable):
     """
 
     data_view: int
+    data_source_id: int | None = None
     mode: PartitionMode
     name: str
     partition_storage_id: int

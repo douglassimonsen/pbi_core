@@ -16,7 +16,7 @@ class Model(SsasModelTable):
     _refresh_type = RefreshType.Calculate
 
     culture: str
-    data_access_options: Json[dict[str, Any]]
+    data_access_options: Json[dict[str, Any]] = {}
     data_source_default_max_connections: int
     data_source_variables_override_behavior: int
     default_data_view: int
@@ -27,7 +27,7 @@ class Model(SsasModelTable):
     disable_auto_exists: int | None = None
     force_unique_names: bool
     name: str
-    source_query_culture: str
+    source_query_culture: str = "en-US"
     structure_modified_time: datetime.datetime
     version: int
 

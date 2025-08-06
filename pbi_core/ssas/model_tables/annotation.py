@@ -1,6 +1,5 @@
 import datetime
 from enum import IntEnum
-from typing import Any
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.server.tabular_model import SsasRenameTable, SsasTable
@@ -17,11 +16,12 @@ class ObjectType(IntEnum):
     QUERY_GROUP = 51
 
 
+# TODO: remove Any
 class Annotation(SsasRenameTable):
     object_id: int
     object_type: ObjectType
     name: str
-    value: Any | None = None
+    value: str | None = None
 
     modified_time: datetime.datetime
 

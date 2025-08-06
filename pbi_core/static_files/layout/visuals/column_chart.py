@@ -6,6 +6,7 @@ from pydantic import ConfigDict
 from .base import BaseVisual
 
 
+# TODO: remove Anys
 class ColumnChart(BaseVisual):
     visualType: str = "columnChart"
     model_config = ConfigDict(extra="forbid")

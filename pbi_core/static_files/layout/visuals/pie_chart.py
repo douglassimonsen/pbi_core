@@ -6,6 +6,7 @@ from pydantic import ConfigDict
 from .base import BaseVisual
 
 
+# TODO: remove Anys
 class PieChart(BaseVisual):
     visualType: str = "pieChart"
     model_config = ConfigDict(extra="forbid")

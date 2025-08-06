@@ -52,6 +52,7 @@ class Settings(LayoutNode):
     filterPaneHiddenInEditMode: bool = False
 
 
+# TODO: remove Anys
 class LayoutConfig(LayoutNode):
     linguisticSchemaSyncVersion: int | None = None
     defaultDrillFilterOtherVisuals: bool = True
