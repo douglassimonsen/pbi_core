@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from .logging import get_logger
 from .ssas.server import BaseTabularModel, LocalTabularModel, get_or_create_local_server
@@ -24,7 +24,6 @@ class LocalReport(BaseReport):
     An instance of a PowerBI report from a local PBIX file.
 
     Args:
-        ssas (LocalTabularModel): An instance of a local SSAS instance
         static_elements (StaticElements): An instance of all the static files (except DataModel) in the PBIX file
 
     Examples:
@@ -38,8 +37,10 @@ class LocalReport(BaseReport):
     """
 
     ssas: LocalTabularModel
+    """An instance of a local SSAS Server"""
+
     static_elements: StaticElements
-    _original_path: Optional["StrPath"] = None
+    """Classes representing the static design portions of the PBIX report"""
 
     def __init__(self, ssas: LocalTabularModel, static_elements: StaticElements) -> None:
         self.ssas = ssas
@@ -54,6 +55,8 @@ class LocalReport(BaseReport):
             path (StrPath): The absolute or local path to the PBIX report
             kill_ssas_on_exit (bool, optional): The LocalReport object depends on a ``msmdsrv.exe`` process that is independent of the Python session process. If this function creates a new ``msmdsrv.exe`` instance and kill_ssas_on_exit is true, the process will be killed on exit.
 
+        Returns:
+            LocalReport: the local PBIX class
         """
         logger.info("Loading PBIX", path=path)
         server = get_or_create_local_server(kill_on_exit=kill_ssas_on_exit)
@@ -62,5 +65,11 @@ class LocalReport(BaseReport):
         return LocalReport(ssas=ssas, static_elements=static_elements)
 
     def save_pbix(self, path: "StrPath") -> None:
+        """
+        Creates a new PBIX with the information in this class to the given path.
+
+        Args:
+            path (StrPath): the path (relative or absolute) to save the PBIX to
+        """
         self.static_elements.save_pbix(path)
         self.ssas.save_pbix(path)

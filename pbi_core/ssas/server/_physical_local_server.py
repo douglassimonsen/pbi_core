@@ -62,7 +62,7 @@ class SSASProcess:
             self._workspace_directory = pathlib.Path(workspace_directory)
             logger.info(
                 "No pid provided. Initializing new SSAS Instance",
-                workspace_dir=self.workspace_directory,
+                workspace_dir=self.workspace_directory(),
                 msmdsrv_exe=self.powerbi_exe_path,
             )
             self.pid = self.initialize_server()
@@ -89,6 +89,9 @@ class SSASProcess:
     def powerbi_exe_path(self) -> str:
         """
         Tests locations on your computer for the ``msmdsrv.exe`` file needed to create an SSAS process
+
+        Returns:
+            str: the absolute POSIX path to the msmdsrv exe on the system.
 
         Raises:
             FileNotFoundError: when no ``msmdsrv.exe`` file is found in any of the candidate folders

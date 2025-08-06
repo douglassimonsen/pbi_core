@@ -94,3 +94,16 @@ flowchart TD
   table_permission --> table
 
 ```
+
+# Notes:
+
+## Refreshing
+
+Refreshing is only possible when a "Microsoft.Mashup.Container.NetFX45.exe" instance is running. This gets created when Desktop does a refresh and stays forever(?)
+
+The process is run with the arguments:
+
+10440 9852 <UUID> 4
+The first and second are references to pipes? Note: the first two are always multiples of 8
+The 3rd is a UUID that stays the same across children, so I assume it's related to the SSAS instance. Could not find a match in the tables though
+The last indicates how many living/dead instances of the exe were run before this one (0-indexed)
