@@ -2184,10 +2184,12 @@
 <p><strong>pbi_pyadomd</strong>: A fork of the <a href="https://github.com/S-C-O-U-T/Pyadomd">original pyadomd library</a>, which is a Python client for the Microsoft Analysis Services Tabular Data Model. Adds logging, more typing at the C# and python level, and some additional features such as support for streaming results. Additions were done to support various downstream libraries.</p>
 <p><strong>pbi_gui</strong>: A graphical user interface for the PBI_CORE library, providing a user-friendly way to interact with the functionality of the PBI_CORE and pbi_ruff libraries. </p>
 <p><strong>pbi_server</strong>: A server that provides a REST API for the pbi_core library, allowing for remote access to the functionality of the pbi_core and pbi_ruff libraries. The server is designed to be used in conjunction with the pbi_gui library, but can also be used independently.</p>
-<p>In the following flowchart:
-- Packages in <font color="green">green</font> are considered feature complete and essentially stable.
-- Packages in <font color="orange">orange</font> are in active development, but should be usable for most basic scenarios.
-- Packages in <font color="red">red</font> are experimental and are recommended only for advanced users or contributors.</p>
+<p>In the following flowchart:</p>
+<ul>
+<li>Packages in <font color="green">green</font> are considered feature complete and essentially stable.</li>
+<li>Packages in <font color="orange">orange</font> are in active development, but should be usable for most basic scenarios.</li>
+<li>Packages in <font color="red">red</font> are experimental and are recommended only for advanced users or contributors.</li>
+</ul>
 <pre class="mermaid"><code>flowchart TD
 
     style pbi_server stroke:red
