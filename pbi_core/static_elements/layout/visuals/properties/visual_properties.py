@@ -1,47 +1,61 @@
 import inspect
-from typing import TYPE_CHECKING, Optional
+from typing import Annotated, Any, Union
 
-from pydantic import ConfigDict
+from pydantic import Discriminator, Tag
 
 from ..._base_node import LayoutNode
-from ...sources import LiteralSource
-
-if TYPE_CHECKING:
-    from ..base import BaseVisual
+from ...sources import LiteralSource, MeasureSource
 
 
 class LiteralExpression(LayoutNode):
     expr: LiteralSource
 
 
-class SingleVisualObjectProperties(LayoutNode):
-    model_config = ConfigDict(extra="allow")
+class MeasureExpression(LayoutNode):
+    expr: MeasureSource
 
 
-class GeneralPropertiesHelper(LayoutNode):
-    keepLayerOrder: Optional[LiteralExpression] = None
-    altText: Optional[LiteralExpression] = None
+class ThemeDataColor(LayoutNode):
+    ColorId: int
+    Percent: int
 
 
-class GeneralProperties(LayoutNode):
-    parent: "SingleVisualVCObjects"
-    properties: GeneralPropertiesHelper
+class ThemeExpression(LayoutNode):
+    ThemeDataColor: ThemeDataColor
 
 
-class SingleVisualVCObjects(LayoutNode):
-    parent: "BaseVisual"
-    model_config = ConfigDict(extra="allow")
+class ColorExpression(LayoutNode):
+    expr: ThemeExpression
 
-    background: Optional[list[SingleVisualObjectProperties]] = None
-    border: Optional[list[SingleVisualObjectProperties]] = None
-    divider: Optional[list[SingleVisualObjectProperties]] = None
-    general: Optional[list[GeneralProperties]] = None
-    padding: Optional[list[SingleVisualObjectProperties]] = None
-    spacing: Optional[list[SingleVisualObjectProperties]] = None
-    subTitle: Optional[list[SingleVisualObjectProperties]] = None
-    title: Optional[list[SingleVisualObjectProperties]] = None
-    visualTooltip: Optional[list[SingleVisualObjectProperties]] = None
 
+class SolidExpression(LayoutNode):
+    color: ColorExpression
+
+
+class SolidColorExpression(LayoutNode):
+    solid: SolidExpression
+
+
+def get_expression(v: Any) -> str:
+    if isinstance(v, dict):
+        if "solid" in v:
+            return "SolidColorExpression"
+        if "Measure" in v["expr"]:
+            return "MeasureExpression"
+        if "Literal" in v["expr"]:
+            return "LiteralExpression"
+        raise ValueError
+    return v.__class__.__name__
+
+
+Expression = Annotated[
+    Union[
+        Annotated[LiteralExpression, Tag("LiteralExpression")],
+        Annotated[MeasureExpression, Tag("MeasureExpression")],
+        Annotated[SolidColorExpression, Tag("SolidColorExpression")],
+    ],
+    Discriminator(get_expression),
+]
 
 """
 woo boy. Why is this code here? Well, we want a parent attribute on the objects to make user navigation easier

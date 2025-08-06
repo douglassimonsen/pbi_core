@@ -6,7 +6,7 @@ from pydantic import Json
 
 from ._base_node import LayoutNode
 from .filters import VisualFilter
-from .visuals import BaseVisual
+from .visuals import Visual
 
 if TYPE_CHECKING:
     from .section import Section
@@ -31,7 +31,7 @@ class VisualConfig(LayoutNode):
     name: Optional[str] = None
     parentGroupName: Optional[str] = None
     singleVisualGroup: Optional[SingleVisualGroup] = None
-    singleVisual: Optional[BaseVisual] = None  # split classes to handle the other cases
+    singleVisual: Optional[Visual] = None  # split classes to handle the other cases
     howCreated: Optional[VisualHowCreated] = None
 
 

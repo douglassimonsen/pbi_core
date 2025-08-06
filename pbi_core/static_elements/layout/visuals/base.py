@@ -5,11 +5,10 @@ from pydantic import ConfigDict
 from .._base_node import LayoutNode
 
 if TYPE_CHECKING:
-    from ..visual_container import VisualConfig
+    pass
 
 
 class BaseVisual(LayoutNode):
-    parent: "VisualConfig"
     model_config = ConfigDict(extra="allow")
 
     objects: Any = None
@@ -17,4 +16,5 @@ class BaseVisual(LayoutNode):
     projections: Any = None
     hasDefaultSort: bool = False
     drillFilterOtherVisuals: bool = False
+    vcObjects: Any
     visualType: str = "unknown"
