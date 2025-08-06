@@ -27,7 +27,6 @@ class Annotation(SsasRenameTable):
 
     def parent(self) -> "SsasTable":
         match self.object_type:
-            # we have to have type: ignore because python doesn't consider list[child] to be a subtype of list[parent] :(
             case ObjectType.MODEL:
                 return self.tabular_model.model
             case ObjectType.TABLE:

@@ -13,3 +13,6 @@ class CalcDependency(SsasReadonlyTable):
     referenced_table: Optional[str] = None
     referenced_object: str
     referenced_expression: Optional[str] = None
+
+    def pbi_core_name(self) -> str:
+        return f"{self.object_type}[{self.object}] -> {self.referenced_object_type}[{self.referenced_object}]"

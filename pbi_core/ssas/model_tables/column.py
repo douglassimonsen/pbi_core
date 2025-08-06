@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, ClassVar, Optional
+from typing import TYPE_CHECKING, ClassVar, Literal, Optional
 from uuid import UUID
 
 from ...lineage import LineageNode, LineageType
@@ -66,7 +66,9 @@ class Column(SsasRenameTable):
             children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
             return LineageNode(self, lineage_type, children_lineage)
         else:
-            parent_nodes: list[Optional[SsasTable]] = [self.table(), self.sort_by_column()] + self.parent_columns()  # type: ignore
+            parent_nodes: list[Optional[SsasTable]] = (
+                [self.table(), self.sort_by_column()] + self.parent_columns() + self.parent_measures()
+            )  # type: ignore
             parent_lineage = [p.get_lineage(lineage_type) for p in parent_nodes if p is not None]
             return LineageNode(self, lineage_type, parent_lineage)
 
@@ -103,29 +105,56 @@ class Column(SsasRenameTable):
     def levels(self) -> list["Level"]:
         return self.tabular_model.levels.find_all({"column_id": self.id})
 
-    def child_measures(self) -> list["Measure"]:
+    def _column_type(self) -> Literal["COLUMN"] | Literal["CALC_COLUMN"]:
         if self.expression is None:
-            object_type = "COLUMN"
+            return "COLUMN"
         else:
-            object_type = "CALC_COLUMN"
+            return "CALC_COLUMN"
+
+    def child_measures(self) -> list["Measure"]:
+        object_type = self._column_type()
         dependent_measures = self.tabular_model.calc_dependencies.find_all({
             "referenced_object_type": object_type,
             "referenced_table": self.table().name,
             "referenced_object": self.explicit_name,
         })
-        dependent_measure_keys = [(m.table, m.object) for m in dependent_measures]
-        return [m for m in self.tabular_model.measures if (m.table().name, m.name) in dependent_measure_keys]
+        child_keys: list[tuple[str | None, str]] = [(m.table, m.object) for m in dependent_measures]
+        return [m for m in self.tabular_model.measures if (m.table().name, m.name) in child_keys]
 
     def parent_measures(self) -> list["Measure"]:
         """Calculated columns can use Measures too :("""
-        return []
+        object_type = self._column_type()
+        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+            "object_type": object_type,
+            "table": self.table().name,
+            "object": self.explicit_name,
+        })
+        parent_keys = [(m.referenced_table, m.referenced_object) for m in dependent_measures]
+        return [m for m in self.tabular_model.measures if (m.table().name, m.name) in parent_keys]
 
     def child_columns(self) -> list["Column"]:
-        """Only occurs when the column is calculated (expression is not None)"""
-        return []
+        """Only occurs when the dependent column is calculated (expression is not None)"""
+        object_type = self._column_type()
+        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+            "referenced_object_type": object_type,
+            "referenced_table": self.table().name,
+            "referenced_object": self.explicit_name,
+        })
+        child_keys = [(m.table, m.object) for m in dependent_measures]
+        return [m for m in self.tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
 
     def parent_columns(self) -> list["Column"]:
-        return []
+        """Only occurs when column is calculated"""
+        object_type = self._column_type()
+        if object_type == "COLUMN":
+            return []
+        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+            "object_type": object_type,
+            "table": self.table().name,
+            "object": self.explicit_name,
+        })
+        parent_keys = {(m.referenced_table, m.referenced_object) for m in dependent_measures}
+        return [c for c in self.tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
 
     def sort_by_column(self) -> Optional["Column"]:
         if self.sort_by_column_id is None:
