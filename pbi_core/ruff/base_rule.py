@@ -27,10 +27,13 @@ class RuleResult:
         self.trace = trace
 
     def __repr__(self) -> str:
-        return f"""{Fore.RED}{self.rule.id}{Style.RESET_ALL} - {self.rule.name}: {self.message}
------
+        context = ""
+        if self.context:
+            context = f"""-----
 {self.context}
------
+-----"""
+        return f"""{Fore.RED}{self.rule.id}{Style.RESET_ALL} - {self.rule.name}: {self.message}
+{context}
 Trace: {self.trace_string()}
 """
 

@@ -8,7 +8,7 @@ class CapitalizeFunctionNames(BaseRule):
     id = "DAX-007"
     name = "Capitalize Function Names"
     description = """
-        Function names in DAX expressions should be capitalized.
+        Function names in DAX expressions should be upper case.
         This helps maintain consistency and readability in DAX expressions.
     """
 
@@ -22,8 +22,9 @@ class CapitalizeFunctionNames(BaseRule):
 
         ret = []
         for function in dax.utils.find_all(ast, dax.exprs.FunctionExpression):
-            if not function.function_name().isupper():
-                message = f"Function '{function.function_name()}' should be capitalized."
+            function_name = function.function_name()
+            if not function_name.isupper():
+                message = f"Function names should be upper case. It was '{function_name}', should be '{function_name.upper()}'."
                 ret.append(
                     RuleResult(
                         rule=cls,
