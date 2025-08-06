@@ -1,0 +1,21 @@
+# Unmapped Tables
+
+Unmapped Tables:
+-   alternate_of[Alternate Of]
+-   annotations[Annotations]
+-   calculation_group[Calculation Group]
+-   calculation_item[Calculation Item]
+-   data_source[Data Source]
+-   detail_row_definition[Detail Row Definition]
+-   extended_property[Extended Property]
+-   format_string_definition[Format String Definition]
+-   object_translation[Object Translation]
+-   perspective_column[Perspective Column]
+-   perspective_hierarchy[Perspective Hierarchy]
+-   perspective_measure[Perspective Measure]
+-   perspective_set[Perspective Set]
+-   perspective_table[Perspective Table]
+-   perspective[Perspective]
+-   refresh_policy[Refresh Policy]
+-   related_column_detail[Related Column Detail]
+-   set[Set]
