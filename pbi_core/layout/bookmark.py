@@ -63,7 +63,7 @@ class BookmarkVisual(LayoutNode):
 class BookmarkSection(LayoutNode):
     parent: "ExplorationState"
 
-    visualContainers: Any  # Optional[dict[str, BookmarkVisual]] = None
+    visualContainers: Optional[dict[str, BookmarkVisual]] = None
     filters: Optional[BookmarkFilters] = None
     visualContainerGroups: Optional[Any] = None
 

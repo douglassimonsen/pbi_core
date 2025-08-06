@@ -6,6 +6,7 @@ from uuid import UUID
 from pydantic import ConfigDict, Json
 
 from ._base_node import LayoutNode
+from .visual import VisualContainer
 
 if TYPE_CHECKING:
     from .layout import Layout
@@ -29,7 +30,7 @@ class Section(LayoutNode):
     displayOption: DisplayOption
     config: Json[SectionConfig]
     objectId: Optional[UUID] = None
-    visualContainers: list[Any]
+    visualContainers: list[VisualContainer]
     ordinal: int
     filters: Json[Any]
     displayName: str

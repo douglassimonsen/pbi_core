@@ -9,3 +9,11 @@ venv\Scripts\activate
 python -m pip install .[dev]
 pre-commit install
 ```
+
+# Sphinx
+
+```shell
+python -m pip install .[docs]
+sphinx-autobuild docs/source docs/build/html
+# http://127.0.0.1:8000
+```
