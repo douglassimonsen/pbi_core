@@ -8,6 +8,24 @@ if TYPE_CHECKING:
     from pbi_core.static_files.layout.layout import Layout
 
 
+def layout_diff_update(parent: "Layout", child: "Layout") -> LayoutChange | None:
+    field_changes = {}
+    for field in ["name", "description"]:
+        parent_val = getattr(parent, field, None)
+        child_val = getattr(child, field, None)
+        if parent_val != child_val and not (parent_val is None and child_val is None):
+            field_changes[field] = (parent_val, child_val)
+
+    if field_changes:
+        return LayoutChange(
+            id="layout",
+            change_type=ChangeType.UPDATED,
+            entity=parent,
+            field_changes=field_changes,
+        )
+    return None
+
+
 def layout_diff(
     parent: "Layout",
     child: "Layout",
@@ -51,20 +69,5 @@ def layout_diff(
             section_changes.append(sub_section_changes)
         visual_changes.extend(sub_visual_changes)
 
-    field_changes = {}
-    for field in ["name", "description"]:
-        parent_val = getattr(parent, field, None)
-        child_val = getattr(child, field, None)
-        if parent_val != child_val and not (parent_val is None and child_val is None):
-            field_changes[field] = (parent_val, child_val)
-
-    layout_changes = None
-    if field_changes:
-        layout_changes = LayoutChange(
-            id="layout",
-            change_type=ChangeType.UPDATED,
-            entity=parent,
-            field_changes=field_changes,
-        )
-
+    layout_changes = layout_diff_update(parent, child)
     return layout_changes, section_changes, visual_changes

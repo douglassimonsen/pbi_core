@@ -3,9 +3,9 @@
 from pydantic import ConfigDict
 
 from pbi_core.static_files.layout._base_node import LayoutNode
+from pbi_core.static_files.layout.expansion_state import ExpansionState
+from pbi_core.static_files.layout.selector import SelectorData
 
-from ..expansion_state import ExpansionState
-from ..selector import SelectorData
 from .base import BaseVisual
 from .table import ColumnProperty
 

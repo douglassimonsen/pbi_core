@@ -53,7 +53,7 @@ class SsasChange(Change):
 
 @dataclass
 class DiffReport:
-    layout_changes: list[LayoutChange]
+    layout_changes: LayoutChange | None
     section_changes: list[SectionChange]
     visual_changes: list[VisualChange]
     ssas_changes: dict[str, list[SsasChange]]

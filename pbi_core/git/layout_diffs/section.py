@@ -9,6 +9,25 @@ if TYPE_CHECKING:
     from pbi_core.static_files.layout.layout import Section
 
 
+def section_diff_update(parent: "Section", child: "Section") -> SectionChange | None:
+    field_changes = {}
+    for field in ["name", "description"]:
+        parent_val = getattr(parent, field, None)
+        child_val = getattr(child, field, None)
+        if parent_val != child_val and not (parent_val is None and child_val is None):
+            field_changes[field] = (parent_val, child_val)
+
+    if field_changes:
+        return SectionChange(
+            id=parent.name,
+            change_type=ChangeType.UPDATED,
+            entity=parent,
+            filters=filter_diff(parent.filters, child.filters),  # type: ignore reportArgumentType
+            field_changes=field_changes,
+        )
+    return None
+
+
 def section_diff(
     parent_section: "Section",
     child_section: "Section",
@@ -41,21 +60,5 @@ def section_diff(
         if visual_object:
             visual_changes.append(visual_object)
 
-    field_changes = {}
-    for field in ["name", "description"]:
-        parent_val = getattr(parent_section, field, None)
-        child_val = getattr(child_section, field, None)
-        if parent_val != child_val and not (parent_val is None and child_val is None):
-            field_changes[field] = (parent_val, child_val)
-
-    section_changes = None
-    if field_changes:
-        section_changes = SectionChange(
-            id=parent_section.name,
-            change_type=ChangeType.UPDATED,
-            entity=parent_section,
-            filters=filter_diff(parent_section.filters, child_section.filters),  # type: ignore reportArgumentType
-            field_changes=field_changes,
-        )
-
+    section_changes = section_diff_update(parent_section, child_section)
     return section_changes, visual_changes

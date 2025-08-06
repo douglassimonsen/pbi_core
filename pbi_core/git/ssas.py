@@ -40,7 +40,7 @@ def compare_fields(
     return SsasChange(
         entity_type=ssas_category,
         entity=parent_entity,
-        id=parent_entity.id,
+        id=str(parent_entity.id),
         change_type=ChangeType.UPDATED,
         field_changes=field_changes,
     )

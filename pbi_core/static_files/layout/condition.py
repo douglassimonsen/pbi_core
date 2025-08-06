@@ -8,6 +8,7 @@ from ._base_node import LayoutNode
 from .sources import DataSource, LiteralSource, Source, SourceRef
 from .sources.aggregation import ScopedEvalExpression
 from .sources.arithmetic import ScopedEval
+from .sources.column import ColumnSource
 
 
 class ExpressionVersion(IntEnum):
@@ -73,6 +74,12 @@ class Expression:
 class ContainsCondition(LayoutNode):
     Contains: ComparisonHelper
 
+    def natural_language(self) -> str:
+        """Returns a natural language representation of the condition."""
+        left = natural_language_source(self.Contains.Left)
+        right = natural_language_source(self.Contains.Right)
+        return f"{left} CONTAINS {right}"
+
 
 class InExpressionHelper(LayoutNode):
     Expressions: list[DataSource]
@@ -110,13 +117,28 @@ InUnion = Annotated[
 ]
 
 
+def natural_language_source(d: Source | SourceRef | ScopedEvalExpression) -> str:
+    if isinstance(d, ColumnSource):
+        return d.Column.Property
+    breakpoint()
+    msg = f"Unsupported data source type: {d.__class__.__name__}"
+    raise TypeError(msg)
+
+
 class InCondition(LayoutNode):
     """In is how "is" and "is not" are internally represented."""
 
-    In: InExpressionHelper | InTopNExpressionHelper
+    In: InUnion
 
     def __repr__(self) -> str:
         return self.In.__repr__()
+
+    def natural_language(self) -> str:
+        expr = natural_language_source(self.In.Expressions[0])
+        if isinstance(self.In, InTopNExpressionHelper):
+            table = natural_language_source(self.In.Table)
+            return f"{expr} IN TOP N {table}"
+        return f"{expr} IN ({', '.join(str(x.value()) for x in self.In.Values[0])})"
 
 
 class TimeUnit(IntEnum):
@@ -201,6 +223,17 @@ class ComparisonConditionHelper(LayoutNode):
 class ComparisonCondition(LayoutNode):
     Comparison: ComparisonConditionHelper
 
+    def natural_language(self) -> str:
+        """Returns a natural language representation of the condition."""
+        left = natural_language_source(self.Comparison.Left)
+        right = (
+            self.Comparison.Right.value()
+            if isinstance(self.Comparison.Right, LiteralSource)
+            else str(self.Comparison.Right)
+        )
+        operator = self.Comparison.ComparisonKind.get_operator()
+        return f"{left} {operator} {right}"
+
 
 class NotConditionHelper(LayoutNode):
     Expression: "ConditionType"
@@ -212,6 +245,10 @@ class NotCondition(LayoutNode):
     def __repr__(self) -> str:
         return f"Not({self.Not.Expression.__repr__()})"
 
+    def natural_language(self) -> str:
+        """Returns a natural language representation of the condition."""
+        return f"NOT {self.Not.Expression.natural_language()}"
+
 
 class ExistsConditionHelper(LayoutNode):
     Expression: Source
@@ -219,6 +256,10 @@ class ExistsConditionHelper(LayoutNode):
 
 class ExistsCondition(LayoutNode):
     Exists: ExistsConditionHelper
+
+    def natural_language(self) -> str:
+        """Returns a natural language representation of the condition."""
+        return f"Exists({natural_language_source(self.Exists.Expression)})"
 
 
 class CompositeConditionHelper(LayoutNode):
@@ -229,9 +270,17 @@ class CompositeConditionHelper(LayoutNode):
 class AndCondition(LayoutNode):
     And: CompositeConditionHelper
 
+    def natural_language(self) -> str:
+        """Returns a natural language representation of the condition."""
+        return f"({self.And.Left.natural_language()} AND {self.And.Right.natural_language()})"
+
 
 class OrCondition(LayoutNode):
     Or: CompositeConditionHelper
+
+    def natural_language(self) -> str:
+        """Returns a natural language representation of the condition."""
+        return f"({self.Or.Left.natural_language()} OR {self.Or.Right.natural_language()})"
 
 
 def get_type(v: object | dict[str, Any]) -> str:  # noqa: PLR0911
@@ -274,3 +323,7 @@ class Condition(LayoutNode):
 
     def __repr__(self) -> str:
         return f"Condition({self.Condition.__repr__()})"
+
+    def natural_language(self) -> str:
+        """Returns a natural language representation of the condition."""
+        return self.Condition.natural_language()
