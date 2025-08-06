@@ -1,15 +1,13 @@
 import datetime
 from typing import TYPE_CHECKING
 
-from ..server.tabular_model import SsasTable
-from ._commands import NoCommands
+from ..server.tabular_model import SsasReadonlyTable
 
 if TYPE_CHECKING:
     from .column import Column
 
 
-class AttributeHierarchy(SsasTable):
-    _commands: NoCommands
+class AttributeHierarchy(SsasReadonlyTable):
     attribute_hierarchy_storage_id: int
     column_id: int
     state: int

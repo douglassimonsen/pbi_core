@@ -26,24 +26,24 @@ class NoCommands:
         return [field["name"] for field in fields]
 
 
-class SsasBaseCommands(NoCommands):
+class BaseCommands(NoCommands):
     alter: Command
     create: Command
     delete: Command
 
 
-class SsasRenameCommands(SsasBaseCommands):
+class RenameCommands(BaseCommands):
     rename: Command
 
 
-class SsasRefreshCommands(SsasRenameCommands):
+class RefreshCommands(RenameCommands):
     refresh: Command
 
 
-class SsasModelCommands(NoCommands):
+class ModelCommands(NoCommands):
     alter: Command
     refresh: Command
     rename: Command
 
 
-SsasCommands = SsasBaseCommands | SsasRenameCommands | SsasRefreshCommands | SsasModelCommands
+Commands = BaseCommands | RenameCommands | RefreshCommands | ModelCommands

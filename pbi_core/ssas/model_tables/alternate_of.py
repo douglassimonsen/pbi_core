@@ -1,6 +1,5 @@
-from ..server.tabular_model import SsasTable
-from ._commands import NoCommands
+from ..server.tabular_model import SsasReadonlyTable
 
 
-class AlternateOf(SsasTable):
-    _commands: NoCommands
+class AlternateOf(SsasReadonlyTable):
+    pass

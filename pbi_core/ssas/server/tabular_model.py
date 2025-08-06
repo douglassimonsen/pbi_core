@@ -6,6 +6,7 @@ import pydantic
 from bs4 import BeautifulSoup, Tag
 from structlog import get_logger
 
+from ._commands import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from .utils import BASE_ALTER_TEMPLATE, COMMAND_TEMPLATES, OBJECT_COMMAND_TEMPLATES, ROW_TEMPLATE, python_to_xml
 
 logger = get_logger()
@@ -245,13 +246,17 @@ class SsasRefresh(SsasTable):
         pass
 
 
-class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
-    def model_post_init(self, __context: Any) -> None:
-        from ..model_tables import _commands
+class SsasReadonlyTable(SsasTable):
+    _commands: NoCommands
 
+
+class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
+    _commands: BaseCommands
+
+    def model_post_init(self, __context: Any) -> None:
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
 
-        self._commands = _commands.SsasBaseCommands(
+        self._commands = BaseCommands(
             alter=templates["alter.xml"],
             create=templates["create.xml"],
             delete=templates["delete.xml"],
@@ -259,12 +264,12 @@ class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
 
 
 class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
-    def model_post_init(self, __context: Any) -> None:
-        from ..model_tables import _commands
+    _commands: RenameCommands
 
+    def model_post_init(self, __context: Any) -> None:
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
 
-        self._commands = _commands.SsasRenameCommands(
+        self._commands = RenameCommands(
             alter=templates["alter.xml"],
             create=templates["create.xml"],
             delete=templates["delete.xml"],
@@ -273,12 +278,12 @@ class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
 
 
 class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefresh):
-    def model_post_init(self, __context: Any) -> None:
-        from ..model_tables import _commands
+    _commands: RefreshCommands
 
+    def model_post_init(self, __context: Any) -> None:
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
 
-        self._commands = _commands.SsasRenameCommands(
+        self._commands = RefreshCommands(
             alter=templates["alter.xml"],
             create=templates["create.xml"],
             delete=templates["delete.xml"],
@@ -288,12 +293,12 @@ class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefres
 
 
 class SsasModelTable(SsasAlter, SsasRefresh, SsasRename):
-    def model_post_init(self, __context: Any) -> None:
-        from ..model_tables import _commands
+    _commands: ModelCommands
 
+    def model_post_init(self, __context: Any) -> None:
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
 
-        self._commands = _commands.SsasModelCommands(
+        self._commands = ModelCommands(
             alter=templates["alter.xml"],
             refresh=templates["refresh.xml"],
             rename=templates["rename.xml"],
