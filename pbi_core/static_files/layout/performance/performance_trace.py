@@ -18,6 +18,19 @@ TRACE_TEMPLATES: dict[str, jinja2.Template] = {
     f.name: jinja2.Template(f.read_text()) for f in TRACE_DIR.iterdir() if f.is_file()
 }
 
+TRACE_DEFAULT_EVENTS = (
+    TraceEvents.DISCOVER_BEGIN,
+    TraceEvents.COMMAND_BEGIN,
+    TraceEvents.QUERY_END,
+    TraceEvents.QUERY_SUBCUBE,
+    TraceEvents.VERTIPAQ_SE_QUERY_BEGIN,
+    TraceEvents.VERTIPAQ_SE_QUERY_END,
+    TraceEvents.VERTIPAQ_SE_QUERY_CACHE_MATCH,
+    TraceEvents.AGGREGATE_TABLE_REWRITE_QUERY,
+    TraceEvents.DIRECT_QUERY_END,
+    TraceEvents.QUERY_BEGIN,
+)
+
 
 @dataclass
 class ThreadResult:
@@ -87,7 +100,7 @@ class PerformanceTrace:
         self,
         db: BaseTabularModel,
         commands: list[str],
-        events: Iterable[TraceEvents] = (TraceEvents.COMMAND_END, TraceEvents.QUERY_END),
+        events: Iterable[TraceEvents] = TRACE_DEFAULT_EVENTS,
     ) -> None:
         self.events = events
         self.db: BaseTabularModel = db

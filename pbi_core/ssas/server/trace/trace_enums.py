@@ -4,36 +4,44 @@ from enum import IntEnum
 
 
 class TraceEvents(IntEnum):
-    COMMAND_BEGIN = 15  # Command begin.
-    COMMAND_END = 16  # Command end.
-    DISCOVER_BEGIN = 36  # Start of Discover Request.
-    DISCOVER_END = 38  # End of Discover Request.
-    SERVER_STATE_DISCOVER_BEGIN = 33  # Start of Server State Discover.
-    SERVER_STATE_DISCOVER_DATA = 34  # Contents of the Server State Discover Response.
-    SERVER_STATE_DISCOVER_END = 35  # End of Server State Discover.
-    ERROR = 17  # Server error.
-    FILE_LOAD_BEGIN = 90  # File Load Begin.
-    FILE_LOAD_END = 91  # File Load End.
-    FILE_SAVE_BEGIN = 92  # File Save Begin.
-    FILE_SAVE_END = 93  # File Save End
-    PAGEOUT_BEGIN = 94  # PageOut Begin.
-    PAGEOUT_END = 95  # PageOut End
-    PAGEIN_BEGIN = 96  # PageIn Begin.
-    PAGEIN_END = 97  # PageIn End
-    JOB_GRAPH = 134  # Collection of Job Graph related events.
-    DEADLOCK = 50  # Metadata locks deadlock.
-    LOCK_TIMEOUT = 51  # Metadata lock timeout.
-    LOCK_ACQUIRED = 52  # Lock Acquired
-    LOCK_RELEASED = 53  # Lock Released
-    LOCK_WAITING = 54  # Lock Waiting
-    NOTIFICATION = 39  # Notification event.
-    USER_DEFINED = 40  # User defined Event.
+    AUDIT_LOGIN = 1  # Collects all new connection events since the trace was started, such as when a client requests a connection to a server running an instance of SQL Server.
+    AUDIT_LOGOUT = 2  # Collects all new disconnect events since the trace was started, such as when a client issues a disconnect command.
+    AUDIT_SERVER_STARTS_AND_STOPS = 4  # Records service shut down, start, and pause activities.
+
     PROGRESS_REPORT_BEGIN = 5  # Progress report begins.
     PROGRESS_REPORT_END = 6  # Progress report end.
     PROGRESS_REPORT_CURRENT = 7  # Progress report current.
     PROGRESS_REPORT_ERROR = 8  # Progress report error.
     QUERY_BEGIN = 9  # Query begins.
     QUERY_END = 10  # Query end.
+    QUERY_SUBCUBE = 11  # Query subcube, for Usage Based Optimization.
+    QUERY_SUBCUBE_VERBOSE = 12  # Query subcube with detailed information. This event may have a negative impact on performance when turned on.
+
+    COMMAND_BEGIN = 15  # Command begin.
+    COMMAND_END = 16  # Command end.
+    ERROR = 17  # Server error.
+    AUDIT_OBJECT_PERMISSION_EVENT = 18  # Records object permission changes.
+    AUDIT_ADMIN_OPERATIONS_EVENT = 19  # Records server backup/restore/synchronize/attach/detach/imageload/imagesave.
+
+    SERVER_STATE_DISCOVER_BEGIN = 33  # Start of Server State Discover.
+    SERVER_STATE_DISCOVER_DATA = 34  # Contents of the Server State Discover Response.
+    SERVER_STATE_DISCOVER_END = 35  # End of Server State Discover.
+    DISCOVER_BEGIN = 36  # Start of Discover Request.
+    DISCOVER_END = 38  # End of Discover Request.
+    NOTIFICATION = 39  # Notification event.
+    USER_DEFINED = 40  # User defined Event.
+    EXISTING_CONNECTION = 41  # Existing user connection.
+    EXISTING_SESSION = 42  # Existing session.
+    SESSION_INITIALIZE = 43  # Session Initialize.
+
+    DEADLOCK = 50  # Metadata locks deadlock.
+    LOCK_TIMEOUT = 51  # Metadata lock timeout.
+    LOCK_ACQUIRED = 52  # Lock Acquired
+    LOCK_RELEASED = 53  # Lock Released
+    LOCK_WAITING = 54  # Lock Waiting
+    GET_DATA_FROM_AGGREGATION = 60  # Answer query by getting data from aggregation. This event may have a negative impact on performance when turned on.
+    GET_DATA_FROM_CACHE = 61  # Answer query by getting data from one of the caches. This event may have a negative impact on performance when turned on.
+
     QUERY_CUBE_BEGIN = 70  # Query cube begin.
     QUERY_CUBE_END = 71  # Query cube end.
     CALCULATE_NON_EMPTY_BEGIN = 72  # Calculate non empty begin.
@@ -46,27 +54,63 @@ class TraceEvents(IntEnum):
     EXECUTE_MDX_SCRIPT_CURRENT = 79  # Execute MDX script current. Deprecated.
     EXECUTE_MDX_SCRIPT_END = 80  # Execute MDX script end.
     QUERY_DIMENSION = 81  # Query dimension.
-    QUERY_SUBCUBE = 11  # Query subcube, for Usage Based Optimization.
-    QUERY_SUBCUBE_VERBOSE = 12  # Query subcube with detailed information. This event may have a negative impact on performance when turned on.
-    GET_DATA_FROM_AGGREGATION = 60  # Answer query by getting data from aggregation. This event may have a negative impact on performance when turned on.
-    GET_DATA_FROM_CACHE = 61  # Answer query by getting data from one of the caches. This event may have a negative impact on performance when turned on.
     VERTIPAQ_SE_QUERY_BEGIN = 82  # VertiPaq SE query
     VERTIPAQ_SE_QUERY_END = 83  # VertiPaq SE query
     RESOURCE_USAGE = 84  # Reports reads, writes, cpu usage after end of commands and queries.
     VERTIPAQ_SE_QUERY_CACHE_MATCH = 85  # VertiPaq SE query cache use
+    VERTIPAQ_SE_QUERY_CACHE_MISS = 86  # VertiPaq SE Query Cache Miss
+
+    FILE_LOAD_BEGIN = 90  # File Load Begin.
+    FILE_LOAD_END = 91  # File Load End.
+    FILE_SAVE_BEGIN = 92  # File Save Begin.
+    FILE_SAVE_END = 93  # File Save End
+    PAGEOUT_BEGIN = 94  # PageOut Begin.
+    PAGEOUT_END = 95  # PageOut End
+    PAGEIN_BEGIN = 96  # PageIn Begin.
+    PAGEIN_END = 97  # PageIn End
     DIRECT_QUERY_BEGIN = 98  # Direct Query Begin.
     DIRECT_QUERY_END = 99  # Direct Query End.
-    AUDIT_LOGIN = 1  # Collects all new connection events since the trace was started, such as when a client requests a connection to a server running an instance of SQL Server.
-    AUDIT_LOGOUT = 2  # Collects all new disconnect events since the trace was started, such as when a client issues a disconnect command.
-    AUDIT_SERVER_STARTS_AND_STOPS = 4  # Records service shut down, start, and pause activities.
-    AUDIT_OBJECT_PERMISSION_EVENT = 18  # Records object permission changes.
-    AUDIT_ADMIN_OPERATIONS_EVENT = 19  # Records server backup/restore/synchronize/attach/detach/imageload/imagesave.
-    EXISTING_CONNECTION = 41  # Existing user connection.
-    EXISTING_SESSION = 42  # Existing session.
-    SESSION_INITIALIZE = 43  # Session Initialize.
+
+    CALCULATION_EVALUATION = 110  # Information about the evaluation of calculations. This event will have a negative impact on performance when turned on.
+    CALCULATION_EVALUATION_DETAILED_INFORMATION = 111  # Detailed information about the evaluation of calculations. This event will have a negative impact on performance when turned on.
+    DAX_QUERY_PLAN = 112  # DAX logical/physical plan tree for VertiPaq and DirectQuery modes.
+    WLGROUP_CPU_THROTTLING = 113  # Workload Group is throttled on CPU usage
+    WLGROUP_EXCEEDS_MEMORY_LIMIT = 114  # Workload group exceeds the memory limit
+    WLGROUP_EXCEEDS_PROCESSING_LIMIT = 115  # Workload group exceeds the processing limit
+    DAX_EXTENSION_EXECUTION_BEGIN = 120  # DAX extension function execution begin event.
+    DAX_EXTENSION_EXECUTION_END = 121  # DAX extension function execution end event.
+    DAX_EXTENSION_TRACE_ERROR = 122  # DAX extension function error trace event directly traced by extension authors.
+    DAX_EXTENSION_TRACE_INFO = (
+        123  # DAX extension function informational/telemetry trace event directly traced by extension authors.
+    )
+    DAX_EXTENSION_TRACE_VERBOSE = (
+        124  # DAX extension function verbose trace event directly traced by extension authors.
+    )
+    EXECUTE_SOURCE_QUERY = 130  # Collection of all queries that are executed against the data source
+    AGGREGATE_TABLE_REWRITE_QUERY = 131  # A query was rewritten according to available aggregate tables
+    AGGREGATE_TABLE_REWRITE_INFO = 132  # Aggregate Table Rewrite Info
+
+    JOB_GRAPH = 134  # Collection of Job Graph related events.
 
     def get_columns(self) -> type[IntEnum]:
         return event_column_mapping[self]
+
+
+# VERTIPAQ_SE_QUERY_CACHE_MISS
+# CALCULATION_EVALUATION
+# CALCULATION_EVALUATION_DETAILED_INFORMATION
+# DAX_QUERY_PLAN
+# WLGROUP_CPU_THROTTLING
+# WLGROUP_EXCEEDS_MEMORY_LIMIT
+# WLGROUP_EXCEEDS_PROCESSING_LIMIT
+# DAX_EXTENSION_EXECUTION_BEGIN
+# DAX_EXTENSION_EXECUTION_END
+# DAX_EXTENSION_TRACE_ERROR
+# DAX_EXTENSION_TRACE_INFO
+# DAX_EXTENSION_TRACE_VERBOSE
+# EXECUTE_SOURCE_QUERY
+# AGGREGATE_TABLE_REWRITE_QUERY
+# AGGREGATE_TABLE_REWRITE_INFO
 
 
 class DiscoverBeginColumns(IntEnum):
