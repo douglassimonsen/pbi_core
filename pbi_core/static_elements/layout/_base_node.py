@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, Any, Optional, TypeVar
 
 import pydantic
 
-from ...lineage import LineageNode
+from ...lineage import LineageNode, LineageType
 
 if TYPE_CHECKING:
     pass
@@ -52,12 +52,27 @@ class LayoutNode(pydantic.BaseModel):
         raise NotImplementedError()
 
     def _children(self) -> list["LayoutNode"]:
-        raise NotImplementedError()
+        ret = []
+        for attr in dir(self):
+            if attr == "parent" or attr.startswith("_"):
+                continue
+            child_candidate = getattr(self, attr)
+            if isinstance(child_candidate, list):
+                for val in child_candidate:
+                    if isinstance(val, LayoutNode):
+                        ret.append(val)
+            elif isinstance(child_candidate, dict):
+                for val in child_candidate.values():
+                    if isinstance(val, LayoutNode):
+                        ret.append(val)
+            elif isinstance(child_candidate, LayoutNode):
+                ret.append(child_candidate)
+        return ret
 
     def __str__(self) -> str:
         if self._name_field is None:
             return super().__str__()
         return f"{self.__class__.__name__}({getattr(self, self._name_field)})"
 
-    def get_lineage(self) -> LineageNode:
+    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         raise NotImplementedError
