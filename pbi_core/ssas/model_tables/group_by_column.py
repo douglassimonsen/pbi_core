@@ -1,5 +1,6 @@
 from ..server.tabular_model import SsasTable
+from ._base import NoCommands
 
 
 class GroupByColumn(SsasTable):
-    pass
+    _commands: NoCommands

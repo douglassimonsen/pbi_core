@@ -4,7 +4,12 @@ import jinja2
 
 
 @dataclasses.dataclass
-class SsasBaseCommands:
+class NoCommands:
+    pass
+
+
+@dataclasses.dataclass
+class SsasBaseCommands(NoCommands):
     alter: jinja2.Template
     create: jinja2.Template
     delete: jinja2.Template

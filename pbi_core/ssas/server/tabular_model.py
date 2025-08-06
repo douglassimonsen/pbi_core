@@ -1,6 +1,6 @@
 import pathlib
 import shutil
-from typing import TYPE_CHECKING, Any, ClassVar, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Optional, cast
 
 import pydantic
 from bs4 import BeautifulSoup, Tag
@@ -197,16 +197,16 @@ class SsasTable(pydantic.BaseModel):  # type: ignore
 
         return {case_helper(field_name): field_value for field_name, field_value in raw_values.items()}
 
+    def query_dax(self, query: str, db_name: Optional[str] = None) -> None:
+        self.tabular_model.server.query_dax(query, db_name)
+
     def sync_to(self) -> "SsasTable":
         return self
 
     def model_post_init(self, __context: Any) -> None:
         from ..model_tables import _base
 
-        if "_commands" not in self.__annotations__:
-            return
-
-        templates = OBJECT_COMMAND_TEMPLATES[self._db_plural_type_name()]
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
         match self.__annotations__["_commands"]:
             case _base.SsasRefreshCommands:
                 self._commands = _base.SsasRefreshCommands(
@@ -231,5 +231,7 @@ class SsasTable(pydantic.BaseModel):  # type: ignore
                 self._commands = _base.SsasModelCommands(
                     alter=templates["alter.xml"], refresh=templates["refresh.xml"], rename=templates["rename.xml"]
                 )
+            case _base.NoCommands:
+                self._commands = _base.NoCommands()
             case _:
                 raise ValueError(f"Unknown type for _commands property on table: {self._db_type_name()}")
