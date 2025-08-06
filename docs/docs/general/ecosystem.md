@@ -48,15 +48,21 @@ flowchart TD
 
 ## Populating Data in Power BI Visuals
 
-Given this library's focus on Power BI and its data model, it is important to understand how data is populated in Power BI visuals. The following sequence diagram illustrates the process:
+Given this library's focus on Power BI and its data model, it is important to understand how data is populated in Power BI visuals from a `pbix` file. The following sequence diagram illustrates the process:
+
+- `PowerBI Libs` are the various libraries used by the Power BI GUI (both on Desktop and in `app.powerbi.com`)to interact with the SSAS backend. These are largely invisible to the user.
+- `Front End` is the Power BI GUI, which is responsible for rendering the visuals and interacting with the user. This is the Desktop application or the web application itself.
+- `SSAS Backend` is the Analysis Services Tabular Data Model that stores the data model and executes DAX queries.
 
 ```mermaid
 sequenceDiagram
-    PowerBI Libs->> Front End: Initializes Frontend from Layout JSON
-    PowerBI Libs->> SSAS Backend: Initializes Backend from Datamodel blob
-    SSAS Backend->> Front End: Returns reference to Data Model
+    Front End->> PowerBI Libs: Requests a report to be loaded from a `pbix` file
+    PowerBI Libs->> Front End: Initializes Frontend from Layout JSON in the `pbix` file
+    PowerBI Libs->> SSAS Backend: Initializes Backend from Datamodel blob in the `pbix` file
+    SSAS Backend->> Front End: Returns connection info to loaded Data Model
     Front End->> PowerBI Libs: Requests conversion of the Prototype Query to DAX Query matching the data model found in the SSAS Backend
     PowerBI Libs->> Front End: Returns DAX Query
     Front End->> SSAS Backend: Executes DAX Query
     SSAS Backend->> Front End: Returns Data
+    Front End->> Front End: Populates Visuals with Data
 ```
