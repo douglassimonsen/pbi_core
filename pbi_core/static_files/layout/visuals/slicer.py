@@ -11,3 +11,5 @@ class Slicer(BaseVisual):
     columnProperties: Any = None
     syncGroup: Any = None
     display: Any = None
+    cachedFilterDisplayItems: Any = None
+    expansionStates: Any = None

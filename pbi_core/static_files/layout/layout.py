@@ -37,6 +37,7 @@ class SettingsV2(LayoutNode):
     useStylableVisualContainerHeader: bool
     useEnhancedTooltips: bool = True
     exportDataMode: int  # def an enum
+    allowDataPointLassoSelect: bool = False
 
 
 class SettingsV1(LayoutNode):

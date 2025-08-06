@@ -21,7 +21,10 @@ class Relationship(SsasRenameTable):
     model_id: int
     name: str
     relationship_storage_id: Optional[int] = None
+
     relationship_storage2_id: Optional[int] = None
+    relationship_storage2id: Optional[int] = None
+
     refreshed_time: datetime.datetime
     rely_on_referential_integrity: bool
     security_filtering_behavior: int

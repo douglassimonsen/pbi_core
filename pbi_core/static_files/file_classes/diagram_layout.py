@@ -41,5 +41,5 @@ class Diagram(BaseFileModel):
 class DiagramLayout(BaseFileModel):
     version: SemanticVersion
     diagrams: list[Diagram]
-    selectedDiagram: str
-    defaultDiagram: str
+    selectedDiagram: str | None = None
+    defaultDiagram: str | None = None
