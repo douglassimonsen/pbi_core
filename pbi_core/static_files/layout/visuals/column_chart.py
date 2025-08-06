@@ -6,12 +6,20 @@ from pydantic import ConfigDict
 from .._base_node import LayoutNode
 from ..selector import Selector
 from .base import BaseVisual
+from .column_property import ColumnProperty
 from .properties.base import Expression
 
 
 class CategoryAxisProperties(LayoutNode):
     show: Expression | None = None
     preferredCategoryWidth: Expression | None = None
+    concatenateLabels: Expression | None = None
+    maxMarginFactor: Expression | None = None
+    innerPadding: Expression | None = None
+    fontSize: Expression | None = None
+    titleFontSize: Expression | None = None
+    showAxisTitle: Expression | None = None
+    titleColor: Expression | None = None
 
 
 class CategoryAxis(LayoutNode):
@@ -45,6 +53,10 @@ class Labels(LayoutNode):
 
 class LegendProperties(LayoutNode):
     show: Expression | None = None
+    labelColor: Expression | None = None
+    showTitle: Expression | None = None
+    fontSize: Expression | None = None
+    position: Expression | None = None
 
 
 class Legend(LayoutNode):
@@ -54,6 +66,9 @@ class Legend(LayoutNode):
 
 class ValueAxisProperties(LayoutNode):
     show: Expression | None = None
+    gridlineShow: Expression | None = None
+    titleFontFamily: Expression | None = None
+    fontSize: Expression | None = None
 
 
 class ValueAxis(LayoutNode):
@@ -62,6 +77,10 @@ class ValueAxis(LayoutNode):
 
 
 class ColumnChartColumnProperties(LayoutNode):
+    model_config = ConfigDict(
+        extra="allow",
+    )  # custom renaming of columns in the format {'Sum(Sales.SalesAmount)': {'displayName': 'Sales'}}, requiring extra fields to be allowed
+
     categoryAxis: list[CategoryAxis] | None = None
     dataPoint: list[DataPoint] | None = None
     labels: list[Labels] | None = None
@@ -74,3 +93,4 @@ class ColumnChart(BaseVisual):
     model_config = ConfigDict(extra="forbid")
 
     objects: ColumnChartColumnProperties | None = None
+    columnProperties: dict[str, ColumnProperty] = None

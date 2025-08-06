@@ -5,6 +5,7 @@ from pydantic import Discriminator, Tag
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.sources import LiteralSource, MeasureSource, Source
 
+from ...condition import ConditionType
 from ...sources.aggregation import AggregationSource
 
 
@@ -34,6 +35,19 @@ class FillRuleExpression(LayoutNode):
     FillRule: FillRule
 
 
+class ConditionalCase(LayoutNode):
+    Condition: ConditionType
+    Value: LiteralSource
+
+
+class ConditionalSourceHelper(LayoutNode):
+    Cases: list[ConditionalCase]
+
+
+class ConditionalSource(LayoutNode):
+    Conditional: ConditionalSourceHelper
+
+
 def get_subexpr_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "ThemeDataColor" in v:
@@ -46,7 +60,10 @@ def get_subexpr_type(v: object | dict[str, Any]) -> str:
             return "MeasureSource"
         if "FillRule" in v:
             return "FillRuleExpression"
-        return "MeasureSource"
+        if "Measure" in v:
+            return "MeasureSource"
+        if "Conditional" in v:
+            return "ConditionalSource"
         msg = f"Unknown type: {v.keys()}"
         raise TypeError(msg)
     return v.__class__.__name__
@@ -57,7 +74,8 @@ ColorSubExpression = Annotated[
     | Annotated[LiteralSource, Tag("LiteralSource")]
     | Annotated[MeasureSource, Tag("MeasureSource")]
     | Annotated[FillRuleExpression, Tag("FillRuleExpression")]
-    | Annotated[AggregationSource, Tag("AggregationSource")],
+    | Annotated[AggregationSource, Tag("AggregationSource")]
+    | Annotated[ConditionalSource, Tag("ConditionalSource")],
     Discriminator(get_subexpr_type),
 ]
 

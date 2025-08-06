@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class TextStyle(LayoutNode):
-    color: str  # TODO: check that it's hex
+    color: str | None = None  # TODO: check that it's hex
     fontSize: str | None = None
     fontFamily: str | None = None
     fontStyle: str | None = None  # italic, etc
@@ -21,8 +21,9 @@ class TextStyle(LayoutNode):
 
 
 class TextRun(LayoutNode):
-    textStyle: TextStyle
+    textStyle: TextStyle | None = None
     value: str
+    url: str | None = None
 
 
 class Paragraph(LayoutNode):

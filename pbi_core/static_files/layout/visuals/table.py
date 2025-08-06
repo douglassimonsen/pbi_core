@@ -3,6 +3,8 @@
 
 from pydantic import ConfigDict
 
+from .column_property import ColumnProperty
+
 from .._base_node import LayoutNode
 from ..selector import Selector
 from .base import BaseVisual
@@ -89,8 +91,6 @@ class TableChartColumnProperties(LayoutNode):
     grid: list[Grid] | None = None
 
 
-class ColumnProperty(LayoutNode):
-    displayName: str
 
 
 class TableChart(BaseVisual):
