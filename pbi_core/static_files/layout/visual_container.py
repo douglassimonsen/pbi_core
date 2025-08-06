@@ -1,4 +1,5 @@
 # ruff: noqa: N815
+import time
 from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, cast
 
@@ -14,6 +15,8 @@ if TYPE_CHECKING:
     from pbi_core.ssas.server import LocalTabularModel
 
     from .section import Section
+
+from .performance import Performance
 
 
 class SingleVisualGroup(LayoutNode):
@@ -186,6 +189,16 @@ class VisualContainer(LayoutNode):
             query = query_command.SemanticQueryDataShapeCommand.Query
         return query.get_data(model)
 
+    def get_performance(self, model: "LocalTabularModel") -> Performance:
+        start = time.time()
+        data = self.get_data(model)
+        rows_retrieved = len(data.data) if data is not None else 0
+        end = time.time()
+        return Performance(
+            total_seconds=(end - start),
+            rows_retrieved=rows_retrieved,
+        )
+
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
         """Returns the SSAS elements (columns and measures) this visual is directly dependent on."""
         if self.query is None:
@@ -195,3 +208,6 @@ class VisualContainer(LayoutNode):
         for f in self.filters:
             ret.update(f.get_ssas_elements())
         return ret
+
+    def __format__(self, fmt: str) -> str:
+        return f"{self!s:{fmt}}"
