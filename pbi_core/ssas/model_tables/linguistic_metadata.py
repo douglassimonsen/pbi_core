@@ -115,6 +115,7 @@ class PhrasingAttribute(BaseValidation):
     Subject: PhrasingAttributeRole | None = None
     Name: PhrasingAttributeRole | None = None
 
+    PrepositionalPhrases: list[dict[str, Any]] = []
     Adjectives: list[dict[str, TermDefinition]] = []
     Antonyms: list[dict[str, TermDefinition]] = []
     Prepositions: list[dict[str, TermDefinition]] = []

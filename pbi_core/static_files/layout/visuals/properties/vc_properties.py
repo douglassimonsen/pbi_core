@@ -107,6 +107,8 @@ class VisualLinkProperties(LayoutNode):
     type: Expression | None = None
     webUrl: Expression | None = None
     drillthroughSection: Expression | None = None
+    enabledTooltip: Expression | None = None
+    disabledTooltip: Expression | None = None
 
 
 class VisualLink(LayoutNode):
@@ -140,11 +142,20 @@ class DropShadow(LayoutNode):
     properties: DropShadowProperties
 
 
+class LockAspectProperties(LayoutNode):
+    show: Expression | None = None
+
+
+class LockAspect(LayoutNode):
+    properties: LockAspectProperties
+
+
 class VCProperties(LayoutNode):
     background: list[Background] | None = None
     border: list[Border] | None = None
     dropShadow: list[DropShadow] | None = None
     general: list[General] | None = None
+    lockAspect: list[LockAspect] | None = None
     stylePreset: list[StylePreset] | None = None
     title: list[Title] | None = None
     visualHeader: list[VisualHeader] | None = None

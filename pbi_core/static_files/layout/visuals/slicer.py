@@ -13,6 +13,7 @@ from .table import ColumnProperty
 class SyncGroup(LayoutNode):
     groupName: str
     fieldChanges: bool
+    filterChanges: bool = True
 
 
 class Display(LayoutNode):

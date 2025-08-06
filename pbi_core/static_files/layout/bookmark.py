@@ -6,6 +6,7 @@ from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
 from .condition import ConditionType
+from .expansion_state import ExpansionStateLevel, ExpansionStateRoot
 from .filters import BookmarkFilter, Orderby
 from .sources import Source
 from .visuals.base import PropertyDef
@@ -66,13 +67,19 @@ class BookmarkPartialVisualObject(LayoutNode):
     remove: list[Remove] | None = None
 
 
+class ExpansionState(LayoutNode):
+    roles: list[str]
+    levels: list[ExpansionStateLevel]
+    root: ExpansionStateRoot
+
+
 class BookmarkPartialVisual(LayoutNode):
     visualType: str
     objects: BookmarkPartialVisualObject
     orderBy: list[Orderby] | None = None
     activeProjections: dict[str, list[Source]] | None = None
     display: Display | None = None
-    expansionStates: int | None = None
+    expansionStates: list[ExpansionState] | None = None
 
 
 class BookmarkVisual(LayoutNode):
@@ -81,12 +88,16 @@ class BookmarkVisual(LayoutNode):
     highlight: Highlight | None = None
 
 
+class VisualContainerGroup(LayoutNode):
+    isHidden: bool = False
+
+
 class BookmarkSection(LayoutNode):
     _parent: "ExplorationState"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     visualContainers: dict[str, BookmarkVisual] | None = None
     filters: BookmarkFilters | None = None
-    visualContainerGroups: int | None = None
+    visualContainerGroups: dict[str, VisualContainerGroup] | None = None
 
 
 class OutspacePaneProperties(LayoutNode):

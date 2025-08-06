@@ -47,7 +47,10 @@ class ObjectType(IntEnum):
 
 
 class DataType(IntEnum):
-    """Source: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b."""
+    """Source: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b (ExplicitDataType
+
+    ).
+    """
 
     Automatic = 1
     String = 2
@@ -58,6 +61,7 @@ class DataType(IntEnum):
     Boolean = 11
     Binary = 17
     Unknown = 19
+    Unknowner = 20
 
 
 class DataCategory(Enum):

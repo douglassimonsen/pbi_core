@@ -30,6 +30,7 @@ from .performance import Performance, get_performance
 
 class BackgroundProperties(LayoutNode):
     show: Expression | None = None
+    transparency: Expression | None = None
 
 
 class Background(LayoutNode):
@@ -330,12 +331,18 @@ class Split(LayoutNode):
     selects: dict[str, bool]
 
 
+class KPI(LayoutNode):
+    graphic: str
+    normalizedFiveStateKpiRange: bool
+
+
 class Restatement(LayoutNode):
     Restatement: str
     Name: str
     Type: int  # TODO: make enum
     DataCategory: int | None = None  # TODO: make enum
     Format: str | None = None
+    kpi: KPI | None = None
 
 
 class QueryMetadataFilter(LayoutNode):
@@ -391,6 +398,7 @@ class DataTransformSelect(LayoutNode):
     type: DataTransformSelectType | None = None
     expr: Source
     relatedObjects: RelatedObjects | None = None
+    kpi: KPI | None = None
 
 
 class DataTransform(LayoutNode):

@@ -36,7 +36,10 @@ class ColumnFormatting(LayoutNode):
 
 
 class TotalProperties(LayoutNode):
-    totals: Expression
+    totals: Expression | None = None
+    fontColor: Expression | None = None
+    fontSize: Expression | None = None
+    outline: Expression | None = None
 
 
 class Total(LayoutNode):
@@ -46,10 +49,15 @@ class Total(LayoutNode):
 
 class ValuesProperties(LayoutNode):
     backColor: Expression | None = None
+    backColorPrimary: Expression | None = None
     fontColor: Expression | None = None
+    fontFamily: Expression | None = None
+    fontColorPrimary: Expression | None = None
     fontSize: Expression | None = None
     urlIcon: Expression | None = None
     backColorSecondary: Expression | None = None
+    wordWrap: Expression | None = None
+    outline: Expression | None = None
 
 
 class Values(LayoutNode):
@@ -58,13 +66,16 @@ class Values(LayoutNode):
 
 
 class ColumnHeadersProperties(LayoutNode):
+    alignment: Expression | None = None
     outlineStyle: Expression | None = None
     wordWrap: Expression | None = None
     autoSizeColumnWidth: Expression | None = None
     fontColor: Expression | None = None
+    fontFamily: Expression | None = None
     fontSize: Expression | None = None
     outline: Expression | None = None
     bold: Expression | None = None
+    backColor: Expression | None = None
 
 
 class ColumnHeaders(LayoutNode):
@@ -87,6 +98,12 @@ class GridProperties(LayoutNode):
     outlineColor: Expression | None = None
     rowPadding: Expression | None = None
     gridVertical: Expression | None = None
+    gridHorizontal: Expression | None = None
+    gridHorizontalWeight: Expression | None = None
+    gridVerticalWeight: Expression | None = None
+    gridVerticalColor: Expression | None = None
+    outlineWeight: Expression | None = None
+    gridHorizontalColor: Expression | None = None
 
 
 class Grid(LayoutNode):

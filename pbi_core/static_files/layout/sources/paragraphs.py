@@ -14,6 +14,7 @@ class TextStyle(LayoutNode):
     fontFamily: str | None = None
     fontStyle: str | None = None  # italic, etc
     fontWeight: str | None = None  # bold, etc
+    textDecoration: str | None = None  # underline, etc
 
 
 class CasePattern(LayoutNode):
