@@ -3,8 +3,7 @@ from typing import TYPE_CHECKING, Any
 from pydantic import ConfigDict
 
 from ....lineage import LineageNode, LineageType
-from ....ssas.model_tables.column import Column
-from ....ssas.model_tables.measure import Measure
+from ....ssas.model_tables import Column, Measure
 from .._base_node import LayoutNode
 from ..filters import PrototypeQuery
 from ..sources.column import ColumnSource
