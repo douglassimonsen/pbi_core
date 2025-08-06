@@ -32,12 +32,14 @@ class Hierarchy(SsasRenameRecord):
     name: str
     state: DataState
     table_id: int
+    """A foreign key to the Table object the hierarchy is stored under"""
 
     lineage_tag: UUID = uuid4()
     source_lineage_tag: UUID = uuid4()
 
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
+    """The last time the sources for this hierarchy were refreshed"""
     structure_modified_time: datetime.datetime
 
     def table(self) -> "Table":

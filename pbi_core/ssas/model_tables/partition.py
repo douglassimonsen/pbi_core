@@ -52,7 +52,9 @@ class DataView(IntEnum):
 class Partition(SsasRefreshRecord):
     """Partitions are a child of Tables. They contain the Power Query code.
 
-    Data refreshes occur on the Partition-level.
+    These are the physical segments of the table that contain the data.
+    They cannot be edited within the Power BI Desktop UI, but can be edited in the
+    Tabular Editor or other tools (like this one!). Data refreshes occur on the Partition-level.
 
     SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/81badb81-31a8-482b-ae16-5fc9d8291d9e
     """

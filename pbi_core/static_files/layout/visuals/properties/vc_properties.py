@@ -110,6 +110,6 @@ class VCProperties(LayoutNode):
     stylePreset: list[StylePreset] | None = None
     title: list[Title] | None = None
     visualHeader: list[VisualHeader] | None = None
-    visualHeaderTooltip: int = None
+    visualHeaderTooltip: int | None = None
     visualLink: list[VisualLink] | None = None
     visualTooltip: list[VisualTooltip] | None = None

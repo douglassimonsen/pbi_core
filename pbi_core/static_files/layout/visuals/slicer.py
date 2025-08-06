@@ -2,7 +2,8 @@
 
 from pydantic import ConfigDict
 
-from .._base_node import LayoutNode
+from pbi_core.static_files.layout._base_node import LayoutNode
+
 from .base import BaseVisual
 from .table import ColumnProperty
 
@@ -22,5 +23,5 @@ class Slicer(BaseVisual):
     columnProperties: dict[str, ColumnProperty] | None = None
     syncGroup: SyncGroup | None = None
     display: Display | None = None
-    cachedFilterDisplayItems: int = None
-    expansionStates: int = None
+    cachedFilterDisplayItems: int | None = None
+    expansionStates: int | None = None

@@ -25,16 +25,28 @@ class Measure(SsasRenameRecord):
     data_category: str | None = None
     data_type: DataType
     description: str | None = None
+    """This description will appear in the hover-over for the measure in the edit mode of the report"""
+
     detail_rows_definition_id: int | None = None
     display_folder: str | None = None
     error_message: str | None = None
     expression: str | int | float | None = None
     format_string: str | int | None = None
+    """A static definition for the formatting of the measure"""
+
     format_string_definition_id: int | None = None
-    is_hidden: bool
+    """A foreign key to a FormatStringDefinition object. Used for dynamic-type measure formatting.
+
+    Note:
+    ----
+        Mutually exclusive with format_string
+    """
+    is_hidden: bool = False
+    """Controls whether the measure appears in the edit mode of the report"""
     is_simple_measure: bool
     kpi_id: int | None = None
     name: str
+    """The name of the measure"""
     state: DataState
     table_id: int
 
@@ -60,6 +72,7 @@ class Measure(SsasRenameRecord):
         return None
 
     def table(self) -> "Table":
+        """The Table object the measure is saved under."""
         return self.tabular_model.tables.find({"id": self.table_id})
 
     def full_name(self) -> str:

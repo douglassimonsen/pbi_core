@@ -32,12 +32,17 @@ class Table(SsasRefreshRecord):
     data_category: DataCategory | None = None
     default_detail_rows_defintion_id: int | None = None
     description: str | None = None
+    """A description of the table, which may be used in the hover tooltip in edit mode"""
     exclude_from_automatic_aggregations: bool = False
     exclude_from_model_refresh: bool
+    """Controls whether this table is included in the model-wide refresh process"""
     is_hidden: bool
+    """Controls whether the table appears in the edit mode of the report"""
     is_private: bool
     model_id: int
+    """The ID of the model this table belongs to"""
     name: str
+    """The name of the table as it appears in the report"""
     refresh_policy_id: int | None = None
     show_as_variations_only: bool
     system_flags: int

@@ -72,6 +72,20 @@ class BaseServer:
             return cursor.fetch_all()
 
     def query_xml(self, query: str, db_name: str | None = None) -> BeautifulSoup:
+        """Submits an XMLA query to the SSAS instance and returns the result as a BeautifulSoup object.
+
+        The query should be a valid XMLA command.
+
+        Args:
+        ----
+            query (str): The XMLA query to execute.
+            db_name (str | None): The name of the database to execute the query against.
+
+        Returns:
+        -------
+            BeautifulSoup: The result of the query parsed as a BeautifulSoup object.
+
+        """
         with self.conn(db_name) as conn:
             cursor = conn.cursor()
             return cursor.execute_xml(query)
@@ -90,6 +104,19 @@ class BaseServer:
 
     @backoff.on_exception(backoff.expo, ValueError, max_time=10)
     def check_ssas_sku(self) -> None:
+        """Checks if the SSAS instance is running the correct SKU version.
+
+        Tests this assumption by running a query that should fail if the SKU under 1400 (image save command).
+        Since we could also fail due to the server not being instantiated, we use a backoff decorator
+        to retry the command a few times before giving up.
+
+        Raises
+        ------
+            TypeError: If the SSAS instance is running an incorrect SKU version.
+            ValueError: If the SSAS instance is not running or the command fails for another reason.
+                This is used to trigger the backoff retry.
+
+        """
         try:
             self.query_xml(
                 COMMAND_TEMPLATES["image_save.xml"].render(

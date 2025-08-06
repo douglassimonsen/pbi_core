@@ -25,7 +25,7 @@ class Variation(SsasRenameRecord):
     relationship_id: int
 
     def get_column(self) -> "Column":
-        """Name is bad to not shadow the column field in this entity :(."""
+        """Name is bad to not consistent with other methods because the column field in this entity :(."""
         return self.tabular_model.columns.find(self.column_id)
 
     def default_column(self) -> "Column | None":

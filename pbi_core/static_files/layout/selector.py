@@ -22,6 +22,7 @@ class SelectorData(LayoutNode):
     scopeId: ComparisonCondition | None = None
 
 
+# TODO: possibly replace with a union?
 class Selector(LayoutNode):
     id: PropertyDefSelectorId | None = None
     metadata: str | None = None

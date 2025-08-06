@@ -64,6 +64,7 @@ ignore = [
   "D100",    # https://docs.astral.sh/ruff/rules/undocumented-public-module/
   "D401",    # https://docs.astral.sh/ruff/rules/non-imperative-mood/
   "ERA001",  # https://docs.astral.sh/ruff/rules/commented-out-code/
+  "N815",    # https://docs.astral.sh/ruff/rules/mixed-case-variable-in-class-scope/ ignored for now. Can be undone by replacing the pydantic fields with Field(alias=...)
   "PLR1722", # https://docs.astral.sh/ruff/rules/sys-exit-alias/
   "RUF012",
   "SLF001",  # https://docs.astral.sh/ruff/rules/private-member-access/

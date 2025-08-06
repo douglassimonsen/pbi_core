@@ -249,11 +249,6 @@ class DataTransformSelectType(LayoutNode):
     underlyingType: int | None = None  # TODO: make enum
 
 
-class AggregateSources(LayoutNode):
-    min: dict[str, int]
-    max: dict[str, int]
-
-
 class DataTransformSelect(LayoutNode):
     displayName: str
     format: str | None = None

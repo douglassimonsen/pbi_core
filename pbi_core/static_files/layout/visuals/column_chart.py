@@ -3,8 +3,9 @@
 
 from pydantic import ConfigDict
 
-from .._base_node import LayoutNode
-from ..selector import Selector
+from pbi_core.static_files.layout._base_node import LayoutNode
+from pbi_core.static_files.layout.selector import Selector
+
 from .base import BaseVisual
 from .column_property import ColumnProperty
 from .properties.base import Expression
@@ -32,7 +33,6 @@ class DataPointProperties(LayoutNode):
     fillRule: Expression | None = None
 
 
-# TODO: merge selector classes
 class DataPoint(LayoutNode):
     properties: DataPointProperties
     selector: Selector | None = None
@@ -77,10 +77,6 @@ class ValueAxis(LayoutNode):
 
 
 class ColumnChartColumnProperties(LayoutNode):
-    model_config = ConfigDict(
-        extra="allow",
-    )  # custom renaming of columns in the format {'Sum(Sales.SalesAmount)': {'displayName': 'Sales'}}, requiring extra fields to be allowed
-
     categoryAxis: list[CategoryAxis] | None = None
     dataPoint: list[DataPoint] | None = None
     labels: list[Labels] | None = None
@@ -93,4 +89,4 @@ class ColumnChart(BaseVisual):
     model_config = ConfigDict(extra="forbid")
 
     objects: ColumnChartColumnProperties | None = None
-    columnProperties: dict[str, ColumnProperty] = None
+    columnProperties: dict[str, ColumnProperty] | None = None

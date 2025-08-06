@@ -67,9 +67,9 @@ class LinguisticMetadataEntity(BaseValidation):
     Definition: EntityDefinition | None = None
     Binding: EntityDefinitionBinding | None = None
     SemanticType: str | None = None
-    Visibility: int = None
+    Visibility: int | None = None
     Hidden: bool = False
-    NameType: int = None
+    NameType: int | None = None
     Units: list[str] = []
 
 
@@ -134,7 +134,7 @@ class LinguisticMetadataRelationship(BaseValidation):
     Roles: dict[str, RelationshipRole | int]
     State: str | None = None
     SemanticSlots: SemanticSlot | None = None
-    Conditions: int = None
+    Conditions: int | None = None
 
 
 class LinguisticMetadataContent(BaseValidation):

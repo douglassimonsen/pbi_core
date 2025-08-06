@@ -6,9 +6,9 @@ repos:
         args: ["-c", "pyproject.toml"]
         additional_dependencies: ["bandit[toml]"]
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.6.3"
-    hooks:
-      - id: ruff
-        args: ["--fix", "--extend-select", "I", "--ignore", "FIX002"]
-      - id: ruff-format
+  # - repo: https://github.com/astral-sh/ruff-pre-commit
+  #   rev: "v0.6.3"
+  #   hooks:
+  #     - id: ruff
+  #       args: ["--fix", "--extend-select", "I", "--ignore", "FIX002"]
+  #     - id: ruff-format

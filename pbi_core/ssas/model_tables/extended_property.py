@@ -10,9 +10,9 @@ from .enums import ObjectType
 
 class ExtendedPropertyValue(BaseValidation):
     version: int
-    daxTemplateName: str | None = None  # noqa: N815
-    groupedColumns: int = None  # noqa: N815
-    binningMetadata: int = None  # noqa: N815
+    daxTemplateName: str | None = None
+    groupedColumns: int | None = None
+    binningMetadata: int | None = None
 
 
 class ExtendedProperty(SsasRenameRecord):
@@ -30,7 +30,7 @@ class ExtendedProperty(SsasRenameRecord):
     modified_time: datetime.datetime
 
     def object(self) -> "SsasTable":
-        """Returns the object the annotation is describing."""
+        """Returns the object the property is describing."""
         mapper: dict[ObjectType, SsasTable] = {
             ObjectType.MODEL: self.tabular_model.model,
             ObjectType.DATASOURCE: self.tabular_model.data_sources.find(self.object_id),

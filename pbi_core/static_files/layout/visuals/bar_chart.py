@@ -9,4 +9,4 @@ from .column_property import ColumnProperty
 class BarChart(BaseVisual):
     visualType: str = "barChart"
     model_config = ConfigDict(extra="forbid")
-    columnProperties: dict[str, ColumnProperty] = None
+    columnProperties: dict[str, ColumnProperty] | None = None
