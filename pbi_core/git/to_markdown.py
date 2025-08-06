@@ -3,6 +3,8 @@ from typing import TYPE_CHECKING
 
 import jinja2
 
+from .change_classes import ChangeType
+
 if TYPE_CHECKING:
     from pbi_core.git.change_classes import DiffReport
 
@@ -27,5 +29,9 @@ def to_markdown(diff_report: "DiffReport") -> str:
         tables_without_changes=tables_without_changes,
         name_formatter=name_formatter,
     )
-    main = TEMPLATES["main"].render(summary=summary, ssas=ssas)
+    layout = TEMPLATES["layout"].render(
+        layout_changes=diff_report.layout_changes,
+        ChangeType=ChangeType,
+    )
+    main = TEMPLATES["main"].render(summary=summary, ssas=ssas, layout=layout)
     return main

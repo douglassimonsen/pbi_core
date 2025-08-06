@@ -1,9 +1,9 @@
 # Change Summary
 
 
-| Section               | Changes                                     |
-| --------------------- | ------------------------------------------- |
-| Layout                | {{ diff_report.layout_changes.field_changes | length }} |
-| Section               | {{ diff_report.section_changes              | length }} |
-| Visual                | {{ diff_report.visual_changes               | length }} |
-| [SSAS](#ssas-changes) | {{ diff_report.ssas_changes                 | length }} |
+| Section                   | Changes                             |
+| ------------------------- | ----------------------------------- |
+| [Layout](#layout-changes) | {{ diff_report.layout_updates() }}  |
+| Section                   | {{ diff_report.section_updates() }} |
+| Visual                    | {{ diff_report.visual_updates()  }} |
+| [SSAS](#ssas-changes)     | {{ diff_report.ssas_changes         | length }} |

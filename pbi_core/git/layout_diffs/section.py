@@ -9,35 +9,10 @@ if TYPE_CHECKING:
     from pbi_core.static_files.layout.layout import Section
 
 
-def section_diff_update(parent: "Section", child: "Section") -> SectionChange | None:
-    field_changes = {}
-    for field in ["height", "width", "ordinal", "displayName"]:
-        parent_val = getattr(parent, field, None)
-        child_val = getattr(child, field, None)
-        if parent_val != child_val and not (parent_val is None and child_val is None):
-            field_changes[field] = (parent_val, child_val)
-
-    for field in ["visibility"]:
-        parent_val = getattr(parent.config, field, None)
-        child_val = getattr(child.config, field, None)
-        if parent_val != child_val and not (parent_val is None and child_val is None):
-            field_changes[f"config.{field}"] = (parent_val, child_val)
-
-    if field_changes:
-        return SectionChange(
-            id=parent.name,
-            change_type=ChangeType.UPDATED,
-            entity=parent,
-            filters=filter_diff(parent.filters, child.filters),  # type: ignore reportArgumentType
-            field_changes=field_changes,
-        )
-    return None
-
-
-def section_diff(
+def get_visual_changes(
     parent_section: "Section",
     child_section: "Section",
-) -> tuple[SectionChange | None, list[VisualChange]]:
+) -> list[VisualChange]:
     visual_changes: list[VisualChange] = []
 
     parent_visuals = {visual.pbi_core_id(): visual for visual in parent_section.visualContainers}
@@ -63,8 +38,37 @@ def section_diff(
         parent_visual = parent_visuals[visual_id]
         child_visual = child_visuals[visual_id]
         visual_object = visual_diff(parent_visual, child_visual)
-        if visual_object:
+        if visual_object.change_type != ChangeType.NO_CHANGE:
             visual_changes.append(visual_object)
 
-    section_changes = section_diff_update(parent_section, child_section)
-    return section_changes, visual_changes
+    return visual_changes
+
+
+def section_diff(parent: "Section", child: "Section") -> SectionChange:
+    field_changes = {}
+    for field in ["height", "width", "ordinal", "displayName"]:
+        parent_val = getattr(parent, field, None)
+        child_val = getattr(child, field, None)
+        if parent_val != child_val and not (parent_val is None and child_val is None):
+            field_changes[field] = (parent_val, child_val)
+
+    for field in ["visibility"]:
+        parent_val = getattr(parent.config, field, None)
+        child_val = getattr(child.config, field, None)
+        if parent_val != child_val and not (parent_val is None and child_val is None):
+            field_changes[f"config.{field}"] = (parent_val, child_val)
+
+    filter_changes = filter_diff(parent.filters, child.filters)  # type: ignore reportArgumentType
+    visual_changes = get_visual_changes(parent, child)
+
+    has_changed = visual_changes or filter_changes or field_changes
+    change_type = ChangeType.UPDATED if has_changed else ChangeType.NO_CHANGE
+
+    return SectionChange(
+        id=parent.name,
+        change_type=change_type,
+        entity=parent,
+        filters=filter_changes,  # type: ignore reportArgumentType
+        visuals=visual_changes,
+        field_changes=field_changes,
+    )

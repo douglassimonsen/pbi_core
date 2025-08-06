@@ -9,11 +9,9 @@ if TYPE_CHECKING:
 
 
 def diff(parent: "LocalReport", child: "LocalReport") -> DiffReport:
-    layout_changes, section_changes, visual_changes = layout_diff(parent.static_files.layout, child.static_files.layout)
+    layout_changes = layout_diff(parent.static_files.layout, child.static_files.layout)
     ssas_changes = ssas_diff(parent.ssas, child.ssas)
     return DiffReport(
         layout_changes=layout_changes,
-        section_changes=section_changes,
-        visual_changes=visual_changes,
         ssas_changes=ssas_changes,
     )

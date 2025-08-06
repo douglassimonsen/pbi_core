@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from pbi_core.static_files.layout.visual_container import VisualContainer
 
 
-def visual_diff(parent_visual: "VisualContainer", child_visual: "VisualContainer") -> VisualChange | None:
+def visual_diff(parent_visual: "VisualContainer", child_visual: "VisualContainer") -> VisualChange:
     field_changes = {}
     for k in ["x", "y", "z", "width", "height", "tabOrder"]:
         parent_val = getattr(parent_visual, k, None)
@@ -17,12 +17,12 @@ def visual_diff(parent_visual: "VisualContainer", child_visual: "VisualContainer
             field_changes[k] = (parent_val, child_val)
 
     filter_changes = filter_diff(parent_visual.filters, child_visual.filters)  # type: ignore reportArgumentType
-    if not field_changes:
-        return None
+    change_type = ChangeType.UPDATED if field_changes or filter_changes else ChangeType.NO_CHANGE
+
     return VisualChange(
         id=parent_visual.pbi_core_id(),
         entity=parent_visual,
-        change_type=ChangeType.UPDATED,
+        change_type=change_type,
         field_changes=field_changes,
         filters=filter_changes,
     )
