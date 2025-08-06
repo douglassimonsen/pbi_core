@@ -110,6 +110,14 @@ class PrototypeQuery(LayoutNode):
 
     @classmethod
     def unwrap_source(cls, source: Source | ConditionType) -> list[ColumnSource | MeasureSource]:
+        """Identifies the root sources (measures and columns) used in this filter.
+
+        Raises
+        ------
+            TypeError: Occurs when one of the source types has not been handled by the code.
+                Should not occur outside development.
+
+        """
         if isinstance(source, ColumnSource | MeasureSource):
             return [source]
         if isinstance(source, AggregationSource):
@@ -132,7 +140,7 @@ class PrototypeQuery(LayoutNode):
             return cls.unwrap_source(source.Comparison.Left)
         print(source)
         breakpoint()
-        raise ValueError
+        raise TypeError
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
         """Returns the SSAS elements (columns and measures) this query is directly dependent on."""
@@ -166,6 +174,23 @@ class PrototypeQuery(LayoutNode):
         return ret2
 
     def get_dax(self, model: "LocalTabularModel") -> "DataViewQueryTranslationResult":
+        """Creates a DAX query that returns the data for a visual based on the SSAS model supplied.
+
+        Note:
+        ----
+            Although generally the DAX queries generated are identical across different models,
+                they can theoretically be different. If you can create a specific case of this,
+                please add it to the PBYX repo!
+
+        Args:
+        ----
+            model (LocalTabularModel): The SSAS model to generate the DAX against.
+
+        Returns:
+        -------
+            DataViewQueryTranslationResult: an object containing the DAX query for this visual
+
+        """
         raw_query = self.model_dump_json()
         return pbi_translation.prototype_query(
             raw_query,
