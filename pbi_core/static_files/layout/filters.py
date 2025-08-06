@@ -319,8 +319,8 @@ class VisualFilterExpression(LayoutNode):
     Where: list[Condition]
 
 
-# Filter specialization, only done to create better type completion.
-# Visual needs extra fields because it allows measure sources I think
+# TODO: Filter specialization, only done to create better type completion.
+# TODO: visual needs extra fields because it allows measure sources I think
 
 
 class VisualFilter(Filter):

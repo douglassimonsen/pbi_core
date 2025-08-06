@@ -112,7 +112,7 @@ Color = Annotated[
 
 class SolidExpression(LayoutNode):
     color: Color
-    value: LiteralSource | None = None  # TODO: explore the cases here more
+    value: LiteralSource | LiteralExpression | None = None  # TODO: explore the cases here more
 
 
 class SolidColorExpression(LayoutNode):

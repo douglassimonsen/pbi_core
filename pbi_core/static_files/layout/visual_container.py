@@ -8,6 +8,8 @@ from pbi_core.lineage.main import LineageNode, LineageType
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 from ._base_node import LayoutNode
+from .condition import Condition
+from .filters import From as FromType
 from .filters import PrototypeQuery, PrototypeQueryResult, VisualFilter
 from .sources import Source
 from .visuals.base import FilterSortOrder, ProjectionConfig, PropertyDef
@@ -89,7 +91,7 @@ class EntityType(IntEnum):
 class FromEntity(LayoutNode):
     Name: str
     Entity: str
-    Type: EntityType
+    Type: EntityType = EntityType.Table
 
 
 class PrimaryProjections(LayoutNode):
@@ -252,6 +254,13 @@ class QueryBindingAggregates(LayoutNode):
     Select: int
 
 
+class Highlight(LayoutNode):
+    # TODO: merge with VisualFilterExpression. For some reason, pydantic thinks From should be None when using the visal filter expression
+    Version: int | None = None
+    From: list[FromType] | None = None
+    Where: list[Condition]
+
+
 class QueryBinding(LayoutNode):
     IncludeEmptyGroups: bool = False
     Primary: BindingPrimary
@@ -260,7 +269,7 @@ class QueryBinding(LayoutNode):
     DataReduction: DataReductionType | None = None
     Aggregates: list[QueryBindingAggregates] | None = None
     SuppressedJoinPredicates: list[int] | None = None
-    Highlights: int | None = None
+    Highlights: list[Highlight] | None = None
     Version: int
 
 

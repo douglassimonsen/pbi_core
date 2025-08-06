@@ -45,9 +45,15 @@ class Display(LayoutNode):
     mode: DisplayMode
 
 
+class Remove(LayoutNode):
+    object: str
+    property: str
+    selector: None = None
+
+
 class BookmarkPartialVisualObject(LayoutNode):
     merge: dict[str, list[PropertyDef]] | None = None
-    remove: list[int] | None = None
+    remove: list[Remove] | None = None
 
 
 class BookmarkPartialVisual(LayoutNode):
