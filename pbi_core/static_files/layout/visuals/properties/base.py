@@ -182,7 +182,7 @@ class ResourcePackageAccess(LayoutNode):
 
 
 class ImageKindExpression(LayoutNode):
-    kind: Literal["Image"]
+    kind: Literal["Icon"]
     layout: LiteralExpression
     verticalAlignment: LiteralExpression
     value: ConditionalExpression
@@ -240,7 +240,7 @@ def get_expression(v: object | dict[str, Any]) -> str:
         if "linearGradient3" in v:
             return "LinearGradient3Expression"
 
-        if v.get("kind") == "Image":
+        if v.get("kind") == "Icon":
             return "ImageKindExpression"
         if v.get("kind") == "ExprList":
             return "ExpressionList"
