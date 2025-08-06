@@ -1,4 +1,3 @@
-import inspect
 from enum import Enum
 from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
 
@@ -63,7 +62,7 @@ class BookmarkVisual(LayoutNode):
 
 
 class BookmarkSection(LayoutNode):
-    parent: "ExplorationState"
+    _parent: "ExplorationState"
 
     visualContainers: Optional[dict[str, BookmarkVisual]] = None
     filters: Optional[BookmarkFilters] = None
@@ -71,7 +70,7 @@ class BookmarkSection(LayoutNode):
 
 
 class ExplorationState(LayoutNode):
-    parent: "Bookmark"
+    _parent: "Bookmark"
 
     version: float
     sections: dict[str, BookmarkSection]
@@ -81,7 +80,7 @@ class ExplorationState(LayoutNode):
 
 
 class BookmarkOptions(LayoutNode):
-    parent: "Bookmark"
+    _parent: "Bookmark"
 
     targetVisualNames: Optional[list[str]] = None
     applyOnlyToTargetVisuals: bool = False
@@ -91,7 +90,7 @@ class BookmarkOptions(LayoutNode):
 
 
 class Bookmark(LayoutNode):
-    parent: "Layout"
+    _parent: "Layout"
 
     options: Optional[BookmarkOptions] = None
     explorationState: Optional[ExplorationState] = None
@@ -104,7 +103,7 @@ class Bookmark(LayoutNode):
 
 
 class BookmarkFolder(LayoutNode):
-    parent: "Layout"
+    _parent: "Layout"
     displayName: str
     name: str  # acts as an ID
     children: list[Bookmark]
@@ -127,14 +126,3 @@ LayoutBookmarkChild = Annotated[
     ],
     Discriminator(get_bookmark_type),
 ]
-
-"""
-woo boy. Why is this code here? Well, we want a parent attribute on the objects to make user navigation easier
-This has to be a non-private attribute due to a bug in pydantic right now.
-We know we'll add the parent attribute after pydantic does it's work, but we want mypy to think the parent is
-always there. Therefore we check all objects with parents and make the default None so the "is_required" becomes False
-https://github.com/pydantic/pydantic/blob/a764871df98c8932e9b7bc10d861053d110a99e4/pydantic/fields.py#L572
-"""
-for name, obj in list(globals().items()):
-    if inspect.isclass(obj) and issubclass(obj, LayoutNode) and "parent" in obj.model_fields:
-        obj.model_fields["parent"].default = None

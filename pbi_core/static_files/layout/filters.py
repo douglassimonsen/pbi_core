@@ -1,4 +1,3 @@
-import inspect
 from enum import IntEnum
 from typing import TYPE_CHECKING, Any, Optional, cast
 
@@ -18,7 +17,7 @@ class Direction(IntEnum):
 
 
 class Orderby(LayoutNode):
-    parent: "TopNFilterMeta"
+    _parent: "TopNFilterMeta"
 
     Direction: Direction
     Expression: Source
@@ -60,18 +59,18 @@ class PrototypeQuery(LayoutNode):
 
 
 class TopNFilterMeta(PrototypeQuery):
-    parent: "_SubqueryHelper2"
+    _parent: "_SubqueryHelper2"
     Top: int
 
 
 class _SubqueryHelper2(LayoutNode):
-    parent: "_SubqueryHelper"
+    _parent: "_SubqueryHelper"
 
     Query: TopNFilterMeta
 
 
 class _SubqueryHelper(LayoutNode):
-    parent: "Subquery"
+    _parent: "Subquery"
 
     Subquery: _SubqueryHelper2
 
@@ -81,7 +80,7 @@ class SubQueryType(IntEnum):
 
 
 class Subquery(LayoutNode):
-    parent: "VisualFilterExpression"
+    _parent: "VisualFilterExpression"
 
     Name: str
     Expression: _SubqueryHelper
@@ -89,7 +88,7 @@ class Subquery(LayoutNode):
 
 
 class FilterExpression(LayoutNode):
-    parent: "Filter"
+    _parent: "Filter"
 
     Version: int
     From: list[Entity]
@@ -125,7 +124,7 @@ class Filter(LayoutNode):
 
 
 class VisualFilterExpression(LayoutNode):
-    parent: "VisualFilter"
+    _parent: "VisualFilter"
 
     Version: Optional[int] = None
     From: Optional[list[Entity | Subquery]] = None
@@ -145,24 +144,12 @@ class VisualFilter(Filter):
 
 
 class BookmarkFilter(VisualFilter):
-    parent: "BookmarkFilters"
+    _parent: "BookmarkFilters"
 
 
 class PageFilter(Filter):
-    parent: "Section"
+    _parent: "Section"
 
 
 class GlobalFilter(Filter):
-    parent: "Layout"
-
-
-"""
-woo boy. Why is this code here? Well, we want a parent attribute on the objects to make user navigation easier
-This has to be a non-private attribute due to a bug in pydantic right now.
-We know we'll add the parent attribute after pydantic does it's work, but we want mypy to think the parent is
-always there. Therefore we check all objects with parents and make the default None so the "is_required" becomes False
-https://github.com/pydantic/pydantic/blob/a764871df98c8932e9b7bc10d861053d110a99e4/pydantic/fields.py#L572
-"""
-for name, obj in list(globals().items()):
-    if inspect.isclass(obj) and issubclass(obj, LayoutNode) and "parent" in obj.model_fields:
-        obj.model_fields["parent"].default = None
+    _parent: "Layout"

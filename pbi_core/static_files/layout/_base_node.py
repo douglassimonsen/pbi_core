@@ -21,7 +21,8 @@ T = TypeVar("T", bound="LayoutNode")
 class LayoutNode(pydantic.BaseModel):
     model_config = MODEL_CONFIG
     _name_field: Optional[str] = None  # name of the field used to populate __repr__
-    parent: "LayoutNode" = None
+    _parent: "LayoutNode"
+    _xpath: list[str | int]
 
     def find_all(self, cls_type: type[T], attributes: Optional[dict[str, Any]] = None) -> list["T"]:
         attributes = attributes or {}
@@ -56,7 +57,7 @@ class LayoutNode(pydantic.BaseModel):
     def _children(self) -> list["LayoutNode"]:
         ret: list["LayoutNode"] = []
         for attr in dir(self):
-            if attr == "parent" or attr.startswith("_"):
+            if attr.startswith("_"):
                 continue
             child_candidate: Any = getattr(self, attr)
             if isinstance(child_candidate, list):
@@ -79,19 +80,45 @@ class LayoutNode(pydantic.BaseModel):
     def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
         raise NotImplementedError
 
-    def _set_parents(self) -> None:
-        for field_name, field_type in self.model_fields.items():
-            if not hasattr(field_type.annotation, "mro"):
-                continue
-            if any(typ is list for typ in field_type.annotation.mro()):
-                for val in getattr(self, field_name):
-                    if isinstance(val, LayoutNode):
-                        val.parent = self
-                        val._set_parents()
-            elif any(typ is LayoutNode for typ in field_type.annotation.mro()) and field_name != "parent":
-                val = getattr(self, field_name)
-                val.parent = self
-                val._set_parents()
+    def find_xpath(self, xpath: list[str | int]):
+        return _find_xpath(self, xpath)
 
-    def get_xpath(self) -> list[str]:
+
+def _find_xpath(val: LayoutNode | list[LayoutNode] | dict[str, LayoutNode] | str, xpath: list[str | int]) -> LayoutNode:
+    if len(xpath) == 0:
+        assert isinstance(val, LayoutNode)
+        return val
+    elif isinstance(val, list):
+        next_pos = xpath.pop(0)
+        assert isinstance(next_pos, int)
+        return _find_xpath(val[next_pos], xpath)
+    elif isinstance(val, dict):
         breakpoint()
+    elif isinstance(val, LayoutNode):
+        next_pos = xpath.pop(0)
+        assert isinstance(next_pos, str)
+        return _find_xpath(getattr(val, next_pos), xpath)
+    raise ValueError(f"What? xpath={xpath}, val={val}")
+
+
+def _set_parents(
+    base: list[LayoutNode] | dict[str, LayoutNode] | LayoutNode | int | str,
+    last_parent: "LayoutNode",
+    curr_xpath: list[str | int],
+):
+    if isinstance(base, list):
+        for i, val in enumerate(base):
+            _set_parents(val, last_parent, curr_xpath + [i])
+    elif isinstance(base, dict):
+        for key, val in base.items():
+            _set_parents(val, last_parent, curr_xpath + [key])
+    elif isinstance(base, LayoutNode):
+        base._parent = last_parent  # type: ignore
+        base._xpath = curr_xpath  # type: ignore
+
+        for field_name in base.model_fields.keys():
+            if field_name.startswith("_"):
+                continue
+            field_value = getattr(base, field_name)
+            if isinstance(field_value, (list, dict, LayoutNode)):
+                _set_parents(field_value, base, curr_xpath + [field_name])  # type: ignore

@@ -44,10 +44,10 @@ class Layout(LayoutNode):
     theme: Optional[str] = None
     pods: list[Pod] = []
     publicCustomVisuals: list[PublicCustomVisual] = []
-
-    def get_xpath(self) -> list[str]:
-        return []
+    _xpath = []
 
     def get_static_elements(self) -> None:
         for section in self.find_all(Section):
-            section.get_xpath()
+            x = self.find_xpath(section._xpath)
+            print(x)
+            exit()

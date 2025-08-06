@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 
 from .file_classes import Connections, DiagramLayout, Metadata, Settings
 from .file_classes.theme import Theme
+from .layout._base_node import _set_parents  # type: ignore
 from .layout.layout import Layout
 
 if TYPE_CHECKING:
@@ -63,7 +64,7 @@ class StaticFiles:
     def load_pbix(path: "StrPath") -> "StaticFiles":
         zipfile = ZipFile(path, mode="r")
 
-        themes = {}
+        themes: dict[str, Theme] = {}
         theme_paths = [
             x.split("/")[-1]
             for x in zipfile.namelist()
@@ -77,7 +78,7 @@ class StaticFiles:
 
         layout_json = json.loads(zipfile.read("Report/Layout").decode(LAYOUT_ENCODING))
         layout = Layout.model_validate(layout_json)
-        layout._set_parents()
+        _set_parents(layout, None, [])  # type: ignore
 
         connections_json = json.loads(zipfile.read("Connections").decode("utf-8"))
         connections = Connections.model_validate(connections_json)

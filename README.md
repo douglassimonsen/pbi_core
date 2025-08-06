@@ -107,3 +107,19 @@ The process is run with the arguments:
 The first and second are references to pipes? Note: the first two are always multiples of 8
 The 3rd is a UUID that stays the same across children, so I assume it's related to the SSAS instance. Could not find a match in the tables though
 The last indicates how many living/dead instances of the exe were run before this one (0-indexed)
+
+## 
+
+    ignored_names: set[str] = set(['_', '_parent'])
+
+
+Added to _model_construction, line 372 of pydantic
+
+
+Added 
+
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportIncompatibleVariableOverride": false
+    }
+
+to vscode settings
