@@ -12,11 +12,15 @@ class SyncGroup(LayoutNode):
     fieldChanges: bool
 
 
+class Display(LayoutNode):
+    mode: str
+
+
 class Slicer(BaseVisual):
     visualType: str = "slicer"
     model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None
-    syncGroup: SyncGroup
-    display: int = None
+    syncGroup: SyncGroup | None = None
+    display: Display | None = None
     cachedFilterDisplayItems: int = None
     expansionStates: int = None

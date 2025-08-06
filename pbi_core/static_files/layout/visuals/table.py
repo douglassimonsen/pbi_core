@@ -1,5 +1,6 @@
 # ruff: noqa: N815
 
+
 from pydantic import ConfigDict
 
 from .._base_node import LayoutNode
@@ -21,8 +22,18 @@ class ColumnFormattingProperties(LayoutNode):
     labelDisplayUnits: Expression | None = None
 
 
+class MatchingOption(LayoutNode):
+    matchingOption: int
+
+
+class DataViewWildcard(LayoutNode):
+    dataViewWildcard: MatchingOption | None = None
+    roles: list[str] | None = None
+
+
 class ColumnFormattingSelector(LayoutNode):
     metadata: str | None = None
+    data: list[DataViewWildcard] | None = None
 
 
 class ColumnFormatting(LayoutNode):
@@ -36,14 +47,18 @@ class TotalProperties(LayoutNode):
 
 class Total(LayoutNode):
     properties: TotalProperties
+    selector: ColumnFormattingSelector | None = None
 
 
 class ValuesProperties(LayoutNode):
-    fontSize: Expression
+    backColor: Expression | None = None
+    fontColor: Expression | None = None
+    fontSize: Expression | None = None
 
 
 class Values(LayoutNode):
     properties: ValuesProperties
+    selector: ColumnFormattingSelector | None = None
 
 
 class ColumnHeadersProperties(LayoutNode):
@@ -65,12 +80,22 @@ class ColumnWidth(LayoutNode):
     selector: ColumnFormattingSelector | None = None
 
 
+class GridProperties(LayoutNode):
+    textSize: Expression | None = None
+
+
+class Grid(LayoutNode):
+    properties: GridProperties
+    selector: ColumnFormattingSelector | None = None
+
+
 class TableChartColumnProperties(LayoutNode):
     columnFormatting: list[ColumnFormatting] | None = None
     columnHeaders: list[ColumnHeaders] | None = None
     columnWidth: list[ColumnWidth] | None = None
     total: list[Total] | None = None
     values: list[Values] | None = None
+    grid: list[Grid] | None = None
 
 
 class ColumnProperty(LayoutNode):

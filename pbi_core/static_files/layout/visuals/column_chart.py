@@ -33,6 +33,7 @@ class DataPoint(LayoutNode):
 
 
 class LabelsProperties(LayoutNode):
+    fontSize: Expression | None = None
     labelDisplayUnits: Expression | None = None
     labelOrientation: Expression | None = None
     labelPosition: Expression | None = None
@@ -63,11 +64,11 @@ class ValueAxis(LayoutNode):
 
 
 class ColumnChartColumnProperties(LayoutNode):
-    categoryAxis: list[CategoryAxis]
-    dataPoint: list[DataPoint]
-    labels: list[Labels]
-    legend: list[Legend]
-    valueAxis: list[ValueAxis]
+    categoryAxis: list[CategoryAxis] | None = None
+    dataPoint: list[DataPoint] | None = None
+    labels: list[Labels] | None = None
+    legend: list[Legend] | None = None
+    valueAxis: list[ValueAxis] | None = None
 
 
 class ColumnChart(BaseVisual):

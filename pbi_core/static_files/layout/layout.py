@@ -59,13 +59,20 @@ class Settings(LayoutNode):
     useDefaultAggregateDisplayName: bool = True
 
 
+class SlowDataSourceSettings(LayoutNode):
+    isCrossHighlightingDisabled: bool
+    isFieldWellButtonEnabled: bool
+    isFilterSelectionsButtonEnabled: bool
+    isSlicerSelectionsButtonEnabled: bool
+
+
 class LayoutConfig(LayoutNode):
     linguisticSchemaSyncVersion: int | None = None
     defaultDrillFilterOtherVisuals: bool = True
     bookmarks: list[LayoutBookmarkChild] | None = None
     activeSectionIndex: int
     themeCollection: ThemeCollection
-    slowDataSourceSettings: int | None = None
+    slowDataSourceSettings: SlowDataSourceSettings | None = None
     settings: Settings | None = None
     version: float  # looks like a float
     objects: int | None = None

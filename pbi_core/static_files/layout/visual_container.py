@@ -37,7 +37,7 @@ class VisualHowCreated(Enum):
 class VisualLayoutInfoPosition(LayoutNode):
     x: float
     y: float
-    z: float
+    z: float = 0.0  # z is not always present, default to 0
     width: float
     height: float
 
@@ -147,15 +147,25 @@ class DataReductionType(LayoutNode):
     Primary: PrimaryDataReduction
 
 
+class AggregateSources(LayoutNode):
+    Min: dict[str, int] | None = None
+    Max: dict[str, int] | None = None
+
+
+class QueryBindingAggregates(LayoutNode):
+    Aggregations: list[AggregateSources]
+    Select: int
+
+
 class QueryBinding(LayoutNode):
     IncludeEmptyGroups: bool = False
     Primary: BindingPrimary
     Secondary: BindingPrimary | None = None
     Projections: list[int] = []
     DataReduction: DataReductionType | None = None
-    Aggregates: int = None
-    SuppressedJoinPredicates: int = None
-    Highlights: int = None
+    Aggregates: list[QueryBindingAggregates] | None = None
+    SuppressedJoinPredicates: list[int] | None = None
+    Highlights: int | None = None
     Version: int
 
 
@@ -255,7 +265,7 @@ class DataTransformSelect(LayoutNode):
 
 
 class DataTransform(LayoutNode):
-    objects: dict[str, list[PropertyDef]]
+    objects: dict[str, list[PropertyDef]] | None = None
     projectionOrdering: dict[str, list[int]]
     projectionActiveItems: dict[str, list[ProjectionConfig]] | None = None
     splits: list[Split] | None = None

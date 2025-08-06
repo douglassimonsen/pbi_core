@@ -1,5 +1,5 @@
 import datetime
-from enum import IntEnum
+from enum import IntEnum, StrEnum
 from typing import TYPE_CHECKING
 
 import pydantic
@@ -31,8 +31,8 @@ class EntityDefinition(BaseValidation):
     Binding: EntityDefinitionBinding
 
 
-class TermSourceType(IntEnum):
-    pass
+class TermSourceType(StrEnum):
+    External = "External"
 
 
 class TermSource(BaseValidation):
@@ -40,23 +40,24 @@ class TermSource(BaseValidation):
     Agent: str
 
 
-class TermDefinitionState(IntEnum):
-    pass
+class TermDefinitionState(StrEnum):
+    Suggested = "Suggested"
+    Generated = "Generated"
 
 
-class TermDefinitionType(IntEnum):
-    pass
+class TermDefinitionType(StrEnum):
+    Noun = "Noun"
 
 
 class TermDefinition(BaseValidation):
     State: TermDefinitionState
-    Source: TermSource
-    Weight: float
+    Source: TermSource | None = None
+    Weight: float | None = None
     Type: TermDefinitionType | None = None
 
 
-class LinguisticMetadataState(IntEnum):
-    pass
+class LinguisticMetadataState(StrEnum):
+    Generated = "Generated"
 
 
 class LinguisticMetadataEntity(BaseValidation):
@@ -80,24 +81,27 @@ class PhrasingAttributeRole(BaseValidation):
     Role: str
 
 
+class RelationshipPhrasingState(StrEnum):
+    Generated = "Generated"
+
+
 # TODO: Subtype
 class PhrasingAttribute(BaseValidation):
     model_config = pydantic.ConfigDict(
         extra="forbid",
+        fields={
+            "_in": "in",
+        },
     )
     Adjective: PhrasingAttributeRole | None = None
     Measurement: PhrasingAttributeRole | None = None
     Object: PhrasingAttributeRole | None = None
     Subject: PhrasingAttributeRole | None = None
 
-    Adjectives: list[int] = []
-    Antonyms: list[int] = []
-    Prepositions: list[int] = []
-    Verbs: list[int] = []
-
-
-class RelationshipPhrasingState(IntEnum):
-    pass
+    Adjectives: list[dict[str, TermDefinition]] = []
+    Antonyms: list[dict[str, TermDefinition]] = []
+    Prepositions: list[dict[str, TermDefinition]] = []
+    Verbs: list[dict[str, TermDefinition]] = []
 
 
 class RelationshipPhrasing(BaseValidation):
@@ -119,12 +123,17 @@ class RelationshipRole(BaseValidation):
     Target: RelationshipRoleEntity
 
 
+class SemanticSlot(BaseValidation):
+    Where: PhrasingAttributeRole | None = None
+    When: PhrasingAttributeRole | None = None
+
+
 class LinguisticMetadataRelationship(BaseValidation):
     Binding: RelationshipBinding
     Phrasings: list[RelationshipPhrasing] = []
     Roles: dict[str, RelationshipRole | int]
     State: str | None = None
-    SemanticSlots: int = None
+    SemanticSlots: SemanticSlot | None = None
     Conditions: int = None
 
 

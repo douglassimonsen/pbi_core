@@ -11,6 +11,8 @@ from pbi_core.static_files.layout.sources.column import ColumnSource
 from pbi_core.static_files.layout.sources.measure import MeasureSource
 from pbi_core.static_files.layout.visuals.properties import Expression
 
+from .properties.vc_properties import VCProperties
+
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Column, Measure
     from pbi_core.ssas.server import BaseTabularModel
@@ -45,9 +47,14 @@ class PropertyDefSelectorId(StrEnum):
     selected = "selected"
 
 
+class SelectorData(LayoutNode):
+    roles: list[str]
+
+
 class PropertyDefSelector(LayoutNode):
     id: PropertyDefSelectorId | None = None
     metadata: str | None = None
+    data: list[SelectorData] | None = None
 
 
 class ColorRule1(LayoutNode):
@@ -91,7 +98,7 @@ class BaseVisual(LayoutNode):
     drillFilterOtherVisuals: bool = False
     filterSortOrder: FilterSortOrder = FilterSortOrder.NA
     # vcObjects means "visual container objects"
-    vcObjects: int = None
+    vcObjects: VCProperties | None = None
     visualType: str = "unknown"
     queryOptions: int = None
     showAllRoles: int = None

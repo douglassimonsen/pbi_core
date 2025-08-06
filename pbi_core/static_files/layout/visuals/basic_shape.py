@@ -5,6 +5,7 @@ from pydantic import ConfigDict
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 
+from .base import BaseVisual
 from .properties.base import Expression
 
 if TYPE_CHECKING:
@@ -39,18 +40,17 @@ class LineProperties(LayoutNode):
 
 
 class BasicShapeProperties(LayoutNode):
-    fill: list[FillProperties]
-    general: list[GeneralProperties]
-    line: list[LineProperties]
+    fill: list[FillProperties] | None = None
+    general: list[GeneralProperties] | None = None
+    line: list[LineProperties] | None = None
 
 
-class BasicShape(LayoutNode):
+class BasicShape(BaseVisual):
     visualType: str = "basicShape"
     model_config = ConfigDict(extra="forbid")
 
     drillFilterOtherVisuals: bool = True
     objects: BasicShapeProperties | None = None
-    vcObjects: int = None
     display: int = None
 
     def get_ssas_elements(self) -> "set[ModelColumnReference | ModelMeasureReference]":  # noqa: PLR6301
