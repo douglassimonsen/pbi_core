@@ -1,6 +1,6 @@
 import inspect
 from enum import Enum
-from typing import TYPE_CHECKING, Annotated, Any, Optional, Union
+from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
 
 from pydantic import Discriminator, Tag
 
@@ -117,7 +117,7 @@ def get_bookmark_type(v: Any) -> str:
             return "Bookmark"
         return "BookmarkFolder"
     else:
-        return v.__class__.__name__
+        return cast(str, v.__class__.__name__)
 
 
 LayoutBookmarkChild = Annotated[

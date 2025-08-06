@@ -36,6 +36,8 @@ from Microsoft.AnalysisServices.AdomdClient import (  # type: ignore  # noqa: E4
     AdomdTransaction,
 )
 
+__all__ = ["AdomdErrorResponseException"]
+
 
 class Description(NamedTuple):
     """

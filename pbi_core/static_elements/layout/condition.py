@@ -1,6 +1,6 @@
 import inspect
 from enum import IntEnum
-from typing import Annotated, Any, Optional, Union
+from typing import Annotated, Any, Optional, Union, cast
 
 from pydantic import Discriminator, Tag
 
@@ -142,7 +142,7 @@ def get_type(v: Any) -> str:
             return "ComparisonCondition"
         raise ValueError
     else:
-        return v.__class__.__name__
+        return cast(str, v.__class__.__name__)
 
 
 ConditionType = Annotated[

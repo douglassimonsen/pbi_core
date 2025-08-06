@@ -1,6 +1,6 @@
 import pathlib
 import shutil
-from typing import TYPE_CHECKING, Any, ClassVar, Optional, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Optional, Type, cast
 
 import pydantic
 from bs4 import BeautifulSoup, Tag
@@ -212,7 +212,7 @@ class SsasTable(pydantic.BaseModel):
         self.tabular_model.server.query_xml(query, db_name)
 
     @staticmethod
-    def render_xml_command(values: dict, command: Command, db_name: str):
+    def render_xml_command(values: dict[str, Any], command: Command, db_name: str) -> str:
         fields = []
         for field_name, field_value in values.items():
             if field_name not in command.field_order:
@@ -258,7 +258,7 @@ class SsasRename(SsasTable):
 
 class SsasCreate(SsasTable):
     @classmethod
-    def create(cls, tabular_model: "BaseTabularModel", **kwargs) -> None:
+    def create(cls: Type["SsasCreate"], tabular_model: "BaseTabularModel", **kwargs: dict[str, Any]) -> None:
         # data = {
         #     cls._db_field_names.get(k, k): v for k, v in kwargs.items() if k not in cls._read_only_fields
         # }

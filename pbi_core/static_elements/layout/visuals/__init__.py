@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Union
+from typing import Annotated, Any, Union, cast
 
 from pydantic import Discriminator, Tag
 
@@ -24,7 +24,7 @@ def get_visual(v: Any) -> str:
             case "slicer":
                 return "Slicer"
         return "BaseVisual"
-    return v.__class__.__name__
+    return cast(str, v.__class__.__name__)
 
 
 Visual = Annotated[

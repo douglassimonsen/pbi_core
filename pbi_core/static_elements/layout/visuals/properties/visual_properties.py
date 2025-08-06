@@ -1,5 +1,5 @@
 import inspect
-from typing import Annotated, Any, Union
+from typing import Annotated, Any, Union, cast
 
 from pydantic import Discriminator, Tag
 
@@ -45,7 +45,7 @@ def get_expression(v: Any) -> str:
         if "Literal" in v["expr"]:
             return "LiteralExpression"
         raise ValueError
-    return v.__class__.__name__
+    return cast(str, v.__class__.__name__)
 
 
 Expression = Annotated[

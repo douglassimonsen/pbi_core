@@ -64,7 +64,7 @@ class Command:
     base_template: jinja2.Template
     field_order: list[str]
 
-    def sort(self, fields: list[str]) -> list[str]:
+    def sort(self, fields: list[tuple[str, str]]) -> list[tuple[str, str]]:
         return list(sorted(fields, key=lambda k: self.field_order.index(k[0])))
 
 

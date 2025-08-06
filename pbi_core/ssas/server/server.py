@@ -79,7 +79,7 @@ class BaseServer:
                     target_path="---", db_name="---"
                 )  # specifically choosing non-existant values to verify we get at least one error
             )
-        except pyadomd.AdomdErrorResponseException as e:  # type: ignore
+        except pyadomd.AdomdErrorResponseException as e:
             error_message = str(e.Message)
             if error_message == SKU_ERROR:
                 return

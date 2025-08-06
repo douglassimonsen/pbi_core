@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Union
+from typing import Annotated, Any, Union, cast
 
 from pydantic import Discriminator, Tag
 
@@ -29,7 +29,7 @@ def get_source(v: Any) -> str:
         else:
             raise ValueError(f"Unknown Filter: {v.keys()}")
     else:
-        return v.__class__.__name__
+        return cast(str, v.__class__.__name__)
 
 
 Source = Annotated[

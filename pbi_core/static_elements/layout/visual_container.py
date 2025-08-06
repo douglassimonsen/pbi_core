@@ -1,6 +1,6 @@
 import inspect
 from enum import Enum, IntEnum
-from typing import TYPE_CHECKING, Annotated, Any, Optional, Union
+from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
 
 from pydantic import Discriminator, Json, Tag
 
@@ -70,7 +70,7 @@ class DataVolume(IntEnum):
 
 
 class PrimaryDataReduction(LayoutNode):
-    Sample: dict
+    Sample: dict[str, Any]
 
 
 class DataReduction(LayoutNode):
@@ -104,7 +104,7 @@ def get_query_command(v: Any) -> str:
         else:
             raise ValueError(f"Unknown Filter: {v.keys()}")
     else:
-        return v.__class__.__name__
+        return cast(str, v.__class__.__name__)
 
 
 QueryCommand = Annotated[
