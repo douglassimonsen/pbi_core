@@ -12,9 +12,11 @@ from typing import Any
 import jinja2
 from pyadomd import Pyadomd
 
+from pbi_core.logging import get_logger
 from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 from pbi_core.ssas.server.trace.trace_enums import TraceEvents
 
+logger = get_logger()
 TRACE_DIR = Path(__file__).parent / "templates"
 TRACE_TEMPLATES: dict[str, jinja2.Template] = {
     f.name: jinja2.Template(f.read_text()) for f in TRACE_DIR.iterdir() if f.is_file()
@@ -49,6 +51,7 @@ def pretty_size(n: int) -> str:
 class ThreadResult:
     command: str
     rows_returned: int
+    error: Exception | None = None
 
     def get_performance(self, trace_records: list[dict[str, Any]]) -> "Performance":
         event_info = {}
@@ -112,7 +115,9 @@ class Subscriber:
 
     def __init__(self, subscription_create_command: str, conn: Pyadomd, events: Iterable[TraceEvents]) -> None:
         self.cursor = conn.cursor()
-        self.cursor.execute_dax(subscription_create_command)
+        self.cursor.execute_dax(
+            subscription_create_command,
+        )  # occasionally seems to hang, but might actually be bad queries??
         self.events = events
         self.trace_records = {}
         self.command_request_ids: dict[str, str] = {}
@@ -162,8 +167,10 @@ class PerformanceTrace:
         self.trace_delete_command = TRACE_TEMPLATES["trace_delete.xml"].render(
             trace_name=trace_name,
         )
+        self.clear_cache_command = TRACE_TEMPLATES["clear_cache.xml"].render(database_name=self.db.db_name)
 
     def initialize_tracing(self) -> "PerformanceTrace":
+        logger.info("Beginning trace")
         self.db.server.query_xml(self.trace_create_command)
         self.subscriber = Subscriber(
             self.subscription_create_command,
@@ -173,19 +180,28 @@ class PerformanceTrace:
         return self
 
     def terminate_tracing(self) -> None:
+        logger.info("Terminating trace")
         with self.db.server.conn(db_name=self.db.db_name) as conn:
             cursor = conn.cursor()
             cursor.execute_xml(self.trace_delete_command)
 
-    def get_performance(self) -> list[Performance]:
+    def get_performance(self, *, clear_cache: bool = False) -> list[Performance]:
         def thread_func(command: str) -> ThreadResult:
-            cursor = self.get_conn().cursor()
-            cursor.execute_dax(command)
-            rows_returned = len(cursor.fetch_all(limit=500))
+            try:
+                with self.get_conn() as conn:
+                    cursor = conn.cursor()
+                    cursor.execute_dax(command)
+                    rows_returned = len(cursor.fetch_all(limit=500))
 
-            # See note in Cursor.fetch_stream() documentation for why we do this
-            cursor._reader.Close()
+                    # See note in Cursor.fetch_stream() documentation for why we do this
+                    cursor.reader.close()
 
+            except ValueError as e:
+                return ThreadResult(
+                    command=command,
+                    rows_returned=-1,
+                    error=e,
+                )
             # The limit of 500 is to mimic the behavior of PowerBI, which returns by defult 500 rows
             return ThreadResult(
                 command=command,
@@ -193,8 +209,14 @@ class PerformanceTrace:
             )
 
         self.initialize_tracing()
+        if clear_cache:
+            logger.info("Clearing cache before performance testing")
+            with self.db.server.conn(db_name=self.db.db_name) as conn:
+                cursor = conn.cursor()
+                cursor.execute_xml(self.clear_cache_command)
 
         with ThreadPoolExecutor() as dax_executor:
+            logger.info("Running DAX commands")
             command_results = list(dax_executor.map(thread_func, self.commands))
 
         missing_subscription_records = command_results
@@ -220,6 +242,7 @@ class PerformanceTrace:
             raise ValueError(msg)
 
         self.subscriber.kill_polling()
+        self.terminate_tracing()
 
         return [
             command_result.get_performance(

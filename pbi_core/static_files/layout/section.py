@@ -75,7 +75,7 @@ class Section(LayoutNode):
         children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
         return LineageNode(self, lineage_type, children_lineage)
 
-    def get_performance(self, model: "LocalTabularModel") -> list[Performance]:
+    def get_performance(self, model: "LocalTabularModel", *, clear_cache: bool = False) -> list[Performance]:
         """Calculates various metrics on the speed of the visual.
 
         Current Metrics:
@@ -91,4 +91,4 @@ class Section(LayoutNode):
         if not commands:
             msg = "Cannot get performance for a page without any querying visuals"
             raise NotImplementedError(msg)
-        return get_performance(model, commands)
+        return get_performance(model, commands, clear_cache=clear_cache)

@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.model_tables.enums import DataCategory, DataState, DataType
+from pbi_core.ssas.model_tables.enums import DataState, DataType
 from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
 from .column import Column
@@ -22,7 +22,7 @@ class Measure(SsasRenameRecord):
     SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ab331e04-78f7-49f0-861f-3f155b8b4c5b
     """
 
-    data_category: DataCategory | None = None
+    data_category: str | None = None
     data_type: DataType
     description: str | None = None
     detail_rows_definition_id: int | None = None
