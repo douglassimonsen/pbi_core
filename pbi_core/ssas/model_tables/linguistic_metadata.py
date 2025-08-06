@@ -60,6 +60,19 @@ class LinguisticMetadataState(StrEnum):
     Generated = "Generated"
 
 
+class VisibilityValue(StrEnum):
+    Hidden = "Hidden"
+
+
+class VisibilityType(BaseValidation):
+    Value: VisibilityValue
+
+
+class NameTypeType(StrEnum):
+    Identifier = "Identifier"
+    Name = "Name"
+
+
 class LinguisticMetadataEntity(BaseValidation):
     Weight: float | None = None
     State: LinguisticMetadataState
@@ -67,9 +80,9 @@ class LinguisticMetadataEntity(BaseValidation):
     Definition: EntityDefinition | None = None
     Binding: EntityDefinitionBinding | None = None
     SemanticType: str | None = None
-    Visibility: int | None = None
+    Visibility: VisibilityType | None = None
     Hidden: bool = False
-    NameType: int | None = None
+    NameType: NameTypeType | None = None
     Units: list[str] = []
 
 
@@ -97,6 +110,7 @@ class PhrasingAttribute(BaseValidation):
     Measurement: PhrasingAttributeRole | None = None
     Object: PhrasingAttributeRole | None = None
     Subject: PhrasingAttributeRole | None = None
+    Name: PhrasingAttributeRole | None = None
 
     Adjectives: list[dict[str, TermDefinition]] = []
     Antonyms: list[dict[str, TermDefinition]] = []
@@ -128,13 +142,23 @@ class SemanticSlot(BaseValidation):
     When: PhrasingAttributeRole | None = None
 
 
+class ConditionOperator(StrEnum):
+    Equals = "Equals"
+
+
+class Condition(BaseValidation):
+    Target: PhrasingAttributeRole
+    Operator: ConditionOperator
+    Value: dict[str, list[bool]]  # {'Boolean': [True]}
+
+
 class LinguisticMetadataRelationship(BaseValidation):
     Binding: RelationshipBinding
     Phrasings: list[RelationshipPhrasing] = []
     Roles: dict[str, RelationshipRole | int]
     State: str | None = None
     SemanticSlots: SemanticSlot | None = None
-    Conditions: int | None = None
+    Conditions: list[Condition] | None = None
 
 
 class LinguisticMetadataContent(BaseValidation):
