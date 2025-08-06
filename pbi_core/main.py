@@ -119,16 +119,7 @@ class LocalReport(BaseReport):
         """
         report_references = self.static_files.layout.get_ssas_elements()
         model_values = (
-            [
-                self.ssas.measures.find(lambda c, reference=reference: measure_finder(c, reference))
-                for reference in report_references
-                if isinstance(reference, ModelMeasureReference)
-            ]
-            + [
-                self.ssas.columns.find(lambda c, reference=reference: column_finder(c, reference))
-                for reference in report_references
-                if isinstance(reference, ModelColumnReference)
-            ]
+            [x.to_model(self.ssas) for x in report_references]
             + [relationship.to_column() for relationship in self.ssas.relationships]
             + [relationship.from_column() for relationship in self.ssas.relationships]
         )
