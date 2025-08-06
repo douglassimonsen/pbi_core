@@ -34,7 +34,7 @@ class VisualConfig(LayoutNode):
     howCreated: Optional[VisualHowCreated] = None
 
 
-class ExecutionMetricsKind(IntEnum):
+class ExecutionMetricsKindEnum(IntEnum):
     NA = 1
 
 
@@ -70,17 +70,18 @@ class DataReduction(LayoutNode):
     Primary: PrimaryDataReduction
 
 
-class Binding(LayoutNode):
+class QueryBinding(LayoutNode):
+    IncludeEmptyGroups: bool = False
     Primary: BindingPrimary
-    Projections: list[int]
-    DataReduction: Any
+    Projections: list[int] = []
+    DataReduction: Any = None
     Version: int
 
 
 class QueryCommand1(LayoutNode):
-    ExecutionMetricsKind: ExecutionMetricsKind
+    ExecutionMetricsKind: ExecutionMetricsKindEnum = ExecutionMetricsKindEnum.NA
     Query: PrototypeQuery
-    Binding: Binding
+    Binding: Optional[QueryBinding] = None
 
 
 class QueryCommand2(LayoutNode):

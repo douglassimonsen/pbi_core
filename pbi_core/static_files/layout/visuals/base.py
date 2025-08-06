@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Optional
 
 from pydantic import ConfigDict
 
@@ -17,11 +17,11 @@ class BaseVisual(LayoutNode):
     model_config = ConfigDict(extra="allow")
 
     objects: Any = None
-    prototypeQuery: PrototypeQuery
+    prototypeQuery: Optional[PrototypeQuery] = None
     projections: Any = None
     hasDefaultSort: bool = False
     drillFilterOtherVisuals: bool = False
-    vcObjects: Any
+    vcObjects: Any = None
     visualType: str = "unknown"
 
     @property

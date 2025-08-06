@@ -24,7 +24,7 @@ class ThemeExpression(LayoutNode):
 
 
 class ColorExpression(LayoutNode):
-    expr: ThemeExpression
+    expr: ThemeExpression | LiteralSource
 
 
 class SolidExpression(LayoutNode):

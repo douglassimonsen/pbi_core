@@ -7,6 +7,7 @@ from .._base_node import LayoutNode
 class EntityType(IntEnum):
     NA = 1
     NA2 = 0
+    NA3 = 2
 
 
 class Entity(LayoutNode):

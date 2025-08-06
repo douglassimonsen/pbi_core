@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pydantic
 from pydantic_extra_types.semantic_version import SemanticVersion
@@ -23,6 +23,8 @@ class LinguisticMetadataContent(pydantic.BaseModel):
     Version: SemanticVersion
     Language: str
     DynamicImprovement: str
+    Relationships: Any = None
+    Entities: Any = None
 
 
 class LinguisticMetadata(SsasBaseTable):

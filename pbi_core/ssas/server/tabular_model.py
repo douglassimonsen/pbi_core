@@ -395,7 +395,8 @@ class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
 
     def model_post_init(self, __context: Any) -> None:
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
-
+        if self._db_command_obj_name() == "ExtendedPropertys":
+            breakpoint()
         self._commands = RenameCommands(
             alter=templates["alter.xml"],
             create=templates["create.xml"],

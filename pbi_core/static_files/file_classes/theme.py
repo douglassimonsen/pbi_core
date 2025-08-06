@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 
 from pydantic_extra_types.color import Color
 
@@ -27,22 +27,22 @@ class Theme(BaseFileModel):
 
     name: str
     dataColors: list[str] = []
-    foreground: str
-    foregroundNeutralSecondary: Color
-    foregroundNeutralTertiary: Color
-    background: Color
-    backgroundLight: Color
-    backgroundNeutral: Color
-    tableAccent: Color
-    good: Color
-    neutral: Color
-    bad: Color
-    maximum: Color
-    center: Color
-    minimum: Color
-    null: Color
-    hyperlink: Color
-    visitedHyperlink: Color
+    foreground: Optional[str] = None
+    foregroundNeutralSecondary: Optional[Color] = None
+    foregroundNeutralTertiary: Optional[Color] = None
+    background: Optional[Color] = None
+    backgroundLight: Optional[Color] = None
+    backgroundNeutral: Optional[Color] = None
+    tableAccent: Optional[Color] = None
+    good: Optional[Color] = None
+    neutral: Optional[Color] = None
+    bad: Optional[Color] = None
+    maximum: Optional[Color] = None
+    center: Optional[Color] = None
+    minimum: Optional[Color] = None
+    null: Optional[Color] = None
+    hyperlink: Optional[Color] = None
+    visitedHyperlink: Optional[Color] = None
 
-    textClasses: TextClasses
+    textClasses: Optional[TextClasses] = None
     visualStyles: Any

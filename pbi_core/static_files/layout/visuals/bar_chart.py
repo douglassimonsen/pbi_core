@@ -9,9 +9,9 @@ from .properties import Expression
 
 
 class TitleProperties(LayoutNode):
-    text: Expression
-    heading: Expression
-    fontFamily: Expression
+    text: Optional[Expression] = None
+    heading: Optional[Expression] = None
+    fontFamily: Optional[Expression] = None
     fontColor: Optional[Expression] = None
 
 
@@ -38,5 +38,5 @@ class BarChartVCObjects(LayoutNode):
 class BarChart(BaseVisual):
     visualType: str = "barChart"
     model_config = ConfigDict(extra="forbid")
-    vcObjects: BarChartVCObjects
-    columnProperties: Any
+    vcObjects: Optional[BarChartVCObjects] = None
+    columnProperties: Any = None
