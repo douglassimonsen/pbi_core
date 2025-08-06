@@ -26,7 +26,13 @@ class DisplayOption(IntEnum):
     MOBILE = 3
 
 
+class SectionVisibility(IntEnum):
+    VISIBLE = 0
+    HIDDEN = 1
+
+
 class SectionConfig(LayoutNode):
+    visibility: SectionVisibility = SectionVisibility.VISIBLE
     model_config = ConfigDict(extra="allow")
 
 

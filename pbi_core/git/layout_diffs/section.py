@@ -11,11 +11,17 @@ if TYPE_CHECKING:
 
 def section_diff_update(parent: "Section", child: "Section") -> SectionChange | None:
     field_changes = {}
-    for field in ["name", "description"]:
+    for field in ["height", "width", "ordinal", "displayName"]:
         parent_val = getattr(parent, field, None)
         child_val = getattr(child, field, None)
         if parent_val != child_val and not (parent_val is None and child_val is None):
             field_changes[field] = (parent_val, child_val)
+
+    for field in ["visibility"]:
+        parent_val = getattr(parent.config, field, None)
+        child_val = getattr(child.config, field, None)
+        if parent_val != child_val and not (parent_val is None and child_val is None):
+            field_changes[f"config.{field}"] = (parent_val, child_val)
 
     if field_changes:
         return SectionChange(

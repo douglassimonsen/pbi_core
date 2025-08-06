@@ -138,7 +138,7 @@ class InCondition(LayoutNode):
         if isinstance(self.In, InTopNExpressionHelper):
             table = natural_language_source(self.In.Table)
             return f"{expr} IN TOP N {table}"
-        return f"{expr} IN ({', '.join(str(x.value()) for x in self.In.Values[0])})"
+        return f"{expr} IN ({', '.join(str(x[0].value()) for x in self.In.Values)})"
 
 
 class TimeUnit(IntEnum):

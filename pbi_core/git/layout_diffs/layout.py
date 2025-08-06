@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 
 from pbi_core.git.change_classes import ChangeType, LayoutChange, SectionChange, VisualChange
 
+from .filters import filter_diff
 from .section import section_diff
 
 if TYPE_CHECKING:
@@ -10,11 +11,12 @@ if TYPE_CHECKING:
 
 def layout_diff_update(parent: "Layout", child: "Layout") -> LayoutChange | None:
     field_changes = {}
-    for field in ["name", "description"]:
+    for field in []:  # no simple fields to compare in Layout
         parent_val = getattr(parent, field, None)
         child_val = getattr(child, field, None)
         if parent_val != child_val and not (parent_val is None and child_val is None):
             field_changes[field] = (parent_val, child_val)
+    filter_changes = filter_diff(parent.filters, child.filters)  # type: ignore reportArgumentType
 
     if field_changes:
         return LayoutChange(
@@ -22,6 +24,7 @@ def layout_diff_update(parent: "Layout", child: "Layout") -> LayoutChange | None
             change_type=ChangeType.UPDATED,
             entity=parent,
             field_changes=field_changes,
+            filters=filter_changes,
         )
     return None
 
