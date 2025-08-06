@@ -2,7 +2,7 @@
 from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, cast
 
-import pbi_translation
+import pbi_prototype_query_translation
 from pydantic import Discriminator, Tag
 
 from pbi_core.pydantic.main import BaseValidation
@@ -16,7 +16,7 @@ from .sources.aggregation import ScopedEval
 from .visuals.properties.filter_properties import FilterObjects
 
 if TYPE_CHECKING:
-    from pbi_translation import DataViewQueryTranslationResult
+    from pbi_prototype_query_translation.main import TranslationResult
 
     from pbi_core.ssas.server import LocalTabularModel
 
@@ -173,7 +173,7 @@ class PrototypeQuery(LayoutNode):
                 )
         return ret2
 
-    def get_dax(self, model: "LocalTabularModel") -> "DataViewQueryTranslationResult":
+    def get_dax(self, model: "LocalTabularModel") -> "TranslationResult":
         """Creates a DAX query that returns the data for a visual based on the SSAS model supplied.
 
         Note:
@@ -189,7 +189,7 @@ class PrototypeQuery(LayoutNode):
 
         """
         raw_query = self.model_dump_json()
-        return pbi_translation.prototype_query(
+        return pbi_prototype_query_translation.prototype_query(
             raw_query,
             model.db_name,
             model.server.port,
@@ -197,18 +197,12 @@ class PrototypeQuery(LayoutNode):
 
     def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult:
         dax_query = self.get_dax(model)
-        data = model.server.query_dax(dax_query.DaxExpression)
-        column_mapping = dict(
-            zip(
-                dax_query.SelectNameToDaxColumnName.Keys,
-                dax_query.SelectNameToDaxColumnName.Values,
-                strict=False,
-            ),
-        )
+        data = model.server.query_dax(dax_query.dax)
+
         return PrototypeQueryResult(
             data=data,
-            dax_query=dax_query.DaxExpression,
-            column_mapping=column_mapping,
+            dax_query=dax_query.dax,
+            column_mapping=dax_query.column_mapping,
         )
 
 

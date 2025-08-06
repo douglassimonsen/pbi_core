@@ -6,6 +6,7 @@ import backoff
 import pbi_pyadomd
 import psutil
 from bs4 import BeautifulSoup
+
 from pbi_core.logging import get_logger
 from pbi_core.ssas.setup import get_startup_config
 

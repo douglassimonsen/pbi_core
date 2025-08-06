@@ -2,9 +2,10 @@
 from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
+from pydantic import Discriminator, Json, Tag
+
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
-from pydantic import Discriminator, Json, Tag
 
 from ._base_node import LayoutNode
 from .condition import Condition
@@ -518,7 +519,7 @@ class VisualContainer(LayoutNode):
         if command is None:
             msg = "Cannot get performance for a visual without a query command"
             raise NotImplementedError(msg)
-        return get_performance(model, [command.get_dax(model).DaxExpression])[0]
+        return get_performance(model, [command.get_dax(model).dax])[0]
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
         """Returns the SSAS elements (columns and measures) this visual is directly dependent on."""

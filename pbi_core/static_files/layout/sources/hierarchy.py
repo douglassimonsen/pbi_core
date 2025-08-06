@@ -1,7 +1,8 @@
 from typing import TYPE_CHECKING, Annotated, Any
 
-from pbi_core.static_files.layout._base_node import LayoutNode
 from pydantic import Discriminator, Tag
+
+from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .base import SourceExpression, SourceRef
 
@@ -71,7 +72,10 @@ class HierarchyLevelSource(LayoutNode):
 
     def __repr__(self) -> str:
         table = self.HierarchyLevel.Expression.Hierarchy.Expression.table()
-        column = self.HierarchyLevel.Expression.Hierarchy.Expression.column()
+        if isinstance(self.HierarchyLevel.Expression.Hierarchy.Expression, SourceRef):
+            column = self.HierarchyLevel.Expression.Hierarchy.Hierarchy
+        else:
+            column = self.HierarchyLevel.Expression.Hierarchy.Expression.column()
         level = self.HierarchyLevel.Level
         return f"HierarchyLevelSource({table}.{column}.{level})"
 
