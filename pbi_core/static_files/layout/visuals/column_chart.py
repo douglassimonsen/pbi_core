@@ -4,12 +4,9 @@
 from pydantic import ConfigDict
 
 from .._base_node import LayoutNode
+from ..selector import Selector
 from .base import BaseVisual
 from .properties.base import Expression
-
-
-class DataPointSelector(LayoutNode):
-    metadata: str | None = None
 
 
 class CategoryAxisProperties(LayoutNode):
@@ -19,17 +16,18 @@ class CategoryAxisProperties(LayoutNode):
 
 class CategoryAxis(LayoutNode):
     properties: CategoryAxisProperties
-    selector: DataPointSelector | None = None
+    selector: Selector | None = None
 
 
 class DataPointProperties(LayoutNode):
     fill: Expression | None = None
+    fillRule: Expression | None = None
 
 
 # TODO: merge selector classes
 class DataPoint(LayoutNode):
     properties: DataPointProperties
-    selector: DataPointSelector | None = None
+    selector: Selector | None = None
 
 
 class LabelsProperties(LayoutNode):
@@ -42,7 +40,7 @@ class LabelsProperties(LayoutNode):
 
 class Labels(LayoutNode):
     properties: LabelsProperties
-    selector: DataPointSelector | None = None
+    selector: Selector | None = None
 
 
 class LegendProperties(LayoutNode):
@@ -51,7 +49,7 @@ class LegendProperties(LayoutNode):
 
 class Legend(LayoutNode):
     properties: LegendProperties
-    selector: DataPointSelector | None = None
+    selector: Selector | None = None
 
 
 class ValueAxisProperties(LayoutNode):
@@ -60,7 +58,7 @@ class ValueAxisProperties(LayoutNode):
 
 class ValueAxis(LayoutNode):
     properties: ValueAxisProperties
-    selector: DataPointSelector | None = None
+    selector: Selector | None = None
 
 
 class ColumnChartColumnProperties(LayoutNode):

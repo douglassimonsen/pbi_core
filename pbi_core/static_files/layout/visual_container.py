@@ -145,6 +145,7 @@ PrimaryDataReduction = Annotated[
 class DataReductionType(LayoutNode):
     DataVolume: DataVolume
     Primary: PrimaryDataReduction
+    Secondary: PrimaryDataReduction | None = None
 
 
 class AggregateSources(LayoutNode):

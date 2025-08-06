@@ -33,16 +33,26 @@ class GeneralProperties(LayoutNode):
 class LinePropertiesHelper(LayoutNode):
     lineColor: Expression | None = None
     transparency: Expression | None = None
+    weight: Expression | None = None
 
 
 class LineProperties(LayoutNode):
     properties: LinePropertiesHelper
 
 
+class RotationPropertiesHelper(LayoutNode):
+    angle: Expression | None = None
+
+
+class RotationProperties(LayoutNode):
+    properties: RotationPropertiesHelper
+
+
 class BasicShapeProperties(LayoutNode):
     fill: list[FillProperties] | None = None
     general: list[GeneralProperties] | None = None
     line: list[LineProperties] | None = None
+    rotation: list[RotationProperties] | None = None
 
 
 class BasicShape(BaseVisual):
@@ -51,7 +61,6 @@ class BasicShape(BaseVisual):
 
     drillFilterOtherVisuals: bool = True
     objects: BasicShapeProperties | None = None
-    display: int = None
 
     def get_ssas_elements(self) -> "set[ModelColumnReference | ModelMeasureReference]":  # noqa: PLR6301
         return set()

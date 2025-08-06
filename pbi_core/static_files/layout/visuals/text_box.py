@@ -14,7 +14,10 @@ if TYPE_CHECKING:
 
 class TextStyle(LayoutNode):
     color: str  # TODO: check that it's hex
-    fontSize: str
+    fontSize: str | None = None
+    fontFamily: str | None = None
+    fontStyle: str | None = None  # italic, etc
+    fontWeight: str | None = None  # bold, etc
 
 
 class TextRun(LayoutNode):
@@ -23,7 +26,7 @@ class TextRun(LayoutNode):
 
 
 class Paragraph(LayoutNode):
-    horizontalTextAlignment: str  # TODO: convert to enum
+    horizontalTextAlignment: str | None = None  # TODO: convert to enum
     textRuns: list[TextRun]
 
 

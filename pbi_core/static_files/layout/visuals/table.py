@@ -4,6 +4,7 @@
 from pydantic import ConfigDict
 
 from .._base_node import LayoutNode
+from ..selector import Selector
 from .base import BaseVisual
 from .properties.base import Expression
 
@@ -18,27 +19,14 @@ class DataBarsProperties(LayoutNode):
 
 class ColumnFormattingProperties(LayoutNode):
     dataBars: DataBarsProperties | None = None
+    fontColor: Expression | None = None
     labelPrecision: Expression | None = None
     labelDisplayUnits: Expression | None = None
 
 
-class MatchingOption(LayoutNode):
-    matchingOption: int
-
-
-class DataViewWildcard(LayoutNode):
-    dataViewWildcard: MatchingOption | None = None
-    roles: list[str] | None = None
-
-
-class ColumnFormattingSelector(LayoutNode):
-    metadata: str | None = None
-    data: list[DataViewWildcard] | None = None
-
-
 class ColumnFormatting(LayoutNode):
     properties: ColumnFormattingProperties
-    selector: ColumnFormattingSelector | None = None
+    selector: Selector | None = None
 
 
 class TotalProperties(LayoutNode):
@@ -47,7 +35,7 @@ class TotalProperties(LayoutNode):
 
 class Total(LayoutNode):
     properties: TotalProperties
-    selector: ColumnFormattingSelector | None = None
+    selector: Selector | None = None
 
 
 class ValuesProperties(LayoutNode):
@@ -59,7 +47,7 @@ class ValuesProperties(LayoutNode):
 
 class Values(LayoutNode):
     properties: ValuesProperties
-    selector: ColumnFormattingSelector | None = None
+    selector: Selector | None = None
 
 
 class ColumnHeadersProperties(LayoutNode):
@@ -70,7 +58,7 @@ class ColumnHeadersProperties(LayoutNode):
 
 class ColumnHeaders(LayoutNode):
     properties: ColumnHeadersProperties
-    selector: ColumnFormattingSelector | None = None
+    selector: Selector | None = None
 
 
 class ColumnWidthProperties(LayoutNode):
@@ -79,7 +67,7 @@ class ColumnWidthProperties(LayoutNode):
 
 class ColumnWidth(LayoutNode):
     properties: ColumnWidthProperties
-    selector: ColumnFormattingSelector | None = None
+    selector: Selector | None = None
 
 
 class GridProperties(LayoutNode):
@@ -89,7 +77,7 @@ class GridProperties(LayoutNode):
 
 class Grid(LayoutNode):
     properties: GridProperties
-    selector: ColumnFormattingSelector | None = None
+    selector: Selector | None = None
 
 
 class TableChartColumnProperties(LayoutNode):

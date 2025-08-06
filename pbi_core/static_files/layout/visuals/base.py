@@ -1,5 +1,5 @@
 # ruff: noqa: N815
-from enum import Enum, StrEnum
+from enum import Enum
 from typing import TYPE_CHECKING, Annotated, Any
 
 from pydantic import ConfigDict, Discriminator, Tag
@@ -11,6 +11,7 @@ from pbi_core.static_files.layout.sources.column import ColumnSource
 from pbi_core.static_files.layout.sources.measure import MeasureSource
 from pbi_core.static_files.layout.visuals.properties import Expression
 
+from ..selector import Selector
 from .properties.vc_properties import VCProperties
 
 if TYPE_CHECKING:
@@ -38,23 +39,6 @@ class ProjectionConfig(LayoutNode):
     queryRef: str
     active: bool = False
     suppressConcat: bool = False
-
-
-class PropertyDefSelectorId(StrEnum):
-    default = "default"
-    hover = "hover"
-    id = "id"
-    selected = "selected"
-
-
-class SelectorData(LayoutNode):
-    roles: list[str]
-
-
-class PropertyDefSelector(LayoutNode):
-    id: PropertyDefSelectorId | None = None
-    metadata: str | None = None
-    data: list[SelectorData] | None = None
 
 
 class ColorRule1(LayoutNode):
@@ -85,7 +69,7 @@ PropertyExpression = Annotated[
 
 class PropertyDef(LayoutNode):
     properties: dict[str, PropertyExpression]
-    selector: PropertyDefSelector | None = None
+    selector: Selector | None = None
 
 
 class BaseVisual(LayoutNode):

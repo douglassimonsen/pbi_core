@@ -275,6 +275,15 @@ class FilterType(Enum):
     TopN = "TopN"
 
 
+class Scope(LayoutNode):
+    scopeId: ComparisonCondition
+
+
+class CachedDisplayNames(LayoutNode):
+    displayName: str
+    id: Scope
+
+
 class Filter(LayoutNode):
     name: str | None = None
     type: FilterType = FilterType.Categorial
@@ -286,7 +295,7 @@ class Filter(LayoutNode):
     filter: PrototypeQuery | None = None
     displayName: str | None = None
     ordinal: int = 0
-    cachedDisplayNames: int = None
+    cachedDisplayNames: list[CachedDisplayNames] | None = None
     isLinkedAsAggregation: bool = False
 
     def __repr__(self) -> str:

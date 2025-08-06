@@ -46,6 +46,7 @@ def get_subexpr_type(v: object | dict[str, Any]) -> str:
             return "MeasureSource"
         if "FillRule" in v:
             return "FillRuleExpression"
+        return "MeasureSource"
         msg = f"Unknown type: {v.keys()}"
         raise TypeError(msg)
     return v.__class__.__name__
@@ -115,6 +116,20 @@ class LinearGradient3Expression(LayoutNode):
     linearGradient3: LinearGradient3Helper
 
 
+class ResourcePackageItem(LayoutNode):
+    PackageName: str
+    PackageType: int  # TODO: enum
+    ItemName: str
+
+
+class ResourcePackageAccessExpression(LayoutNode):
+    ResourcePackageItem: ResourcePackageItem
+
+
+class ResourcePackageAccess(LayoutNode):
+    expr: ResourcePackageAccessExpression
+
+
 def get_expression(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "solid" in v:
@@ -125,12 +140,17 @@ def get_expression(v: object | dict[str, Any]) -> str:
             return "LinearGradient3Expression"
 
         if "expr" not in v:
-            raise ValueError(f"Unknown Expression: {v.keys()}")
+            msg = f"Unknown class: {v.keys()}"
+            raise TypeError(msg)
         if "Measure" in v["expr"]:
             return "MeasureExpression"
         if "Literal" in v["expr"]:
             return "LiteralExpression"
-        raise ValueError
+        if "ResourcePackageItem" in v["expr"]:
+            return "ResourcePackageAccess"
+        msg = f"Unknown class: {v.keys()}"
+        breakpoint()
+        raise TypeError(msg)
     return v.__class__.__name__
 
 
@@ -139,6 +159,7 @@ Expression = Annotated[
     | Annotated[MeasureExpression, Tag("MeasureExpression")]
     | Annotated[SolidColorExpression, Tag("SolidColorExpression")]
     | Annotated[LinearGradient2Expression, Tag("LinearGradient2Expression")]
-    | Annotated[LinearGradient3Expression, Tag("LinearGradient3Expression")],
+    | Annotated[LinearGradient3Expression, Tag("LinearGradient3Expression")]
+    | Annotated[ResourcePackageAccess, Tag("ResourcePackageAccess")],
     Discriminator(get_expression),
 ]
