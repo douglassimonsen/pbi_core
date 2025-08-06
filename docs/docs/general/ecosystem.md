@@ -17,16 +17,23 @@
 
 **pbi_server**: A server that provides a REST API for the pbi_core library, allowing for remote access to the functionality of the pbi_core and pbi_ruff libraries. The server is designed to be used in conjunction with the pbi_gui library, but can also be used independently.
 
+In the following flowchart:
+- Packages in <font color="green">green</font> are considered feature complete and essentially stable.
+- Packages in <font color="orange">orange</font> are in active development, but should be usable for most basic scenarios.
+- Packages in <font color="red">red</font> are experimental and are recommended only for advanced users or contributors.
+
 ```mermaid
 flowchart TD
-    pbi_server
-    pbi_gui
-    pbi_core
-    pbi_ruff
-    pbi_pyadomd
-    pbi_translation
-    pbi_parsers
-    pbi_git
+    
+    style pbi_server stroke:red
+    style pbi_gui stroke:red
+    style pbi_core stroke:orange
+    style pbi_ruff stroke:red
+    style pbi_pyadomd stroke:green
+    style pbi_translation stroke:green
+    style pbi_parsers stroke:green
+    style pbi_git stroke:orange
+
 
     pbi_git -- Uses to compare reports --> pbi_core
     pbi_gui -- Uses as a REST API --> pbi_server
