@@ -115,11 +115,9 @@ class LocalServer(BaseServer):
 
     This subclass has the ability to load/dump Tabular Models
     to a PBIX file. Also creates a background SSAS instance and workspace to handle processing if none is provided.
-    """
 
-    kill_on_exit: bool
-    """
-    Indicates if the background SSAS instance handling processing should be terminated at the end of the python session
+    Args:
+        kill_on_exit (bool): Indicates if the background SSAS instance handling processing should be terminated at the end of the python session
     """
 
     physical_process: SSASProcess
@@ -134,15 +132,13 @@ class LocalServer(BaseServer):
         pid: Optional[int] = None,
         kill_on_exit: bool = True,
     ) -> None:
-        self.kill_on_exit = kill_on_exit
-
         if pid is not None:
-            self.physical_process = SSASProcess(pid=pid)
+            self.physical_process = SSASProcess(pid=pid, kill_on_exit=kill_on_exit)
         else:
             workspace_directory = workspace_directory or (
                 ROOT_FOLDER / f"workspaces/{datetime.now(UTC).strftime(DT_FORMAT)}"
             )
-            self.physical_process = SSASProcess(workspace_directory=workspace_directory)
+            self.physical_process = SSASProcess(workspace_directory=workspace_directory, kill_on_exit=kill_on_exit)
         super().__init__(host, self.physical_process.port)
 
     def load_pbix(self, path: "StrPath", db_name: Optional[str] = None) -> LocalTabularModel:
@@ -183,11 +179,11 @@ def list_local_servers() -> list[LocalServer]:
     return ret
 
 
-def get_or_create_local_server() -> LocalServer:
+def get_or_create_local_server(kill_on_exit: bool = True) -> LocalServer:
     candidates: list[LocalServer] = list_local_servers()
     if candidates:
         return candidates[0]
-    return LocalServer()
+    return LocalServer(kill_on_exit=kill_on_exit)
 
 
 def terminate_all_local_servers() -> None:
