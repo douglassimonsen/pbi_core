@@ -65,7 +65,7 @@ class TraceEvents(IntEnum):
     EXISTING_SESSION = 42  # Existing session.
     SESSION_INITIALIZE = 43  # Session Initialize.
 
-    def get_columns(self) -> IntEnum:
+    def get_columns(self) -> type[IntEnum]:
         return event_column_mapping[self]
 
 
@@ -713,7 +713,7 @@ class CommandEndColumns(IntEnum):
     IDENTITY = 55
 
 
-event_column_mapping = {
+event_column_mapping: dict[TraceEvents, type[IntEnum]] = {
     TraceEvents.AUDIT_ADMIN_OPERATIONS_EVENT: AuditAdminOperationsEventColumns,
     TraceEvents.AUDIT_LOGIN: AuditLoginColumns,
     TraceEvents.AUDIT_LOGOUT: AuditLogoutColumns,

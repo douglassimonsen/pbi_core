@@ -49,7 +49,7 @@ class Subscriber:
 
     def poll_cursor(self) -> None:
         event_mapping = {e.value: e.name for e in self.events}
-        for record in self.cursor.fetch_stream_dict():
+        for record in self.cursor.fetch_stream():
             if "EventClass" in record:
                 record["EventClass"] = event_mapping[record["EventClass"]]
             self.trace_records.append(record)

@@ -69,9 +69,7 @@ class BaseServer:
         with self.conn(db_name) as conn:
             cursor = conn.cursor()
             cursor.execute_dax(query)
-            data: list[tuple[Any, ...]] = cursor.fetchall()
-            columns: list[str] = [x[0] for x in cursor.description]
-            return [dict(zip(columns, row, strict=False)) for row in data]
+            return cursor.fetch_all()
 
     def query_xml(self, query: str, db_name: str | None = None) -> BeautifulSoup:
         with self.conn(db_name) as conn:
