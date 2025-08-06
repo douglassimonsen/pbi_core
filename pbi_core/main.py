@@ -29,8 +29,9 @@ class LocalReport(BaseReport):
     def load_pbix(path: "StrPath") -> "LocalReport":
         server = get_or_create_local_server()
         ssas = server.load_pbix(path)
-        static_elements = StaticElements(path)
+        static_elements = StaticElements.load_pbix(path)
         return LocalReport(ssas=ssas, static_elements=static_elements)
 
-    def dump_pbix(self, path: "StrPath") -> None:
-        pass
+    def save_pbix(self, path: "StrPath") -> None:
+        self.static_elements.save_pbix(path)
+        self.ssas.save_pbix(path)
