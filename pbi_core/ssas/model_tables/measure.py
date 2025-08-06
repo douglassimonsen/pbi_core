@@ -61,6 +61,7 @@ class Measure(SsasRenameTable):
         return f"Measure({self.table().name}.{self.name})"
 
     def child_measures(self) -> list["Measure"]:
+        """Returns measures that are dependent on this measure"""
         dependent_measures = self.tabular_model.calc_dependencies.find_all({
             "referenced_object_type": "MEASURE",
             "referenced_table": self.table().name,
@@ -71,6 +72,7 @@ class Measure(SsasRenameTable):
         return ret
 
     def parent_measures(self) -> list["Measure"]:
+        """Returns measures that this measure is dependent on"""
         parent_measures = self.tabular_model.calc_dependencies.find_all({
             "object_type": "MEASURE",
             "table": self.table().name,

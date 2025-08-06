@@ -1,5 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
+
+import pydantic
+from pydantic_extra_types.semantic_version import SemanticVersion
 
 from ...lineage import LineageNode, LineageType
 from ..server.tabular_model import SsasBaseTable
@@ -8,8 +11,22 @@ if TYPE_CHECKING:
     from .culture import Culture
 
 
+class LinguisticMetadataContent(pydantic.BaseModel):
+    model_config = pydantic.ConfigDict(
+        arbitrary_types_allowed=True,
+        extra="forbid",
+        use_enum_values=False,
+        json_schema_mode_override="serialization",
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
+    Version: SemanticVersion
+    Language: str
+    DynamicImprovement: str
+
+
 class LinguisticMetadata(SsasBaseTable):
-    content: Any
+    content: pydantic.Json[LinguisticMetadataContent]
     content_type: int
     culture_id: int
 
