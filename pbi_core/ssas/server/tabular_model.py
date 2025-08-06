@@ -12,21 +12,43 @@ if TYPE_CHECKING:
 
     from ..model_tables import (
         KPI,
+        AlternateOf,
         Annotation,
         AttributeHierarchy,
+        CalculationGroup,
+        CalculationItem,
         Column,
+        ColumnPermission,
         Culture,
+        DataSource,
+        DetailRowDefinition,
         Expression,
+        ExtendedProperty,
+        FormatStringDefinition,
         Group,
+        GroupByColumn,
         Hierarchy,
         Level,
         LinguisticMetadata,
         Measure,
         Model,
+        ObjectTranslation,
         Partition,
+        Perspective,
+        PerspectiveColumn,
+        PerspectiveHierarchy,
+        PerspectiveMeasure,
+        PerspectiveSet,
+        PerspectiveTable,
         QueryGroup,
+        RefreshPolicy,
+        RelatedColumnDetail,
         Relationship,
+        Role,
+        RoleMembership,
+        Set,
         Table,
+        TablePermission,
         Variation,
     )
     from .server import BaseServer
@@ -36,21 +58,43 @@ class BaseTabularModel:
     db_name: str
     server: "BaseServer"
     model: "Model"
+    alternate_ofs: "Group[AlternateOf]"
+    annotations: "Group[Annotation]"
+    attribute_hierarchies: "Group[AttributeHierarchy]"
+    calculation_groups: "Group[CalculationGroup]"
+    calculation_items: "Group[CalculationItem]"
     columns: "Group[Column]"
+    column_permissions: "Group[ColumnPermission]"
     cultures: "Group[Culture]"
-    linguistic_metadata: "Group[LinguisticMetadata]"
-    measures: "Group[Measure]"
-    query_groups: "Group[QueryGroup]"
+    data_sources: "Group[DataSource]"
+    detail_row_definitions: "Group[DetailRowDefinition]"
     expressions: "Group[Expression]"
+    extended_properties: "Group[ExtendedProperty]"
+    format_string_definitions: "Group[FormatStringDefinition]"
+    group_by_columns: "Group[GroupByColumn]"
     hierarchies: "Group[Hierarchy]"
     kpis: "Group[KPI]"
-    tables: "Group[Table]"
-    annotations: "Group[Annotation]"
-    partitions: "Group[Partition]"
-    relationships: "Group[Relationship]"
-    variations: "Group[Variation]"
-    attribute_hierarchies: "Group[AttributeHierarchy]"
     levels: "Group[Level]"
+    linguistic_metadata: "Group[LinguisticMetadata]"
+    measures: "Group[Measure]"
+    object_translations: "Group[ObjectTranslation]"
+    partitions: "Group[Partition]"
+    perspectives: "Group[Perspective]"
+    perspective_columns: "Group[PerspectiveColumn]"
+    perspective_hierarchies: "Group[PerspectiveHierarchy]"
+    perspective_measures: "Group[PerspectiveMeasure]"
+    perspective_sets: "Group[PerspectiveSet]"
+    perspective_tables: "Group[PerspectiveTable]"
+    query_groups: "Group[QueryGroup]"
+    refresh_policies: "Group[RefreshPolicy]"
+    related_column_details: "Group[RelatedColumnDetail]"
+    relationships: "Group[Relationship]"
+    roles: "Group[Role]"
+    role_memberships: "Group[RoleMembership]"
+    sets: "Group[Set]"
+    tables: "Group[Table]"
+    table_permissions: "Group[TablePermission]"
+    variations: "Group[Variation]"
 
     def __init__(self, db_name: str, server: "BaseServer") -> None:
         self.db_name = db_name

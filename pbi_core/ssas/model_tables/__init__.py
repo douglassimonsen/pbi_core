@@ -12,6 +12,7 @@ from .calculation_item import CalculationItem
 from .column import Column
 from .column_permission import ColumnPermission
 from .culture import Culture
+from .data_source import DataSource
 from .detail_row_definition import DetailRowDefinition
 from .expression import Expression
 from .extended_property import ExtendedProperty
@@ -52,6 +53,7 @@ __all__ = [
     "Column",
     "ColumnPermission",
     "Culture",
+    "DataSource",
     "DetailRowDefinition",
     "Expression",
     "ExtendedProperty",
@@ -92,6 +94,7 @@ FIELD_TYPES: dict[str, type["SsasTable"]] = {
     "column_permissions": ColumnPermission,
     "columns": Column,
     "cultures": Culture,
+    "data_sources": DataSource,
     "detail_row_definitions": DetailRowDefinition,
     "expressions": Expression,
     "extended_properties": ExtendedProperty,
