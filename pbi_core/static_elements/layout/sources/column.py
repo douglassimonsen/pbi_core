@@ -1,5 +1,5 @@
 import inspect
-from typing import Optional
+from typing import Any, Optional
 
 from .._base_node import LayoutNode
 from .base import SourceExpression
@@ -15,6 +15,11 @@ class ColumnSource(LayoutNode):
 
     def filter_name(self) -> str:
         return self.Column.Property
+
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, ColumnSource):
+            return False
+        return (self.Column.column() == other.Column.column()) and (self.Column.table() == other.Column.table())
 
 
 """

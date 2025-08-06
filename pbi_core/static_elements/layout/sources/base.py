@@ -15,7 +15,6 @@ class Entity(LayoutNode):
     Name: Optional[str] = None
     Type: Optional[EntityType] = EntityType.NA2
 
-    @property
     def table(self) -> str:
         return self.Entity
 
@@ -30,7 +29,6 @@ class Entity(LayoutNode):
 class Source(LayoutNode):
     Source: str
 
-    @property
     def table(self) -> str:
         return self.Source
 
@@ -38,11 +36,9 @@ class Source(LayoutNode):
 class SourceRef(LayoutNode):
     SourceRef: Entity | Source
 
-    @property
     def table(self) -> str:
-        return self.SourceRef.table
+        return self.SourceRef.table()
 
-    @property
     def column(self) -> str:
         return "NA"
 
@@ -51,11 +47,9 @@ class SourceExpression(LayoutNode):
     Expression: SourceRef
     Property: str
 
-    @property
     def table(self) -> str:
-        return self.Expression.table
+        return self.Expression.table()
 
-    @property
     def column(self) -> str:
         return self.Property
 

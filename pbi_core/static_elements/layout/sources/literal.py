@@ -26,7 +26,6 @@ class _LiteralSourceHelper(LayoutNode):
 class LiteralSource(LayoutNode):
     Literal: _LiteralSourceHelper
 
-    @property
     def value(self) -> PrimitiveValue:
         return parse_literal(self.Literal.Value)
 

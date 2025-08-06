@@ -129,7 +129,6 @@ class VisualContainer(LayoutNode):
     config: Json[VisualConfig]
     id: Optional[int] = None
 
-    @property
     def name(self) -> Optional[str]:
         if self.config.singleVisual is not None:
             return f"{self.config.singleVisual.visualType}(x={round(self.x, 2)}, y={round(self.y, 2)}, z={round(self.z, 2)})"

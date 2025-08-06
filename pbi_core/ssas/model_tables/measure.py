@@ -71,6 +71,6 @@ class Measure(SsasRenameTable):
         if lineage_type == "children":
             return LineageNode(self, lineage_type, [c.get_lineage(lineage_type) for c in self.child_measures()])
         else:
-            parent_nodes: list[Optional[SsasTable]] = [self.KPI(), self.table()] + self.parent_measures()
+            parent_nodes: list[Optional[SsasTable]] = [self.KPI(), self.table()] + self.parent_measures()  # type: ignore
             parent_lineage = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
             return LineageNode(self, lineage_type, parent_lineage)

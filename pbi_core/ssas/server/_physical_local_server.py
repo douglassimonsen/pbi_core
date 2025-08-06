@@ -82,7 +82,6 @@ class SSASProcess:
             raise ValueError("This PID doesn't correspond to a valid SSAS instance")
         return proc_info.workspace_directory
 
-    @property
     def workspace_directory(self) -> pathlib.Path:
         return pathlib.Path(self._workspace_directory).absolute()
 
@@ -106,11 +105,11 @@ class SSASProcess:
         return rf"C:\Users\{os.getlogin()}\AppData\Local\Microsoft\Power BI Desktop\CertifiedExtensions"
 
     def create_workspace(self) -> None:
-        logger.debug("initializing SSAS Workspace", directory=self.workspace_directory)
-        self.workspace_directory.mkdir(parents=True, exist_ok=True)
-        (self.workspace_directory / "msmdsrv.ini").write_text(
+        logger.debug("initializing SSAS Workspace", directory=self.workspace_directory())
+        self.workspace_directory().mkdir(parents=True, exist_ok=True)
+        (self.workspace_directory() / "msmdsrv.ini").write_text(
             COMMAND_TEMPLATES["msmdsrv.ini"].render(
-                data_directory=self.workspace_directory.absolute().as_posix().replace("/", "\\"),
+                data_directory=self.workspace_directory().absolute().as_posix().replace("/", "\\"),
                 certificate_directory=self.certificate_directory,
             )
         )
@@ -132,7 +131,7 @@ class SSASProcess:
             "-n",
             "pbi_core_master",
             "-s",
-            self.workspace_directory.as_posix(),
+            self.workspace_directory().as_posix(),
         ]
         flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
         return subprocess.Popen(
@@ -153,10 +152,10 @@ class SSASProcess:
             FileNotFoundError: when ``msmdsrv.port.txt`` cannot be found in the SSAS workspace folder
         """
         try:
-            return int((self.workspace_directory / "msmdsrv.port.txt").read_text(encoding="utf-16-le"))
+            return int((self.workspace_directory() / "msmdsrv.port.txt").read_text(encoding="utf-16-le"))
         except FileNotFoundError as e:
             raise FileNotFoundError(
-                f"Could not find msmdsrv.port.txt file in directory {self.workspace_directory}. This is needed to get the port of the SSAS instance"
+                f"Could not find msmdsrv.port.txt file in directory {self.workspace_directory()}. This is needed to get the port of the SSAS instance"
             ) from e
 
     def initialize_server(self) -> int:
@@ -199,5 +198,5 @@ class SSASProcess:
         self.wait_until_terminated(p)
         logger.info("Terminated SSAS Proc", pid=self.pid)
 
-        shutil.rmtree(self.workspace_directory, ignore_errors=True)
-        logger.info("Workspace Removed", directory=self.workspace_directory.as_posix())
+        shutil.rmtree(self.workspace_directory(), ignore_errors=True)
+        logger.info("Workspace Removed", directory=self.workspace_directory().as_posix())

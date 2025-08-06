@@ -50,6 +50,7 @@ __all__ = [
     "AlternateOf",
     "Annotation",
     "AttributeHierarchy",
+    "CalcDependency",
     "CalculationGroup",
     "CalculationItem",
     "Column",

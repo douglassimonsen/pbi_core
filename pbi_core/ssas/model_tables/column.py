@@ -64,12 +64,12 @@ class Column(SsasRenameTable):
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             children_nodes: list[Column | Measure | AttributeHierarchy] = (
-                [self.attribute_hierarchy()] + self.child_measures() + self.sorting_columns() + self.child_columns()
+                [self.attribute_hierarchy()] + self.child_measures() + self.sorting_columns() + self.child_columns()  # type: ignore
             )
             children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
             return LineageNode(self, lineage_type, children_lineage)
         else:
-            parent_nodes: list[Optional[SsasTable]] = [self.table(), self.sort_by_column()] + self.parent_columns()
+            parent_nodes: list[Optional[SsasTable]] = [self.table(), self.sort_by_column()] + self.parent_columns()  # type: ignore
             parent_lineage = [p.get_lineage(lineage_type) for p in parent_nodes if p is not None]
             return LineageNode(self, lineage_type, parent_lineage)
 

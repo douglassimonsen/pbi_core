@@ -40,4 +40,4 @@ Visual = Annotated[
 ]
 
 
-__all__ = ["Visual"]
+__all__ = ["BaseVisual", "Visual"]

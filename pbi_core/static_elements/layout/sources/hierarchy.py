@@ -10,7 +10,6 @@ class PropertyVariationSource(LayoutNode):
     Name: str
     Property: str
 
-    @property
     def column(self) -> str:
         return self.Property
 
@@ -18,13 +17,11 @@ class PropertyVariationSource(LayoutNode):
 class _PropertyVariationSourceHelper(LayoutNode):
     PropertyVariationSource: PropertyVariationSource
 
-    @property
     def table(self) -> str:
-        return self.PropertyVariationSource.Expression.table
+        return self.PropertyVariationSource.Expression.table()
 
-    @property
     def column(self) -> str:
-        return self.PropertyVariationSource.column
+        return self.PropertyVariationSource.column()
 
 
 class _HierarchySourceHelper(LayoutNode):
