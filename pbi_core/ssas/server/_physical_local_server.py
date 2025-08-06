@@ -38,7 +38,7 @@ class SSASProcess:
            SSASProcess('tmp/workspace', False)  # Generates a new SSAS Process and allows it to run beyond the lifetime of the Python script
 
     Raises:
-        ValueError: If both or none of `pid` and `workspace_directory` are specified
+        ValueError: If both or none of ``pid`` and ``workspace_directory`` are specified
 
     """
 
@@ -73,6 +73,9 @@ class SSASProcess:
             self._workspace_directory = self._get_workspace_directory()
 
     def _get_workspace_directory(self) -> pathlib.Path:
+        """
+        Uses the PID and the command used to initialize that PID to identify the workspace directory used by the SSAS process
+        """
         proc = psutil.Process(self.pid)
         proc_info = get_msmdsrv_info(proc)
         if proc_info is None:
@@ -85,6 +88,12 @@ class SSASProcess:
 
     @cached_property
     def powerbi_exe_path(self) -> str:
+        """
+        Tests locations on your computer for the ``msmdsrv.exe`` file needed to create an SSAS process
+
+        Raises:
+            FileNotFoundError: when no ``msmdsrv.exe`` file is found in any of the candidate folders
+        """
         candidate_folders = ["C:/Program Files/Microsoft Power BI Desktop", "C:/Program Files/WindowsApps"]
         for folder in candidate_folders:
             for path in pathlib.Path(folder).glob("**/msmdsrv.exe"):
@@ -113,7 +122,8 @@ class SSASProcess:
         -n "instance_name": instance name (the name of the default database)
         -s "workspace_directory": The location of the configuration
 
-        Note: -s points to the workspace created in the method "create_workspace"
+        Note:
+            ``-s`` points to the workspace created in the method "create_workspace"
         """
         logger.debug("Running msmdsrv exe")
         command = [  # pbi_core_master is not really used, but a port file isn't generated without it
@@ -138,6 +148,9 @@ class SSASProcess:
         """
         We include exponential backoff in this function since it occasionally takes 1-3 seconds for msmdsrv.exe
         to generate the msmdsrv.port.txt file in the workspace
+
+        Raises:
+            FileNotFoundError: when ``msmdsrv.port.txt`` cannot be found in the SSAS workspace folder
         """
         try:
             return int((self.workspace_directory / "msmdsrv.port.txt").read_text(encoding="utf-16-le"))
@@ -157,10 +170,24 @@ class SSASProcess:
     @staticmethod
     @backoff.on_exception(backoff.expo, ValueError, max_time=10)
     def wait_until_terminated(process: psutil.Process) -> None:
+        """
+        Takes a process class and checks if the process is still running
+        """
         if process.is_running():
             raise ValueError("The process will not terminate")
 
     def terminate(self) -> None:
+        """
+        Kills the SSAS instance.
+
+        The code performs the following:
+
+        1. Checks the PID. If the PID isn't associated with an active process, we declare the SSAS instance killed
+        2. Checks the information associated with the PID (from ``get_msmdsrv_info``). If it's not running ``msmdsrv.exe`` with active ports, we consider it killed
+        3. We call a terminate command
+        4. We wait until the command is in a non-running state
+        5. We then remove the corresponding workspace
+        """
         try:
             p = psutil.Process(self.pid)
         except psutil.NoSuchProcess:  # something else killed it??
