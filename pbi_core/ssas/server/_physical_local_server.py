@@ -27,7 +27,7 @@ class SSASProcess:
     Args:
         pid (Optional[int]): The process ID of the SSAS instance. If None, the class will create a new SSAS process
         workspace_directory (StrPath): The path to the workspace corresponding to the pid. Should only be included when the pid is not provided.
-        kill_on_exit (bool): Specifies whether the SSAS instance should be terminated when the python interpreter exits (implemented via atexit lib)
+        kill_on_exit (bool): Specifies whether the SSAS instance should be terminated when the python session exits (implemented via atexit lib)
 
     Examples:
         .. code-block:: python

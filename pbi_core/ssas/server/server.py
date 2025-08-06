@@ -190,6 +190,13 @@ def list_local_servers() -> list[LocalServer]:
 
 
 def get_or_create_local_server(kill_on_exit: bool = True) -> LocalServer:
+    """
+    Checks the list of active processes on your local machine for a ``msmdsrv.exe`` process with an active port and a corresponding workspace folder.
+    If no matching process is found, this function generates a new process.
+
+    Args:
+        kill_on_exit (bool, optional): **If** this function creates a new instance of a local SSAS process, this argument will control if the process is killed at the end of the Python session.
+    """
     candidates: list[LocalServer] = list_local_servers()
     if candidates:
         return candidates[0]
