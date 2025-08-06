@@ -3,7 +3,7 @@ from enum import IntEnum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
+from .base import SsasRenameRecord, SsasTable
 
 if TYPE_CHECKING:
     from .column import Column

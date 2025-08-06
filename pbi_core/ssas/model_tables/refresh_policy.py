@@ -1,6 +1,6 @@
 from enum import IntEnum
 
-from pbi_core.ssas.server.tabular_model import SsasEditableRecord
+from .base import SsasEditableRecord
 
 
 class PolicyType(IntEnum):

@@ -3,7 +3,8 @@ from enum import IntEnum
 from typing import TYPE_CHECKING
 
 from pbi_core.ssas.model_tables.enums import DataState
-from pbi_core.ssas.server.tabular_model import SsasEditableRecord
+
+from .base import SsasEditableRecord
 
 if TYPE_CHECKING:
     from .role import Role

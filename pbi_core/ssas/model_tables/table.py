@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.model_tables.enums import DataCategory
-from pbi_core.ssas.server.tabular_model import RefreshType, SsasRefreshRecord
 
+from .base import RefreshType, SsasRefreshRecord
 from .column import Column
 from .measure import Measure
 from .partition import Partition

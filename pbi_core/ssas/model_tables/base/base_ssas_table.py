@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, ClassVar, Final
+from typing import Any, ClassVar, Final
 
 import pydantic
 from bs4 import BeautifulSoup
@@ -7,15 +7,14 @@ from structlog import get_logger
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.pydantic.main import BaseValidation
 from pbi_core.ssas.server._commands import Command
+from pbi_core.ssas.server.tabular_model import BaseTabularModel
 from pbi_core.ssas.server.utils import ROW_TEMPLATE, python_to_xml
 
-if TYPE_CHECKING:
-    from .tabular_model import BaseTabularModel
 logger = get_logger()
 
 
 class SsasTable(BaseValidation):
-    tabular_model: "BaseTabularModel"
+    tabular_model: BaseTabularModel
     _read_only_fields: ClassVar[tuple[str, ...]] = ()
 
     id: Final[int] = pydantic.Field(frozen=True)

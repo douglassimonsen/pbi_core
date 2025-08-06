@@ -2,7 +2,8 @@ import datetime
 from typing import TYPE_CHECKING
 
 from pbi_core.ssas.model_tables.enums import DataState
-from pbi_core.ssas.server.tabular_model import SsasRenameRecord
+
+from .base import SsasRenameRecord
 
 if TYPE_CHECKING:
     from .calculation_group import CalculationGroup

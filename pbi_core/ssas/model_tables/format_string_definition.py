@@ -3,7 +3,8 @@ import datetime
 from pbi_parsers import dax
 
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
-from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
+
+from .base import SsasRenameRecord, SsasTable
 
 
 class FormatStringDefinition(SsasRenameRecord):

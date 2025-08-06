@@ -6,7 +6,8 @@ from pydantic import Json
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.pydantic.main import BaseValidation
-from pbi_core.ssas.server.tabular_model import RefreshType, SsasModelRecord
+
+from .base import RefreshType, SsasModelRecord
 
 if TYPE_CHECKING:
     from .culture import Culture

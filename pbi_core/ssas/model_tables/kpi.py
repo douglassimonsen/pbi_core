@@ -2,7 +2,8 @@ import datetime
 from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasEditableRecord
+
+from .base import SsasEditableRecord
 
 if TYPE_CHECKING:
     from .measure import Measure

@@ -2,7 +2,8 @@ import datetime
 from enum import IntEnum
 
 from pbi_core.ssas.model_tables.enums import ObjectType
-from pbi_core.ssas.server.tabular_model import SsasEditableRecord, SsasTable
+
+from .base import SsasEditableRecord, SsasTable
 
 
 class Property(IntEnum):

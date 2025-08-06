@@ -1,8 +1,8 @@
 import datetime
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
+from .base import SsasRenameRecord, SsasTable
 from .enums import ObjectType
 
 
@@ -61,4 +61,4 @@ class Annotation(SsasRenameRecord):
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
-        return LineageNode(self, lineage_type, [self.parent().get_lineage(lineage_type)])
+        return LineageNode(self, lineage_type, [self.object().get_lineage(lineage_type)])

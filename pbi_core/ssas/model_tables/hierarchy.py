@@ -5,7 +5,8 @@ from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.model_tables.enums import DataState
-from pbi_core.ssas.server.tabular_model import SsasRenameRecord
+
+from .base import SsasRenameRecord
 
 if TYPE_CHECKING:
     from .level import Level

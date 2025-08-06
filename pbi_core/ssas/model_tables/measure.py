@@ -6,8 +6,8 @@ from pbi_parsers import dax
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.model_tables.enums import DataState, DataType
-from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
+from .base import SsasRenameRecord, SsasTable
 from .column import Column
 
 if TYPE_CHECKING:

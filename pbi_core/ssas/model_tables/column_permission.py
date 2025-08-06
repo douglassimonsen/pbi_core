@@ -2,7 +2,8 @@ import datetime
 from typing import TYPE_CHECKING
 
 from pbi_core.ssas.model_tables.table_permission import MetadataPermission, TablePermission
-from pbi_core.ssas.server.tabular_model import SsasEditableRecord
+
+from .base import SsasEditableRecord
 
 if TYPE_CHECKING:
     from .column import Column

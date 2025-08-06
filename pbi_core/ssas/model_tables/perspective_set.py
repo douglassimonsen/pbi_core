@@ -1,4 +1,4 @@
-from pbi_core.ssas.server.tabular_model import SsasTable
+from .base import SsasTable
 
 
 class PerspectiveSet(SsasTable):

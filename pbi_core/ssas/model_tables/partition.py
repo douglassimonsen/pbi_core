@@ -8,9 +8,9 @@ from pbi_parsers import dax, pq
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables.enums import DataState
-from pbi_core.ssas.server.tabular_model import RefreshType, SsasRefreshRecord, SsasTable
 
 from ._group import RowNotFoundError
+from .base import RefreshType, SsasRefreshRecord, SsasTable
 from .column import Column
 
 if TYPE_CHECKING:

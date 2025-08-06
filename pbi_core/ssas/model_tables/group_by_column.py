@@ -1,4 +1,4 @@
-from pbi_core.ssas.server.tabular_model import SsasRenameRecord
+from .base import SsasRenameRecord
 
 
 class GroupByColumn(SsasRenameRecord):

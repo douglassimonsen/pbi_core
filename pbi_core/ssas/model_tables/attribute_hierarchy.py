@@ -3,7 +3,8 @@ from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.model_tables.enums import DataState
-from pbi_core.ssas.server.tabular_model import SsasReadonlyRecord
+
+from .base import SsasReadonlyRecord
 
 if TYPE_CHECKING:
     from .column import Column

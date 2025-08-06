@@ -7,7 +7,8 @@ from pydantic_extra_types.semantic_version import SemanticVersion
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.pydantic import BaseValidation
-from pbi_core.ssas.server.tabular_model import SsasEditableRecord
+
+from .base import SsasEditableRecord
 
 if TYPE_CHECKING:
     from .culture import Culture
