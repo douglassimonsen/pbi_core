@@ -7,6 +7,7 @@ from ._group import Group, RowNotFoundError
 from .alternate_of import AlternateOf
 from .annotation import Annotation
 from .attribute_hierarchy import AttributeHierarchy
+from .calc_dependency import CalcDependency
 from .calculation_group import CalculationGroup
 from .calculation_item import CalculationItem
 from .column import Column
@@ -90,6 +91,7 @@ FIELD_TYPES: dict[str, type["SsasTable"]] = {
     "alternate_of": AlternateOf,
     "annotations": Annotation,
     "attribute_hierarchies": AttributeHierarchy,
+    "calc_dependencies": CalcDependency,
     "calculation_groups": CalculationGroup,
     "calculation_items": CalculationItem,
     "column_permissions": ColumnPermission,

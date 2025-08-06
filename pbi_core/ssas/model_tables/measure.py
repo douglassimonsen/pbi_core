@@ -51,10 +51,23 @@ class Measure(SsasRenameTable):
             for x in ret
         ]
 
+    def child_measures(self) -> list["Measure"]:
+        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+            "referenced_object_type": "MEASURE",
+            "referenced_table": self.table().name,
+            "referenced_object": self.name,
+        })
+        dependent_measure_keys = [(m.table, m.object) for m in dependent_measures]
+        ret = [m for m in self.tabular_model.measures if (m.table().name, m.name) in dependent_measure_keys]
+        return ret
+
+    def parent_measures(self) -> list["Measure"]:
+        return []
+
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
-            return LineageNode(self, lineage_type)
+            return LineageNode(self, lineage_type, [c.get_lineage(lineage_type) for c in self.child_measures()])
         else:
-            parent_nodes: list[Optional[SsasTable]] = [self.KPI(), self.table()]
+            parent_nodes: list[Optional[SsasTable]] = [self.KPI(), self.table()] + self.parent_measures()
             parent_lineage = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
             return LineageNode(self, lineage_type, parent_lineage)

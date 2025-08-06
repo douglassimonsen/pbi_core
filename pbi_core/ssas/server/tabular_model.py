@@ -24,6 +24,7 @@ if TYPE_CHECKING:
         AlternateOf,
         Annotation,
         AttributeHierarchy,
+        CalcDependency,
         CalculationGroup,
         CalculationItem,
         Column,
@@ -70,6 +71,7 @@ class BaseTabularModel:
     alternate_ofs: "Group[AlternateOf]"
     annotations: "Group[Annotation]"
     attribute_hierarchies: "Group[AttributeHierarchy]"
+    calc_dependencies: "Group[CalcDependency]"
     calculation_groups: "Group[CalculationGroup]"
     calculation_items: "Group[CalculationItem]"
     columns: "Group[Column]"
@@ -154,14 +156,16 @@ class LocalTabularModel(BaseTabularModel):
 def discover_xml_to_dict(xml: BeautifulSoup) -> dict[str, list[dict[Any, Any]]]:
     assert xml.results is not None
     results: list[Tag] = list(xml.results)  # type: ignore
-    results[-1]["name"] = "CALC_DEPENDENCY"
-
-    return {
+    results[-1]["name"] = "CalcDependency"
+    ret = {
         cast(str, table["name"]): [
             {field.name: field.text for field in row if field.name is not None} for row in table.find_all("row")
         ]
         for table in results
     }
+    for i, row in enumerate(ret["CalcDependency"]):
+        row["id"] = i
+    return ret
 
 
 SsasConfig = pydantic.ConfigDict(
@@ -192,16 +196,21 @@ class SsasTable(pydantic.BaseModel):
 
     @pydantic.model_validator(mode="before")
     def to_snake_case(cls: "SsasTable", raw_values: dict[str, Any]) -> dict[str, Any]:
+        def update_char(char: str, prev_char: str) -> str:
+            if char.isupper() and prev_char.islower() and prev_char != "_":
+                return f"_{char.lower()}"
+            else:
+                return char.lower()
+
         def case_helper(field_name: str) -> str:
             special_cases = {
                 "owerBI": "owerbi",
-                "ID": "Id",
-                "MDX": "Mdx",
-                "KPI": "Kpi",
             }
             for old_segment, new_segment in special_cases.items():
                 field_name = field_name.replace(old_segment, new_segment)
-            field_name = "".join(f"_{c.lower()}" if c.isupper() else c for c in field_name).strip("_")
+            field_name = "".join(
+                update_char(curr, prev) for prev, curr in zip(" " + field_name[:-1], field_name)
+            ).strip("_")
 
             return field_name
 

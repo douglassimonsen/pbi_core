@@ -48,7 +48,6 @@ class Model(SsasModelTable):
         return "Model"
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
-        breakpoint()
         if lineage_type == "children":
             return LineageNode(
                 self,

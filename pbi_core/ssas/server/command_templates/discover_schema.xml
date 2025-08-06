@@ -421,6 +421,7 @@
 		<RequestType>DISCOVER_CALC_DEPENDENCY</RequestType>
 		<Restrictions>
 			<RestrictionList>
+				<DATABASE_NAME>{{db_name}}</DATABASE_NAME>
 			</RestrictionList>
 		</Restrictions>
 		<Properties>

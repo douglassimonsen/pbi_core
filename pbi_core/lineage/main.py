@@ -15,19 +15,21 @@ class LineageNode:
         self.relatives = relatives or []
         self.lineage_type = lineage_type
 
-    def _to_mermaid_helper(self):
-        pass
-
-    def to_mermaid(self) -> MermaidDiagram:
-        nodes = [
-            Node(
-                id=f"{self.value.__class__.__name__}-{self.value.id}",
-            )
-        ]
+    def _to_mermaid_helper(self, node: Node) -> tuple[list[Node], list[Link]]:
+        nodes = [node]
         links = []
         for relative in self.relatives:
             child_node = Node(id=f"{relative.value.__class__.__name__}-{relative.value.id}")
+            child_nodes, child_links = relative._to_mermaid_helper(child_node)
             links.append(Link(nodes[0], child_node))
-            nodes.append(child_node)
+            links.extend(child_links)
+            nodes.extend(child_nodes)
+        return nodes, links
+
+    def to_mermaid(self) -> MermaidDiagram:
+        base_node = Node(
+            id=f"{self.value.__class__.__name__}-{self.value.id}",
+        )
+        nodes, links = self._to_mermaid_helper(base_node)
 
         return MermaidDiagram(title="Lineage Chart", nodes=nodes, links=links)

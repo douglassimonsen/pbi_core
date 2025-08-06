@@ -8,6 +8,7 @@ from ..server.tabular_model import SsasRenameTable, SsasTable
 if TYPE_CHECKING:
     from .attribute_hierarchy import AttributeHierarchy
     from .level import Level
+    from .measure import Measure
     from .relationship import Relationship
     from .table import Table
 
@@ -59,13 +60,15 @@ class Column(SsasRenameTable):
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
-            children_nodes: list[Optional[SsasTable]] = [self.attribute_hierarchy()]
+            children_nodes: list[Column | Measure | AttributeHierarchy] = (
+                [self.attribute_hierarchy()] + self.child_measures() + self.sorting_columns() + self.child_columns()
+            )
             children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
-            return LineageNode(self, children_lineage)
+            return LineageNode(self, lineage_type, children_lineage)
         else:
-            parent_nodes: list[Optional[SsasTable]] = [self.table(), self.sort_by_column()]
+            parent_nodes: list[Optional[SsasTable]] = [self.table(), self.sort_by_column()] + self.parent_columns()
             parent_lineage = [p.get_lineage(lineage_type) for p in parent_nodes if p is not None]
-            return LineageNode(self, parent_lineage)
+            return LineageNode(self, lineage_type, parent_lineage)
 
     def data(self, head: int = 100) -> list[int | float | str]:
         table_name = self.table().name
@@ -96,6 +99,30 @@ class Column(SsasRenameTable):
 
     def levels(self) -> list["Level"]:
         return self.tabular_model.levels.find_all({"column_id": self.id})
+
+    def child_measures(self) -> list["Measure"]:
+        if self.expression is None:
+            object_type = "COLUMN"
+        else:
+            object_type = "CALC_COLUMN"
+        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+            "referenced_object_type": object_type,
+            "referenced_table": self.table().name,
+            "referenced_object": self.explicit_name,
+        })
+        dependent_measure_keys = [(m.table, m.object) for m in dependent_measures]
+        return [m for m in self.tabular_model.measures if (m.table().name, m.name) in dependent_measure_keys]
+
+    def parent_measures(self) -> list["Measure"]:
+        """Calculated columns can use Measures too :("""
+        return []
+
+    def child_columns(self) -> list["Column"]:
+        """Only occurs when the column is calculated (expression is not None)"""
+        return []
+
+    def parent_columns(self) -> list["Column"]:
+        return []
 
     def sort_by_column(self) -> Optional["Column"]:
         if self.sort_by_column_id is None:
