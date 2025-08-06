@@ -29,7 +29,7 @@ class CapitalizeFunctionNames(BaseRule):
                     RuleResult(
                         rule=cls,
                         message=message,
-                        context=dax.utils.highlight_section(function),
+                        context=dax.utils.highlight_section(function.name_parts),
                         context_vars={
                             "function_name": function_name,
                             "correct_name": function_name.upper(),
