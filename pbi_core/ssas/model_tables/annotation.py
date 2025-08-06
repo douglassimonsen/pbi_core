@@ -1,9 +1,9 @@
 import datetime
 from enum import IntEnum
-from typing import Any, Optional
+from typing import Any
 
-from ...lineage import LineageNode, LineageType
-from ..server.tabular_model import SsasRenameTable, SsasTable
+from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.server.tabular_model import SsasRenameTable, SsasTable
 
 
 class ObjectType(IntEnum):
@@ -21,11 +21,11 @@ class Annotation(SsasRenameTable):
     object_id: int
     object_type: ObjectType
     name: str
-    value: Optional[Any] = None
+    value: Any | None = None
 
     modified_time: datetime.datetime
 
-    def parent(self) -> "SsasTable":
+    def parent(self) -> "SsasTable":  # noqa: PLR0911
         match self.object_type:
             case ObjectType.MODEL:
                 return self.tabular_model.model
@@ -42,10 +42,10 @@ class Annotation(SsasRenameTable):
             case ObjectType.QUERY_GROUP:
                 return self.tabular_model.query_groups.find({"id": self.object_id})
             case _:
-                raise ValueError("No Matching Object ID")
+                msg = "No Matching Object ID"
+                raise ValueError(msg)
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
-        else:
-            return LineageNode(self, lineage_type, [self.parent().get_lineage(lineage_type)])
+        return LineageNode(self, lineage_type, [self.parent().get_lineage(lineage_type)])

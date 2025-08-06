@@ -1,6 +1,6 @@
-from . import ssas, git
+from . import git, ssas
 from .main import LocalReport
 from .static_files import layout
 
-__all__ = ["git", "layout", "ssas", "LocalReport"]
+__all__ = ["LocalReport", "git", "layout", "ssas"]
 __version__ = "0.2.0"

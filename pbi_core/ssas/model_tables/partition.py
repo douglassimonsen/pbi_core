@@ -2,8 +2,9 @@ import datetime
 from enum import IntEnum
 from typing import TYPE_CHECKING, Optional
 
-from ...lineage import LineageNode, LineageType
-from ..server.tabular_model import SsasRefreshTable, SsasTable
+from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.server.tabular_model import SsasRefreshTable, SsasTable
+
 from ._group import RowNotFoundError
 
 if TYPE_CHECKING:
@@ -12,9 +13,7 @@ if TYPE_CHECKING:
 
 
 class PartitionMode(IntEnum):
-    """
-    Source: https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions
-    """
+    """Source: https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions."""
 
     Import = 0
     DirectQuery = 1  # not verified
@@ -22,23 +21,24 @@ class PartitionMode(IntEnum):
 
 
 class PartitionType(IntEnum):
-    """
-    Source: https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions
-    """
+    """Source: https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions."""
 
     Calculated = 2  # not verified
     Query = 4  # not verified
 
 
 class Partition(SsasRefreshTable):
-    """Partitions are a child of Tables. They contain the Power Query code. Data refreshes occur on the Partition-level"""
+    """Partitions are a child of Tables. They contain the Power Query code.
+
+    Data refreshes occur on the Partition-level.
+    """
 
     data_view: int
     mode: PartitionMode
     name: str
     partition_storage_id: int
     query_definition: str
-    query_group_id: Optional[int] = None
+    query_group_id: int | None = None
     range_granularity: int
     retain_data_till_force_calculate: bool
     state: int
@@ -61,7 +61,6 @@ class Partition(SsasRefreshTable):
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
-        else:
-            parent_nodes: list[Optional[SsasTable]] = [self.table(), self.query_group()]
-            parent_lineage: list[LineageNode] = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
-            return LineageNode(self, lineage_type, parent_lineage)
+        parent_nodes: list[SsasTable | None] = [self.table(), self.query_group()]
+        parent_lineage: list[LineageNode] = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
+        return LineageNode(self, lineage_type, parent_lineage)

@@ -1,5 +1,6 @@
+# ruff: noqa: N815
 from enum import IntEnum
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 from uuid import UUID
 
 from pydantic import Json
@@ -16,9 +17,9 @@ class Parameter(LayoutNode):
 
     name: str
     boundFilter: str
-    fieldExpr: Optional[ColumnSource] = None
-    isLegacySingleSelection: Optional[bool] = False
-    asAggregation: Optional[bool] = False
+    fieldExpr: ColumnSource | None = None
+    isLegacySingleSelection: bool | None = False
+    asAggregation: bool | None = False
 
 
 class PodType(IntEnum):
@@ -29,12 +30,12 @@ class PodType(IntEnum):
 class Pod(LayoutNode):
     _parent: "Layout"
 
-    id: Optional[int] = None
+    id: int | None = None
     name: str
     boundSection: str
     config: Json[Any]
     parameters: Json[list[Parameter]] = []
-    type: Optional[PodType] = None
-    referenceScope: Optional[int] = None
-    cortanaEnabled: Optional[bool] = None
-    objectId: Optional[UUID] = None
+    type: PodType | None = None
+    referenceScope: int | None = None
+    cortanaEnabled: bool | None = None
+    objectId: UUID | None = None

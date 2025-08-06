@@ -1,11 +1,10 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from pydantic import Json
 
 from pbi_core.lineage import LineageNode, LineageType
-
-from ..server.tabular_model import RefreshType, SsasModelTable
+from pbi_core.ssas.server.tabular_model import RefreshType, SsasModelTable
 
 if TYPE_CHECKING:
     from .culture import Culture
@@ -23,9 +22,9 @@ class Model(SsasModelTable):
     default_data_view: int
     default_mode: int
     default_powerbi_data_source_version: int
-    discourage_composite_models: Optional[bool] = None
+    discourage_composite_models: bool | None = None
     discourage_implicit_measures: bool
-    disable_auto_exists: Optional[int] = None
+    disable_auto_exists: int | None = None
     force_unique_names: bool
     name: str
     source_query_culture: str
@@ -56,5 +55,4 @@ class Model(SsasModelTable):
                 + [t.get_lineage(lineage_type) for t in self.tables()]
                 + [q.get_lineage(lineage_type) for q in self.query_groups()],
             )
-        else:
-            return LineageNode(self, lineage_type)
+        return LineageNode(self, lineage_type)

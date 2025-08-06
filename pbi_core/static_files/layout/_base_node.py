@@ -1,11 +1,12 @@
-from typing import TYPE_CHECKING, Any, Callable, Optional, TypeVar
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 
 import pydantic
 
-from ...lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode, LineageType
 
 if TYPE_CHECKING:
-    from ...ssas.server import BaseTabularModel
+    from pbi_core.ssas.server import BaseTabularModel
 
 LAYOUT_ENCODING = "utf-16-le"
 
@@ -20,16 +21,18 @@ T = TypeVar("T", bound="LayoutNode")
 
 class LayoutNode(pydantic.BaseModel):
     model_config = MODEL_CONFIG
-    _name_field: Optional[str] = None  # name of the field used to populate __repr__
+    _name_field: str | None = None  # name of the field used to populate __repr__
     _parent: "LayoutNode"
     _xpath: list[str | int]
 
     def find_all(
-        self, cls_type: type[T], attributes: Optional[dict[str, Any] | Callable[[T], bool]] = None
+        self,
+        cls_type: type[T],
+        attributes: dict[str, Any] | Callable[[T], bool] | None = None,
     ) -> list["T"]:
-        ret: list["T"] = []
+        ret: list[T] = []
         if attributes is None:
-            attribute_lambda: Callable[[T], bool] = lambda x: True  # noqa: E731
+            attribute_lambda: Callable[[T], bool] = lambda _: True  # noqa: E731
         elif isinstance(attributes, dict):
             attribute_lambda = lambda x: all(  # noqa: E731
                 getattr(x, field_name) == field_value for field_name, field_value in attributes.items()
@@ -42,9 +45,9 @@ class LayoutNode(pydantic.BaseModel):
             ret.extend(child.find_all(cls_type, attributes))
         return ret
 
-    def find(self, cls_type: type[T], attributes: Optional[dict[str, Any] | Callable[[T], bool]] = None) -> "T":
+    def find(self, cls_type: type[T], attributes: dict[str, Any] | Callable[[T], bool] | None = None) -> "T":
         if attributes is None:
-            attribute_lambda: Callable[[T], bool] = lambda x: True  # noqa: E731
+            attribute_lambda: Callable[[T], bool] = lambda _: True  # noqa: E731
         elif isinstance(attributes, dict):
             attribute_lambda = lambda x: all(  # noqa: E731
                 getattr(x, field_name) == field_value for field_name, field_value in attributes.items()
@@ -58,19 +61,20 @@ class LayoutNode(pydantic.BaseModel):
                 return child.find(cls_type, attributes)
             except ValueError:
                 pass
-        raise ValueError(f"Object not found: {cls_type}")
+        msg = f"Object not found: {cls_type}"
+        raise ValueError(msg)
 
-    def model_dump_json(self, **kwargs: Any):
+    def model_dump_json(self, **kwargs: Any) -> dict:
         return super().model_dump_json(round_trip=True, exclude_unset=True, **kwargs)
 
-    def next_sibling(self: T) -> T:
-        raise NotImplementedError()
+    def next_sibling(self) -> Self:
+        raise NotImplementedError
 
-    def prev_sibling(self: T) -> T:
-        raise NotImplementedError()
+    def prev_sibling(self) -> Self:
+        raise NotImplementedError
 
     def _children(self) -> list["LayoutNode"]:
-        ret: list["LayoutNode"] = []
+        ret: list[LayoutNode] = []
         for attr in dir(self):
             if attr.startswith("_"):
                 continue
@@ -112,17 +116,18 @@ def _find_xpath(val: LayoutNode | list[LayoutNode] | dict[str, LayoutNode] | str
     if len(xpath) == 0:
         assert isinstance(val, LayoutNode)
         return val
-    elif isinstance(val, list):
+    if isinstance(val, list):
         next_pos = xpath.pop(0)
         assert isinstance(next_pos, int)
         return _find_xpath(val[next_pos], xpath)
-    elif isinstance(val, dict):
+    if isinstance(val, dict):
         breakpoint()
     elif isinstance(val, LayoutNode):
         next_pos = xpath.pop(0)
         assert isinstance(next_pos, str)
         return _find_xpath(getattr(val, next_pos), xpath)
-    raise ValueError(f"What? xpath={xpath}, val={val}")
+    msg = f"What? xpath={xpath}, val={val}"
+    raise ValueError(msg)
 
 
 def _set_parents(
@@ -132,17 +137,17 @@ def _set_parents(
 ) -> None:
     if isinstance(base, list):
         for i, val in enumerate(base):
-            _set_parents(val, last_parent, curr_xpath + [i])
+            _set_parents(val, last_parent, [*curr_xpath, i])
     elif isinstance(base, dict):
         for key, val in base.items():
-            _set_parents(val, last_parent, curr_xpath + [key])
+            _set_parents(val, last_parent, [*curr_xpath, key])
     elif isinstance(base, LayoutNode):
-        base._parent = last_parent  # type: ignore
-        base._xpath = curr_xpath  # type: ignore
+        base._parent = last_parent
+        base._xpath = curr_xpath
 
-        for field_name in base.model_fields.keys():
+        for field_name in base.model_fields:
             if field_name.startswith("_"):
                 continue
             field_value = getattr(base, field_name)
             if isinstance(field_value, (list, dict, LayoutNode)):
-                _set_parents(field_value, base, curr_xpath + [field_name])  # type: ignore
+                _set_parents(field_value, base, [*curr_xpath, field_name])

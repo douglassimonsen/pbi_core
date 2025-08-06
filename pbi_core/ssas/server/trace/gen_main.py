@@ -20,7 +20,7 @@ def gen_trace_enums(class_name: str, url: str) -> str:
         for row in list(table.find_all("tr"))[1:]:
             children = list(row.find_all("td"))
             ret.append(
-                f"\t{str(children[1].text).replace(' ', '_').upper()} = {children[0].text}  # {children[2].text}"
+                f"\t{str(children[1].text).replace(' ', '_').upper()} = {children[0].text}  # {children[2].text}",
             )
     return "\n".join(ret) + SEP
 
@@ -35,7 +35,7 @@ def gen_event_enums(url: str) -> str:
     headers = [x[: (x + " Class—Data").index(" Class—Data")].replace(" ", "") + "Columns" for x in headers]
     tables = content.find_all("table")
     tables = tables[len(tables) - len(headers) :]
-    for header, table in zip(headers, tables):
+    for header, table in zip(headers, tables, strict=False):
         ret2 = [f"class {header}(IntEnum):"]
         if table.find("tr").find("th").text != "Column Name":
             continue
@@ -47,7 +47,7 @@ def gen_event_enums(url: str) -> str:
     return "\n".join(ret)
 
 
-with open(Path(__file__).parent / "trace_enums.py", "w") as f:
+with (Path(__file__).parent / "trace_enums.py").open("w", encoding="utf-8") as f:
     f.write("from enum import IntEnum" + SEP)
     f.write(gen_trace_enums("TraceEvents", "/analysis-services-trace-events"))
     # f.write(gen_event_enums("/command-events-data-columns"))

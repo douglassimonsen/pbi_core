@@ -10,7 +10,6 @@ from .resource_package import (
 from .section import Section
 
 __all__ = [
-    "Section",
     "Layout",
     "LayoutNode",
     "ResourcePackage",
@@ -18,4 +17,5 @@ __all__ = [
     "ResourcePackageDetailsType",
     "ResourcePackageItem",
     "ResourcePackageItemType",
+    "Section",
 ]

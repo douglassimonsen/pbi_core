@@ -1,8 +1,7 @@
 from typing import TYPE_CHECKING, Any, Optional
 
 from pbi_core.lineage import LineageNode, LineageType
-
-from ..server.tabular_model import SsasRenameTable
+from pbi_core.ssas.server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
     from .column import Column
@@ -11,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class Variation(SsasRenameTable):
-    column: Optional[Any] = None
+    column: Any | None = None
     column_id: int
     default_hierarchy_id: int
     is_default: bool
@@ -19,9 +18,7 @@ class Variation(SsasRenameTable):
     relationship_id: int
 
     def get_column(self) -> Optional["Column"]:
-        """
-        Name is bad to not shadow the column field in this entity :(
-        """
+        """Name is bad to not shadow the column field in this entity :(."""
         return self.tabular_model.columns.find({"id": self.column_id})
 
     def default_hierarchy(self) -> "Hierarchy":
@@ -33,12 +30,11 @@ class Variation(SsasRenameTable):
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
-        else:
-            return LineageNode(
-                self,
-                lineage_type,
-                [
-                    self.default_hierarchy().get_lineage(lineage_type),
-                    self.relationship().get_lineage(lineage_type),
-                ],
-            )
+        return LineageNode(
+            self,
+            lineage_type,
+            [
+                self.default_hierarchy().get_lineage(lineage_type),
+                self.relationship().get_lineage(lineage_type),
+            ],
+        )

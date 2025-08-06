@@ -1,7 +1,7 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
-from ...lineage import LineageNode, LineageType
-from ..server.tabular_model import SsasBaseTable
+from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.server.tabular_model import SsasBaseTable
 
 if TYPE_CHECKING:
     from .expression import Expression
@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class QueryGroup(SsasBaseTable):
-    description: Optional[str] = None
+    description: str | None = None
     folder: str
     model_id: int
     _repr_name_field = "folder"
@@ -32,5 +32,4 @@ class QueryGroup(SsasBaseTable):
                 [expression.get_lineage(lineage_type) for expression in self.expressions()]
                 + [partition.get_lineage(lineage_type) for partition in self.partitions()],
             )
-        else:
-            return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])
+        return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])

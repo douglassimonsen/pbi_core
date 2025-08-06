@@ -30,13 +30,13 @@ SUFFIX = """
 
 command_template = jinja2.Template(
     """
-<{{component}}>                                
+<{{component}}>
 {{PREFIX}}
 {{fields}}
 {{SUFFIX}}
   {% raw %}{{rows}}{% endraw %}
-</{{component}}>                                
-""".strip()
+</{{component}}>
+""".strip(),
 )
 
 
@@ -49,16 +49,16 @@ def read_toc_page() -> dict[Any, Any]:
     resp = requests.get(f"{BASE_URL}/toc.json", timeout=10)
     resp_content: dict[Any, Any] = json.loads(resp.text)["items"]
     alter_folder = [0, 0, 0, 0, 0, 2, 0, 4, 1, 0]
-    for i, index in enumerate(alter_folder):
+    for index in alter_folder:
         resp_content = resp_content[index]["children"]
     return resp_content
 
 
 def save_entity(entity: dict[str, str], command: str) -> None:
-    if entity["toc_title"] in (
+    if entity["toc_title"] in {
         "3.1.5.2.1.5.1.4 Out-of-Line Bindings",
         "3.1.5.2.1.5.1.5 Pushed Data",
-    ):
+    }:
         return
     logger.info(command, entity=entity["toc_title"])
     component = entity["toc_title"].split()[-1]
@@ -75,7 +75,7 @@ def save_entity(entity: dict[str, str], command: str) -> None:
     fields = "\n".join(" " * 8 + str(x) for x in fields)
     (BASE_PATH / component).mkdir(parents=True, exist_ok=True)
     (BASE_PATH / component / f"{command}.xml").write_text(
-        command_template.render(PREFIX=PREFIX, fields=fields, SUFFIX=SUFFIX, component=component)
+        command_template.render(PREFIX=PREFIX, fields=fields, SUFFIX=SUFFIX, component=component),
     )
 
 
@@ -87,7 +87,7 @@ def get_command(command: str, folder: dict[Any, Any]) -> None:
 
 def main() -> None:
     resp = read_toc_page()
-    for command in COMMAND_MAPPING.keys():
+    for command in COMMAND_MAPPING:
         get_command(command, resp)
 
 

@@ -1,7 +1,7 @@
 from enum import IntEnum
-from typing import Optional
 
-from .._base_node import LayoutNode
+from pbi_core.static_files.layout._base_node import LayoutNode
+
 from .aggregation import AggregationSource, DataSource
 
 
@@ -26,4 +26,4 @@ class _ArithmeticSourceHelper(LayoutNode):
 
 class ArithmeticSource(LayoutNode):
     Arithmetic: _ArithmeticSourceHelper
-    Name: Optional[str] = None
+    Name: str | None = None

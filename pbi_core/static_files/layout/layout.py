@@ -1,5 +1,6 @@
+# ruff: noqa: N815
 from enum import Enum
-from typing import Annotated, Any, Optional, Union, cast
+from typing import Annotated, Any, cast
 
 from pydantic import Discriminator, Json, Tag
 
@@ -28,7 +29,7 @@ class ThemeInfo(LayoutNode):
 
 class ThemeCollection(LayoutNode):
     baseTheme: ThemeInfo
-    customTheme: Optional[ThemeInfo] = None
+    customTheme: ThemeInfo | None = None
 
 
 class SettingsV2(LayoutNode):
@@ -48,36 +49,32 @@ class SettingsV1(LayoutNode):
 
 def get_settings(v: Any) -> str:
     if isinstance(v, dict):
-        if "isPersistentUserStateDisabled" in v.keys():
+        if "isPersistentUserStateDisabled" in v:
             return "SettingsV1"
-        elif "useNewFilterPaneExperience" in v.keys():
+        if "useNewFilterPaneExperience" in v:
             return "SettingsV2"
-        else:
-            raise ValueError(f"Unknown Filter: {v.keys()}")
-    else:
-        return cast(str, v.__class__.__name__)
+        msg = f"Unknown Filter: {v.keys()}"
+        raise ValueError(msg)
+    return cast("str", v.__class__.__name__)
 
 
 Settings = Annotated[
-    Union[
-        Annotated[SettingsV1, Tag("SettingsV1")],
-        Annotated[SettingsV2, Tag("SettingsV2")],
-    ],
+    Annotated[SettingsV1, Tag("SettingsV1")] | Annotated[SettingsV2, Tag("SettingsV2")],
     Discriminator(get_settings),
 ]
 
 
 class LayoutConfig(LayoutNode):
-    linguisticSchemaSyncVersion: Optional[int] = None
+    linguisticSchemaSyncVersion: int | None = None
     defaultDrillFilterOtherVisuals: bool = True
-    bookmarks: Optional[list[LayoutBookmarkChild]] = None
+    bookmarks: list[LayoutBookmarkChild] | None = None
     activeSectionIndex: int
     themeCollection: ThemeCollection
-    slowDataSourceSettings: Optional[Any] = None
-    settings: Optional[Settings] = None
+    slowDataSourceSettings: Any | None = None
+    settings: Settings | None = None
     version: float  # looks like a float
-    objects: Optional[Any] = None
-    filterSortOrder: Optional[int] = None  # TODO: to enum
+    objects: Any | None = None
+    filterSortOrder: int | None = None  # TODO: to enum
 
 
 class Layout(LayoutNode):
@@ -88,7 +85,7 @@ class Layout(LayoutNode):
     sections: list[Section]
     config: Json[LayoutConfig]
     layoutOptimization: LayoutOptimization
-    theme: Optional[str] = None
+    theme: str | None = None
     pods: list[Pod] = []
     publicCustomVisuals: list[PublicCustomVisual] = []
     _xpath = []

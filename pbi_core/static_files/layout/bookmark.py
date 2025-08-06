@@ -1,5 +1,6 @@
+# ruff: noqa: N815
 from enum import Enum
-from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
+from typing import TYPE_CHECKING, Annotated, Any, cast
 
 from pydantic import Discriminator, Tag
 
@@ -26,12 +27,12 @@ class HighlightScope(LayoutNode):
 
 class HighlightSelection(LayoutNode):
     dataMap: dict[str, list[HighlightScope]]
-    metadata: Optional[list[str]] = None
+    metadata: list[str] | None = None
 
 
 class Highlight(LayoutNode):
     selection: list[HighlightSelection]
-    filterExpressionMetadata: Optional[Any] = None
+    filterExpressionMetadata: Any | None = None
 
 
 class DisplayMode(Enum):
@@ -45,24 +46,24 @@ class Display(LayoutNode):
 class BookmarkPartialVisual(LayoutNode):
     visualType: str
     objects: dict[str, Any]
-    orderBy: Optional[list[Any]] = None
-    activeProjections: Optional[dict[str, list[Source]]] = None
-    display: Optional[Display] = None
-    expansionStates: Optional[Any] = None
+    orderBy: list[Any] | None = None
+    activeProjections: dict[str, list[Source]] | None = None
+    display: Display | None = None
+    expansionStates: Any | None = None
 
 
 class BookmarkVisual(LayoutNode):
-    filters: Optional[BookmarkFilters] = None
+    filters: BookmarkFilters | None = None
     singleVisual: BookmarkPartialVisual
-    highlight: Optional[Highlight] = None
+    highlight: Highlight | None = None
 
 
 class BookmarkSection(LayoutNode):
     _parent: "ExplorationState"
 
-    visualContainers: Optional[dict[str, BookmarkVisual]] = None
-    filters: Optional[BookmarkFilters] = None
-    visualContainerGroups: Optional[Any] = None
+    visualContainers: dict[str, BookmarkVisual] | None = None
+    filters: BookmarkFilters | None = None
+    visualContainerGroups: Any | None = None
 
 
 class ExplorationState(LayoutNode):
@@ -71,14 +72,14 @@ class ExplorationState(LayoutNode):
     version: float
     sections: dict[str, BookmarkSection]
     activeSection: str  # matches the section name?
-    filters: Optional[BookmarkFilters] = None
-    objects: Optional[Any] = None
+    filters: BookmarkFilters | None = None
+    objects: Any | None = None
 
 
 class BookmarkOptions(LayoutNode):
     _parent: "Bookmark"
 
-    targetVisualNames: Optional[list[str]] = None
+    targetVisualNames: list[str] | None = None
     applyOnlyToTargetVisuals: bool = False
     suppressActiveSection: bool = False
     suppressData: bool = False
@@ -88,16 +89,24 @@ class BookmarkOptions(LayoutNode):
 class Bookmark(LayoutNode):
     _parent: "Layout"
 
-    options: Optional[BookmarkOptions]
-    explorationState: Optional[ExplorationState]
+    options: BookmarkOptions | None
+    explorationState: ExplorationState | None
     name: str  # acts as an ID
     displayName: str
 
     def match_current_filters(self) -> None:
         raise NotImplementedError
-    
+
     @staticmethod
-    def new(section: "Section", selected_visuals: list["BaseVisual"], bookmark_name: str, include_data: bool=True, include_display: bool=True, include_current_page: bool=True):
+    def new(  # noqa: PLR0913
+        section: "Section",
+        selected_visuals: list["BaseVisual"],
+        bookmark_name: str,
+        *,
+        include_data: bool = True,
+        include_display: bool = True,
+        include_current_page: bool = True,
+    ):
         raise NotImplementedError
 
 
@@ -110,17 +119,13 @@ class BookmarkFolder(LayoutNode):
 
 def get_bookmark_type(v: Any) -> str:
     if isinstance(v, dict):
-        if "explorationState" in v.keys():
+        if "explorationState" in v:
             return "Bookmark"
         return "BookmarkFolder"
-    else:
-        return cast(str, v.__class__.__name__)
+    return cast("str", v.__class__.__name__)
 
 
 LayoutBookmarkChild = Annotated[
-    Union[
-        Annotated[Bookmark, Tag("Bookmark")],
-        Annotated[BookmarkFolder, Tag("BookmarkFolder")],
-    ],
+    Annotated[Bookmark, Tag("Bookmark")] | Annotated[BookmarkFolder, Tag("BookmarkFolder")],
     Discriminator(get_bookmark_type),
 ]

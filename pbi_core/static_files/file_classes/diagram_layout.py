@@ -1,4 +1,4 @@
-from typing import Optional
+# ruff: noqa: N815
 from uuid import UUID
 
 from pydantic_extra_types.semantic_version import SemanticVersion
@@ -21,7 +21,7 @@ class Size(BaseFileModel):
 class Node(BaseFileModel):
     location: Position
     nodeIndex: str
-    nodeLineageTag: Optional[UUID] = None
+    nodeLineageTag: UUID | None = None
     size: Size
     zIndex: int
 

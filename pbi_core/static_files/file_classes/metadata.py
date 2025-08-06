@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from ._base import BaseFileModel
 
@@ -10,4 +10,4 @@ class Metadata(BaseFileModel):
     AutoCreatedRelationships: list[Any] = []
     CreatedFrom: str
     CreatedFromRelease: str
-    FileDescription: Optional[str] = None
+    FileDescription: str | None = None

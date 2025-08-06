@@ -1,10 +1,10 @@
 from enum import IntEnum
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
-from .._base_node import LayoutNode
+from pbi_core.static_files.layout._base_node import LayoutNode
 
 if TYPE_CHECKING:
-    from ..filters import From
+    from pbi_core.static_files.layout.filters import From
 
 
 class EntityType(IntEnum):
@@ -15,14 +15,14 @@ class EntityType(IntEnum):
 
 class Entity(LayoutNode):
     Entity: str
-    Name: Optional[str] = None
-    Type: Optional[EntityType] = EntityType.NA2
+    Name: str | None = None
+    Type: EntityType | None = EntityType.NA2
 
     def table(self) -> str:
         return self.Entity
 
     @staticmethod
-    def create(entity: str) -> "Entity":  # type: ignore  # mypy is convinced we're returning the property Entity rather than the type
+    def create(entity: str) -> "Entity":
         return Entity.model_validate({"Entity": entity})
 
     def __repr__(self) -> str:
@@ -56,17 +56,17 @@ class SourceExpression(LayoutNode):
     def column(self) -> str:
         return self.Property
 
-    def to_query_text(self, target_tables: dict[str, "From"]):
-        table_name: str = target_tables[self.table()].Entity  # type: ignore
-        column_name: str = self.column()  # type: ignore
+    def to_query_text(self, target_tables: dict[str, "From"]) -> str:
+        table_name: str = target_tables[self.table()].Entity
+        column_name: str = self.column()
         return f"'{table_name}'[{column_name}]"
 
     @staticmethod
     def create(table: str, column: str) -> "SourceExpression":
-        ret: "SourceExpression" = SourceExpression.model_validate({
+        ret: SourceExpression = SourceExpression.model_validate({
             "Expression": {
-                "SourceRef": Entity.create(entity=table).model_dump_json(),  # type: ignore
+                "SourceRef": Entity.create(entity=table).model_dump_json(),
                 "Property": column,
-            }
+            },
         })
         return ret

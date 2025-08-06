@@ -1,3 +1,4 @@
+# ruff: noqa: N802, N999, PYI021
 from typing import Any
 
 from . import enums
@@ -15,9 +16,8 @@ class IDataReader:
 class XmlReader(IDataReader): ...
 
 class ReaderType:
-    """
-    Actually just called Type, but prefix for clarity
-    """
+    """Actually just called Type, but prefix for clarity."""
+
     def ToString(self) -> str: ...
 
 class AdomdDataReader(IDataReader):
@@ -25,7 +25,7 @@ class AdomdDataReader(IDataReader):
     def FieldCount(self) -> int: ...
 
 class AdomdCommand:
-    def __init__(self, query: str, conn: "AdomdConnection") -> None: ...
+    def __init__(self, query: str, conn: AdomdConnection) -> None: ...
     def ExecuteXmlReader(self) -> XmlReader: ...
     def ExecuteReader(self) -> AdomdDataReader: ...
 

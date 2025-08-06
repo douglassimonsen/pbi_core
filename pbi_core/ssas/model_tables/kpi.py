@@ -1,8 +1,8 @@
 import datetime
 from typing import TYPE_CHECKING
 
-from ...lineage import LineageNode, LineageType
-from ..server.tabular_model import SsasBaseTable
+from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.server.tabular_model import SsasBaseTable
 
 if TYPE_CHECKING:
     from .measure import Measure
@@ -26,5 +26,4 @@ class KPI(SsasBaseTable):
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
-        else:
-            return LineageNode(self, lineage_type, [self.measure().get_lineage(lineage_type)])
+        return LineageNode(self, lineage_type, [self.measure().get_lineage(lineage_type)])

@@ -1,7 +1,7 @@
 import dataclasses
 import pathlib
 import socket
-from typing import Any, Optional
+from typing import Any
 from xml.sax.saxutils import escape  # nosec
 
 import jinja2
@@ -18,30 +18,28 @@ OBJECT_COMMAND_TEMPLATES: dict[str, dict[str, str]] = {
     if folder.is_dir()
 }
 ROOT_FOLDER = pathlib.Path(__file__).parents[2]
-SKU_ERROR = "ImageLoad/ImageSave commands supports loading/saving data for Excel, Power BI Desktop or Zip files. File extension can be only .XLS?, .PBIX or .ZIP."
+SKU_ERROR = "ImageLoad/ImageSave commands supports loading/saving data for Excel, Power BI Desktop or Zip files. File extension can be only .XLS?, .PBIX or .ZIP."  # noqa: E501
 
 
 @dataclasses.dataclass
 class ServerInfo:
-    """
-    Basic information about an SSAS instance from its PID
-    """
+    """Basic information about an SSAS instance from its PID."""
 
     port: int
     workspace_directory: pathlib.Path
 
 
-def get_msmdsrv_info(process: psutil.Process) -> Optional[ServerInfo]:
-    """
-    Parses ``ServerInfo`` information from PID information.
+def get_msmdsrv_info(process: psutil.Process) -> ServerInfo | None:
+    """Parses ``ServerInfo`` information from PID information.
 
     Note:
         This function currently assumes that the SSAS Process is called like
         ``pbi_core`` calls it. If you don't include the ``-s`` flag in the command,
         this function will fail
+
     """
 
-    def check_ports(proc: psutil.Process) -> Optional[int]:
+    def check_ports(proc: psutil.Process) -> int | None:
         ports = [
             conn.laddr.port
             for conn in proc.net_connections()
@@ -50,9 +48,9 @@ def get_msmdsrv_info(process: psutil.Process) -> Optional[ServerInfo]:
         ]
         if len(ports) != 1:
             return None
-        return ports[0]  # type: ignore
+        return ports[0]
 
-    def check_workspace(proc: psutil.Process) -> Optional[pathlib.Path]:
+    def check_workspace(proc: psutil.Process) -> pathlib.Path | None:
         try:
             exe_start_command: list[str] = proc.cmdline()
         except psutil.AccessDenied:
@@ -79,13 +77,13 @@ def python_to_xml(text: Any) -> str:
     - True/False to true/false
 
     Args:
-        x (Any): a value to be sent to SSAS
+        text (Any): a value to be sent to SSAS
 
     Returns:
         str: A stringified, xml-safe version of the value
 
     """
-    if text in (True, False):
+    if text in {True, False}:
         return str(text).lower()
     if isinstance(text, str):
         text = escape(text)
@@ -98,6 +96,6 @@ ROW_TEMPLATE = jinja2.Template(
 {%- for k, v in fields %}
     <{{k}}>{{v}}</{{k}}>
 {%- endfor %}
-</row>                     
-"""
+</row>
+""",
 )

@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING
 
 import openpyxl
 
-from ... import LocalReport
-from ...static_files import Layout, Section
+from pbi_core import LocalReport
+from pbi_core.static_files import Layout, Section
 
 if TYPE_CHECKING:
     from _typeshed import StrPath
@@ -20,10 +20,10 @@ class StaticElement:
 
 
 class StaticElements:
-    static_elements: dict[str, list[StaticElement]] = {}
+    static_elements: dict[str, list[StaticElement]]
 
     def __init__(self) -> None:
-        pass
+        self.static_elements = {}
 
     def to_csv(self) -> None:
         pass
@@ -34,10 +34,10 @@ class StaticElements:
             ws = wb.create_sheet(object_type)
             for j, name in enumerate(["xpath", "field", "default"]):
                 ws.cell(1, j + 1).value = name
-            for i, object in enumerate(objects):
-                ws.cell(2 + i, 1).value = json.dumps(object.xpath)
-                ws.cell(2 + i, 2).value = object.field
-                ws.cell(2 + i, 3).value = object.text
+            for i, obj in enumerate(objects):
+                ws.cell(2 + i, 1).value = json.dumps(obj.xpath)
+                ws.cell(2 + i, 2).value = obj.field
+                ws.cell(2 + i, 3).value = obj.text
         wb.remove(wb["Sheet"])
         wb.save(path)
 
@@ -50,20 +50,20 @@ def get_static_elements(layout: Layout) -> StaticElements:
                 xpath=section._xpath,
                 field="displayName",
                 text=section.displayName,
-            )
+            ),
         )
     return ret
 
 
 def set_static_elements(translation_path: "StrPath", pbix_path: "StrPath") -> None:
     wb = openpyxl.load_workbook(translation_path)
-    languages: list[str] = [str(x) for x in list(wb.worksheets[0].values)[0][3:]]
+    languages: list[str] = [str(x) for x in next(iter(wb.worksheets[0].values))[3:]]
     processing: dict[str, list[StaticElement]] = {}
     for ws in wb.worksheets:
         for row in list(ws.values)[1:]:
             for i, language in enumerate(languages):
                 processing.setdefault(language, []).append(
-                    StaticElement(json.loads(str(row[0])), str(row[1]), str(row[3 + i]))
+                    StaticElement(json.loads(str(row[0])), str(row[1]), str(row[3 + i])),
                 )
     for language, static_elements in processing.items():
         pbix = LocalReport.load_pbix(pbix_path)

@@ -1,21 +1,23 @@
+# ruff: noqa: N815
 from enum import Enum, IntEnum
-from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
+from typing import TYPE_CHECKING, Annotated, Any, cast
 
 from pydantic import Discriminator, Json, Tag
 
 from ._base_node import LayoutNode
-from .filters import PrototypeQuery, VisualFilter, PrototypeQueryResult
+from .filters import PrototypeQuery, PrototypeQueryResult, VisualFilter
 from .visuals.main import Visual
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.server import LocalTabularModel
+
     from .section import Section
-    from ...ssas.server import LocalTabularModel
 
 
 class SingleVisualGroup(LayoutNode):
     displayName: str
     groupMode: int
-    objects: Optional[Any] = None
+    objects: Any | None = None
     isHidden: bool = False
 
 
@@ -27,12 +29,12 @@ class VisualConfig(LayoutNode):
     _parent: "VisualContainer"
     _name_field = "name"
 
-    layouts: Optional[Any] = None
-    name: Optional[str] = None
-    parentGroupName: Optional[str] = None
-    singleVisualGroup: Optional[SingleVisualGroup] = None
-    singleVisual: Optional[Visual] = None  # split classes to handle the other cases
-    howCreated: Optional[VisualHowCreated] = None
+    layouts: Any | None = None
+    name: str | None = None
+    parentGroupName: str | None = None
+    singleVisualGroup: SingleVisualGroup | None = None
+    singleVisual: Visual | None = None  # split classes to handle the other cases
+    howCreated: VisualHowCreated | None = None
 
 
 class ExecutionMetricsKindEnum(IntEnum):
@@ -51,7 +53,7 @@ class FromEntity(LayoutNode):
 
 class PrimaryProjections(LayoutNode):
     Projections: list[int]
-    Subtotal: Optional[int] = None
+    Subtotal: int | None = None
 
 
 class BindingPrimary(LayoutNode):
@@ -74,7 +76,7 @@ class DataReduction(LayoutNode):
 class QueryBinding(LayoutNode):
     IncludeEmptyGroups: bool = False
     Primary: BindingPrimary
-    Secondary: Optional[BindingPrimary] = None
+    Secondary: BindingPrimary | None = None
     Projections: list[int] = []
     DataReduction: Any = None
     Aggregates: Any = None
@@ -85,7 +87,7 @@ class QueryBinding(LayoutNode):
 class QueryCommand1(LayoutNode):
     ExecutionMetricsKind: ExecutionMetricsKindEnum = ExecutionMetricsKindEnum.NA
     Query: PrototypeQuery
-    Binding: Optional[QueryBinding] = None
+    Binding: QueryBinding | None = None
 
 
 class QueryCommand2(LayoutNode):
@@ -94,21 +96,17 @@ class QueryCommand2(LayoutNode):
 
 def get_query_command(v: Any) -> str:
     if isinstance(v, dict):
-        if "SemanticQueryDataShapeCommand" in v.keys():
+        if "SemanticQueryDataShapeCommand" in v:
             return "QueryCommand2"
-        elif "ExecutionMetricsKind" in v.keys():
+        if "ExecutionMetricsKind" in v:
             return "QueryCommand1"
-        else:
-            raise ValueError(f"Unknown Filter: {v.keys()}")
-    else:
-        return cast(str, v.__class__.__name__)
+        msg = f"Unknown Filter: {v.keys()}"
+        raise ValueError(msg)
+    return cast("str", v.__class__.__name__)
 
 
 QueryCommand = Annotated[
-    Union[
-        Annotated[QueryCommand1, Tag("QueryCommand1")],
-        Annotated[QueryCommand2, Tag("QueryCommand2")],
-    ],
+    Annotated[QueryCommand1, Tag("QueryCommand1")] | Annotated[QueryCommand2, Tag("QueryCommand2")],
     Discriminator(get_query_command),
 ]
 
@@ -126,18 +124,18 @@ class VisualContainer(LayoutNode):
     z: float
     width: float
     height: float
-    tabOrder: Optional[int] = None
-    dataTransforms: Optional[Json[Any]] = None
-    query: Optional[Json[Query]] = None
+    tabOrder: int | None = None
+    dataTransforms: Json[Any] | None = None
+    query: Json[Query] | None = None
     filters: Json[list[VisualFilter]] = []
     config: Json[VisualConfig]
-    id: Optional[int] = None
+    id: int | None = None
 
-    def name(self) -> Optional[str]:
+    def name(self) -> str | None:
         if self.config.singleVisual is not None:
-            return f"{self.config.singleVisual.visualType}(x={round(self.x, 2)}, y={round(self.y, 2)}, z={round(self.z, 2)})"
+            return f"{self.config.singleVisual.visualType}(x={round(self.x, 2)}, y={round(self.y, 2)}, z={round(self.z, 2)})"  # noqa: E501
         return None
-    
+
     def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult | None:
         if self.query is None:
             return None
@@ -145,8 +143,9 @@ class VisualContainer(LayoutNode):
             return None
 
         if len(self.query.Commands) > 1:
-            raise NotImplementedError("Cannot get data for multiple commands")
-        
+            msg = "Cannot get data for multiple commands"
+            raise NotImplementedError(msg)
+
         query_command = self.query.Commands[0]
         if isinstance(query_command, QueryCommand1):
             query = query_command.Query

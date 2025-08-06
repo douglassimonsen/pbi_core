@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from enum import IntEnum
-from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
+from typing import TYPE_CHECKING, Annotated, Any, cast
 
 from pydantic import Discriminator, Tag
 
@@ -25,7 +25,7 @@ class AnyValue(LayoutNode):
 
 
 class QueryConditionType(IntEnum):
-    """Names defined by myself, but based on query outputs from the query tester"""
+    """Names defined by myself, but based on query outputs from the query tester."""
 
     STANDARD = 0
     TOP_N = 2
@@ -40,7 +40,7 @@ class ComparisonKind(IntEnum):
     IS_LESS_THAN_OR_EQUAL_TO = 4
 
     def get_operator(self) -> str:
-        OPERATOR_MAPPING = {
+        OPERATOR_MAPPING = {  # noqa: N806
             ComparisonKind.IS_EQUAL: "=",
             ComparisonKind.IS_GREATER_THAN: ">",
             ComparisonKind.IS_GREATER_THAN_OR_EQUAL_TO: ">=",
@@ -48,7 +48,8 @@ class ComparisonKind(IntEnum):
             ComparisonKind.IS_LESS_THAN_OR_EQUAL_TO: "<=",
         }
         if self not in OPERATOR_MAPPING:
-            raise ValueError(f"No operator is defined for: {self}")
+            msg = f"No operator is defined for: {self}"
+            raise ValueError(msg)
         return OPERATOR_MAPPING[self]
 
 
@@ -67,8 +68,7 @@ class Expression:
     def to_text(self) -> str:
         if self.data:
             return self.template.format(**self.data)
-        else:
-            return self.template
+        return self.template
 
 
 class ContainsCondition(LayoutNode):
@@ -95,13 +95,13 @@ class InExpressionHelper(LayoutNode):
         return f"In({source}, {', '.join(self.vals())})"
 
     def to_query_text(self, tables: dict[str, "From"]) -> Expression:
-        column: str = self.Expressions[0].Column.to_query_text(tables)  # type: ignore
+        column: str = self.Expressions[0].Column.to_query_text(tables)
         vals = ", ".join(self.vals())
         return Expression(f"{column} IN {{{vals}}}", column)
 
 
 class InTopNExpressionHelper(LayoutNode):
-    """Internal representation of the Top N option"""
+    """Internal representation of the Top N option."""
 
     Expressions: list[DataSource]
     Table: SourceRef
@@ -112,7 +112,7 @@ class InTopNExpressionHelper(LayoutNode):
 
 
 class InCondition(LayoutNode):
-    """In is how "is" and "is not" are internally represented"""
+    """In is how "is" and "is not" are internally represented."""
 
     In: InExpressionHelper | InTopNExpressionHelper
 
@@ -169,22 +169,21 @@ class ComparisonCondition(LayoutNode):
     def to_query_text(self, tables: dict[str, "From"]) -> Expression:
         if isinstance(self.Comparison.Left, AggregationSource):
             return Expression("", self.Comparison.Left.Aggregation.Expression.to_query_text({}))
-        else:
-            column = self.Comparison.Left.to_query_text(tables)
-            assert isinstance(self.Comparison.Right, LiteralSource)
-            value = self.Comparison.Right.value()
-            if self.Comparison.ComparisonKind == ComparisonKind.IS_EQUAL and value is None:
-                return Expression(f"ISBLANK({column})", column)
-            return Expression(
-                "{column} {operator} {value}",
-                column,
-                data={
-                    "column": column,
-                    "operator": self.Comparison.ComparisonKind.get_operator(),
-                    "value": str(value),
-                },
-                expr_type="Comparison",
-            )
+        column = self.Comparison.Left.to_query_text(tables)
+        assert isinstance(self.Comparison.Right, LiteralSource)
+        value = self.Comparison.Right.value()
+        if self.Comparison.ComparisonKind == ComparisonKind.IS_EQUAL and value is None:
+            return Expression(f"ISBLANK({column})", column)
+        return Expression(
+            "{column} {operator} {value}",
+            column,
+            data={
+                "column": column,
+                "operator": self.Comparison.ComparisonKind.get_operator(),
+                "value": str(value),
+            },
+            expr_type="Comparison",
+        )
 
 
 BasicConditions = ContainsCondition | InCondition | ComparisonCondition
@@ -204,8 +203,7 @@ class NotCondition(LayoutNode):
         return self.Not.Expression.get_prototype_query_type()
 
     def to_query_text(self, tables: dict[str, "From"]) -> Expression:
-        """
-        Microsoft does minute optimizations for the prototypeQuery -> DAX translation.
+        """Microsoft does minute optimizations for the prototypeQuery -> DAX translation.
 
         One is converting Not(x = 1) to x <> 1
         """
@@ -213,8 +211,7 @@ class NotCondition(LayoutNode):
         if expr.expr_type == "Comparison" and expr.data["operator"] == "=":
             expr.data["operator"] = "<>"
             return expr
-        else:
-            return Expression(f"NOT({expr.to_text()})", expr.source)
+        return Expression(f"NOT({expr.to_text()})", expr.source)
 
 
 NonCompositeConditions = BasicConditions | NotCondition
@@ -257,44 +254,41 @@ class OrCondition(LayoutNode):
         return Expression(f"OR({_or_[0].to_text()}, {_or_[1].to_text()})", _or_[0].source)
 
 
-def get_type(v: Any) -> str:
+def get_type(v: Any) -> str:  # noqa: PLR0911
     if isinstance(v, dict):
-        if "And" in v.keys():
+        if "And" in v:
             return "AndCondition"
-        elif "Or" in v.keys():
+        if "Or" in v:
             return "OrCondition"
-        elif "Left" in v.keys():
+        if "Left" in v:
             return "NonCompositeConditions"
-        elif "In" in v.keys():
+        if "In" in v:
             return "InCondition"
-        elif "Not" in v.keys():
+        if "Not" in v:
             return "NotCondition"
-        elif "Contains" in v.keys():
+        if "Contains" in v:
             return "ContainsCondition"
-        elif "Comparison" in v.keys():
+        if "Comparison" in v:
             return "ComparisonCondition"
         raise ValueError
-    else:
-        return cast(str, v.__class__.__name__)
+    return cast("str", v.__class__.__name__)
 
 
 ConditionType = Annotated[
-    Union[
-        Annotated[NonCompositeConditions, Tag("NonCompositeConditions")],
-        Annotated[AndCondition, Tag("AndCondition")],
-        Annotated[OrCondition, Tag("OrCondition")],
-        Annotated[InCondition, Tag("InCondition")],
-        Annotated[NotCondition, Tag("NotCondition")],
-        Annotated[ContainsCondition, Tag("ContainsCondition")],
-        Annotated[ComparisonCondition, Tag("ComparisonCondition")],
-    ],
+    Annotated[NonCompositeConditions, Tag("NonCompositeConditions")]
+    | Annotated[AndCondition, Tag("AndCondition")]
+    | Annotated[OrCondition, Tag("OrCondition")]
+    | Annotated[InCondition, Tag("InCondition")]
+    | Annotated[NotCondition, Tag("NotCondition")]
+    | Annotated[ContainsCondition, Tag("ContainsCondition")]
+    | Annotated[ComparisonCondition, Tag("ComparisonCondition")],
     Discriminator(get_type),
 ]
 
 
 class Condition(LayoutNode):
     Condition: ConditionType
-    Target: Optional[list[Source]] = None
+    Target: list[Source] | None = None
 
     def __repr__(self) -> str:
         return f"Condition({self.Condition.__repr__()})"

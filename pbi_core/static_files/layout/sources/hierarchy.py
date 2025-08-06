@@ -1,10 +1,11 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
-from .._base_node import LayoutNode
+from pbi_core.static_files.layout._base_node import LayoutNode
+
 from .base import SourceExpression, SourceRef
 
 if TYPE_CHECKING:
-    from ..filters import From
+    from pbi_core.static_files.layout.filters import From
 
 
 class PropertyVariationSource(LayoutNode):
@@ -28,7 +29,7 @@ class _PropertyVariationSourceHelper(LayoutNode):
 
 class _HierarchySourceHelper(LayoutNode):
     Expression: SourceExpression | _PropertyVariationSourceHelper | SourceRef
-    Hierarchy: Optional[str] = None
+    Hierarchy: str | None = None
 
 
 class HierarchySource(LayoutNode):
@@ -39,13 +40,13 @@ class _HierarchyLevelSourceHelper(LayoutNode):
     _parent: "HierarchyLevelSource"
 
     Expression: HierarchySource
-    Level: Optional[str] = None
+    Level: str | None = None
 
 
 class HierarchyLevelSource(LayoutNode):
     HierarchyLevel: _HierarchyLevelSourceHelper
-    Name: Optional[str] = None
-    NativeReferenceName: Optional[str] = None
+    Name: str | None = None
+    NativeReferenceName: str | None = None
 
     def __repr__(self) -> str:
         table = self.HierarchyLevel.Expression.Hierarchy.Expression.table()

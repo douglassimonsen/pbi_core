@@ -11,13 +11,13 @@ from .layout import (
 from .static_files import StaticFiles
 
 __all__ = [
-    "Section",
     "Layout",
-    "StaticFiles",
     "LayoutNode",
     "ResourcePackage",
     "ResourcePackageDetails",
     "ResourcePackageDetailsType",
     "ResourcePackageItem",
     "ResourcePackageItemType",
+    "Section",
+    "StaticFiles",
 ]

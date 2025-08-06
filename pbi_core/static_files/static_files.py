@@ -1,14 +1,14 @@
 import json
 import zipfile
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 from zipfile import ZipFile
 
 from bs4 import BeautifulSoup
 
 from .file_classes import Connections, DiagramLayout, Metadata, Settings
 from .file_classes.theme import Theme
-from .layout._base_node import _set_parents  # type: ignore
+from .layout._base_node import _set_parents
 from .layout.layout import Layout
 
 if TYPE_CHECKING:
@@ -28,7 +28,7 @@ class Version:
 
 class StaticFiles:
     content_types: BeautifulSoup
-    connections: Optional[Connections]
+    connections: Connections | None
     # no datamodel, that's handled by the ssas folder
     diagram_layout: DiagramLayout
     layout: Layout
@@ -38,10 +38,10 @@ class StaticFiles:
     settings: Settings
     themes: dict[str, Theme]
 
-    def __init__(
+    def __init__(  # noqa: PLR0913, PLR0917
         self,
         content_types: BeautifulSoup,
-        connections: Optional[Connections],
+        connections: Connections | None,
         diagram_layout: DiagramLayout,
         layout: Layout,
         metadata: Metadata,
@@ -49,7 +49,7 @@ class StaticFiles:
         security_bindings: bytes,
         settings: Settings,
         themes: dict[str, Theme],
-    ):
+    ) -> None:
         self.content_types = content_types
         self.connections = connections
         self.diagram_layout = diagram_layout
@@ -61,7 +61,7 @@ class StaticFiles:
         self.themes = themes
 
     @staticmethod
-    def load_pbix(path: "StrPath") -> "StaticFiles":
+    def load_pbix(path: "StrPath") -> "StaticFiles":  # noqa: PLR0914
         zipfile = ZipFile(path, mode="r")
 
         themes: dict[str, Theme] = {}
@@ -72,13 +72,13 @@ class StaticFiles:
         ]
         for theme_path in theme_paths:
             theme_json = json.loads(
-                zipfile.read(f"Report/StaticResources/SharedResources/BaseThemes/{theme_path}").decode("utf-8")
+                zipfile.read(f"Report/StaticResources/SharedResources/BaseThemes/{theme_path}").decode("utf-8"),
             )
             themes[theme_path] = Theme.model_validate(theme_json)
 
         layout_json = json.loads(zipfile.read("Report/Layout").decode(LAYOUT_ENCODING))
         layout = Layout.model_validate(layout_json)
-        _set_parents(layout, None, [])  # type: ignore
+        _set_parents(layout, None, [])
 
         if "Connections" in zipfile.namelist():
             connections_json = json.loads(zipfile.read("Connections").decode("utf-8"))
@@ -102,12 +102,22 @@ class StaticFiles:
         settings_json = json.loads(zipfile.read("Settings").decode(LAYOUT_ENCODING))
         settings = Settings.model_validate(settings_json)
         return StaticFiles(
-            content_types, connections, diagram_layout, layout, metadata, version, security_bindings, settings, themes
+            content_types,
+            connections,
+            diagram_layout,
+            layout,
+            metadata,
+            version,
+            security_bindings,
+            settings,
+            themes,
         )
 
     def save_pbix(self, path: "StrPath") -> None:
-        """
-        We use "a" as the write mode because the ssas.save_pbix method already creates a PBIX with the datamodel subfile
+        """Saves report to file.
+
+        We use "a" as the write mode because the ssas.save_pbix method already
+        creates a PBIX with the datamodel subfile.
         """
         data: dict[str, bytes] = {}
         with zipfile.ZipFile(path, "r", compression=zipfile.ZIP_DEFLATED) as zf:
@@ -119,7 +129,8 @@ class StaticFiles:
             zf.writestr("Connections", self.connections.model_dump_json().encode("utf-8"))
             zf.writestr("Version", str(self.version).encode(LAYOUT_ENCODING))
             zf.writestr(
-                "DiagramLayout", self.diagram_layout.model_dump_json().encode(LAYOUT_ENCODING)
+                "DiagramLayout",
+                self.diagram_layout.model_dump_json().encode(LAYOUT_ENCODING),
             )  # has null nodeLineageTag that the source doesn't
             for path_name, theme_info in self.themes.items():
                 zf.writestr(
@@ -129,4 +140,3 @@ class StaticFiles:
             zf.writestr("DataModel", data["DataModel"])
             zf.writestr("Report/Layout", self.layout.model_dump_json().encode(LAYOUT_ENCODING))
             zf.writestr("[Content_Types].xml", str(self.content_types).encode("utf8"))
-        return

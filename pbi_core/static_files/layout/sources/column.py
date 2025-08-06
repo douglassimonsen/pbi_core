@@ -1,16 +1,17 @@
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING
 
-from .._base_node import LayoutNode
+from pbi_core.static_files.layout._base_node import LayoutNode
+
 from .base import SourceExpression
 
 if TYPE_CHECKING:
-    from ..filters import From
+    from pbi_core.static_files.layout.filters import From
 
 
 class ColumnSource(LayoutNode):
     Column: SourceExpression
-    Name: Optional[str] = None  # only seen on a couple TopN filters
-    NativeReferenceName: Optional[str] = None  # only for Layout.Visual.Query
+    Name: str | None = None  # only seen on a couple TopN filters
+    NativeReferenceName: str | None = None  # only for Layout.Visual.Query
 
     def __repr__(self) -> str:
         return f"ColumnSource({self.Column.Expression.table()}.{self.Column.Property})"
@@ -18,10 +19,10 @@ class ColumnSource(LayoutNode):
     def filter_name(self) -> str:
         return self.Column.Property
 
-    def to_query_text(self, target_tables: dict[str, "From"]):
+    def to_query_text(self, target_tables: dict[str, "From"]) -> str:
         return self.Column.to_query_text(target_tables)
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, ColumnSource):
             return False
         return (self.Column.column() == other.Column.column()) and (self.Column.table() == other.Column.table())

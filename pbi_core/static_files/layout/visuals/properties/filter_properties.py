@@ -1,4 +1,3 @@
-from typing import Optional
 
 from ..._base_node import LayoutNode
 from .base import Expression
@@ -13,4 +12,4 @@ class FilterPropertiesContainer(LayoutNode):
 
 
 class FilterObjects(LayoutNode):
-    general: Optional[list[FilterPropertiesContainer]] = None
+    general: list[FilterPropertiesContainer] | None = None

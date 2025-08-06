@@ -1,7 +1,7 @@
 import typing
 
 if typing.TYPE_CHECKING:
-    from ..server.tabular_model import SsasTable
+    from pbi_core.ssas.server.tabular_model import SsasTable
 
 from ._group import Group, RowNotFoundError
 from .alternate_of import AlternateOf
@@ -45,8 +45,7 @@ from .table_permission import TablePermission
 from .variation import Variation
 
 __all__ = [
-    "Group",
-    "RowNotFoundError",
+    "KPI",
     "AlternateOf",
     "Annotation",
     "AttributeHierarchy",
@@ -61,9 +60,9 @@ __all__ = [
     "Expression",
     "ExtendedProperty",
     "FormatStringDefinition",
+    "Group",
     "GroupByColumn",
     "Hierarchy",
-    "KPI",
     "Level",
     "LinguisticMetadata",
     "Measure",
@@ -82,6 +81,7 @@ __all__ = [
     "Relationship",
     "Role",
     "RoleMembership",
+    "RowNotFoundError",
     "Set",
     "Table",
     "TablePermission",

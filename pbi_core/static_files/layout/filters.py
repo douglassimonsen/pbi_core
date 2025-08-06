@@ -1,20 +1,21 @@
+# ruff: noqa: N815
 from enum import IntEnum
-from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
+from typing import TYPE_CHECKING, Annotated, Any, cast
 
-from pydantic import Discriminator, Tag, BaseModel
+import pbi_translation
+from pydantic import BaseModel, Discriminator, Tag
 
 from ._base_node import LayoutNode
 from .condition import Condition
 from .sources import AggregationSource, ColumnSource, Entity, MeasureSource, Source
 from .visuals.properties.filter_properties import FilterObjects
 
-import pbi_translation
-
 if TYPE_CHECKING:
+    from pbi_core.ssas.server import LocalTabularModel
+
     from .bookmark import BookmarkFilters
     from .layout import Layout
     from .section import Section
-    from ...ssas.server import LocalTabularModel
 
 
 class Direction(IntEnum):
@@ -39,8 +40,8 @@ class PrototypeQuery(LayoutNode):
     Version: int
     From: list["From"]
     Select: list[Source]
-    Where: Optional[list[Condition]] = None
-    OrderBy: Optional[list[Orderby]] = None
+    Where: list[Condition] | None = None
+    OrderBy: list[Orderby] | None = None
 
     def table_mapping(self) -> dict[str, str]:
         ret: dict[str, str] = {}
@@ -53,41 +54,41 @@ class PrototypeQuery(LayoutNode):
     def unwrap_source(cls, source: Source) -> ColumnSource | MeasureSource:
         if isinstance(source, (ColumnSource, MeasureSource)):
             return source
-        elif isinstance(source, AggregationSource):
+        if isinstance(source, AggregationSource):
             return cls.unwrap_source(source.Aggregation.Expression)
-        else:
-            breakpoint()
-            raise ValueError
+        breakpoint()
+        raise ValueError
 
     def dependencies(self) -> set[ColumnSource | MeasureSource]:
         ret: set[ColumnSource | MeasureSource] = set()
-        for select in self.Select:
-            ret.add(self.unwrap_source(select))
+        ret.update(self.unwrap_source(select) for select in self.Select)
         for where in self.Where or []:
             print(where)
             breakpoint()
-        for order_by in self.OrderBy or []:
-            ret.add(self.unwrap_source(order_by.Expression))
+        ret.update(self.unwrap_source(order_by.Expression) for order_by in self.OrderBy or [])
         return ret
-    
+
     def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult:
         raw_query = self.model_dump_json()
         dax_query = pbi_translation.prototype_query(
             raw_query,
             model.db_name,
-            model.server.port
+            model.server.port,
         )
         data = model.server.query_dax(dax_query.DaxExpression)
-        column_mapping = dict(zip(
-            dax_query.SelectNameToDaxColumnName.Keys, 
-            dax_query.SelectNameToDaxColumnName.Values
-        ))
+        column_mapping = dict(
+            zip(
+                dax_query.SelectNameToDaxColumnName.Keys,
+                dax_query.SelectNameToDaxColumnName.Values,
+                strict=False,
+            ),
+        )
         return PrototypeQueryResult(
             data=data,
             dax_query=dax_query.DaxExpression,
-            column_mapping=column_mapping
+            column_mapping=column_mapping,
         )
-        
+
 
 class TopNFilterMeta(PrototypeQuery):
     _parent: "_SubqueryHelper2"
@@ -120,21 +121,17 @@ class Subquery(LayoutNode):
 
 def get_from(v: Any) -> str:
     if isinstance(v, dict):
-        if "Entity" in v.keys():
+        if "Entity" in v:
             return "Entity"
-        elif "Expression" in v.keys():
+        if "Expression" in v:
             return "Subquery"
-        else:
-            raise ValueError(f"Unknown Filter: {v.keys()}")
-    else:
-        return cast(str, v.__class__.__name__)
+        msg = f"Unknown Filter: {v.keys()}"
+        raise ValueError(msg)
+    return cast("str", v.__class__.__name__)
 
 
 From = Annotated[
-    Union[
-        Annotated[Entity, Tag("Entity")],
-        Annotated[Subquery, Tag("Subquery")],
-    ],
+    Annotated[Entity, Tag("Entity")] | Annotated[Subquery, Tag("Subquery")],
     Discriminator(get_from),
 ]
 
@@ -155,15 +152,15 @@ class HowCreated(IntEnum):
 
 
 class Filter(LayoutNode):
-    name: Optional[str] = None
+    name: str | None = None
     type: str
     howCreated: HowCreated
     expression: Source
     isLockedInViewMode: bool = False
     isHiddenInViewMode: bool = False
-    objects: Optional[FilterObjects] = None
-    filter: Optional[FilterExpression] = None
-    displayName: Optional[str] = None
+    objects: FilterObjects | None = None
+    filter: FilterExpression | None = None
+    displayName: str | None = None
     ordinal: int = 0
     cachedDisplayNames: Any = None
     isLinkedAsAggregation: bool = False
@@ -178,8 +175,8 @@ class Filter(LayoutNode):
 class VisualFilterExpression(LayoutNode):
     _parent: "VisualFilter"
 
-    Version: Optional[int] = None
-    From: Optional[list["From"]] = None
+    Version: int | None = None
+    From: list["From"] | None = None
     Where: list[Condition]
 
 
@@ -188,11 +185,11 @@ class VisualFilterExpression(LayoutNode):
 
 
 class VisualFilter(Filter):
-    restatement: Optional[str] = None
-    filterExpressionMetadata: Optional[Any] = None
+    restatement: str | None = None
+    filterExpressionMetadata: Any | None = None
 
     def to_bookmark(self) -> "BookmarkFilter":
-        return cast(BookmarkFilter, self)
+        return cast("BookmarkFilter", self)
 
 
 class BookmarkFilter(VisualFilter):

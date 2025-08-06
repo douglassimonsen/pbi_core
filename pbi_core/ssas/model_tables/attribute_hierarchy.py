@@ -1,8 +1,8 @@
 import datetime
 from typing import TYPE_CHECKING
 
-from ...lineage import LineageNode, LineageType
-from ..server.tabular_model import SsasReadonlyTable
+from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.server.tabular_model import SsasReadonlyTable
 
 if TYPE_CHECKING:
     from .column import Column
@@ -29,5 +29,4 @@ class AttributeHierarchy(SsasReadonlyTable):
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type, [level.get_lineage(lineage_type) for level in self.levels()])
-        else:
-            return LineageNode(self, lineage_type, [self.column().get_lineage(lineage_type)])
+        return LineageNode(self, lineage_type, [self.column().get_lineage(lineage_type)])

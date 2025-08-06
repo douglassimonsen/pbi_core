@@ -3,7 +3,7 @@ from typing import Any
 
 from pydantic import Json
 
-from ..server.tabular_model import SsasRenameTable
+from pbi_core.ssas.server.tabular_model import SsasRenameTable
 
 
 class ExtendedProperty(SsasRenameTable):

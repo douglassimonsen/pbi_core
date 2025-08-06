@@ -2,8 +2,8 @@ import datetime
 from typing import TYPE_CHECKING, ClassVar, Literal, Optional
 from uuid import UUID
 
-from ...lineage import LineageNode, LineageType
-from ..server.tabular_model import SsasRenameTable, SsasTable
+from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.server.tabular_model import SsasRenameTable, SsasTable
 
 if TYPE_CHECKING:
     from .attribute_hierarchy import AttributeHierarchy
@@ -22,20 +22,20 @@ class Column(SsasRenameTable):
 
     alignment: int
     attribute_hierarchy_id: int
-    column_origin_id: Optional[int] = None
+    column_origin_id: int | None = None
     column_storage_id: int
-    data_category: Optional[str] = None
-    description: Optional[str] = None
-    display_folder: Optional[str] = None
+    data_category: str | None = None
+    description: str | None = None
+    display_folder: str | None = None
     display_ordinal: int
     encoding_hint: int
-    error_message: Optional[str] = None
+    error_message: str | None = None
     explicit_data_type: int  # enum
-    explicit_name: Optional[str] = None
-    expression: Optional[str | int] = None
-    format_string: Optional[int | str] = None
+    explicit_name: str | None = None
+    expression: str | int | None = None
+    format_string: int | str | None = None
     inferred_data_type: int  # enum
-    inferred_name: Optional[str] = None
+    inferred_name: str | None = None
     is_available_in_mdx: bool
     is_default_image: bool
     is_default_label: bool
@@ -44,9 +44,9 @@ class Column(SsasRenameTable):
     is_nullable: bool
     is_unique: bool
     keep_unique_rows: bool
-    lineage_tag: Optional[UUID] = None
-    sort_by_column_id: Optional[int] = None
-    source_column: Optional[str] = None
+    lineage_tag: UUID | None = None
+    sort_by_column_id: int | None = None
+    source_column: str | None = None
     state: int
     summarize_by: int
     system_flags: int
@@ -60,17 +60,22 @@ class Column(SsasRenameTable):
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
-            children_nodes: list[Column | Measure | AttributeHierarchy] = (
-                [self.attribute_hierarchy()] + self.child_measures() + self.sorting_columns() + self.child_columns()  # type: ignore
-            )
+            children_nodes: list[Column | Measure | AttributeHierarchy] = [
+                self.attribute_hierarchy(),
+                *self.child_measures(),
+                *self.sorting_columns(),
+                *self.child_columns(),
+            ]
             children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
             return LineageNode(self, lineage_type, children_lineage)
-        else:
-            parent_nodes: list[Optional[SsasTable]] = (
-                [self.table(), self.sort_by_column()] + self.parent_columns() + self.parent_measures()  # type: ignore
-            )
-            parent_lineage = [p.get_lineage(lineage_type) for p in parent_nodes if p is not None]
-            return LineageNode(self, lineage_type, parent_lineage)
+        parent_nodes: list[SsasTable | None] = [
+            self.table(),
+            self.sort_by_column(),
+            *self.parent_columns(),
+            *self.parent_measures(),
+        ]
+        parent_lineage = [p.get_lineage(lineage_type) for p in parent_nodes if p is not None]
+        return LineageNode(self, lineage_type, parent_lineage)
 
     def data(self, head: int = 100) -> list[int | float | str]:
         table_name = self.table().name
@@ -81,7 +86,7 @@ class Column(SsasRenameTable):
         return [next(iter(row.values())) for row in ret]
 
     def full_name(self) -> str:
-        """Returns the fully qualified name for DAX queries"""
+        """Returns the fully qualified name for DAX queries."""
         table_name = self.table().name
         return f"'{table_name}'[{self.explicit_name}]"
 
@@ -96,7 +101,7 @@ class Column(SsasRenameTable):
         return f"Column({self.table().name}.{self.pbi_core_name()})"
 
     def table(self) -> "Table":
-        """Returns the table class the column is a part of"""
+        """Returns the table class the column is a part of."""
         return self.tabular_model.tables.find({"id": self.table_id})
 
     def attribute_hierarchy(self) -> "AttributeHierarchy":
@@ -108,8 +113,7 @@ class Column(SsasRenameTable):
     def _column_type(self) -> Literal["COLUMN", "CALC_COLUMN"]:
         if self.expression is None:
             return "COLUMN"
-        else:
-            return "CALC_COLUMN"
+        return "CALC_COLUMN"
 
     def child_measures(self) -> list["Measure"]:
         object_type = self._column_type()
@@ -121,11 +125,10 @@ class Column(SsasRenameTable):
         })
         child_keys: list[tuple[str | None, str]] = [(m.table, m.object) for m in dependent_measures]
         full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in child_keys]
-        direct_dependencies = [x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)]
-        return direct_dependencies
+        return [x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)]
 
     def parent_measures(self) -> list["Measure"]:
-        """Calculated columns can use Measures too :("""
+        """Calculated columns can use Measures too :(."""
         object_type = self._column_type()
         dependent_measures = self.tabular_model.calc_dependencies.find_all({
             "object_type": object_type,
@@ -135,11 +138,10 @@ class Column(SsasRenameTable):
         })
         parent_keys = [(m.referenced_table, m.referenced_object) for m in dependent_measures]
         full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in parent_keys]
-        direct_dependencies = [x for x in full_dependencies if f"[{x.name}]" in str(self.expression)]
-        return direct_dependencies
+        return [x for x in full_dependencies if f"[{x.name}]" in str(self.expression)]
 
     def child_columns(self) -> list["Column"]:
-        """Only occurs when the dependent column is calculated (expression is not None)"""
+        """Only occurs when the dependent column is calculated (expression is not None)."""
         object_type = self._column_type()
         dependent_measures = self.tabular_model.calc_dependencies.find_all({
             "referenced_object_type": object_type,
@@ -147,14 +149,13 @@ class Column(SsasRenameTable):
             "referenced_object": self.explicit_name,
         })
         child_keys: list[tuple[str, str]] = [
-            (m.table, m.object) for m in dependent_measures if m.object_type in ("CALC_COLUMN", "COLUMN")
+            (m.table, m.object) for m in dependent_measures if m.object_type in {"CALC_COLUMN", "COLUMN"}
         ]
         full_dependencies = [m for m in self.tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
-        direct_dependencies = [x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)]
-        return direct_dependencies
+        return [x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)]
 
     def parent_columns(self) -> list["Column"]:
-        """Only occurs when column is calculated"""
+        """Only occurs when column is calculated."""
         object_type = self._column_type()
         if object_type == "COLUMN":
             return []
@@ -166,11 +167,10 @@ class Column(SsasRenameTable):
         parent_keys = {
             (m.referenced_table, m.referenced_object)
             for m in dependent_measures
-            if m.referenced_object_type in ("CALC_COLUMN", "COLUMN")
+            if m.referenced_object_type in {"CALC_COLUMN", "COLUMN"}
         }
         full_dependencies = [c for c in self.tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
-        direct_dependencies = [x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)]
-        return direct_dependencies
+        return [x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)]
 
     def sort_by_column(self) -> Optional["Column"]:
         if self.sort_by_column_id is None:
@@ -178,9 +178,7 @@ class Column(SsasRenameTable):
         return self.tabular_model.columns.find({"id": self.sort_by_column_id})
 
     def sorting_columns(self) -> list["Column"]:
-        """
-        This provides the inverse information of sort_by_column
-        """
+        """Provides the inverse information of sort_by_column."""
         return self.tabular_model.columns.find_all({"sort_by_column_id": self.id})
 
     def from_relationships(self) -> list["Relationship"]:

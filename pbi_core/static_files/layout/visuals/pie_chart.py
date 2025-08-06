@@ -1,3 +1,4 @@
+# ruff: noqa: N815
 from pydantic import ConfigDict
 
 from .base import BaseVisual

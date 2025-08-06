@@ -1,6 +1,5 @@
-from typing import Optional
+from pbi_core.static_files.layout._base_node import LayoutNode
 
-from .._base_node import LayoutNode
 from .base import SourceRef
 from .column import ColumnSource
 
@@ -15,7 +14,7 @@ class _GroupSourceHelper(LayoutNode):
 
 class GroupSource(LayoutNode):
     GroupRef: _GroupSourceHelper
-    Name: Optional[str] = None
+    Name: str | None = None
 
     def __repr__(self) -> str:
         table = self.GroupRef.Expression.table()

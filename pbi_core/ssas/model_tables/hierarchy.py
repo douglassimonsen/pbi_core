@@ -2,8 +2,8 @@ import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID
 
-from ...lineage import LineageNode, LineageType
-from ..server.tabular_model import SsasRenameTable
+from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
     from .level import Level
@@ -46,11 +46,10 @@ class Hierarchy(SsasRenameTable):
                 + [variation.get_lineage(lineage_type) for variation in self.variations()],
             )
 
-        else:
-            return LineageNode(
-                self,
-                lineage_type,
-                [
-                    self.table().get_lineage(lineage_type),
-                ],
-            )
+        return LineageNode(
+            self,
+            lineage_type,
+            [
+                self.table().get_lineage(lineage_type),
+            ],
+        )

@@ -1,8 +1,8 @@
 import datetime
 from typing import TYPE_CHECKING
 
-from ...lineage import LineageNode, LineageType
-from ..server.tabular_model import SsasRenameTable
+from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
     from .linguistic_metadata import LinguisticMetadata
@@ -26,5 +26,4 @@ class Culture(SsasRenameTable):
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type, [self.linguistic_metdata().get_lineage(lineage_type)])
-        else:
-            return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])
+        return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])

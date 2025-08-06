@@ -1,11 +1,11 @@
 import datetime
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 import pydantic
 from pydantic_extra_types.semantic_version import SemanticVersion
 
-from ...lineage import LineageNode, LineageType
-from ..server.tabular_model import SsasBaseTable
+from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.server.tabular_model import SsasBaseTable
 
 if TYPE_CHECKING:
     from .culture import Culture
@@ -22,7 +22,7 @@ class LinguisticMetadataContent(pydantic.BaseModel):
     )
     Version: SemanticVersion
     Language: str
-    DynamicImprovement: Optional[str] = None
+    DynamicImprovement: str | None = None
     Relationships: Any = None
     Entities: Any = None
 
@@ -47,5 +47,4 @@ class LinguisticMetadata(SsasBaseTable):
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
-        else:
-            return LineageNode(self, lineage_type, [self.culture().get_lineage(lineage_type)])
+        return LineageNode(self, lineage_type, [self.culture().get_lineage(lineage_type)])

@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Union, cast
+from typing import Annotated, Any, cast
 
 from pydantic import Discriminator, Tag
 
@@ -12,7 +12,7 @@ from .table import TableChart
 from .text_box import TextBox
 
 
-def get_visual(v: Any) -> str:
+def get_visual(v: Any) -> str:  # noqa: PLR0911
     if isinstance(v, dict):
         assert "visualType" in v
         assert isinstance(v["visualType"], str)
@@ -34,20 +34,18 @@ def get_visual(v: Any) -> str:
                 return "TextBox"
             case _:
                 return "BaseVisual"
-    return cast(str, v.__class__.__name__)  # type: ignore
+    return cast("str", v.__class__.__name__)
 
 
 Visual = Annotated[
-    Union[
-        Annotated[BarChart, Tag("BarChart")],
-        Annotated[BaseVisual, Tag("BaseVisual")],
-        Annotated[BasicShape, Tag("BasicShape")],
-        Annotated[ColumnChart, Tag("ColumnChart")],
-        Annotated[PieChart, Tag("PieChart")],
-        Annotated[Slicer, Tag("Slicer")],
-        Annotated[TableChart, Tag("TableChart")],
-        Annotated[TextBox, Tag("TextBox")],
-    ],
+    Annotated[BarChart, Tag("BarChart")]
+    | Annotated[BaseVisual, Tag("BaseVisual")]
+    | Annotated[BasicShape, Tag("BasicShape")]
+    | Annotated[ColumnChart, Tag("ColumnChart")]
+    | Annotated[PieChart, Tag("PieChart")]
+    | Annotated[Slicer, Tag("Slicer")]
+    | Annotated[TableChart, Tag("TableChart")]
+    | Annotated[TextBox, Tag("TextBox")],
     Discriminator(get_visual),
 ]
 

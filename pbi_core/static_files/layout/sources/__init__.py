@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Union, cast
+from typing import Annotated, Any, cast
 
 from pydantic import Discriminator, Tag
 
@@ -12,48 +12,45 @@ from .literal import LiteralSource
 from .measure import MeasureSource
 
 
-def get_source(v: Any) -> str:
+def get_source(v: Any) -> str:  # noqa: PLR0911
     if isinstance(v, dict):
-        if "Column" in v.keys():
+        if "Column" in v:
             return "ColumnSource"
-        elif "HierarchyLevel" in v.keys():
+        if "HierarchyLevel" in v:
             return "HierarchyLevelSource"
-        elif "GroupRef" in v.keys():
+        if "GroupRef" in v:
             return "GroupSource"
-        elif "Aggregation" in v.keys():
+        if "Aggregation" in v:
             return "AggregationSource"
-        elif "Measure" in v.keys():
+        if "Measure" in v:
             return "MeasureSource"
-        elif "Arithmetic" in v.keys():
+        if "Arithmetic" in v:
             return "ArithmeticSource"
-        else:
-            raise ValueError(f"Unknown Filter: {v.keys()}")
-    else:
-        return cast(str, v.__class__.__name__)
+        msg = f"Unknown Filter: {v.keys()}"
+        raise ValueError(msg)
+    return cast("str", v.__class__.__name__)
 
 
 Source = Annotated[
-    Union[
-        Annotated[HierarchyLevelSource, Tag("HierarchyLevelSource")],
-        Annotated[ColumnSource, Tag("ColumnSource")],
-        Annotated[GroupSource, Tag("GroupSource")],
-        Annotated[AggregationSource, Tag("AggregationSource")],
-        Annotated[MeasureSource, Tag("MeasureSource")],
-        Annotated[ArithmeticSource, Tag("ArithmeticSource")],
-    ],
+    Annotated[HierarchyLevelSource, Tag("HierarchyLevelSource")]
+    | Annotated[ColumnSource, Tag("ColumnSource")]
+    | Annotated[GroupSource, Tag("GroupSource")]
+    | Annotated[AggregationSource, Tag("AggregationSource")]
+    | Annotated[MeasureSource, Tag("MeasureSource")]
+    | Annotated[ArithmeticSource, Tag("ArithmeticSource")],
     Discriminator(get_source),
 ]
 
 __all__ = [
     "AggregationSource",
-    "DataSource",
     "ArithmeticSource",
-    "Entity",
-    "SourceRef",
     "ColumnSource",
+    "DataSource",
+    "Entity",
     "GroupSource",
     "HierarchyLevelSource",
     "LiteralSource",
     "MeasureSource",
     "Source",
+    "SourceRef",
 ]

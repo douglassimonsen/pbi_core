@@ -1,4 +1,5 @@
-from typing import Any, Optional
+# ruff: noqa: N815
+from typing import Any
 
 from pydantic_extra_types.color import Color
 
@@ -21,28 +22,29 @@ class TextClasses(BaseFileModel):
 
 
 class Theme(BaseFileModel):
-    """
-    A class mapping the fields of the Theme JSON documented `here <https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-report-themes#set-theme-colors>`
+    """A class mapping the fields of the Theme JSON.
+
+    Documented `here <https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-report-themes#set-theme-colors>`
     """
 
     name: str
     dataColors: list[str] = []
-    foreground: Optional[str] = None
-    foregroundNeutralSecondary: Optional[Color] = None
-    foregroundNeutralTertiary: Optional[Color] = None
-    background: Optional[Color] = None
-    backgroundLight: Optional[Color] = None
-    backgroundNeutral: Optional[Color] = None
-    tableAccent: Optional[Color] = None
-    good: Optional[Color] = None
-    neutral: Optional[Color] = None
-    bad: Optional[Color] = None
-    maximum: Optional[Color] = None
-    center: Optional[Color] = None
-    minimum: Optional[Color] = None
-    null: Optional[Color] = None
-    hyperlink: Optional[Color] = None
-    visitedHyperlink: Optional[Color] = None
+    foreground: str | None = None
+    foregroundNeutralSecondary: Color | None = None
+    foregroundNeutralTertiary: Color | None = None
+    background: Color | None = None
+    backgroundLight: Color | None = None
+    backgroundNeutral: Color | None = None
+    tableAccent: Color | None = None
+    good: Color | None = None
+    neutral: Color | None = None
+    bad: Color | None = None
+    maximum: Color | None = None
+    center: Color | None = None
+    minimum: Color | None = None
+    null: Color | None = None
+    hyperlink: Color | None = None
+    visitedHyperlink: Color | None = None
 
-    textClasses: Optional[TextClasses] = None
+    textClasses: TextClasses | None = None
     visualStyles: Any

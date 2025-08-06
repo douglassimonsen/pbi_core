@@ -1,5 +1,6 @@
+# ruff: noqa: N815
 from enum import IntEnum
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 from uuid import UUID
 
 from pydantic import ConfigDict, Json
@@ -29,10 +30,10 @@ class Section(LayoutNode):
     width: int
     displayOption: DisplayOption
     config: Json[SectionConfig]
-    objectId: Optional[UUID] = None
+    objectId: UUID | None = None
     visualContainers: list[VisualContainer]
     ordinal: int
     filters: Json[list[PageFilter]]
     displayName: str
     name: str
-    id: Optional[int] = None
+    id: int | None = None

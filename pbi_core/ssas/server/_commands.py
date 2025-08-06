@@ -11,7 +11,7 @@ BASE_ALTER_TEMPLATE = jinja2.Template(
     {{entity_def}}
   </Alter>
 </Batch>
-"""
+""",
 )
 
 # note that Transaction = true. I think it's necessary, not very tested tbqh
@@ -23,7 +23,7 @@ BASE_REFRESH_TEMPLATE = jinja2.Template(
     {{entity_def}}
   </Refresh>
 </Batch>
-"""
+""",
 )
 BASE_RENAME_TEMPLATE = jinja2.Template(
     """
@@ -36,7 +36,7 @@ BASE_RENAME_TEMPLATE = jinja2.Template(
     {{entity_def}}
   </Rename>
 </Batch>
-    """
+    """,
 )
 BASE_DELETE_TEMPLATE = jinja2.Template(
     """
@@ -46,7 +46,7 @@ BASE_DELETE_TEMPLATE = jinja2.Template(
     {{entity_def}}
   </Delete>
 </Batch>
-    """
+    """,
 )
 BASE_CREATE_TEMPLATE = jinja2.Template("")
 base_commands = {
@@ -65,7 +65,7 @@ class Command:
     field_order: list[str]
 
     def sort(self, fields: list[tuple[str, str]]) -> list[tuple[str, str]]:
-        return list(sorted(fields, key=lambda k: self.field_order.index(k[0])))
+        return sorted(fields, key=lambda k: self.field_order.index(k[0]))
 
 
 class NoCommands:
@@ -80,9 +80,7 @@ class NoCommands:
 
     @staticmethod
     def get_field_order(text: str) -> list[str]:
-        """
-        Gets the order of the fields for the command, based on the ``xs:sequence`` section of the XML command.
-        """
+        """Gets the order of the fields for the command, based on the ``xs:sequence`` section of the XML command."""
         tree = BeautifulSoup(text, "xml")
         fields = tree.find_all("xs:complexType", {"name": "row"})[0].find_all("xs:element")
         return [field["name"] for field in fields]

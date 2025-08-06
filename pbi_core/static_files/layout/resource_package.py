@@ -1,5 +1,6 @@
+# ruff: noqa: N815
 from enum import IntEnum
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from ._base_node import LayoutNode
 
@@ -20,12 +21,12 @@ class ResourcePackageItemType(IntEnum):
 
 class ResourcePackageItem(LayoutNode):
     _parent: "ResourcePackageDetails"
-    name: Optional[str] = None
+    name: str | None = None
     path: str
     type: ResourcePackageItemType
-    resourcePackageId: Optional[int] = None
-    resourcePackageItemBlobInfoId: Optional[int] = None
-    id: Optional[int] = None
+    resourcePackageId: int | None = None
+    resourcePackageItemBlobInfoId: int | None = None
+    id: int | None = None
 
 
 class ResourcePackageDetailsType(IntEnum):
@@ -40,7 +41,7 @@ class ResourcePackageDetails(LayoutNode):
     items: list[ResourcePackageItem] = []
     type: ResourcePackageDetailsType
     name: str
-    id: Optional[int] = None
+    id: int | None = None
 
 
 class ResourcePackage(LayoutNode):

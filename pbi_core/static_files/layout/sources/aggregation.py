@@ -1,7 +1,7 @@
 from enum import IntEnum
-from typing import Optional
 
-from .._base_node import LayoutNode
+from pbi_core.static_files.layout._base_node import LayoutNode
+
 from .column import ColumnSource
 from .hierarchy import HierarchyLevelSource
 from .measure import MeasureSource
@@ -28,5 +28,5 @@ class _AggregationSourceHelper(LayoutNode):
 
 class AggregationSource(LayoutNode):
     Aggregation: _AggregationSourceHelper
-    Name: Optional[str] = None
-    NativeReferenceName: Optional[str] = None  # only for Layout.Visual.Query
+    Name: str | None = None
+    NativeReferenceName: str | None = None  # only for Layout.Visual.Query

@@ -1,18 +1,16 @@
-from typing import Optional
-
-from ..server.tabular_model import SsasReadonlyTable
+from pbi_core.ssas.server.tabular_model import SsasReadonlyTable
 
 
 class CalcDependency(SsasReadonlyTable):
     database_name: str
     object_type: str
-    table: Optional[str] = None
+    table: str | None = None
     object: str
-    expression: Optional[str] = None
+    expression: str | None = None
     referenced_object_type: str
-    referenced_table: Optional[str] = None
+    referenced_table: str | None = None
     referenced_object: str
-    referenced_expression: Optional[str] = None
+    referenced_expression: str | None = None
 
     def pbi_core_name(self) -> str:
         return f"{self.object_type}[{self.object}] -> {self.referenced_object_type}[{self.referenced_object}]"

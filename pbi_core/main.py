@@ -20,8 +20,7 @@ class WorkspaceReport(BaseReport):
 
 
 class LocalReport(BaseReport):
-    """
-    An instance of a PowerBI report from a local PBIX file.
+    """An instance of a PowerBI report from a local PBIX file.
 
     Args:
         static_files (StaticElements): An instance of all the static files (except DataModel) in the PBIX file
@@ -48,8 +47,7 @@ class LocalReport(BaseReport):
 
     @staticmethod
     def load_pbix(path: "StrPath", kill_ssas_on_exit: bool = True) -> "LocalReport":
-        """
-        Creates a ``LocalReport`` instance from a PBIX file.
+        """Creates a ``LocalReport`` instance from a PBIX file.
 
         Args:
             path (StrPath): The absolute or local path to the PBIX report
@@ -57,6 +55,7 @@ class LocalReport(BaseReport):
 
         Returns:
             LocalReport: the local PBIX class
+
         """
         logger.info("Loading PBIX", path=path)
         server = get_or_create_local_server(kill_on_exit=kill_ssas_on_exit)
@@ -65,11 +64,11 @@ class LocalReport(BaseReport):
         return LocalReport(ssas=ssas, static_files=static_files)
 
     def save_pbix(self, path: "StrPath") -> None:
-        """
-        Creates a new PBIX with the information in this class to the given path.
+        """Creates a new PBIX with the information in this class to the given path.
 
         Args:
             path (StrPath): the path (relative or absolute) to save the PBIX to
+
         """
         self.ssas.save_pbix(path)
         self.static_files.save_pbix(path)

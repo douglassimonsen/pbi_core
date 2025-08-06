@@ -1,4 +1,4 @@
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from mermaid import Link, MermaidDiagram, Node
 from mermaid.node import NodeShape
@@ -29,11 +29,14 @@ CLASS_STYLES = {
 
 
 class LineageNode:
+    """Class used to track DAX dependencies from visuals to measures to PowerQueries."""
+
     value: Any
     relatives: list["LineageNode"]
     lineage_type: LineageType
 
-    def __init__(self, value: Any, lineage_type: LineageType, relatives: Optional[list["LineageNode"]] = None) -> None:
+    def __init__(self, value: Any, lineage_type: LineageType, relatives: list["LineageNode"] | None = None) -> None:
+        """Initialize."""
         self.value = value
         self.relatives = relatives or []
         self.lineage_type = lineage_type

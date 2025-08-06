@@ -1,15 +1,16 @@
-from typing import Callable, TypeVar
+from collections.abc import Callable
+from typing import TypeVar
 
 
-class idThing:
+class IdThing:
     def id(self) -> str:
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
-T = TypeVar("T", bound=idThing)
+T = TypeVar("T", bound=IdThing)
 
 
-class Group(list[T]):
+class Group(list[T]):  # noqa: FURB189
     def get(self, match_val: str | Callable[[T], bool]) -> T:
         if isinstance(match_val, str):
             for val in self:

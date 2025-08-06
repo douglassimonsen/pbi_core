@@ -1,4 +1,4 @@
-from ..server.tabular_model import SsasBaseTable
+from pbi_core.ssas.server.tabular_model import SsasBaseTable
 
 
 class CalculationGroup(SsasBaseTable):
