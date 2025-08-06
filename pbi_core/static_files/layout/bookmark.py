@@ -8,6 +8,7 @@ from ._base_node import LayoutNode
 from .condition import ConditionType
 from .filters import BookmarkFilter, Orderby
 from .sources import Source
+from .visuals.base import PropertyDef
 
 if TYPE_CHECKING:
     from .layout import Layout
@@ -44,6 +45,7 @@ class Display(LayoutNode):
 
 
 class BookmarkPartialVisualObject(LayoutNode):
+    merge: dict[str, list[PropertyDef]] | None = None
     remove: list[int] | None = None
 
 

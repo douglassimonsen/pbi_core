@@ -5,6 +5,8 @@ from pydantic import Discriminator, Tag
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.sources import LiteralSource, MeasureSource, Source
 
+from ...sources.aggregation import AggregationSource
+
 
 class LiteralExpression(LayoutNode):
     expr: LiteralSource
@@ -36,12 +38,16 @@ def get_subexpr_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "ThemeDataColor" in v:
             return "ThemeExpression"
+        if "Aggregation" in v:
+            return "AggregationSource"
         if "Literal" in v:
             return "LiteralSource"
         if "Measure" in v:
             return "MeasureSource"
         if "FillRule" in v:
             return "FillRuleExpression"
+        msg = f"Unknown type: {v.keys()}"
+        raise TypeError(msg)
     return v.__class__.__name__
 
 
@@ -49,7 +55,8 @@ ColorSubExpression = Annotated[
     Annotated[ThemeExpression, Tag("ThemeExpression")]
     | Annotated[LiteralSource, Tag("LiteralSource")]
     | Annotated[MeasureSource, Tag("MeasureSource")]
-    | Annotated[FillRuleExpression, Tag("FillRuleExpression")],
+    | Annotated[FillRuleExpression, Tag("FillRuleExpression")]
+    | Annotated[AggregationSource, Tag("AggregationSource")],
     Discriminator(get_subexpr_type),
 ]
 

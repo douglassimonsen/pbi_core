@@ -219,6 +219,7 @@ class Restatement(LayoutNode):
     Restatement: str
     Name: str
     Type: int  # TODO: make enum
+    DataCategory: int | None = None  # TODO: make enum
     Format: str | None = None
 
 
