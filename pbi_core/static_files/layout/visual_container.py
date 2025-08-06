@@ -449,8 +449,14 @@ class VisualContainer(LayoutNode):
     filters: Json[list[VisualFilter]] = []
     config: Json[VisualConfig]
 
-    # Seems to not occur often, so don't rely on it
     id: int | None = None
+
+    def pbi_core_id(self) -> str:
+        if self.id is not None:
+            return str(self.id)
+        if self.config.name is not None:
+            return self.config.name
+        raise ValueError("VisualContainer must have an id or a name in config")
 
     def pbi_core_name(self) -> str:
         viz = self.config.singleVisual
