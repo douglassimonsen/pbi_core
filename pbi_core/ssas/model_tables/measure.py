@@ -37,20 +37,25 @@ class Measure(SsasRenameTable):
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})
 
-    def data(self, column: Column, head: int = 100) -> list[dict[str, int | float | str]]:
-        column_name = column.full_name()
-        ret = self.tabular_model.server.query_dax(
-            f'EVALUATE TOPN({head}, ADDCOLUMNS(VALUES({column_name}), "measure", [{self.name}]))',
-            db_name=self.tabular_model.db_name,
+    def full_name(self) -> str:
+        """Returns the fully qualified name for DAX queries"""
+        table_name = self.table().name
+        return f"'{table_name}'[{self.name}]"
+
+    def data(self, columns: Column | list[Column], head: int = 100) -> list[dict[str, int | float | str]]:
+        if isinstance(columns, Column):
+            columns = [columns]
+        column_str = "\n".join(
+            col.full_name() + "," for col in columns
+        )  # this should eventually be converted to jinja imo
+        command = f"""
+        EVALUATE SUMMARIZECOLUMNS(
+            {column_str}
+            {columns[0].table().name},
+            "measure", {self.full_name()}
         )
-        clean_name = column_name.replace("'", "")  # sure this will get more complicated lol
-        return [
-            {
-                "column_value": x[clean_name],
-                "measure_value": x["[measure]"],
-            }
-            for x in ret
-        ]
+        """
+        return self.tabular_model.server.query_dax(command)
 
     def __repr__(self) -> str:
         return f"Measure({self.table().name}.{self.name})"

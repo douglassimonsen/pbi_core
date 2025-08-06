@@ -19,16 +19,16 @@ Goals of this package:
 - |uncheck| Data/Visual Lineage Tool
    - |check| Low-level SSAS interface for updating PBIX Data Models
    - |check| Low-level interface for updating Static PBIX elements
-   - |uncheck| Intra-SSAS lineage
-   - |uncheck| Intra-layout lineage
-   - |uncheck| Layout-SSAS lineage
+   - |check| Intra-SSAS lineage
+   - |check| Intra-layout lineage
+   - |check| Layout-SSAS lineage
 - |check| AST parser for DAX Queries
 - |check| AST parser for M Queries
-- |uncheck| Automated Data Extraction
+- |check| Automated Data Extraction
    - |check| At the Column Level
    - |check| At the Table Level
    - |check| At the Measure Level
-   - |uncheck| At the table Level
+   - |check| At the table Level
 - |uncheck| Automated Performance Testing
    - |uncheck| At the Column Level
    - |uncheck| At the Table Level
