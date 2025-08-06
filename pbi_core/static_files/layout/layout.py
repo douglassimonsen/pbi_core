@@ -20,14 +20,31 @@ class PublicCustomVisual(LayoutNode):
     pass  # TODO: find an example where this occurs
 
 
+class ThemeInfo(LayoutNode):
+    name: str
+    version: float
+    type: int  # def an enum
+
+
+class ThemeCollection(LayoutNode):
+    baseTheme: ThemeInfo
+
+
+class Settings(LayoutNode):
+    useNewFilterPaneExperience: bool
+    allowChangeFilterTypes: bool
+    useStylableVisualContainerHeader: bool
+    exportDataMode: int  # def an enum
+
+
 class LayoutConfig(LayoutNode):
     linguisticSchemaSyncVersion: Optional[int] = None
     defaultDrillFilterOtherVisuals: bool = True
     bookmarks: Optional[list[LayoutBookmarkChild]] = None
     activeSectionIndex: int
-    themeCollection: Any
+    themeCollection: ThemeCollection
     slowDataSourceSettings: Optional[Any] = None
-    settings: Optional[Any] = None
+    settings: Optional[Settings] = None
     version: float  # looks like a float
     objects: Optional[Any] = None
     filterSortOrder: Optional[int] = None  # TODO: to enum

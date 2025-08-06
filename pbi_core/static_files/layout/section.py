@@ -1,10 +1,11 @@
 from enum import IntEnum
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
 from pydantic import ConfigDict, Json
 
 from ._base_node import LayoutNode
+from .filters import PageFilter
 from .visual_container import VisualContainer
 
 if TYPE_CHECKING:
@@ -31,7 +32,7 @@ class Section(LayoutNode):
     objectId: Optional[UUID] = None
     visualContainers: list[VisualContainer]
     ordinal: int
-    filters: Json[Any]
+    filters: Json[list[PageFilter]]
     displayName: str
     name: str
     id: Optional[int] = None
