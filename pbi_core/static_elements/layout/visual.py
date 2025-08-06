@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any, Optional
 from pydantic import ConfigDict, Json
 
 from ._base_node import LayoutNode
+from .filters import VisualFilter
 from .visual_properties import SingleVisualVCObjects
 
 if TYPE_CHECKING:
@@ -58,7 +59,7 @@ class VisualContainer(LayoutNode):
     tabOrder: Optional[int] = None
     dataTransforms: Optional[Any] = None
     query: Optional[Any] = None
-    filters: Any = []  # Json[list[VisualFilter]] = []
+    filters: Json[list[VisualFilter]] = []
     config: Json[VisualConfig]
     id: Optional[int] = None
 
