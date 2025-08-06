@@ -10,7 +10,7 @@ class IdProtocol:
 T = TypeVar("T", bound=IdProtocol)
 
 
-class Group(list[T]):  # noqa: FURB189
+class Group(list[T]):
     def get(self, match_val: str | Callable[[T], bool]) -> T:
         if isinstance(match_val, str):
             for val in self:
@@ -23,7 +23,7 @@ class Group(list[T]):  # noqa: FURB189
         raise ValueError
 
     def sync_to_server(self) -> None:
-        pass
+        raise NotImplementedError
 
     def sync_from_server(self) -> None:
-        pass
+        raise NotImplementedError

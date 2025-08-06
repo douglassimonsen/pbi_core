@@ -77,6 +77,13 @@ class BaseServer:
             return cursor.execute_xml(query)
 
     def tabular_models(self) -> list[BaseTabularModel]:
+        """Creates a list of the Tabular models existing in the SSAS server.
+
+        Note:
+        ----
+            Generally tabular models in the local environment correspond 1-1 with a PBIX report open in the Desktop app
+
+        """
         # Query based on https://learn.microsoft.com/en-us/previous-versions/sql/sql-server-2012/ms126314(v=sql.110)
         dbs = self.query_dax(COMMAND_TEMPLATES["list_dbs.xml"].render())
         return [BaseTabularModel(row["CATALOG_NAME"], self) for row in dbs]
