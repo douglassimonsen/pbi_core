@@ -21,6 +21,9 @@ class NoCommands:
 
     @staticmethod
     def get_field_order(text: str) -> list[str]:
+        """
+        Gets the order of the fields for the command, based on the ``xs:sequence`` section of the XML command.
+        """
         tree = BeautifulSoup(text, "xml")
         fields = tree.find_all("xs:complexType", {"name": "row"})[0].find_all("xs:element")
         return [field["name"] for field in fields]

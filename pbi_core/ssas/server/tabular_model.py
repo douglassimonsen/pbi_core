@@ -2,11 +2,12 @@ import pathlib
 import shutil
 from typing import TYPE_CHECKING, Any, ClassVar, Optional, cast
 
+import jinja2
 import pydantic
 from bs4 import BeautifulSoup, Tag
 from structlog import get_logger
 
-from ._commands import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
+from ._commands import BaseCommands, Command, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from .utils import BASE_ALTER_TEMPLATE, COMMAND_TEMPLATES, OBJECT_COMMAND_TEMPLATES, ROW_TEMPLATE, python_to_xml
 
 logger = get_logger()
@@ -205,30 +206,47 @@ class SsasTable(pydantic.BaseModel):
     def query_xml(self, query: str, db_name: Optional[str] = None) -> None:
         self.tabular_model.server.query_xml(query, db_name)
 
-
-class SsasAlter(SsasTable):
-    def alter(self) -> None:
+    @staticmethod
+    def render_xml_command(values: dict, base_command_template: jinja2.Template, command: Command, db_name: str):
         fields = []
-        for field_name, field_value in self.model_dump().items():
-            db_field_name = self._db_field_names.get(field_name, field_name)
-            if db_field_name in self._read_only_fields or db_field_name not in self._commands.alter.field_order:
+        for field_name, field_value in values.items():
+            if field_name not in command.field_order:
                 continue
             if field_value is None:
                 continue
-            fields.append((db_field_name, python_to_xml(field_value)))
-        fields = self._commands.alter.sort(fields)
+            fields.append((field_name, python_to_xml(field_value)))
+        fields = command.sort(fields)
         xml_row = ROW_TEMPLATE.render(fields=fields)
-        xml_entity_definition = self._commands.alter.template.render(rows=xml_row)
-        xml_alter_command = BASE_ALTER_TEMPLATE.render(
-            db_name=self.tabular_model.db_name, entity_def=xml_entity_definition
+        xml_entity_definition = command.template.render(rows=xml_row)
+        return base_command_template.render(db_name=db_name, entity_def=xml_entity_definition)
+        pass
+
+
+class SsasAlter(SsasTable):
+    def alter(self) -> None:
+        data = {
+            self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
+        }
+        xml_alter_command = self.render_xml_command(
+            data, BASE_ALTER_TEMPLATE, self._commands.alter, self.tabular_model.db_name
         )
-        logger.info("Syncing Changes to SSAS", obj=self._db_type_name())
+        logger.info("Syncing Alter Changes to SSAS", obj=self._db_type_name())
         self.query_xml(xml_alter_command, db_name=self.tabular_model.db_name)
 
 
 class SsasRename(SsasTable):
+    _db_name_field: str = "not_defined"
+
     def rename(self) -> None:
-        pass
+        data = {
+            self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
+        }
+        BASE_RENAME_COMMAND = ""
+        xml_alter_command = self.render_xml_command(
+            data, BASE_RENAME_COMMAND, self._commands.alter, self.tabular_model.db_name
+        )
+        logger.info("Syncing Rename Changes to SSAS", obj=self._db_type_name())
+        self.query_xml(xml_alter_command, db_name=self.tabular_model.db_name)
 
 
 class SsasCreate(SsasTable):

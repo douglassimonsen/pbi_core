@@ -15,6 +15,7 @@ class Column(SsasRenameTable):
     _field_mapping: ClassVar[dict[str, str]] = {
         "description": "Description",
     }
+    _db_name_field: str = "ExplicitName"
     _read_only_fields = ("table_id",)
 
     alignment: int
