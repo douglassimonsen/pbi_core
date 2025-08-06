@@ -25,3 +25,16 @@ This example shows how you can add automatic descriptions to PowerBI columns (po
       column.alter()
 
    report.save_pbix("example_out.pbix")
+
+
+This example shows how to extract data from report columns
+
+
+.. code-block:: python
+   :linenos:
+
+   from pbi_core import LocalReport
+
+   report = LocalReport.load_pbix("example.pbix")
+   values = report.ssas.columns.find({"explicit_name": "a"}).data()
+   print(values)
