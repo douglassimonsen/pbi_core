@@ -2211,15 +2211,22 @@
     pbi_core -- Uses to translate Prototype Query to DAX Query --&gt; pbi_translation
     pbi_ruff -- Uses to introspect DAX and M Queries --&gt; pbi_parsers</code></pre>
 <h2 id="populating-data-in-power-bi-visuals">Populating Data in Power BI Visuals</h2>
-<p>Given this library's focus on Power BI and its data model, it is important to understand how data is populated in Power BI visuals. The following sequence diagram illustrates the process:</p>
+<p>Given this library's focus on Power BI and its data model, it is important to understand how data is populated in Power BI visuals from a <code>pbix</code> file. The following sequence diagram illustrates the process:</p>
+<ul>
+<li><code>PowerBI Libs</code> are the various libraries used by the Power BI GUI (both on Desktop and in <code>app.powerbi.com</code>)to interact with the SSAS backend. These are largely invisible to the user.</li>
+<li><code>Front End</code> is the Power BI GUI, which is responsible for rendering the visuals and interacting with the user. This is the Desktop application or the web application itself.</li>
+<li><code>SSAS Backend</code> is the Analysis Services Tabular Data Model that stores the data model and executes DAX queries.</li>
+</ul>
 <pre class="mermaid"><code>sequenceDiagram
-    PowerBI Libs-&gt;&gt; Front End: Initializes Frontend from Layout JSON
-    PowerBI Libs-&gt;&gt; SSAS Backend: Initializes Backend from Datamodel blob
-    SSAS Backend-&gt;&gt; Front End: Returns reference to Data Model
+    Front End-&gt;&gt; PowerBI Libs: Requests a report to be loaded from a `pbix` file
+    PowerBI Libs-&gt;&gt; Front End: Initializes Frontend from Layout JSON in the `pbix` file
+    PowerBI Libs-&gt;&gt; SSAS Backend: Initializes Backend from Datamodel blob in the `pbix` file
+    SSAS Backend-&gt;&gt; Front End: Returns connection info to loaded Data Model
     Front End-&gt;&gt; PowerBI Libs: Requests conversion of the Prototype Query to DAX Query matching the data model found in the SSAS Backend
     PowerBI Libs-&gt;&gt; Front End: Returns DAX Query
     Front End-&gt;&gt; SSAS Backend: Executes DAX Query
-    SSAS Backend-&gt;&gt; Front End: Returns Data</code></pre>
+    SSAS Backend-&gt;&gt; Front End: Returns Data
+    Front End-&gt;&gt; Front End: Populates Visuals with Data</code></pre>
 
 
 
