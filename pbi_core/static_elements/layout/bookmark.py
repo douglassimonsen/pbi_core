@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING, Any, Optional
 
 from ._base_node import LayoutNode
 from .condition import BasicConditions
-from .filters import BookmarkFilter
 from .sources import VisualFilterSource
 
 if TYPE_CHECKING:
@@ -12,9 +11,9 @@ if TYPE_CHECKING:
 
 
 class BookmarkFilters(LayoutNode):
-    byExpr: list[BookmarkFilter] = []
-    byType: list[BookmarkFilter] = []
-    byName: dict[str, BookmarkFilter] = {}
+    byExpr: Any = []  # list[BookmarkFilter] = []
+    byType: Any = []  # list[BookmarkFilter] = []
+    byName: Any = []  # dict[str, BookmarkFilter] = {}
 
 
 class HighlightScope(LayoutNode):

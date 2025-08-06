@@ -7,13 +7,13 @@ from .layout import (
     ResourcePackageItem,
     ResourcePackageItemType,
     Section,
-    load_pbix,
 )
+from .static_elements import StaticElements
 
 __all__ = [
     "Section",
     "Layout",
-    "load_pbix",
+    "StaticElements",
     "LayoutNode",
     "ResourcePackage",
     "ResourcePackageDetails",
