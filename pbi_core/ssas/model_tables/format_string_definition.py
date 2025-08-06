@@ -23,6 +23,9 @@ class FormatStringDefinition(SsasEditableRecord):
 
     modified_time: datetime.datetime
 
+    def pbi_core_name(self) -> str:
+        return str(self.object_id)
+
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.
 
@@ -70,5 +73,6 @@ class FormatStringDefinition(SsasEditableRecord):
             return None
         ret = dax.to_ast(self.expression)
         if ret is None:
-            raise ValueError("Failed to parse DAX expression from format string definition")
+            msg = "Failed to parse DAX expression from format string definition"
+            raise ValueError(msg)
         return ret
