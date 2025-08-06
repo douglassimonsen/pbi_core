@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from typing import Any
 
 from colorama import Fore, Style
 
@@ -12,6 +13,7 @@ class RuleResult:
     rule: type["BaseRule"]
     message: str
     context: str | None = None
+    context_vars: dict[str, Any]
     trace: tuple[str | int, ...] | None
 
     def __init__(
@@ -19,11 +21,13 @@ class RuleResult:
         rule: type["BaseRule"],
         message: str,
         context: str | None = None,
+        context_vars: dict[str, Any] | None = None,
         trace: tuple[str | int, ...] | None = None,
     ) -> None:
         self.rule = rule
         self.message = message
         self.context = context
+        self.context_vars = context_vars or {}
         self.trace = trace
 
     def __repr__(self) -> str:
