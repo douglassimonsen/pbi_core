@@ -36,14 +36,21 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "build>=1.2.2",
+  "click>=8.1.8",
+  "inquirer>=3.4.0",
   "mypy>=1.11.2",
   "pre-commit>=3.8.0",
   "requests>=2.32.3",
-  "click>=8.1.8",
-  "inquirer>=3.4.0",
 ]
-docs = ["mkdocs-python>=1.16.12", "mkdocs-material>=9.6.15"]
-internationalization = ['openpyxl>=3.1.5', 'langcodes>=3.4.1']
+docs = [
+  "mkdocs>=1.6.1",
+  "mkdocs-material>=9.6.16",
+  "mkdocstrings-python>=0.30.0",
+]
+internationalization = [
+  "openpyxl>=3.1.5",
+  "langcodes>=3.4.1",
+]
 
 [tool.hatch.version]
 path = "pbi_core/__init__.py"
