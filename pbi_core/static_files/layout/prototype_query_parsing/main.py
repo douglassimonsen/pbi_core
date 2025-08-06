@@ -7,169 +7,25 @@ from ..condition import Condition, Expression, QueryConditionType
 if TYPE_CHECKING:
     from ..filters import From, PrototypeQuery
 
-test = {
-    "Version": 2,
-    "From": [{"Entity": "DataTable", "Name": "k", "Type": 0}, {"Entity": "Table", "Name": "t", "Type": 0}],
-    "Select": [
-        {
-            "Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "a"},
-            "Name": "DataTable.a",
-            "NativeReferenceName": "a",
-        },
-        {
-            "Aggregation": {
-                "Expression": {"Column": {"Expression": {"SourceRef": {"Source": "t"}}, "Property": "a"}},
-                "Function": 5,
-            },
-            "Name": "CountNonNull(Table.a)",
-            "NativeReferenceName": "Count of a",
-        },
-        {"Measure": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "title"}, "Name": "DataTable.title"},
-    ],
-    "Where": [
-        {
-            "Condition": {
-                "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                        "Aggregation": {
-                            "Expression": {"Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "b"}},
-                            "Function": 0,
-                        }
-                    },
-                    "Right": {"Literal": {"Value": "1L"}},
-                }
-            },
-            "Target": [{"Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "a"}}],
-        },
-        {
-            "Condition": {
-                "In": {
-                    "Expressions": [{"Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "a"}}],
-                    "Values": [[{"Literal": {"Value": "3L"}}]],
-                }
-            }
-        },
-        {
-            "Condition": {
-                "Not": {
-                    "Expression": {
-                        "In": {
-                            "Expressions": [
-                                {"Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "a"}}
-                            ],
-                            "Values": [[{"Literal": {"Value": "3L"}}]],
-                        }
-                    }
-                }
-            }
-        },
-        {
-            "Condition": {
-                "Contains": {
-                    "Left": {"Column": {"Expression": {"SourceRef": {"Source": "t"}}, "Property": "a"}},
-                    "Right": {"Literal": {"Value": "'A'"}},
-                }
-            }
-        },
-        {
-            "Condition": {
-                "Not": {
-                    "Expression": {
-                        "Contains": {
-                            "Left": {"Column": {"Expression": {"SourceRef": {"Source": "t"}}, "Property": "a"}},
-                            "Right": {"Literal": {"Value": "'A'"}},
-                        }
-                    }
-                }
-            }
-        },
-        {
-            "Condition": {
-                "Comparison": {
-                    "ComparisonKind": 1,
-                    "Left": {"Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "a"}},
-                    "Right": {"Literal": {"Value": "1L"}},
-                }
-            }
-        },
-        {
-            "Condition": {
-                "And": {
-                    "Left": {
-                        "Comparison": {
-                            "ComparisonKind": 3,
-                            "Left": {"Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "a"}},
-                            "Right": {"Literal": {"Value": "2L"}},
-                        }
-                    },
-                    "Right": {
-                        "Comparison": {
-                            "ComparisonKind": 3,
-                            "Left": {"Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "a"}},
-                            "Right": {"Literal": {"Value": "1L"}},
-                        }
-                    },
-                }
-            }
-        },
-        {
-            "Condition": {
-                "Not": {
-                    "Expression": {
-                        "Comparison": {
-                            "ComparisonKind": 0,
-                            "Left": {"Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "a"}},
-                            "Right": {"Literal": {"Value": "null"}},
-                        }
-                    }
-                }
-            }
-        },
-        {
-            "Condition": {
-                "Or": {
-                    "Left": {
-                        "Comparison": {
-                            "ComparisonKind": 0,
-                            "Left": {"Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "a"}},
-                            "Right": {"Literal": {"Value": "1L"}},
-                        }
-                    },
-                    "Right": {
-                        "Not": {
-                            "Expression": {
-                                "Comparison": {
-                                    "ComparisonKind": 0,
-                                    "Left": {"Column": {"Expression": {"SourceRef": {"Source": "k"}}, "Property": "a"}},
-                                    "Right": {"Literal": {"Value": "1L"}},
-                                }
-                            }
-                        }
-                    },
-                }
-            }
-        },
-    ],
-}
-
 
 DAX_TEMPLATE = jinja2.Template("""
 // DAX Query
 DEFINE
-  {{table_definitions}}
-{{order_by}}
+{%- for simple_filter in simple_filters %}
+{{simple_filter}}
+{%- endfor %} 
 """)
 
 BASIC_FILTER_TEMPLATE = jinja2.Template("""
     VAR __DS0FilterTable{{index}} =
         FILTER(
             KEEPFILTERS(VALUES({{source}})),
+            {{filters}}
         )
 """)
 
 
-def generate_filter_table(group_name: str, filters: list[Condition], tables: dict[str, "From"]):
+def generate_simple_filter_tables(filters: list[Condition], tables: dict[str, "From"]) -> list[str]:
     filter_info: dict[str, list[Expression]] = {}
     for f in filters:
         x = f.to_query_text(tables)
@@ -178,32 +34,30 @@ def generate_filter_table(group_name: str, filters: list[Condition], tables: dic
         for y in x:
             filter_info.setdefault(y.source, []).append(y)
 
+    ret: list[str] = []
     for i, (field, processed_filters) in enumerate(filter_info.items()):
-        x = BASIC_FILTER_TEMPLATE.render(
-            index=str(i + 1) if i > 0 else "",
-            source=field,
-        )
-        print(x)
-        continue
-        exit()
-        print(field)
+        filter_str = processed_filters.pop(0).to_text()
         for f in processed_filters:
-            print("\t", f)
-    exit()
-    return """
-VAR __DS0FilterTable =
-    FILTER(
-        KEEPFILTERS(VALUES({{}}))
-    )
-"""
+            filter_str = f"AND({filter_str}, {f.to_text()})"
+
+        ret.append(
+            BASIC_FILTER_TEMPLATE.render(
+                index=str(i + 1) if i > 0 else "",
+                source=field,
+                filters=filter_str,
+            )
+        )
+        return ret
 
 
 def generate_filters(filters: list["Condition"], tables: dict[str, "From"]):
     filter_types: dict[QueryConditionType, list[Condition]] = {e: [] for e in QueryConditionType}
     for f in filters:
         filter_types[f.get_prototype_query_type()].append(f)
-    for i, (filter_group, filters) in enumerate(filter_types.items()):
-        generate_filter_table(filter_group, filters, tables)
+    simple_filter_tables = generate_simple_filter_tables(filter_types[QueryConditionType.STANDARD], tables)
+    ret = DAX_TEMPLATE.render(simple_filters=simple_filter_tables)
+    print(ret)
+    exit()
 
 
 def parse_prototype_query(prototype_query: "PrototypeQuery"):
