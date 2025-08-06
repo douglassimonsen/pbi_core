@@ -15,12 +15,16 @@ plugins:
         python:
           options:
             backlinks: tree
+            separate_signature: true
+            show_signature_annotations: true
 
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+  - admonition
+  - pymdownx.details
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences:
