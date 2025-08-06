@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 import jinja2
 
-from ..condition import Condition, QueryConditionType
+from ..condition import Condition, Expression, QueryConditionType
 
 if TYPE_CHECKING:
     from ..filters import From, PrototypeQuery
@@ -163,8 +163,20 @@ DEFINE
 
 
 def generate_filter_table(group_name: str, filters: list[Condition], tables: dict[str, "From"]):
+    filter_info: list[Expression] = []
     for f in filters:
-        f.to_query_text(tables)
+        x = f.to_query_text(tables)
+        if isinstance(x, tuple):
+            filter_info.extend(x)
+        else:
+            filter_info.append(x)
+    for x in filter_info:
+        print(x.to_text())
+    exit()
+    return """
+VAR __DS0FilterTable =
+    FILTER
+"""
 
 
 def generate_filters(filters: list["Condition"], tables: dict[str, "From"]):
