@@ -4,6 +4,7 @@ from pbi_parsers import dax
 
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
 
+from ._group import Group
 from .base import SsasEditableRecord, SsasTable
 
 
@@ -36,7 +37,7 @@ class FormatStringDefinition(SsasEditableRecord):
         if self.object_type == ObjectType.MODEL:
             return self.tabular_model.model
 
-        type_mapper = {
+        type_mapper: dict[ObjectType, Group] = {
             ObjectType.DATASOURCE: self.tabular_model.data_sources,
             ObjectType.TABLE: self.tabular_model.tables,
             ObjectType.COLUMN: self.tabular_model.columns,

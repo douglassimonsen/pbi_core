@@ -16,7 +16,7 @@ class DiscourageImplicitMeasures(BaseRule):
         if visual.query is None:
             return []
 
-        ret = []
+        ret: list[RuleResult] = []
         for pt_query in visual.query.get_prototype_queries():
             ret.extend(
                 RuleResult(

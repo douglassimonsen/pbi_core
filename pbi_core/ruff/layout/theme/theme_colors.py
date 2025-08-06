@@ -59,11 +59,13 @@ class ThemeColorsProtanopia(ThemeColors):
             all_colors.update(theme.dataColors)
         colors = [[hex_to_rbg(color)] for color in all_colors]
         protanopia = colorblind.simulate_colorblindness(colors, colorblind_type="protanopia")
-        protanopia: list[tuple[int, int, int]] = [convert_color(sRGBColor(*color[0]), LabColor) for color in protanopia]
+        protanopia_tuples: list[tuple[int, int, int]] = [
+            convert_color(sRGBColor(*color[0]), LabColor) for color in protanopia
+        ]
 
         conflicting_colors = []
-        for c1 in protanopia:
-            for c2 in protanopia:
+        for c1 in protanopia_tuples:
+            for c2 in protanopia_tuples:
                 if c1 == c2:
                     continue
                 if delta_e_cie2000(c1, c2) < MIN_COLOR_DISTANCE:

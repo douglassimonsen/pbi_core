@@ -98,9 +98,10 @@ class SourceExpression(LayoutNode):
 
     @staticmethod
     def create(table: str, column: str) -> "SourceExpression":
+        entity = Entity.create(entity=table)
         ret: SourceExpression = SourceExpression.model_validate({
             "Expression": {
-                "SourceRef": Entity.create(entity=table).model_dump_json(),
+                "SourceRef": entity.model_dump_json(),
                 "Property": column,
             },
         })

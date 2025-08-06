@@ -1,12 +1,14 @@
 from collections.abc import Callable
-from typing import Any, Final, Protocol, TypeVar
+from typing import Any, Final, TypeVar
+
+import pydantic
 
 
-class IdProtocol(Protocol):
-    id: Final[int]
+class IdBase:
+    id: Final[int] = pydantic.Field(frozen=True)
 
 
-T = TypeVar("T", bound=IdProtocol)
+T = TypeVar("T", bound=IdBase)
 
 
 class RowNotFoundError(Exception):

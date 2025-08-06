@@ -53,7 +53,7 @@ if TYPE_CHECKING:
         TablePermission,
         Variation,
     )
-    from pbi_core.ssas.server.server import BaseServer
+    from pbi_core.ssas.server.server import BaseServer, LocalServer
 
 
 class BaseTabularModel:
@@ -119,7 +119,8 @@ class BaseTabularModel:
         return f"TabularModel(db_name={self.db_name}, server={self.server})"
 
     def to_local(self, pbix_path: pathlib.Path) -> "LocalTabularModel":
-        return LocalTabularModel(self.db_name, self.server, pbix_path)
+        server = cast("LocalServer", self.server)
+        return LocalTabularModel(self.db_name, server, pbix_path)
 
     def sync_from(self) -> None:
         """Pulls data from the SSAS instance to the Python instance.
@@ -196,8 +197,9 @@ class BaseTabularModel:
 
 class LocalTabularModel(BaseTabularModel):
     pbix_path: pathlib.Path
+    server: "LocalServer"  # type: ignore[assignment]
 
-    def __init__(self, db_name: str, server: "BaseServer", pbix_path: pathlib.Path) -> None:
+    def __init__(self, db_name: str, server: "LocalServer", pbix_path: pathlib.Path) -> None:
         self.pbix_path = pbix_path
         super().__init__(db_name, server)
 

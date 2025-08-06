@@ -188,7 +188,7 @@ class SsasRefreshRecord(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefre
 class SsasModelRecord(SsasAlter, SsasRefresh, SsasRename):
     """Solely used for the single Model record."""
 
-    _commands: ModelCommands
+    _commands: ModelCommands  # type: ignore[assignment]
 
     def model_post_init(self, __context: Any, /) -> None:
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})

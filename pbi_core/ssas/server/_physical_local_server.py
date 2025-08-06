@@ -45,7 +45,7 @@ class SSASProcess:
     _workspace_directory: pathlib.Path
     pid: int = -1
     kill_on_exit: bool
-    startup_config: PbiCoreStartupConfig
+    startup_config: PbiCoreStartupConfig | None
 
     def __init__(
         self,
@@ -75,7 +75,7 @@ class SSASProcess:
             logger.info(
                 "No pid provided. Initializing new SSAS Instance",
                 workspace_dir=self.workspace_directory(),
-                msmdsrv_exe=self.config.msmdsrv_exe,
+                msmdsrv_exe=self.startup_config.msmdsrv_exe,
             )
             self.pid = self.initialize_server()
         else:
@@ -107,10 +107,11 @@ class SSASProcess:
 
     def create_workspace(self) -> None:
         """Creates the workspace directory and populates the initial config file for the new SSAS instance."""
+        assert self.startup_config is not None, "Startup config must be set before creating a workspace"
         logger.debug("initializing SSAS Workspace", directory=self.workspace_directory())
         self.workspace_directory().mkdir(parents=True, exist_ok=True)
         (self.workspace_directory() / "msmdsrv.ini").write_text(
-            self.config.msmdsrv_ini_template().render(
+            self.startup_config.msmdsrv_ini_template().render(
                 data_directory=self.workspace_directory().absolute().as_posix().replace("/", "\\"),
                 certificate_directory=self.startup_config.cert_dir.absolute().as_posix().replace("/", "\\"),
             ),
@@ -128,9 +129,10 @@ class SSASProcess:
             ``-s`` points to the workspace created in the method "create_workspace"
 
         """
+        assert self.startup_config is not None, "Startup config must be set before running msmdsrv"
         logger.debug("Running msmdsrv exe")
         command = [  # pbi_core_master is not really used, but a port file isn't generated without it
-            self.config.msmdsrv_exe.as_posix(),
+            self.startup_config.msmdsrv_exe.as_posix(),
             "-c",
             "-n",
             "pbi_core_master",

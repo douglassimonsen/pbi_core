@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Final, Literal
+from typing import Any, ClassVar, Literal
 
 import pydantic
 from bs4 import BeautifulSoup
@@ -10,14 +10,14 @@ from pbi_core.ssas.server._commands import Command
 from pbi_core.ssas.server.tabular_model import BaseTabularModel
 from pbi_core.ssas.server.utils import ROW_TEMPLATE, python_to_xml
 
+from .._group import IdBase
+
 logger = get_logger()
 
 
-class SsasTable(BaseValidation):
+class SsasTable(BaseValidation, IdBase):
     tabular_model: BaseTabularModel
     _read_only_fields: ClassVar[tuple[str, ...]] = ()
-
-    id: Final[int] = pydantic.Field(frozen=True)
 
     _db_field_names: ClassVar[dict[str, str]] = {}
     _repr_name_field: str = "name"

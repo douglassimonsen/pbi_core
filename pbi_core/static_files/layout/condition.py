@@ -80,6 +80,12 @@ class ContainsCondition(LayoutNode):
         right = natural_language_source(self.Contains.Right)
         return f"{left} CONTAINS {right}"
 
+    def get_sources(self) -> list[DataSource]:
+        """Returns the sources used in the condition."""
+        if isinstance(self.Contains.Right, LiteralSource):
+            return [self.Contains.Left]
+        return [self.Contains.Left, self.Contains.Right]
+
 
 class InExpressionHelper(LayoutNode):
     Expressions: list[DataSource]
@@ -297,7 +303,7 @@ class AndCondition(LayoutNode):
         return f"({self.And.Left.natural_language()} AND {self.And.Right.natural_language()})"
 
     def get_sources(self) -> list[DataSource]:
-        return [*self.Or.Left.get_sources(), *self.Or.Right.get_sources()]
+        return [*self.And.Left.get_sources(), *self.And.Right.get_sources()]
 
 
 class OrCondition(LayoutNode):
