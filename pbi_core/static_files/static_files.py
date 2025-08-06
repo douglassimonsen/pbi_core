@@ -88,7 +88,7 @@ class StaticFiles:
 
         security_bindings = zipfile.read("SecurityBindings")
 
-        content_types = BeautifulSoup(zipfile.read("[Content_Types].xml").decode("utf-8"), "lxml")
+        content_types = BeautifulSoup(zipfile.read("[Content_Types].xml").decode("utf-8"), "xml")
 
         metadata_json = json.loads(zipfile.read("Metadata").decode(LAYOUT_ENCODING))
         metadata = Metadata.model_validate(metadata_json)
@@ -110,7 +110,7 @@ class StaticFiles:
         with zipfile.ZipFile(path, "r", compression=zipfile.ZIP_DEFLATED) as zf:
             for f in zf.namelist():
                 data[f] = zf.read(f)
-        # breakpoint()
+
         with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
             zf.writestr("Settings", self.settings.model_dump_json().encode(LAYOUT_ENCODING))
             zf.writestr("Connections", self.connections.model_dump_json().encode("utf-8"))
@@ -125,9 +125,5 @@ class StaticFiles:
                 )
             zf.writestr("DataModel", data["DataModel"])
             zf.writestr("Report/Layout", self.layout.model_dump_json().encode(LAYOUT_ENCODING))
-            zf.writestr(
-                "[Content_Types].xml", data["[Content_Types].xml"]
-            )  # str(self.connections).encode("utf-8") needs to converted back to XML before being written
-
-        exit()
+            zf.writestr("[Content_Types].xml", str(self.content_types).encode("utf8"))
         return
