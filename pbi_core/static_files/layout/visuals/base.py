@@ -84,7 +84,7 @@ class QueryOptions(LayoutNode):
 class BaseVisual(LayoutNode):
     model_config = ConfigDict(extra="allow")
 
-    objects: dict[str, list[PropertyDef]] = None
+    objects: dict[str, list[PropertyDef]] | None = None
     prototypeQuery: PrototypeQuery | None = None
     projections: dict[str, list[ProjectionConfig]] | None = None
     hasDefaultSort: bool = False
