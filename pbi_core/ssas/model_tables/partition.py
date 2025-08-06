@@ -57,6 +57,6 @@ class Partition(SsasRefreshTable):
         return self.tabular_model.tables.find({"id": self.table_id})
 
     def get_lineage(self) -> LineageNode:
-        children: list[Optional[SsasTable]] = [self.table(), self.query_group()]
-        children_lineage: list[LineageNode] = [c.get_lineage() for c in children if c is not None]
-        return LineageNode(self, children_lineage)
+        parents: list[Optional[SsasTable]] = [self.table(), self.query_group()]
+        parent_lineage: list[LineageNode] = [c.get_lineage() for c in parents if c is not None]
+        return LineageNode(self, parent_lineage)

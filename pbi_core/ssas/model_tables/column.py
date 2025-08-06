@@ -2,7 +2,8 @@ import datetime
 from typing import TYPE_CHECKING, ClassVar, Optional
 from uuid import UUID
 
-from ..server.tabular_model import SsasRenameTable
+from ...lineage import LineageNode
+from ..server.tabular_model import SsasRenameTable, SsasTable
 
 if TYPE_CHECKING:
     from .attribute_hierarchy import AttributeHierarchy
@@ -56,6 +57,11 @@ class Column(SsasRenameTable):
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
+    def get_lineage(self) -> LineageNode:
+        parents: list[Optional[SsasTable]] = [self.table(), self.attribute_hierarchy(), self.sort_by_column()]
+        parent_lineage = [p.get_lineage() for p in parents if p is not None]
+        return LineageNode(self, parent_lineage)
+
     def data(self, head: int = 100) -> list[int | float | str]:
         table_name = self.table().name
         ret = self.tabular_model.server.query_dax(
@@ -86,7 +92,9 @@ class Column(SsasRenameTable):
     def levels(self) -> list["Level"]:
         return self.tabular_model.levels.find_all({"column_id": self.id})
 
-    def sort_by_column(self) -> "Column":
+    def sort_by_column(self) -> Optional["Column"]:
+        if self.sort_by_column_id is None:
+            return None
         return self.tabular_model.columns.find({"id": self.sort_by_column_id})
 
     def sorting_columns(self) -> list["Column"]:

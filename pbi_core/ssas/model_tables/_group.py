@@ -8,6 +8,10 @@ class idThing(Protocol):
 T = TypeVar("T", bound=idThing)
 
 
+class RowNotFoundError(Exception):
+    pass
+
+
 class Group(list[T]):
     def find(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> T:
         if isinstance(match_val, int):
@@ -23,7 +27,7 @@ class Group(list[T]):
             for val in self:
                 if match_val(val) is True:
                     return val
-        raise ValueError
+        raise RowNotFoundError
 
     def find_all(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> list[T]:
         ret = []

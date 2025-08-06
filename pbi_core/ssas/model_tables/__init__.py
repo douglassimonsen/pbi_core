@@ -3,7 +3,7 @@ import typing
 if typing.TYPE_CHECKING:
     from ..server.tabular_model import SsasTable
 
-from ._group import Group
+from ._group import Group, RowNotFoundError
 from .alternate_of import AlternateOf
 from .annotation import Annotation
 from .attribute_hierarchy import AttributeHierarchy
@@ -45,6 +45,7 @@ from .variation import Variation
 
 __all__ = [
     "Group",
+    "RowNotFoundError",
     "AlternateOf",
     "Annotation",
     "AttributeHierarchy",

@@ -1,6 +1,7 @@
 import datetime
 from typing import TYPE_CHECKING
 
+from ...lineage import LineageNode
 from ..server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
@@ -21,3 +22,6 @@ class Culture(SsasRenameTable):
 
     def model(self) -> "Model":
         return self.tabular_model.model
+
+    def get_lineage(self) -> LineageNode:
+        return LineageNode(self, [self.linguistic_metdata().get_lineage(), self.model().get_lineage()])

@@ -2,6 +2,7 @@ import datetime
 from enum import IntEnum
 from typing import Any, Optional
 
+from ...lineage import LineageNode
 from ..server.tabular_model import SsasRenameTable, SsasTable
 
 
@@ -43,3 +44,6 @@ class Annotation(SsasRenameTable):
                 return self.tabular_model.query_groups.find({"id": self.object_id})
             case _:
                 raise ValueError("No Matching Object ID")
+
+    def get_lineage(self) -> LineageNode:
+        return LineageNode(self, [self.parent().get_lineage()])

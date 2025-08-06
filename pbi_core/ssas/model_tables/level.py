@@ -2,6 +2,7 @@ import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID
 
+from ...lineage import LineageNode
 from ..server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
@@ -23,3 +24,6 @@ class Level(SsasRenameTable):
 
     def hierarchy(self) -> "Hierarchy":
         return self.tabular_model.hierarchies.find({"id": self.hierarchy_id})
+
+    def get_lineage(self) -> LineageNode:
+        return LineageNode(self, [self.column().get_lineage(), self.hierarchy().get_lineage()])
