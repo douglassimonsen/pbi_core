@@ -51,7 +51,7 @@ values3 = measure.data(column, head=10)
 print(values3)
 ```
 
-## Pbyx Lineage Chart
+## pbi_core Lineage Chart
 
 This example displays a lineage chart in HTML:
 
@@ -85,7 +85,7 @@ One of the core tensions in PowerBI is the size of the data model. In developmen
 1. It's difficult to understand which elements are being used and how they relate to each other
 2. The additional columns and tables can slow down visual rendering times, negatively impacting UX
 
-Pbyx has an automatic element culler that allows you to remove unnecessary elements after the report has been designed:
+pbi_core has an automatic element culler that allows you to remove unnecessary elements after the report has been designed:
 
 ```python
 

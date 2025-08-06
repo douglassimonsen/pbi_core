@@ -1,4 +1,4 @@
-# Overview of the PBYX Library
+# Overview of the PBI_CORE Library
 
 The `pbi_core` library is designed to streamline and enhance the management, manipulation, and analysis of Power BI files (`.pbix`). It provides a suite of tools and utilities that enable users to automate repetitive tasks, extract insights, and perform advanced operations on Power BI files with ease. 
 

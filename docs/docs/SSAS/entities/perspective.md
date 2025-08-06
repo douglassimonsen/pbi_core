@@ -1,4 +1,4 @@
 # Perspective
 
 
-:::pbi_core.ssas.model_tables.perspective.Perspective
+:::pbi_corecorecorecore.ssas.model_tables.perspective.Perspective
