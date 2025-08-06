@@ -6,7 +6,7 @@
 | Table | Changes |
 | ----- | ------- |
 {% for table, changes in tables_with_changes.items() -%}
-| [{{ name_formatter(table) }}](#{{ table|lower|replace(' ', '-') }}) | {{ changes|length }} |
+| [{{ name_formatter(table) }}](#{{ table|lower|replace(' ', '-')|replace('_', '-') }}) | {{ changes|length }} |
 {% endfor %}
 
 {% for table, changes in tables_with_changes.items() %}

@@ -310,7 +310,7 @@ class Filter(LayoutNode):
         default_name_source = self.filter.Where[0].get_sources()[0]
         if isinstance(default_name_source, ColumnSource):
             return default_name_source.Column.Property
-        elif isinstance(default_name_source, MeasureSource):
+        if isinstance(default_name_source, MeasureSource):
             return default_name_source.Measure.Property
         return "--"
 

@@ -1,6 +1,7 @@
 import textwrap
 from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
 from typing import Any
 
 import jinja2
@@ -116,7 +117,7 @@ class SectionChange(Change):
             ret += get_field_changes_table(self.field_changes)
 
         if self.filters:
-            filter_section = "#### *Updated Filters*\n"
+            filter_section = "### *Updated Filters*\n"
 
             for f in self.filters:
                 filter_section += f.to_markdown()
@@ -138,7 +139,7 @@ class LayoutChange(Change):
         ret = ""
 
         if self.filters:
-            filter_section = "#### *Updated Filters*\n"
+            filter_section = "## *Updated Filters*\n"
 
             for f in self.filters:
                 filter_section += f.to_markdown()
@@ -162,6 +163,34 @@ class DiffReport:
         from .to_markdown import to_markdown
 
         return to_markdown(self)
+
+    def to_pdf(self, file_path: str) -> None:
+        def add_ids(line: str) -> str:
+            if not line.lstrip().startswith("#"):
+                return line
+
+            # we're relying on the fact that the string in lstrip is actually a set
+            title = line.lstrip(" #")
+            title_id = title.lower().replace(" ", "-")
+            heading_prefix = line[0 : line.index(title)]
+            return f"{heading_prefix} <a id='{title_id}'></a>{title}"
+
+        """Summary here
+
+        Note:
+            markdown_pdf doesn't handle temporary files well, that's why we save directly to a file path.
+
+        """
+        from markdown_pdf import MarkdownPdf, Section
+
+        # mode gfm-like requires linkify-it-py
+        css = (Path(__file__).parent / "templates" / "github-dark.css").read_text()
+
+        markdown_content = self.to_markdown()
+        markdown_content = "\n".join(add_ids(x) for x in markdown_content.splitlines())
+        pdf = MarkdownPdf(mode="gfm-like")
+        pdf.add_section(Section(markdown_content), user_css=css)
+        pdf.save(file_path)
 
     def layout_updates(self) -> int:
         """Count the number of layout updates."""
