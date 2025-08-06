@@ -123,4 +123,5 @@ class ModelCommands(NoCommands):
         return "ModelCommands(alter, refresh, rename)"
 
 
+# TODO: discriminate
 Commands = BaseCommands | RenameCommands | RefreshCommands | ModelCommands

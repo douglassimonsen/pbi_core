@@ -27,6 +27,7 @@ class _PropertyVariationSourceHelper(LayoutNode):
         return self.PropertyVariationSource.column()
 
 
+# TODO: disciminate
 class _HierarchySourceHelper(LayoutNode):
     Expression: SourceExpression | _PropertyVariationSourceHelper | SourceRef
     Hierarchy: str | None = None

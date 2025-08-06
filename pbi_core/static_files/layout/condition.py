@@ -91,6 +91,7 @@ class InTopNExpressionHelper(LayoutNode):
     Table: SourceRef
 
 
+# TODO: disciminate
 class InCondition(LayoutNode):
     """In is how "is" and "is not" are internally represented."""
 
@@ -115,6 +116,7 @@ class _NowHelper(LayoutNode):
     Now: dict[str, str]  # actually an empty string
 
 
+# TODO: discriminate
 class _DateSpanHelper(LayoutNode):
     Expression: LiteralSource | _NowHelper
     TimeUnit: TimeUnit
@@ -122,6 +124,9 @@ class _DateSpanHelper(LayoutNode):
 
 class DateSpan(LayoutNode):
     DateSpan: _DateSpanHelper
+
+
+# TODO: disciminate
 
 
 class ComparisonConditionHelper(LayoutNode):

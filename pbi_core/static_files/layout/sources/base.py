@@ -1,4 +1,7 @@
 from enum import IntEnum
+from typing import Annotated, Any, cast
+
+from pydantic import Discriminator, Tag
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 
@@ -32,8 +35,28 @@ class Source(LayoutNode):
         return self.Source
 
 
+def get_type(v: Any) -> str:
+    if isinstance(v, dict):
+        if "Source" in v:
+            return "Source"
+        if "Entity" in v:
+            return "Entity"
+        raise TypeError(v)
+    return cast("str", v.__class__.__name__)
+
+
+SourceRefSource = Annotated[
+    Annotated[Entity, Tag("Entity")] | Annotated[Source, Tag("Source")],
+    Discriminator(get_type),
+]
+
+
+class TransformTableRef(LayoutNode):
+    TransformTableRef: SourceRefSource
+
+
 class SourceRef(LayoutNode):
-    SourceRef: Entity | Source
+    SourceRef: SourceRefSource
 
     def table(self) -> str:
         return self.SourceRef.table()
@@ -42,11 +65,28 @@ class SourceRef(LayoutNode):
         return "NA"
 
 
+def get_source_expression_type(v: Any) -> str:
+    if isinstance(v, dict):
+        if "SourceRef" in v:
+            return "SourceRef"
+        if "TransformTableRef" in v:
+            return "TransformTableRef"
+        raise TypeError(v)
+    return cast("str", v.__class__.__name__)
+
+
+SourceExpressionUnion = Annotated[
+    Annotated[TransformTableRef, Tag("TransformTableRef")] | Annotated[SourceRef, Tag("SourceRef")],
+    Discriminator(get_source_expression_type),
+]
+
+
 class SourceExpression(LayoutNode):
-    Expression: SourceRef
+    Expression: SourceExpressionUnion
     Property: str
 
     def table(self) -> str:
+        assert isinstance(self.Expression, SourceRef)
         return self.Expression.table()
 
     def column(self) -> str:
