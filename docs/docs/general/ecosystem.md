@@ -34,8 +34,11 @@ flowchart TD
     pbi_core -- Used to connect with SSAS backend --> pyadomd
     pbi_core -- Uses to translate Prototype Query to DAX Query --> pbi_translation
     pbi_ruff -- Uses to introspect DAX and M Queries --> pbi_parsers
-    ```
+```
+
 ## Populating Data in Power BI Visuals
+
+Given this library's focus on Power BI and its data model, it is important to understand how data is populated in Power BI visuals. The following sequence diagram illustrates the process:
 
 ```mermaid
 sequenceDiagram
