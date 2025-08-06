@@ -1,7 +1,7 @@
 import dataclasses
 
+import bs4
 import jinja2
-from bs4 import BeautifulSoup
 
 BASE_ALTER_TEMPLATE = jinja2.Template(
     """
@@ -81,9 +81,14 @@ class NoCommands:
     @staticmethod
     def get_field_order(text: str) -> list[str]:
         """Gets the order of the fields for the command, based on the ``xs:sequence`` section of the XML command."""
-        tree = BeautifulSoup(text, "xml")
-        fields = tree.find_all("xs:complexType", {"name": "row"})[0].find_all("xs:element")
-        return [field["name"] for field in fields]
+        tree = bs4.BeautifulSoup(text, "xml")
+        row = tree.find("xs:complexType", {"name": "row"})
+        assert isinstance(row, bs4.element.Tag)
+        ret = []
+        for e in row.find_all("xs:element"):
+            assert isinstance(e, bs4.element.Tag)
+            ret.append(e["name"])
+        return ret
 
 
 class BaseCommands(NoCommands):

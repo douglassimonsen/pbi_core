@@ -6,9 +6,9 @@ import jsondiff
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-    from main import LocalReport
-    from ssas.server.tabular_model import SsasTable
-    from static_files.layout.layout import Layout
+    from pbi_core.main import LocalReport
+    from pbi_core.ssas.server.tabular_model import SsasTable
+    from pbi_core.static_files.layout.layout import Layout
 
 
 @dataclass
@@ -38,8 +38,8 @@ def ssas_diff(
     for key in same_items:
         old_record = parent_items[key]
         new_record = child_items[key]
-        old_json = old_record.model_dump(exclude=bad_cols)
-        new_json = new_record.model_dump(exclude=bad_cols)
+        old_json = old_record.model_dump(exclude=set(bad_cols))
+        new_json = new_record.model_dump(exclude=set(bad_cols))
         affected_fields: list[str] = list(jsondiff.diff(old_json, new_json).keys())
         if affected_fields:
             updated.append((old_record, new_record, affected_fields))

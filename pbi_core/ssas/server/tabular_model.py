@@ -3,11 +3,12 @@ import shutil
 from enum import IntEnum
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
+import bs4
 import pydantic
-from bs4 import BeautifulSoup, Tag
 from structlog import get_logger
 
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.server.server import LocalServer
 
 from ._commands import BaseCommands, Command, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from .utils import (
@@ -159,7 +160,7 @@ class BaseTabularModel:
                 setattr(self, field_name, objects)
 
     @staticmethod
-    def TABULAR_FIELDS() -> tuple[str]:  # noqa: N802
+    def TABULAR_FIELDS() -> tuple[str, ...]:  # noqa: N802
         """Returns a list of all the field names for the SSAS tables in the tabular model.
 
         No calc_dependencies, it's not a real table but a view
@@ -214,18 +215,20 @@ class LocalTabularModel(BaseTabularModel):
         super().__init__(db_name, server)
 
     def save_pbix(self, path: "StrPath") -> None:
+        assert isinstance(self.server, LocalServer)
         shutil.copy(self.pbix_path, path)
         self.server.save_pbix(path, self.db_name)  # the server is always a local server in this case
 
 
-def discover_xml_to_dict(xml: BeautifulSoup) -> dict[str, list[dict[Any, Any]]]:
+def discover_xml_to_dict(xml: bs4.BeautifulSoup) -> dict[str, list[dict[Any, Any]]]:
     """Converts the results of the Discover XML to a dictionary to make downstream transformations more convenient."""
     assert xml.results is not None
-    results: list[Tag] = list(xml.results)
+    results = cast("list[bs4.element.Tag]", list(xml.results))
     results[-1]["name"] = "CalcDependency"
     ret = {
         cast("str", table["name"]): [
-            {field.name: field.text for field in row if field.name is not None} for row in table.find_all("row")
+            {field.name: field.text for field in row if field.name is not None}  # pyright: ignore reportGeneralTypeIssues
+            for row in table.find_all("row")
         ]
         for table in results
     }
@@ -310,7 +313,7 @@ class SsasTable(pydantic.BaseModel):
 
     def query_dax(self, query: str, db_name: str | None = None) -> None:
         """Helper function to remove the ``.tabular_model.server`` required to run a DAX query from an SSAS element."""
-        self.tabular_model.server.query_dax(query, db_name)
+        self.tabular_model.server.query_dax(query, db_name=db_name)
 
     def query_xml(self, query: str, db_name: str | None = None) -> None:
         """Helper function to remove the ``.tabular_model.server`` required to run an XML query from an SSAS element."""

@@ -18,8 +18,8 @@ from pathlib import Path
 from sys import path
 from typing import TYPE_CHECKING, Any, NamedTuple, Self, TypeVar
 
+import bs4
 import clr  # type: ignore[import-untyped]
-from bs4 import BeautifulSoup
 
 from pbi_core.logging import get_logger
 
@@ -30,7 +30,7 @@ T = TypeVar("T")
 
 
 path.append(str(Path(__file__).parent)[2:])
-clr.AddReference("Microsoft.AnalysisServices.AdomdClient")
+clr.AddReference("Microsoft.AnalysisServices.AdomdClient")  # pyright: ignore reportAttributeAccessIssue
 from Microsoft.AnalysisServices.AdomdClient import (  # noqa: E402
     AdomdCommand,
     AdomdConnection,
@@ -63,7 +63,7 @@ class Cursor:
             return
         self._reader.Close()
 
-    def execute_xml(self, query: str, query_name: str | None = None) -> BeautifulSoup:
+    def execute_xml(self, query: str, query_name: str | None = None) -> bs4.BeautifulSoup:
         def _clean_name(name: str) -> str:
             name_parts = name.split("_")
             UTF_ENCODED_LEN = 5  # noqa: N806
@@ -80,8 +80,9 @@ class Cursor:
         lines = [self._reader.ReadOuterXml()]
         while lines[-1] != "":  # noqa: PLC1901
             lines.append(self._reader.ReadOuterXml())
-        ret = BeautifulSoup("".join(lines), "xml")
+        ret = bs4.BeautifulSoup("".join(lines), "xml")
         for node in ret.find_all():
+            assert isinstance(node, bs4.element.Tag)
             if node.name is not None:
                 node.name = _clean_name(node.name)
         return ret

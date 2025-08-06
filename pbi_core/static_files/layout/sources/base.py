@@ -1,10 +1,6 @@
 from enum import IntEnum
-from typing import TYPE_CHECKING
 
 from pbi_core.static_files.layout._base_node import LayoutNode
-
-if TYPE_CHECKING:
-    from pbi_core.static_files.layout.filters import From
 
 
 class EntityType(IntEnum):
@@ -55,11 +51,6 @@ class SourceExpression(LayoutNode):
 
     def column(self) -> str:
         return self.Property
-
-    def to_query_text(self, target_tables: dict[str, "From"]) -> str:
-        table_name: str = target_tables[self.table()].Entity
-        column_name: str = self.column()
-        return f"'{table_name}'[{column_name}]"
 
     @staticmethod
     def create(table: str, column: str) -> "SourceExpression":

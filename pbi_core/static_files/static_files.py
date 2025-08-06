@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from zipfile import ZipFile
 
-from bs4 import BeautifulSoup
+import bs4
 
 from .file_classes import Connections, DiagramLayout, Metadata, Settings
 from .file_classes.theme import Theme
@@ -27,7 +27,7 @@ class Version:
 
 
 class StaticFiles:
-    content_types: BeautifulSoup
+    content_types: bs4.BeautifulSoup
     connections: Connections | None
     # no datamodel, that's handled by the ssas folder
     diagram_layout: DiagramLayout
@@ -40,7 +40,7 @@ class StaticFiles:
 
     def __init__(  # noqa: PLR0913, PLR0917
         self,
-        content_types: BeautifulSoup,
+        content_types: bs4.BeautifulSoup,
         connections: Connections | None,
         diagram_layout: DiagramLayout,
         layout: Layout,
@@ -78,7 +78,7 @@ class StaticFiles:
 
         layout_json = json.loads(zipfile.read("Report/Layout").decode(LAYOUT_ENCODING))
         layout = Layout.model_validate(layout_json)
-        _set_parents(layout, None, [])
+        _set_parents(layout, None, [])  # pyright: ignore reportArgumentType
 
         if "Connections" in zipfile.namelist():
             connections_json = json.loads(zipfile.read("Connections").decode("utf-8"))
@@ -91,7 +91,7 @@ class StaticFiles:
 
         security_bindings = zipfile.read("SecurityBindings")
 
-        content_types = BeautifulSoup(zipfile.read("[Content_Types].xml").decode("utf-8"), "xml")
+        content_types = bs4.BeautifulSoup(zipfile.read("[Content_Types].xml").decode("utf-8"), "xml")
 
         metadata_json = json.loads(zipfile.read("Metadata").decode(LAYOUT_ENCODING))
         metadata = Metadata.model_validate(metadata_json)
@@ -126,7 +126,8 @@ class StaticFiles:
 
         with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
             zf.writestr("Settings", self.settings.model_dump_json().encode(LAYOUT_ENCODING))
-            zf.writestr("Connections", self.connections.model_dump_json().encode("utf-8"))
+            if self.connections is not None:
+                zf.writestr("Connections", self.connections.model_dump_json().encode("utf-8"))
             zf.writestr("Version", str(self.version).encode(LAYOUT_ENCODING))
             zf.writestr(
                 "DiagramLayout",

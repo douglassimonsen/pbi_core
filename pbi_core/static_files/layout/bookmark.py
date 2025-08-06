@@ -106,7 +106,7 @@ class Bookmark(LayoutNode):
         include_data: bool = True,
         include_display: bool = True,
         include_current_page: bool = True,
-    ):
+    ) -> "Bookmark":
         raise NotImplementedError
 
 

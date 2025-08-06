@@ -47,6 +47,7 @@ class PrototypeQuery(LayoutNode):
         ret: dict[str, str] = {}
         for table in self.From:
             if table.Name is not None:
+                assert isinstance(table, Entity)
                 ret[table.Name] = table.Entity
         return ret
 
@@ -69,7 +70,7 @@ class PrototypeQuery(LayoutNode):
         return ret
 
     def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult:
-        raw_query: dict[Any, Any] = self.model_dump_json()
+        raw_query = self.model_dump_json()
         dax_query = pbi_translation.prototype_query(
             raw_query,
             model.db_name,

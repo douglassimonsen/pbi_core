@@ -2,8 +2,8 @@ import os
 import shutil
 from pathlib import Path
 
+import bs4
 import inquirer
-from bs4 import BeautifulSoup
 
 from .config import PACKAGE_DIR, PbyxConfig
 
@@ -13,7 +13,7 @@ def get_msmdsrv_exe_path() -> str | None:
     candidate_folders = ["C:/Program Files/Microsoft Power BI Desktop", "C:/Program Files/WindowsApps"]
     for folder in candidate_folders:
         for path in Path(folder).glob("**/msmdsrv.exe"):
-            return path.absolute().as_posix()
+            return path.parent.absolute().as_posix()
     return None
 
 
@@ -53,16 +53,16 @@ def validator_potential(_: dict, inp: str) -> bool:
 
 
 def create_ini_template(raw_path: Path) -> None:
-    ini_contents = BeautifulSoup(raw_path.open(), "xml")
+    ini_contents = bs4.BeautifulSoup(raw_path.open(), "xml")
     for tag in ["DataDir", "TempDir", "LogDir", "BackupDir", "CrashReportsFolder", "AllowedBrowsingFolders"]:
-        ini_contents.find(tag).string = "{{data_directory}}"
-    ini_contents.find("CertifiedExtensions").Directories.string = "{{certificate_directory}}"
-    ini_contents.find("ExtensionDir").string = "{{bin_directory}}"
-    ini_contents.find("DataSourceImpersonationAccount").Password.string = ""
-    ini_contents.find("QueryLogConnectionString").string = ""
+        ini_contents.find(tag).string = "{{data_directory}}"  # pyright: ignore reportAttributeAccessIssue
+    ini_contents.find("CertifiedExtensions").Directories.string = "{{certificate_directory}}"  # pyright: ignore reportAttributeAccessIssue
+    ini_contents.find("ExtensionDir").string = "{{bin_directory}}"  # pyright: ignore reportAttributeAccessIssue
+    ini_contents.find("DataSourceImpersonationAccount").Password.string = ""  # pyright: ignore reportAttributeAccessIssue
+    ini_contents.find("QueryLogConnectionString").string = ""  # pyright: ignore reportAttributeAccessIssue
     ini_contents.find(
         "PrivateProcess",
-    ).string = "4"  # this must point to an existing process (I think??). 4 is the system, so shouldn't ever fail
+    ).string = "4"  # pyright: ignore reportAttributeAccessIssue  # this must point to an existing process (I think??). 4 is the system, so shouldn't ever fail
     with Path(PACKAGE_DIR / "local" / "msmdsrv_template.ini").open("w", encoding="utf-8") as f:
         # [39:] to remove "<?xml version="1.0" encoding="utf-8"?>"
         f.write(str(ini_contents)[39:])
@@ -92,7 +92,7 @@ def interactive_setup() -> None:
         inquirer.Text(
             "bin_path",
             message="Path to PowerBI's bin folder",
-            default=Path(msmdsrv_exe_path).parent.as_posix(),
+            default=msmdsrv_exe_path,
             validate=validator,
         ),
         inquirer.Text(
@@ -103,6 +103,7 @@ def interactive_setup() -> None:
         ),
     ]
     answers = inquirer.prompt(questions)
+    assert answers is not None
 
     target_dir.mkdir(exist_ok=True)
     shutil.rmtree(target_dir)
@@ -122,7 +123,7 @@ def interactive_setup() -> None:
     }
     for k, v in config_data.items():
         if PACKAGE_DIR in v.parents:
-            config_data[k] = v.relative_to(PACKAGE_DIR).as_posix()
+            config_data[k] = v.relative_to(PACKAGE_DIR)
 
     out = PbyxConfig(**config_data).model_dump_json(indent=2)
     with (target_dir / "settings.json").open("w") as f:

@@ -1,11 +1,6 @@
-from typing import TYPE_CHECKING
-
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .base import SourceExpression
-
-if TYPE_CHECKING:
-    from pbi_core.static_files.layout.filters import From
 
 
 class ColumnSource(LayoutNode):
@@ -18,9 +13,6 @@ class ColumnSource(LayoutNode):
 
     def filter_name(self) -> str:
         return self.Column.Property
-
-    def to_query_text(self, target_tables: dict[str, "From"]) -> str:
-        return self.Column.to_query_text(target_tables)
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, ColumnSource):

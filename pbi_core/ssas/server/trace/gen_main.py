@@ -1,8 +1,8 @@
 import time
 from pathlib import Path
 
+import bs4
 import requests
-from bs4 import BeautifulSoup
 from structlog import get_logger
 
 logger = get_logger()
@@ -15,10 +15,10 @@ def gen_trace_enums(class_name: str, url: str) -> str:
     logger.info("Processing Events")
     ret = [f"class {class_name}(IntEnum):"]
     page = requests.get(BASE_URL + url, timeout=10)
-    content = BeautifulSoup(page.content, features="lxml")
+    content = bs4.BeautifulSoup(page.content, features="lxml")
     for table in content.find_all("table"):
-        for row in list(table.find_all("tr"))[1:]:
-            children = list(row.find_all("td"))
+        for row in list(table.find_all("tr"))[1:]:  # pyright: ignore reportAttributeAccessIssue
+            children = list(row.find_all("td"))  # pyright: ignore reportAttributeAccessIssue
             ret.append(
                 f"\t{str(children[1].text).replace(' ', '_').upper()} = {children[0].text}  # {children[2].text}",
             )
@@ -30,17 +30,17 @@ def gen_event_enums(url: str) -> str:
     time.sleep(2)  # needed to avoid rate limiting
     ret: list[str] = []
     page = requests.get(BASE_URL + url, timeout=10)
-    content = BeautifulSoup(page.content, features="lxml")
+    content = bs4.BeautifulSoup(page.content, features="lxml")
     headers: list[str] = [x.text for x in content.find_all("h2")][1:-3]
     headers = [x[: (x + " Class—Data").index(" Class—Data")].replace(" ", "") + "Columns" for x in headers]
     tables = content.find_all("table")
     tables = tables[len(tables) - len(headers) :]
     for header, table in zip(headers, tables, strict=False):
         ret2 = [f"class {header}(IntEnum):"]
-        if table.find("tr").find("th").text != "Column Name":
+        if table.find("tr").find("th").text != "Column Name":  # pyright: ignore reportAttributeAccessIssue
             continue
-        for row in list(table.find_all("tr"))[1:]:
-            children = list(row.find_all("td"))
+        for row in list(table.find_all("tr"))[1:]:  # pyright: ignore reportAttributeAccessIssue
+            children = list(row.find_all("td"))  # pyright: ignore reportAttributeAccessIssue
             comment = children[len(children) - 1].text.replace("\n", " ")
             ret2.append(f"\t{str(children[0].text).replace(' ', '_').upper()} = {children[1].text}  # {comment}")
         ret.append("\n".join(ret2) + SEP)
