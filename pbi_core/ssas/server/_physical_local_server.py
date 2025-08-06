@@ -43,7 +43,7 @@ class SSASProcess:
     """
 
     _workspace_directory: pathlib.Path
-    pid: int
+    pid: int = -1
     kill_on_exit: bool
 
     def __init__(
@@ -202,6 +202,9 @@ class SSASProcess:
             p = psutil.Process(self.pid)
         except psutil.NoSuchProcess:  # something else killed it??
             logger.info("SSAS Proc already terminated", pid=self.pid)
+            return
+        except ValueError:
+            logger.info("SSAS Proc never initialized", pid=self.pid)
             return
         if not get_msmdsrv_info(p):  # indicates another process has already taken this PID
             return

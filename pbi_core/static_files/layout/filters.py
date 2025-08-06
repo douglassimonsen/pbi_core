@@ -1,7 +1,7 @@
 from enum import IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
 
-from pydantic import Discriminator, Tag
+from pydantic import Discriminator, Tag, BaseModel
 
 from ._base_node import LayoutNode
 from .condition import Condition
@@ -27,6 +27,12 @@ class Orderby(LayoutNode):
 
     Direction: Direction
     Expression: Source
+
+
+class PrototypeQueryResult(BaseModel):
+    data: list[dict[str, Any]]
+    dax_query: str
+    column_mapping: dict[str, str]
 
 
 class PrototypeQuery(LayoutNode):
@@ -64,16 +70,24 @@ class PrototypeQuery(LayoutNode):
             ret.add(self.unwrap_source(order_by.Expression))
         return ret
     
-    def get_data(self, model: "LocalTabularModel") -> list[dict[str, Any]]:
+    def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult:
         raw_query = self.model_dump_json()
         dax_query = pbi_translation.prototype_query(
             raw_query,
             model.db_name,
             model.server.port
-        ).DaxExpression
-        print(dax_query)
-        return model.server.query_dax(dax_query)
-
+        )
+        data = model.server.query_dax(dax_query.DaxExpression)
+        column_mapping = dict(zip(
+            dax_query.SelectNameToDaxColumnName.Keys, 
+            dax_query.SelectNameToDaxColumnName.Values
+        ))
+        return PrototypeQueryResult(
+            data=data,
+            dax_query=dax_query.DaxExpression,
+            column_mapping=column_mapping
+        )
+        
 
 class TopNFilterMeta(PrototypeQuery):
     _parent: "_SubqueryHelper2"

@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
 from pydantic import Discriminator, Json, Tag
 
 from ._base_node import LayoutNode
-from .filters import PrototypeQuery, VisualFilter
+from .filters import PrototypeQuery, VisualFilter, PrototypeQueryResult
 from .visuals.main import Visual
 
 if TYPE_CHECKING:
@@ -138,7 +138,9 @@ class VisualContainer(LayoutNode):
             return f"{self.config.singleVisual.visualType}(x={round(self.x, 2)}, y={round(self.y, 2)}, z={round(self.z, 2)})"
         return None
     
-    def get_data(self, model: "LocalTabularModel") -> list[dict[str, Any]]:
+    def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult | None:
+        if self.query is None:
+            return None
         if len(self.query.Commands) == 0:
             return None
 
