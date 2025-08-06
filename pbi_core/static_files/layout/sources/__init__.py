@@ -42,6 +42,8 @@ def get_source(v: object | dict[str, Any]) -> str:  # noqa: PLR0911
             return "ProtoSourceRef"
         if "TransformOutputRoleRef" in v:
             return "TransformOutputRoleRef"
+        if "Literal" in v:
+            return "LiteralSource"
         msg = f"Unknown Filter: {v.keys()}"
         raise TypeError(msg)
     return v.__class__.__name__
@@ -55,7 +57,9 @@ Source = Annotated[
     | Annotated[MeasureSource, Tag("MeasureSource")]
     | Annotated[ArithmeticSource, Tag("ArithmeticSource")]
     | Annotated[ProtoSourceRef, Tag("ProtoSourceRef")]
-    | Annotated[TransformOutputRoleRef, Tag("TransformOutputRoleRef")],
+    | Annotated[TransformOutputRoleRef, Tag("TransformOutputRoleRef")]
+    | Annotated[LiteralSource, Tag("LiteralSource")],
+    # Discriminator is used to determine the type based on the content of the object
     Discriminator(get_source),
 ]
 

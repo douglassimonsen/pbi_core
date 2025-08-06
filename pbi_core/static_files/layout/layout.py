@@ -14,6 +14,7 @@ from .pod import Pod
 from .resource_package import ResourcePackage
 from .section import Section
 from .visuals.base import FilterSortOrder
+from .visuals.properties.base import Expression
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
@@ -66,6 +67,19 @@ class SlowDataSourceSettings(LayoutNode):
     isSlicerSelectionsButtonEnabled: bool
 
 
+class OutspacePaneProperties(LayoutNode):
+    visible: Expression | None = None
+    expanded: Expression | None = None
+
+
+class OutspacePane(LayoutNode):
+    properties: OutspacePaneProperties
+
+
+class LayoutProperties(LayoutNode):
+    outspacePane: list[OutspacePane] | None = None
+
+
 class LayoutConfig(LayoutNode):
     linguisticSchemaSyncVersion: int | None = None
     defaultDrillFilterOtherVisuals: bool = True
@@ -75,7 +89,7 @@ class LayoutConfig(LayoutNode):
     slowDataSourceSettings: SlowDataSourceSettings | None = None
     settings: Settings | None = None
     version: float  # looks like a float
-    objects: int | None = None
+    objects: LayoutProperties | None = None
     filterSortOrder: FilterSortOrder = FilterSortOrder.NA
 
 

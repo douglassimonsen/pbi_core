@@ -17,6 +17,10 @@ class MeasureExpression(LayoutNode):
     expr: MeasureSource
 
 
+class AggregationExpression(LayoutNode):
+    expr: AggregationSource
+
+
 class ThemeDataColor(LayoutNode):
     ColorId: int
     Percent: float
@@ -163,7 +167,7 @@ def get_expression(v: object | dict[str, Any]) -> str:
             if "Literal" in v["expr"]:
                 return "LiteralExpression"
             if "Aggregation" in v["expr"]:
-                return "AggregationSource"
+                return "AggregationExpression"
             if "ResourcePackageItem" in v["expr"]:
                 return "ResourcePackageAccess"
 
@@ -176,7 +180,7 @@ def get_expression(v: object | dict[str, Any]) -> str:
 Expression = Annotated[
     Annotated[LiteralExpression, Tag("LiteralExpression")]
     | Annotated[MeasureExpression, Tag("MeasureExpression")]
-    | Annotated[AggregationSource, Tag("AggregationSource")]
+    | Annotated[AggregationExpression, Tag("AggregationExpression")]
     | Annotated[SolidColorExpression, Tag("SolidColorExpression")]
     | Annotated[LinearGradient2Expression, Tag("LinearGradient2Expression")]
     | Annotated[LinearGradient3Expression, Tag("LinearGradient3Expression")]

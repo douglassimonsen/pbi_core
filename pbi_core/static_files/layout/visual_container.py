@@ -84,9 +84,28 @@ class PrimaryProjections(LayoutNode):
     ShowItemsWithNoData: list[int] | None = None
 
 
+class Level(LayoutNode):
+    Expressions: list[Source]
+    Default: int
+
+
+class InstanceChild(LayoutNode):
+    Values: list[Source]
+
+
+class Instance(LayoutNode):
+    Children: list[InstanceChild]
+
+
+class BindingExpansion(LayoutNode):
+    From: list[FromEntity]
+    Levels: list[Level]
+    Instances: Instance
+
+
 class BindingPrimary(LayoutNode):
     Groupings: list[PrimaryProjections]
-    Expansion: int | None = None
+    Expansion: BindingExpansion | None = None
     Synchronization: int | None = None
 
 
@@ -142,19 +161,34 @@ PrimaryDataReduction = Annotated[
 ]
 
 
+class BinnedLineSample(LayoutNode):
+    PrimaryScalarKey: int
+
+
+class IntersectionType(LayoutNode):
+    BinnedLineSample: BinnedLineSample
+
+
 class DataReductionType(LayoutNode):
     DataVolume: DataVolume
-    Primary: PrimaryDataReduction
+    Primary: PrimaryDataReduction | None = None
     Secondary: PrimaryDataReduction | None = None
+    Intersection: IntersectionType | None = None
 
 
-class AggregateSources(LayoutNode):
+class AggregateSources2(LayoutNode):  # stupid name, but needs to be different from AggregateSources
+    # This is a workaround for the fact that AggregateSources is already used in the QueryBindingAggregates class
     Min: dict[str, int] | None = None
     Max: dict[str, int] | None = None
 
 
+class AggregateSources(LayoutNode):
+    min: dict[str, int] | None = None
+    max: dict[str, int] | None = None
+
+
 class QueryBindingAggregates(LayoutNode):
-    Aggregations: list[AggregateSources]
+    Aggregations: list[AggregateSources2]
     Select: int
 
 
@@ -261,6 +295,31 @@ class DataTransformSelect(LayoutNode):
     expr: Source
 
 
+class ExpansionStateLevel(LayoutNode):
+    queryRefs: list[str]
+    isCollapsed: bool
+    identityKeys: list[Source] | None = None
+    identityValues: list[None] | None = None
+
+
+class ExpansionStateChild(LayoutNode):
+    isToggled: bool = False
+    identityValues: list[Source]
+
+
+class ExpansionStateRoot(LayoutNode):
+    identityValues: list[None] | None = None
+    isToggled: bool = False
+    children: list[ExpansionStateChild] | None = None
+
+
+class ExpansionState(LayoutNode):
+    roles: list[str]
+    isToggled: bool = False
+    levels: list[ExpansionStateLevel] | None = None
+    root: ExpansionStateRoot | None = None
+
+
 class DataTransform(LayoutNode):
     objects: dict[str, list[PropertyDef]] | None = None
     projectionOrdering: dict[str, list[int]]
@@ -269,6 +328,7 @@ class DataTransform(LayoutNode):
     queryMetadata: QueryMetadata
     visualElements: list[DataTransformVisualElement]
     selects: list[DataTransformSelect]
+    expansionStates: list[ExpansionState] | None = None
 
 
 class VisualContainer(LayoutNode):
