@@ -5,9 +5,7 @@ from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
 from pydantic import Discriminator, Json, Tag
 
 from ._base_node import LayoutNode
-from .filters import FilterExpression, VisualFilter
-from .filters import OrderBy as Orderby
-from .sources import Source
+from .filters import PrototypeQuery, VisualFilter
 from .visuals import Visual
 
 if TYPE_CHECKING:
@@ -51,11 +49,6 @@ class FromEntity(LayoutNode):
     Type: EntityType
 
 
-class QueryHelper(FilterExpression):
-    Select: list[Source]
-    OrderBy: Optional[list[Orderby]] = None
-
-
 class PrimaryProjections(LayoutNode):
     Projections: list[int]
     Subtotal: Optional[int] = None
@@ -87,7 +80,7 @@ class Binding(LayoutNode):
 
 class QueryCommand1(LayoutNode):
     ExecutionMetricsKind: ExecutionMetricsKind
-    Query: QueryHelper
+    Query: PrototypeQuery
     Binding: Binding
 
 

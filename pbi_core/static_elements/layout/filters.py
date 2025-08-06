@@ -17,21 +17,23 @@ class Direction(IntEnum):
     DESCENDING = 2
 
 
-class OrderBy(LayoutNode):
+class Orderby(LayoutNode):
     parent: "TopNFilterMeta"
 
     Direction: Direction
     Expression: Source
 
 
-class TopNFilterMeta(LayoutNode):
-    parent: "_SubqueryHelper2"
-
+class PrototypeQuery(LayoutNode):
     Version: int
     From: list[Entity]
     Select: list[Source]
     Where: Optional[list[Condition]] = None
-    OrderBy: list[OrderBy]
+    OrderBy: Optional[list[Orderby]] = None
+
+
+class TopNFilterMeta(PrototypeQuery):
+    parent: "_SubqueryHelper2"
     Top: int
 
 
