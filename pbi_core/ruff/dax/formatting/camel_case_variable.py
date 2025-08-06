@@ -1,7 +1,7 @@
 from pbi_parsers import dax
 
-from ....ssas.model_tables.measure import Measure
-from ...base_rule import BaseRule, RuleResult
+from pbi_core.ruff.base_rule import BaseRule, RuleResult
+from pbi_core.ssas.model_tables.measure import Measure
 
 
 def _to_camel_case(string: str) -> str:
@@ -65,7 +65,10 @@ class CamelCaseVariable(BaseRule):
         for var in variables:
             correct_name = _to_camel_case(var.var_name.text)
             if var.var_name.text != correct_name:
-                message = f"Variable name should be in camelCase format. It was {var.var_name.text}, should be {correct_name}."
+                message = (
+                    f"Variable name should be in camelCase format. "
+                    f"It was {var.var_name.text}, should be {correct_name}."
+                )
                 context = dax.utils.highlight_section(var)
                 results.append(
                     RuleResult(

@@ -27,17 +27,17 @@ class RuleResult:
         self.trace = trace
 
     def __repr__(self) -> str:
-        content = f"""{Fore.RED}{self.rule.id}{Style.RESET_ALL} - {self.rule.name}: {self.message}
+        return f"""{Fore.RED}{self.rule.id}{Style.RESET_ALL} - {self.rule.name}: {self.message}
 -----
 {self.context}
 -----
 Trace: {self.trace_string()}
 """
-        return content
 
     def fix(self) -> None:
         """Attempt to fix the issue described by this rule result."""
-        raise NotImplementedError("Subclasses may implement the fix method.")
+        msg = "Subclasses may implement the fix method."
+        raise NotImplementedError(msg)
 
     def trace_string(self) -> str:
         """Return a string representation of the trace."""
@@ -50,8 +50,3 @@ class BaseRule:
     id: str
     name: str
     description: str
-
-    @classmethod
-    def check(cls, *args, **kwargs) -> list[RuleResult]:
-        """Check the rule against the provided arguments and return a list of RuleResult."""
-        raise NotImplementedError("Subclasses must implement the check method.")

@@ -1,11 +1,13 @@
 from typing import TYPE_CHECKING
 
-from ...base_rule import RuleGroup
+from pbi_core.ruff.base_rule import RuleGroup, RuleResult
+
 from .camel_case_variable import CamelCaseMeasureName, CamelCaseVariable
+from .magic_numbers import MagicNumbers
 from .unused_variable import UnusedMeasureVariables
 
 if TYPE_CHECKING:
-    from ....ssas.model_tables import Measure
+    from pbi_core.ssas.model_tables import Measure
 
 
 class DaxFormattingRules(RuleGroup):
@@ -16,6 +18,7 @@ class DaxFormattingRules(RuleGroup):
         CamelCaseMeasureName,
         CamelCaseVariable,
         UnusedMeasureVariables,
+        MagicNumbers,
     )
 
     @classmethod
