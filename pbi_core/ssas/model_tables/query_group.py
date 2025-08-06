@@ -19,7 +19,7 @@ class QueryGroup(SsasBaseTable):
     def partitions(self) -> list["Partition"]:
         return self.tabular_model.partitions.find_all({"query_group_id": self.id})
 
-    def get_lineage(self) -> LineageNode:
+    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
         return LineageNode(
             self,
             [expression.get_lineage() for expression in self.expressions()]

@@ -22,5 +22,5 @@ class LinguisticMetadata(SsasBaseTable):
     def _db_plural_type_name(cls) -> str:
         return "LinguisticMetadata"
 
-    def get_lineage(self) -> LineageNode:
+    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
         return LineageNode(self, [self.culture().get_lineage()])

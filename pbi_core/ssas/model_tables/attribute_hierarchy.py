@@ -19,5 +19,5 @@ class AttributeHierarchy(SsasReadonlyTable):
     def column(self) -> "Column":
         return self.tabular_model.columns.find({"id": self.column_id})
 
-    def get_lineage(self) -> LineageNode:
+    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
         return LineageNode(self, [self.column().get_lineage()])

@@ -25,5 +25,5 @@ class Level(SsasRenameTable):
     def hierarchy(self) -> "Hierarchy":
         return self.tabular_model.hierarchies.find({"id": self.hierarchy_id})
 
-    def get_lineage(self) -> LineageNode:
+    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
         return LineageNode(self, [self.column().get_lineage(), self.hierarchy().get_lineage()])

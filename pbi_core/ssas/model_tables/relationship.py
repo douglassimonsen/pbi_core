@@ -51,7 +51,7 @@ class Relationship(SsasRenameTable):
     def variations(self) -> list["Variation"]:
         return self.tabular_model.variations.find_all({"relationship_id": self.id})
 
-    def get_lineage(self) -> LineageNode:
+    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
         return LineageNode(
             self,
             [

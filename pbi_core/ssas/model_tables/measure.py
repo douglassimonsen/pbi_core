@@ -51,7 +51,7 @@ class Measure(SsasRenameTable):
             for x in ret
         ]
 
-    def get_lineage(self) -> LineageNode:
-        parents: list[Optional[SsasTable]] = [self.KPI(), self.table()]
-        parent_lineage = [c.get_lineage() for c in parents if c is not None]
+    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
+        parent_nodes: list[Optional[SsasTable]] = [self.KPI(), self.table()]
+        parent_lineage = [c.get_lineage() for c in parent_nodes if c is not None]
         return LineageNode(self, parent_lineage)

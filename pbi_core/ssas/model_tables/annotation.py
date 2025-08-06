@@ -45,5 +45,5 @@ class Annotation(SsasRenameTable):
             case _:
                 raise ValueError("No Matching Object ID")
 
-    def get_lineage(self) -> LineageNode:
+    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
         return LineageNode(self, [self.parent().get_lineage()])

@@ -57,9 +57,9 @@ class Column(SsasRenameTable):
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    def get_lineage(self) -> LineageNode:
-        parents: list[Optional[SsasTable]] = [self.table(), self.attribute_hierarchy(), self.sort_by_column()]
-        parent_lineage = [p.get_lineage() for p in parents if p is not None]
+    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
+        parent_nodes: list[Optional[SsasTable]] = [self.table(), self.attribute_hierarchy(), self.sort_by_column()]
+        parent_lineage = [p.get_lineage() for p in parent_nodes if p is not None]
         return LineageNode(self, parent_lineage)
 
     def data(self, head: int = 100) -> list[int | float | str]:

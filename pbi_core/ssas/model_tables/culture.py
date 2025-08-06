@@ -23,5 +23,5 @@ class Culture(SsasRenameTable):
     def model(self) -> "Model":
         return self.tabular_model.model
 
-    def get_lineage(self) -> LineageNode:
+    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
         return LineageNode(self, [self.linguistic_metdata().get_lineage(), self.model().get_lineage()])
