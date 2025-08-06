@@ -58,20 +58,18 @@ class ConditionalExpression(LayoutNode):
 
 def get_subexpr_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
-        if "ThemeDataColor" in v:
-            return "ThemeExpression"
-        if "Aggregation" in v:
-            return "AggregationSource"
-        if "Literal" in v:
-            return "LiteralSource"
-        if "Measure" in v:
-            return "MeasureSource"
-        if "FillRule" in v:
-            return "FillRuleExpression"
-        if "Measure" in v:
-            return "MeasureSource"
-        if "Conditional" in v:
-            return "ConditionalSource"
+        keys = list(v.keys())
+        assert len(keys) == 1, f"Expected single key, got {keys}"
+        mapper = {
+            "ThemeDataColor": "ThemeExpression",
+            "Aggregation": "AggregationSource",
+            "Literal": "LiteralSource",
+            "Measure": "MeasureSource",
+            "FillRule": "FillRuleExpression",
+            "Conditional": "ConditionalSource",
+        }
+        if keys[0] in mapper:
+            return mapper[keys[0]]
         msg = f"Unknown type: {v.keys()}"
         raise TypeError(msg)
     return v.__class__.__name__
@@ -232,40 +230,44 @@ class ColumnExpression(LayoutNode):
 
 def get_expression(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
-        if "solid" in v:
-            return "SolidColorExpression"
-        if "linearGradient2" in v:
-            return "LinearGradient2Expression"
-        if "linearGradient3" in v:
-            return "LinearGradient3Expression"
-
-        if v.get("kind") == "Icon":
-            return "ImageKindExpression"
-        if v.get("kind") == "ExprList":
-            return "ExpressionList"
-        if "image" in v:
-            return "ImageExpression"
-        if "geoJson" in v:
-            return "GeoJsonExpression"
-        if "algorithm" in v:
-            return "AlgorithmExpression"
+        keys = list(v.keys())
+        assert len(keys) == 1, f"Expected single key, got {keys}"
+        mapper = {
+            "solid": "SolidColorExpression",
+            "linearGradient2": "LinearGradient2Expression",
+            "linearGradient3": "LinearGradient3Expression",
+            "image": "ImageExpression",
+            "geoJson": "GeoJsonExpression",
+            "algorithm": "AlgorithmExpression",
+        }
+        kind_mapper = {
+            "Icon": "ImageKindExpression",
+            "ExprList": "ExpressionList",
+        }
+        expr_mapper = {
+            "Column": "ColumnExpression",
+            "Measure": "MeasureExpression",
+            "Literal": "LiteralExpression",
+            "Aggregation": "AggregationExpression",
+            "ResourcePackageItem": "ResourcePackageAccess",
+            "SelectRef": "SelectRefExpression",
+        }
+        if "kind" in v:
+            if v["kind"] in kind_mapper:
+                return kind_mapper[v["kind"]]
+            msg = f"Unknown kind: {v['kind']}"
+            raise ValueError(msg)
 
         if "expr" in v:
-            if "Column" in v["expr"]:
-                return "ColumnExpression"
-            if "Measure" in v["expr"]:
-                return "MeasureExpression"
-            if "Literal" in v["expr"]:
-                return "LiteralExpression"
-            if "Aggregation" in v["expr"]:
-                return "AggregationExpression"
-            if "ResourcePackageItem" in v["expr"]:
-                return "ResourcePackageAccess"
-            if "SelectRef" in v["expr"]:
-                return "SelectRefExpression"
+            if v["expr"] in expr_mapper:
+                return expr_mapper[v["expr"]]
+            msg = f"Unknown expression type: {v['expr']}"
+            raise ValueError(msg)
+
+        if keys[0] in mapper:
+            return mapper[keys[0]]
 
         msg = f"Unknown class: {v.keys()}"
-        breakpoint()
         raise TypeError(msg)
     return v.__class__.__name__
 

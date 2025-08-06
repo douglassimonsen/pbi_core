@@ -82,9 +82,18 @@ class QueryOptions(LayoutNode):
 
 
 class BaseVisual(LayoutNode):
+    """Base class for all visual representations in the layout.
+
+    This class defines the common properties and methods that all visuals should implement. It
+    serves as a foundation for more specific visual types.
+
+    Note:
+        This class is not intended to be instantiated directly. Instead, it should be subclassed
+
+    """
+
     model_config = ConfigDict(extra="allow")
 
-    objects: dict[str, list[PropertyDef]] | None = None
     prototypeQuery: PrototypeQuery | None = None
     projections: dict[str, list[ProjectionConfig]] | None = None
     hasDefaultSort: bool = False

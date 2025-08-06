@@ -24,28 +24,25 @@ class TransformOutputRoleRef(BaseValidation):
     Name: str | None = None
 
 
-def get_source(v: object | dict[str, Any]) -> str:  # noqa: PLR0911
+def get_source(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
-        if "Column" in v:
-            return "ColumnSource"
-        if "HierarchyLevel" in v:
-            return "HierarchyLevelSource"
-        if "GroupRef" in v:
-            return "GroupSource"
-        if "Aggregation" in v:
-            return "AggregationSource"
-        if "Measure" in v:
-            return "MeasureSource"
-        if "Arithmetic" in v:
-            return "ArithmeticSource"
-        if "SourceRef" in v:
-            return "ProtoSourceRef"
-        if "TransformOutputRoleRef" in v:
-            return "TransformOutputRoleRef"
-        if "Literal" in v:
-            return "LiteralSource"
-        if "SelectRef" in v:
-            return "SelectRef"
+        keys = list(v.keys())
+        assert len(keys) == 1, f"Expected single key, got {keys}"
+        mapper = {
+            "Column": "ColumnSource",
+            "HierarchyLevel": "HierarchyLevelSource",
+            "GroupRef": "GroupSource",
+            "Aggregation": "AggregationSource",
+            "Measure": "MeasureSource",
+            "Arithmetic": "ArithmeticSource",
+            "SourceRef": "ProtoSourceRef",
+            "TransformOutputRoleRef": "TransformOutputRoleRef",
+            "Literal": "LiteralSource",
+            "SelectRef": "SelectRef",
+        }
+
+        if keys[0] in mapper:
+            return mapper[keys[0]]
         msg = f"Unknown Filter: {v.keys()}"
         raise TypeError(msg)
     return v.__class__.__name__

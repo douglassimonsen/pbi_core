@@ -3,9 +3,9 @@ from typing import Annotated, Any
 from pydantic import Discriminator, Tag
 
 from .bar_chart import BarChart
-from .base import BaseVisual
 from .basic_shape import BasicShape
 from .column_chart import ColumnChart
+from .generic import GenericVisual
 from .pie_chart import PieChart
 from .slicer import Slicer
 from .table import TableChart
@@ -26,13 +26,13 @@ def get_visual(v: object | dict[str, Any]) -> str:
             "tableEx": "TableChart",
             "textbox": "TextBox",
         }
-        return mapping.get(v["visualType"], "BaseVisual")
+        return mapping.get(v["visualType"], "GenericVisual")
     return v.__class__.__name__
 
 
 Visual = Annotated[
     Annotated[BarChart, Tag("BarChart")]
-    | Annotated[BaseVisual, Tag("BaseVisual")]
+    | Annotated[GenericVisual, Tag("GenericVisual")]
     | Annotated[BasicShape, Tag("BasicShape")]
     | Annotated[ColumnChart, Tag("ColumnChart")]
     | Annotated[PieChart, Tag("PieChart")]
@@ -43,4 +43,4 @@ Visual = Annotated[
 ]
 
 
-__all__ = ["BaseVisual", "Visual"]
+__all__ = ["GenericVisual", "Visual"]

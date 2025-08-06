@@ -1,11 +1,14 @@
 import datetime
+from typing import TYPE_CHECKING
 
 from pbi_parsers import dax
 
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
 
-from ._group import Group
 from .base import SsasEditableRecord, SsasTable
+
+if TYPE_CHECKING:
+    from ._group import Group
 
 
 class FormatStringDefinition(SsasEditableRecord):

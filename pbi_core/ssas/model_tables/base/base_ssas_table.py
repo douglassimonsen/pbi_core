@@ -6,11 +6,10 @@ from structlog import get_logger
 
 from pbi_core.lineage import LineageNode
 from pbi_core.pydantic.main import BaseValidation
+from pbi_core.ssas.model_tables._group import IdBase
 from pbi_core.ssas.server._commands import Command
 from pbi_core.ssas.server.tabular_model import BaseTabularModel
 from pbi_core.ssas.server.utils import ROW_TEMPLATE, python_to_xml
-
-from .._group import IdBase
 
 logger = get_logger()
 

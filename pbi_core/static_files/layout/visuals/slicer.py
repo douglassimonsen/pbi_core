@@ -16,10 +16,6 @@ class SyncGroup(LayoutNode):
     filterChanges: bool = True
 
 
-class Display(LayoutNode):
-    mode: str
-
-
 class CachedFilterDisplayItems(LayoutNode):
     id: SelectorData
     displayName: str
@@ -30,6 +26,5 @@ class Slicer(BaseVisual):
     model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None
     syncGroup: SyncGroup | None = None
-    display: Display | None = None
     cachedFilterDisplayItems: list[CachedFilterDisplayItems] | None = None
     expansionStates: list[ExpansionState] | None = None

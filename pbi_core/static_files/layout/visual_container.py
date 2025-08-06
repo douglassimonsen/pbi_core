@@ -199,23 +199,26 @@ class BinnedLineSample(LayoutNode):
 
 
 def get_reduction(v: object | dict[str, Any]) -> str:
+    print(v)
+    breakpoint()
     if isinstance(v, dict):
-        if "Sample" in v:
-            return "SampleDataReduction"
-        if "Window" in v:
-            return "WindowDataReduction"
-        if "Top" in v:
-            return "TopDataReduction"
-        if "TopNPerLevel" in v:
-            return "TopNPerLevelDataReduction"
-        if "Bottom" in v:
-            return "BottomDataReduction"
-        if "OverlappingPointsSample" in v:
-            return "OverlappingPointReduction"
-        if "BinnedLineSample" in v:
-            return "BinnedLineSample"
-        msg = f"Unknown Filter: {v.keys()}"
-        raise ValueError(msg)
+        mapper = {
+            "Sample": "SampleDataReduction",
+            "Window": "WindowDataReduction",
+            "Top": "TopDataReduction",
+            "Bottom": "BottomDataReduction",
+            "OverlappingPointsSample": "OverlappingPointReduction",
+            "TopNPerLevel": "TopNPerLevelDataReduction",
+            "BinnedLineSample": "BinnedLineSample",
+        }
+
+        keys = list(v.keys())
+        assert len(keys) == 1, f"Expected a single key in the dictionary, got {keys}"
+        if keys[0] not in mapper:
+            msg = f"Unknown Filter: {v.keys()}"
+            raise ValueError(msg)
+
+        return mapper[keys[0]]
     return v.__class__.__name__
 
 
