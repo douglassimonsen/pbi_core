@@ -157,15 +157,16 @@ def get_expression(v: object | dict[str, Any]) -> str:
         if "linearGradient3" in v:
             return "LinearGradient3Expression"
 
-        if "expr" not in v:
-            msg = f"Unknown class: {v.keys()}"
-            raise TypeError(msg)
-        if "Measure" in v["expr"]:
-            return "MeasureExpression"
-        if "Literal" in v["expr"]:
-            return "LiteralExpression"
-        if "ResourcePackageItem" in v["expr"]:
-            return "ResourcePackageAccess"
+        if "expr" in v:
+            if "Measure" in v["expr"]:
+                return "MeasureExpression"
+            if "Literal" in v["expr"]:
+                return "LiteralExpression"
+            if "Aggregation" in v["expr"]:
+                return "AggregationSource"
+            if "ResourcePackageItem" in v["expr"]:
+                return "ResourcePackageAccess"
+
         msg = f"Unknown class: {v.keys()}"
         breakpoint()
         raise TypeError(msg)
@@ -175,6 +176,7 @@ def get_expression(v: object | dict[str, Any]) -> str:
 Expression = Annotated[
     Annotated[LiteralExpression, Tag("LiteralExpression")]
     | Annotated[MeasureExpression, Tag("MeasureExpression")]
+    | Annotated[AggregationSource, Tag("AggregationSource")]
     | Annotated[SolidColorExpression, Tag("SolidColorExpression")]
     | Annotated[LinearGradient2Expression, Tag("LinearGradient2Expression")]
     | Annotated[LinearGradient3Expression, Tag("LinearGradient3Expression")]

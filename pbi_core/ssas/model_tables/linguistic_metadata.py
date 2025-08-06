@@ -50,7 +50,7 @@ class TermDefinitionType(StrEnum):
 
 
 class TermDefinition(BaseValidation):
-    State: TermDefinitionState
+    State: TermDefinitionState | None = None
     Source: TermSource | None = None
     Weight: float | None = None
     Type: TermDefinitionType | None = None
