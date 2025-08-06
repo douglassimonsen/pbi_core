@@ -1,6 +1,6 @@
 from typing import Any
 
-from pydantic.color import Color
+from pydantic_extra_types.color import Color
 
 from ._base import BaseFileModel
 

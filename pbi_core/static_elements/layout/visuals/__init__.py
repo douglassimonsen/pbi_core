@@ -23,8 +23,6 @@ def get_visual(v: Any) -> str:
                 return "TableChart"
             case "slicer":
                 return "Slicer"
-        print(v["visualType"])
-        breakpoint()
         return "BaseVisual"
     return v.__class__.__name__
 

@@ -1,11 +1,11 @@
 import inspect
 from enum import IntEnum
-from typing import Annotated, Any, Union
+from typing import Annotated, Any, Optional, Union
 
 from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
-from .sources import AggregationSource, DataSource, LiteralSource, SourceRef
+from .sources import AggregationSource, DataSource, LiteralSource, Source, SourceRef
 
 
 class ExpressionVersion(IntEnum):
@@ -140,8 +140,6 @@ def get_type(v: Any) -> str:
             return "ContainsCondition"
         elif "Comparison" in v.keys():
             return "ComparisonCondition"
-        print(v.keys())
-        breakpoint()
         raise ValueError
     else:
         return v.__class__.__name__
@@ -163,6 +161,7 @@ ConditionType = Annotated[
 
 class Condition(LayoutNode):
     Condition: ConditionType
+    Target: Optional[list[Source]] = None
 
     def __repr__(self) -> str:
         return f"Condition({self.Condition.__repr__()})"

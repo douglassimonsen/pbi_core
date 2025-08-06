@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING, Annotated, Any, Optional, Union
 from pydantic import Discriminator, Json, Tag
 
 from ._base_node import LayoutNode
-from .condition import Condition
-from .filters import VisualFilter
+from .filters import FilterExpression, VisualFilter
+from .filters import OrderBy as Orderby
 from .sources import Source
 from .visuals import Visual
 
@@ -51,37 +51,14 @@ class FromEntity(LayoutNode):
     Type: EntityType
 
 
-def get_where(v: Any) -> str:
-    if isinstance(v, dict):
-        if "Condition" in v.keys():
-            return "Condition"
-        else:
-            return "Source"
-    else:
-        if isinstance(obj, Condition):
-            return "Condition"
-        else:
-            return "Source"
-
-
-Where = Annotated[
-    Union[
-        Annotated[Condition, Tag("Condition")],
-        Annotated[Source, Tag("Source")],
-    ],
-    Discriminator(get_where),
-]
-
-
-class QueryHelper(LayoutNode):
-    Version: int
-    From: list[FromEntity]
+class QueryHelper(FilterExpression):
     Select: list[Source]
-    Where: list[Where]
+    OrderBy: Optional[list[Orderby]] = None
 
 
 class PrimaryProjections(LayoutNode):
     Projections: list[int]
+    Subtotal: Optional[int] = None
 
 
 class BindingPrimary(LayoutNode):
