@@ -1,6 +1,11 @@
+import json
 from dataclasses import dataclass
+from pathlib import Path
 from typing import TYPE_CHECKING
 
+import openpyxl
+
+from ... import LocalReport
 from ...static_files import Layout, Section
 
 if TYPE_CHECKING:
@@ -24,10 +29,6 @@ class StaticElements:
         pass
 
     def to_excel(self, path: "StrPath") -> None:
-        import json
-
-        import openpyxl
-
         wb = openpyxl.Workbook()
         for object_type, objects in self.static_elements.items():
             ws = wb.create_sheet(object_type)
@@ -52,3 +53,22 @@ def get_static_elements(layout: Layout) -> StaticElements:
             )
         )
     return ret
+
+
+def set_static_elements(translation_path: "StrPath", pbix_path: "StrPath") -> None:
+    wb = openpyxl.load_workbook(translation_path)
+    languages: list[str] = [str(x) for x in list(wb.worksheets[0].values)[0][3:]]
+    processing: dict[str, list[StaticElement]] = {}
+    for ws in wb.worksheets:
+        for row in list(ws.values)[1:]:
+            for i, language in enumerate(languages):
+                processing.setdefault(language, []).append(
+                    StaticElement(json.loads(str(row[0])), str(row[1]), str(row[3 + i]))
+                )
+    for language, static_elements in processing.items():
+        pbix = LocalReport.load_pbix(pbix_path)
+        for static_element in static_elements:
+            node = pbix.static_files.layout.find_xpath(static_element.xpath)
+            setattr(node, static_element.field, static_element.text)
+        out_path = f"{Path(pbix_path).with_suffix('').absolute().as_posix()}_{language}.pbix"
+        pbix.save_pbix(out_path)

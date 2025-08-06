@@ -32,6 +32,7 @@ dev = [
   "structlog>=24.4.0",
 ]
 docs = ["pydata-sphinx-theme>=0.15.4", "sphinx-autobuild-2024.9.17"]
+internationalization = ['openpyxl>=3.1.5', 'langcodes>=3.4.1']
 
 [tool.hatch.version]
 path = "pbi_core/__init__.py"

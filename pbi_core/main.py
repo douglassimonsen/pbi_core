@@ -71,5 +71,5 @@ class LocalReport(BaseReport):
         Args:
             path (StrPath): the path (relative or absolute) to save the PBIX to
         """
-        self.static_files.save_pbix(path)
         self.ssas.save_pbix(path)
+        self.static_files.save_pbix(path)
