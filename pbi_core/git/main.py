@@ -1,10 +1,12 @@
 from typing import TYPE_CHECKING, Iterable
 from dataclasses import dataclass
-import jsondiff 
+import jsondiff
+
 
 if TYPE_CHECKING:
     from ..main import LocalReport
     from ..ssas.server.tabular_model import SsasTable
+    from ..static_files.layout.layout import Layout 
 
 
 @dataclass
@@ -17,7 +19,7 @@ class SsasDifference:
         return len(self.deleted) > 0 or len(self.updated) > 0 or len(self.inserted) > 0
 
 
-def ssas_diff(parent_table: "Iterable[SsasTable]", child_table: "Iterable[SsasTable]"):# -> list[Any] | None:
+def ssas_diff(parent_table: "Iterable[SsasTable]", child_table: "Iterable[SsasTable]", bad_cols: tuple[str, ...]):# -> list[Any] | None:
     parent_items = {
           obj.id: obj
           for obj in parent_table
@@ -33,13 +35,12 @@ def ssas_diff(parent_table: "Iterable[SsasTable]", child_table: "Iterable[SsasTa
     same_items = parent_keys & child_keys
 
     updated: list[tuple["SsasTable", "SsasTable", list[str]]] = []
-    bad_cols = {"tabular_model", "modified_time", "refreshed_time"}
     for key in same_items:
         old_record = parent_items[key]
         new_record = child_items[key]
         old_json = old_record.model_dump(exclude=bad_cols)
         new_json = new_record.model_dump(exclude=bad_cols)
-        affected_fields: list[str] = list(jsondiff.diff(old_json, new_json).keys())
+        affected_fields: list[str] = list(jsondiff.diff(old_json, new_json).keys())  # type: ignore
         if affected_fields:
             updated.append((old_record, new_record, affected_fields))
 
@@ -50,9 +51,14 @@ def ssas_diff(parent_table: "Iterable[SsasTable]", child_table: "Iterable[SsasTa
     )
 
 
+def layout_diff(parent: "Layout", child: "Layout") -> None:
+    breakpoint()
+
+
 def diff(parent: "LocalReport", child: "LocalReport") -> None:
+    x = layout_diff(parent.static_files.layout, child.static_files.layout)
     for ssas_table in parent.ssas.TABULAR_FIELDS():
-        x = ssas_diff(getattr(parent.ssas, ssas_table), getattr(child.ssas, ssas_table))
+        x = ssas_diff(getattr(parent.ssas, ssas_table), getattr(child.ssas, ssas_table), ("tabular_model", "modified_time", "refreshed_time"))
         if x:
             print(ssas_table)
             if x.deleted:

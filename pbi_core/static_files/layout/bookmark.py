@@ -10,6 +10,8 @@ from .sources import Source
 
 if TYPE_CHECKING:
     from .layout import Layout
+    from .section import Section
+    from .visuals.base import BaseVisual
 
 
 class BookmarkFilters(LayoutNode):
@@ -92,6 +94,10 @@ class Bookmark(LayoutNode):
     displayName: str
 
     def match_current_filters(self) -> None:
+        raise NotImplementedError
+    
+    @staticmethod
+    def new(section: "Section", selected_visuals: list["BaseVisual"], bookmark_name: str, include_data: bool=True, include_display: bool=True, include_current_page: bool=True):
         raise NotImplementedError
 
 

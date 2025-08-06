@@ -149,6 +149,8 @@ class LocalServer(BaseServer):
         Takes a Path to a PBIX report and loads the PBIX Datamodel to the SSAS instance in the SSASProcess
         """
         path = pathlib.Path(path)
+        if not path.exists():
+            raise FileNotFoundError("The path to the PBIX does not exist:", path.absolute().as_posix())
         if db_name is None:
             db_name = path.stem
         db_name = self.remove_invalid_db_name_chars(db_name)

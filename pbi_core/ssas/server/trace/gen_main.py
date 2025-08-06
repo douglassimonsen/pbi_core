@@ -27,7 +27,7 @@ def gen_trace_enums(class_name: str, url: str) -> str:
 
 def gen_event_enums(url: str) -> str:
     logger.info("Processing Columns", url=url)
-    time.sleep(2)
+    time.sleep(2)  # needed to avoid rate limiting
     ret: list[str] = []
     page = requests.get(BASE_URL + url, timeout=10)
     content = BeautifulSoup(page.content, features="lxml")
