@@ -1,21 +1,20 @@
-import pathlib
-from functools import cached_property
-from typing import TYPE_CHECKING
-
-from pbi_core.logging import get_logger
-
-if TYPE_CHECKING:
-    from _typeshed import StrPath
 import atexit
-import os
+import pathlib
 import shutil
 import subprocess  # nosec. It's necessary to run the msmdsrv exe  # noqa: S404
+from functools import cached_property
+from typing import TYPE_CHECKING
 
 import backoff
 import psutil
 
-from .utils import COMMAND_TEMPLATES, get_msmdsrv_info
+from pbi_core.logging import get_logger
+from pbi_core.ssas.setup import PbyxConfig, get_config
 
+from .utils import get_msmdsrv_info
+
+if TYPE_CHECKING:
+    from _typeshed import StrPath
 logger = get_logger()
 PORT_ACCESS_TRIES = 5
 
@@ -46,6 +45,7 @@ class SSASProcess:
     _workspace_directory: pathlib.Path
     pid: int = -1
     kill_on_exit: bool
+    config: PbyxConfig
 
     def __init__(
         self,
@@ -53,6 +53,7 @@ class SSASProcess:
         workspace_directory: "StrPath | None" = None,
         *,
         kill_on_exit: bool = True,
+        config: PbyxConfig | None = None,
     ) -> None:
         """__init__ is not intended to be directly called.
 
@@ -62,6 +63,7 @@ class SSASProcess:
             ValueError: when either both or neither of the pid and workspace_directory are specified
 
         """
+        self.config = config or get_config()
         self.kill_on_exit = kill_on_exit
         atexit.register(self._on_exit)
 
@@ -73,7 +75,7 @@ class SSASProcess:
             logger.info(
                 "No pid provided. Initializing new SSAS Instance",
                 workspace_dir=self.workspace_directory(),
-                msmdsrv_exe=self.powerbi_exe_path,
+                msmdsrv_exe=self.config.msmdsrv_exe,
             )
             self.pid = self.initialize_server()
         else:
@@ -103,42 +105,14 @@ class SSASProcess:
     def workspace_directory(self) -> pathlib.Path:
         return pathlib.Path(self._workspace_directory).absolute()
 
-    @cached_property
-    def powerbi_exe_path(self) -> str:
-        """Tests locations on your computer for the ``msmdsrv.exe`` file needed to create an SSAS process.
-
-        Returns:
-            str: the absolute POSIX path to the msmdsrv exe on the system.
-
-        Raises:
-            FileNotFoundError: when no ``msmdsrv.exe`` file is found in any of the candidate folders
-
-        """
-        candidate_folders = ["C:/Program Files/Microsoft Power BI Desktop", "C:/Program Files/WindowsApps"]
-        for folder in candidate_folders:
-            for path in pathlib.Path(folder).glob("**/msmdsrv.exe"):
-                logger.debug("Found exe path", path=path.absolute().as_posix())
-                return path.absolute().as_posix()
-        msg = "Cannot find msmdrsv.exe to run SSAS"
-        raise FileNotFoundError(msg)
-
-    @property
-    def certificate_directory(self) -> str:
-        r"""The certificate directory needs to be identified for intiializing the SSAS instance.
-
-        Since this string is being passed to a config used by microsoft products, we follow Windows
-        "\" convention for directories
-        """
-        return rf"C:\Users\{os.getlogin()}\AppData\Local\Microsoft\Power BI Desktop\CertifiedExtensions"
-
     def create_workspace(self) -> None:
         """Creates the workspace directory and populates the initial config file for the new SSAS instance."""
         logger.debug("initializing SSAS Workspace", directory=self.workspace_directory())
         self.workspace_directory().mkdir(parents=True, exist_ok=True)
         (self.workspace_directory() / "msmdsrv.ini").write_text(
-            COMMAND_TEMPLATES["msmdsrv.ini"].render(
+            self.config.msmdsrv_ini_template().render(
                 data_directory=self.workspace_directory().absolute().as_posix().replace("/", "\\"),
-                certificate_directory=self.certificate_directory,
+                certificate_directory=self.config.cert_dir.absolute().as_posix().replace("/", "\\"),
             ),
         )
 
@@ -156,7 +130,7 @@ class SSASProcess:
         """
         logger.debug("Running msmdsrv exe")
         command = [  # pbi_core_master is not really used, but a port file isn't generated without it
-            self.powerbi_exe_path,
+            self.config.msmdsrv_exe.as_posix(),
             "-c",
             "-n",
             "pbi_core_master",

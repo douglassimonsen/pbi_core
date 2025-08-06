@@ -1,6 +1,7 @@
 import click
 
 from pbi_core.misc import remove_workspaces
+from pbi_core.ssas.setup import interactive_setup
 
 
 @click.group()
@@ -27,6 +28,7 @@ def clean(*, plan: bool) -> None:
 @pbi_core_commands.command()
 def setup() -> None:
     """Interactive setup for package dependencies."""
+    interactive_setup()
 
 
 if __name__ == "__main__":

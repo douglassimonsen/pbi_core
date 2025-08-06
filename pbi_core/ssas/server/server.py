@@ -8,10 +8,11 @@ import psutil
 
 from pbi_core.logging import get_logger
 from pbi_core.ssas._pyadomd import pyadomd
+from pbi_core.ssas.setup import get_config
 
 from ._physical_local_server import SSASProcess
 from .tabular_model import BaseTabularModel, LocalTabularModel
-from .utils import COMMAND_TEMPLATES, ROOT_FOLDER, SKU_ERROR, get_msmdsrv_info
+from .utils import COMMAND_TEMPLATES, SKU_ERROR, get_msmdsrv_info
 
 logger = get_logger()
 
@@ -145,13 +146,16 @@ class LocalServer(BaseServer):
         *,
         kill_on_exit: bool = True,
     ) -> None:
+        config = get_config()
         if pid is not None:
-            self.physical_process = SSASProcess(pid=pid, kill_on_exit=kill_on_exit)
+            self.physical_process = SSASProcess(pid=pid, kill_on_exit=kill_on_exit, config=config)
         else:
-            workspace_directory = workspace_directory or (
-                ROOT_FOLDER / f"workspaces/{datetime.now(UTC).strftime(DT_FORMAT)}"
+            workspace_directory = workspace_directory or (config.workspace_dir / datetime.now(UTC).strftime(DT_FORMAT))
+            self.physical_process = SSASProcess(
+                workspace_directory=workspace_directory,
+                kill_on_exit=kill_on_exit,
+                config=config,
             )
-            self.physical_process = SSASProcess(workspace_directory=workspace_directory, kill_on_exit=kill_on_exit)
         super().__init__(host, self.physical_process.port)
 
     def load_pbix(self, path: "StrPath", *, db_name: str | None = None) -> LocalTabularModel:

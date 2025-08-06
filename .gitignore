@@ -8,4 +8,4 @@ dist
 test
 *.xlsx
 *.7z
-pbi_core/user_settings.json
+pbi_core/local/**

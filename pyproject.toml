@@ -32,6 +32,8 @@ dev = [
   "sphinx>=8.0.2",
   "semver>=3.0.2",
   "structlog>=24.4.0",
+  "click>=8.1.8",
+  "inquirer>=3.4.0",
   # "pbi_translation @ git+http://gitea.matthew-hamilton.com/PowerBI/prototype_parsing/releases/download/v1.0.1/pbi_translation-1.0.1-py2.py3-none-any.whl",
 ]
 docs = ["pydata-sphinx-theme>=0.15.4", "sphinx-autobuild>=2024.9.17"]
