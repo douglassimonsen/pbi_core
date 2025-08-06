@@ -38,6 +38,9 @@ class MagicNumbers(BaseRule):
                     rule=cls,
                     message=message,
                     context=dax.utils.highlight_section(token),
+                    context_vars={
+                        "magic_number": token.value.text,
+                    },
                     trace=("measure", measure.table().name, measure.name, "expression"),
                 ),
             )

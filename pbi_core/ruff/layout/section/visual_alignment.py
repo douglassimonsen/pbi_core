@@ -19,14 +19,18 @@ class VisualXAlignment(BaseRule):
                 ret.append(
                     RuleResult(
                         rule=cls,
-                        message=f"Visuals '{viz1.name}' and '{viz2.name}' are misaligned by less than 10 pixels on the x-axis.",
+                        context_vars={
+                            "viz1": viz1.name(),
+                            "viz2": viz2.name(),
+                        },
+                        message=f"Visuals '{viz1.name()}' and '{viz2.name()}' are misaligned by less than 10 pixels on the x-axis.",
                     ),
                 )
         return ret
 
 
 class VisualYAlignment(BaseRule):
-    id = "SEC-001"
+    id = "SEC-002"
     name = "Y-axis Visual Alignment"
     description = """No visual should have its x-axis misaligned with other visuals in the
     same section by less than 10 pixel."""
@@ -40,7 +44,11 @@ class VisualYAlignment(BaseRule):
                 ret.append(
                     RuleResult(
                         rule=cls,
-                        message=f"Visuals '{viz1.name}' and '{viz2.name}' are misaligned by less than 10 pixels on the x-axis.",
+                        context_vars={
+                            "viz1": viz1.name(),
+                            "viz2": viz2.name(),
+                        },
+                        message=f"Visuals '{viz1.name()}' and '{viz2.name()}' are misaligned by less than 10 pixels on the y-axis.",
                     ),
                 )
         return ret

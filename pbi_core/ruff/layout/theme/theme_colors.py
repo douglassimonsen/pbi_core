@@ -6,7 +6,7 @@ from colormath.color_diff import delta_e_cie2000
 from colormath.color_objects import LabColor, sRGBColor
 
 from ....static_files.file_classes.theme import Theme
-from ...base_rule import BaseRule
+from ...base_rule import BaseRule, RuleResult
 
 
 def patch_asscalar(a):
@@ -30,6 +30,10 @@ class ThemeColors(BaseRule):
         This helps to maintain consistency and makes it easier to change colors later.
     """
 
+    @classmethod
+    def check(cls, themes: dict[str, Theme]) -> list[RuleResult]:
+        return []
+
 
 class ThemeColorsProtanopia(ThemeColors):
     id = "THM-002"
@@ -40,7 +44,7 @@ class ThemeColorsProtanopia(ThemeColors):
     """
 
     @classmethod
-    def check(cls, themes: dict[str, Theme]):
+    def check(cls, themes: dict[str, Theme]) -> list[RuleResult]:
         all_colors = set()
         for theme in themes.values():
             all_colors.update(theme.dataColors)
@@ -56,6 +60,7 @@ class ThemeColorsProtanopia(ThemeColors):
                 if delta_e_cie2000(c1, c2) < 3:
                     conflicting_colors.append((c1, c2))
         print(conflicting_colors)
+        return []
 
 
 class ThemeColorsDeuteranopia(ThemeColors):
@@ -66,6 +71,10 @@ class ThemeColorsDeuteranopia(ThemeColors):
         This rule is specifically for Deuteranopia color vision deficiency.
     """
 
+    @classmethod
+    def check(cls, themes: dict[str, Theme]) -> list[RuleResult]:
+        return []
+
 
 class ThemeColorsTritanopia(ThemeColors):
     id = "THM-003"
@@ -74,6 +83,10 @@ class ThemeColorsTritanopia(ThemeColors):
         All data colors should be clearly distinguishable for color vision deficiency.
         This rule is specifically for Tritanopia color vision deficiency.
     """
+
+    @classmethod
+    def check(cls, themes: dict[str, Theme]) -> list[RuleResult]:
+        return []
 
 
 # colorblind

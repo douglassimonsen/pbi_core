@@ -37,6 +37,9 @@ class ConsistentFont(BaseRule):
             return [
                 RuleResult(
                     rule=cls,
+                    context_vars={
+                        "fonts": sorted(fonts),
+                    },
                     message=f"Found {len(fonts)} different fonts: {', '.join(sorted(fonts))}. "
                     "Consider using no more than 2 fonts for consistency.",
                 ),

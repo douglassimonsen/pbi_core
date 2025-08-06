@@ -1,18 +1,29 @@
 from pbi_core import LocalReport
 
-from .layout.section import visual_alignment
-from .layout.theme import theme_colors
+from .base_rule import RuleResult
+from .dax import DaxFormattingRules, DaxPerformanceRules
+from .layout import LayoutRules, SectionRules, ThemeRules
 
 
-def check_rules(report: LocalReport) -> None:
+def check_rules(report: LocalReport) -> list[RuleResult]:
     """Run all rules on the report."""
     # Run theme colors rule
-    for section in report.static_files.layout.sections:
-        visual_alignment.VisualXAlignment.check(section)
-    theme_colors.ThemeColorsProtanopia.check(report.static_files.themes)
+    results = []
 
-    # Add more rules as needed
-    # e.g., ConsistentFontRule.check(report.static_files.layout)
-    # e.g., ColorContrastRule.check(report.static_files.layout)
-    # e.g., LayoutConsistencyRule.check(report.static_files.layout)
-    # e.g., PerformanceRule.check(report.ssas, report.static_files.layout)
+    # Layout rules
+    results.extend(LayoutRules.check(report.static_files.layout))
+
+    for section in report.static_files.layout.sections:
+        results.extend(SectionRules.check(section))
+
+    # Other static files rules
+    if False:
+        results.extend(ThemeRules.check(report.static_files.themes))
+
+    # SSAS rules
+
+    for measure in report.ssas.measures:
+        results.extend(DaxFormattingRules.check(measure))
+        results.extend(DaxPerformanceRules.check(measure))
+
+    return results

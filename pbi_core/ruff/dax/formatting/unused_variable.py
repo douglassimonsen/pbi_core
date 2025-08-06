@@ -42,6 +42,9 @@ class UnusedMeasureVariables(BaseRule):
                     rule=cls,
                     message=message,
                     context=dax.utils.highlight_section(token),
+                    context_vars={
+                        "variable_name": token,
+                    },
                     trace=("measure", measure.table().name, measure.name, "expression"),
                 ),
             )

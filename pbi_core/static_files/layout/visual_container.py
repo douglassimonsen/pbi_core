@@ -448,6 +448,8 @@ class VisualContainer(LayoutNode):
     queryHash: int | None = None
     filters: Json[list[VisualFilter]] = []
     config: Json[VisualConfig]
+
+    # Seems to not occur often, so don't rely on it
     id: int | None = None
 
     def pbi_core_name(self) -> str:

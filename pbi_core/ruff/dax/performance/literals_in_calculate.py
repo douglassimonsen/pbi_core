@@ -37,6 +37,9 @@ class LiteralsInCalculate(BaseRule):
                         rule=cls,
                         message=message,
                         context=dax.utils.highlight_section(token),
+                        context_vars={
+                            "literal_value": token.value.text,
+                        },
                         trace=("measure", measure.table().name, measure.name, "expression"),
                     ),
                 )

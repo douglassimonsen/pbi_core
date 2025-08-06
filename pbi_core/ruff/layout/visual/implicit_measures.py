@@ -18,6 +18,10 @@ class DiscourageImplicitMeasures(BaseRule):
             ret.extend(
                 RuleResult(
                     rule=cls,
+                    trace=("section", visual._parent.name, "visual", visual.id or -1),
+                    context_vars={
+                        "visual_name": visual.id or -1,
+                    },
                     message="Visual uses an implicit measure. "
                     "Consider creating an explicit measure in the model instead.",
                 )

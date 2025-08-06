@@ -1,4 +1,4 @@
-from ...base_rule import BaseRule
+from ...base_rule import BaseRule, RuleResult
 
 
 class ConsistentTitle(BaseRule):
@@ -8,3 +8,7 @@ class ConsistentTitle(BaseRule):
         All Sections should have a title in the top left quadrant of the report.
         A title should be a text box visual.
     """
+
+    @classmethod
+    def check(cls, layout) -> list[RuleResult]:
+        return []

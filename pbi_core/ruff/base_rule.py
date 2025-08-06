@@ -52,8 +52,24 @@ Trace: {self.trace_string()}
             return ""
         return ".".join(str(t) for t in self.trace)
 
+    def to_dict(self) -> dict[str, Any]:
+        """Return a dictionary representation of the RuleResult."""
+        return {
+            "rule": self.rule.id,
+            "message": self.message,
+            "context": self.context,
+            "context_vars": self.context_vars,
+            "trace": self.trace_string(),
+        }
+
 
 class BaseRule:
     id: str
     name: str
     description: str
+
+    @classmethod
+    def check(cls, *args: Any, **kwargs: Any) -> list[RuleResult]:
+        """Check the provided arguments and return a list of RuleResults."""
+        msg = "Subclasses must implement the check method."
+        raise NotImplementedError(msg)

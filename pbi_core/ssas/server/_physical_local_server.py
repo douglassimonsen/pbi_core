@@ -169,6 +169,7 @@ class SSASProcess:
 
     def _on_exit(self) -> None:
         if self.kill_on_exit:
+            logger.info("Terminating SSAS Process", pid=self.pid)
             self.terminate()
 
     @staticmethod

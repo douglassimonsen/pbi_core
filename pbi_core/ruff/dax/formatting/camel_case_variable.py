@@ -34,6 +34,10 @@ class CamelCaseMeasureName(BaseRule):
                 RuleResult(
                     rule=cls,
                     message=message,
+                    context_vars={
+                        "measure_name": measure.name,
+                        "correct_name": correct_name,
+                    },
                     trace=("measure", measure.table().name, measure.name),
                 ),
             ]

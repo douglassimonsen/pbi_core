@@ -16,6 +16,7 @@ class ProperSectionName(BaseRule):
             return [
                 RuleResult(
                     rule=cls,
+                    trace=("section", section.name),
                     message=f"Section name '{section_name}' contains underscores. Consider using spaces instead.",
                 ),
             ]
@@ -23,6 +24,7 @@ class ProperSectionName(BaseRule):
             return [
                 RuleResult(
                     rule=cls,
+                    trace=("section", section.name),
                     message=f"Section name '{section_name}' is not in title case. "
                     "Consider capitalizing the first letter of each word.",
                 ),
@@ -31,6 +33,7 @@ class ProperSectionName(BaseRule):
             return [
                 RuleResult(
                     rule=cls,
+                    trace=("section", section.name),
                     message=f"Section name '{section_name}' is longer than 35 characters. Consider shortening it to improve readability.",
                 ),
             ]

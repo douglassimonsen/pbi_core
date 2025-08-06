@@ -30,6 +30,10 @@ class CapitalizeFunctionNames(BaseRule):
                         rule=cls,
                         message=message,
                         context=dax.utils.highlight_section(function),
+                        context_vars={
+                            "function_name": function_name,
+                            "correct_name": function_name.upper(),
+                        },
                         trace=("measure", measure.table().name, measure.name, "expression"),
                     ),
                 )
