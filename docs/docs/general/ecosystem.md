@@ -50,7 +50,7 @@ flowchart TD
 
 Given this library's focus on Power BI and its data model, it is important to understand how data is populated in Power BI visuals from a `pbix` file. The following sequence diagram illustrates the process:
 
-- `PowerBI Libs` are the various libraries used by the Power BI GUI (both on Desktop and in `app.powerbi.com`)to interact with the SSAS backend. These are largely invisible to the user.
+- `PowerBI Libs` are the various libraries used by the Power BI GUI (both on Desktop and in `app.powerbi.com`) to interact with the SSAS backend. These are largely invisible to the user.
 - `Front End` is the Power BI GUI, which is responsible for rendering the visuals and interacting with the user. This is the Desktop application or the web application itself.
 - `SSAS Backend` is the Analysis Services Tabular Data Model that stores the data model and executes DAX queries.
 
