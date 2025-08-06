@@ -13,6 +13,7 @@ from pbi_core.static_files.layout.sources.measure import MeasureSource
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Column, Measure
     from pbi_core.ssas.server import BaseTabularModel
+    from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 
 class FilterSortOrder(Enum):
@@ -53,6 +54,11 @@ class BaseVisual(LayoutNode):
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""
         return self.__class__.__name__
+
+    def get_ssas_elements(self) -> "set[ModelColumnReference | ModelMeasureReference]":
+        if self.prototypeQuery is None:
+            return set()
+        return self.prototypeQuery.get_ssas_elements()
 
     def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
         ret: list[Column | Measure] = []

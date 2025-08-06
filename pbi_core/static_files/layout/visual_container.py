@@ -214,10 +214,11 @@ class VisualContainer(LayoutNode):
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
         """Returns the SSAS elements (columns and measures) this visual is directly dependent on."""
-        if self.query is None:
-            return set()
         ret: set[ModelColumnReference | ModelMeasureReference] = set()
-        ret.update(self.query.get_ssas_elements())
+        if self.config.singleVisual is not None:
+            ret.update(self.config.singleVisual.get_ssas_elements())
+        if self.query is not None:
+            ret.update(self.query.get_ssas_elements())
         for f in self.filters:
             ret.update(f.get_ssas_elements())
         return ret
