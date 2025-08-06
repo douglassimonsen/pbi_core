@@ -2,7 +2,7 @@ import datetime
 from typing import Optional
 from uuid import UUID
 
-from ._base_table import SsasTable
+from ..server.tabular_model import SsasTable
 
 
 class Table(SsasTable):
@@ -14,7 +14,6 @@ class Table(SsasTable):
     is_private: bool
     lineage_tag: UUID
     model_id: str
-    id: str
     name: str
     show_as_variations_only: bool
     system_flags: int

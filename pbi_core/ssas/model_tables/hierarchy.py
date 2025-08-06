@@ -1,4 +1,4 @@
-from ._base_table import SsasTable
+from ..server.tabular_model import SsasTable
 
 
 class Hierarchy(SsasTable):

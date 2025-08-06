@@ -1,4 +1,8 @@
-from ._base_table import SsasTable as SsasTable
+import typing
+
+if typing.TYPE_CHECKING:
+    from ..server.tabular_model import SsasTable
+
 from ._group import Group as Group
 from .alternate_of import AlternateOf as AlternateOf
 from .annotation import Annotation as Annotation
@@ -37,3 +41,5 @@ from .set import Set as Set
 from .table import Table as Table
 from .table_permission import TablePermission as TablePermission
 from .variation import Variation as Variation
+
+FIELD_TYPES: dict[str, type["SsasTable"]] = {"annotations": Annotation, "tables": Table}

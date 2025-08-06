@@ -156,8 +156,8 @@ class Cursor:
 
 
 class AdmomdState(IntEnum):
-    Open = 1
-    Closed = 0
+    OPEN = 1
+    CLOSED = 0
 
 
 class Pyadomd:
