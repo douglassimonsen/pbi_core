@@ -42,7 +42,7 @@ class LineageNode:
     def _create_node(value: Any) -> Node:
         return Node(
             id=f"{value.__class__.__name__}-{value.id}",
-            content=value.lineage_name(),
+            content=value.pbi_core_name(),
             style=CLASS_STYLES[value.__class__.__name__],
             shape=NodeShape.round_edge,
         )

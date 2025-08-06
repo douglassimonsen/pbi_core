@@ -29,9 +29,6 @@ class Table(SsasRefreshTable):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    def lineage_name(self) -> str:
-        return self.name
-
     def data(self, head: int = 100) -> list[int | float | str]:
         ret = self.tabular_model.server.query_dax(
             f"EVALUATE TOPN({head}, ALL('{self.name}'))",

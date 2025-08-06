@@ -19,9 +19,6 @@ class Level(SsasRenameTable):
 
     modified_time: datetime.datetime
 
-    def lineage_name(self) -> str:
-        return self.name
-
     def column(self) -> "Column":
         return self.tabular_model.columns.find({"id": self.column_id})
 

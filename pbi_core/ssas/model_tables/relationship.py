@@ -33,9 +33,6 @@ class Relationship(SsasRenameTable):
 
     modified_time: datetime.datetime
 
-    def lineage_name(self) -> str:
-        return self.name
-
     def from_table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.from_table_id})
 

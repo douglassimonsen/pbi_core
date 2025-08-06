@@ -28,7 +28,7 @@ class BaseVisual(LayoutNode):
         """Obviously terrible, but works for now lol"""
         return self.visualType
 
-    def lineage_name(self) -> str:
+    def pbi_core_name(self) -> str:
         return self.__class__.__name__
 
     def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:

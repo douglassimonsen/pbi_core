@@ -13,6 +13,7 @@ class QueryGroup(SsasBaseTable):
     description: Optional[str] = None
     folder: str
     model_id: int
+    _repr_name_field = "folder"
 
     def expressions(self) -> list["Expression"]:
         return self.tabular_model.expressions.find_all({"query_group_id": self.id})

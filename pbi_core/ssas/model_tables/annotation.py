@@ -25,9 +25,6 @@ class Annotation(SsasRenameTable):
 
     modified_time: datetime.datetime
 
-    def lineage_name(self) -> str:
-        return self.name
-
     def parent(self) -> "SsasTable":
         match self.object_type:
             # we have to have type: ignore because python doesn't consider list[child] to be a subtype of list[parent] :(

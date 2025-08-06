@@ -24,9 +24,6 @@ class Hierarchy(SsasRenameTable):
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    def lineage_name(self) -> str:
-        return self.name
-
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})
 

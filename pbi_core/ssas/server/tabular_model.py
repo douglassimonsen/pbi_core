@@ -185,6 +185,7 @@ class SsasTable(pydantic.BaseModel):
     _commands: Any
     id: int
     _db_field_names: ClassVar[dict[str, str]] = {}
+    _repr_name_field: str = "name"
 
     @classmethod
     def _db_type_name(cls) -> str:
@@ -194,8 +195,11 @@ class SsasTable(pydantic.BaseModel):
     def _db_plural_type_name(cls) -> str:
         return cls.__name__ + "s"
 
-    def lineage_name(self) -> str:
-        raise NotImplementedError
+    def pbi_core_name(self) -> str:
+        return getattr(self, self._repr_name_field)
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.pbi_core_name()})"
 
     @pydantic.model_validator(mode="before")
     def to_snake_case(cls: "SsasTable", raw_values: dict[str, Any]) -> dict[str, Any]:

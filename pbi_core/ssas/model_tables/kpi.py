@@ -17,8 +17,8 @@ class KPI(SsasBaseTable):
 
     modified_time: datetime.datetime
 
-    def lineage_name(self) -> str:
-        return self.measure().lineage_name()
+    def pbi_core_name(self) -> str:
+        return self.measure().pbi_core_name()
 
     def measure(self) -> "Measure":
         return self.tabular_model.measures.find({"id": self.measure_id})

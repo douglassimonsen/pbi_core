@@ -17,8 +17,8 @@ class AttributeHierarchy(SsasReadonlyTable):
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
 
-    def lineage_name(self) -> str:
-        return self.column().lineage_name()
+    def pbi_core_name(self) -> str:
+        return self.column().pbi_core_name()
 
     def column(self) -> "Column":
         return self.tabular_model.columns.find({"id": self.column_id})

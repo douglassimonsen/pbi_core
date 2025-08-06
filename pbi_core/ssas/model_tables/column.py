@@ -58,9 +58,6 @@ class Column(SsasRenameTable):
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    def lineage_name(self) -> str:
-        return self.explicit_name or self.inferred_name or str(self.id)
-
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             children_nodes: list[Column | Measure | AttributeHierarchy] = (
@@ -86,7 +83,7 @@ class Column(SsasRenameTable):
         table_name = self.table().name
         return f"'{table_name}'[{self.explicit_name}]"
 
-    def repr_name(self) -> str:
+    def pbi_core_name(self) -> str:
         if self.explicit_name is not None:
             return self.explicit_name
         if self.inferred_name is not None:
@@ -94,7 +91,7 @@ class Column(SsasRenameTable):
         return str(self.id)
 
     def __repr__(self) -> str:
-        return f"Column({self.table().name}.{self.repr_name()})"
+        return f"Column({self.table().name}.{self.pbi_core_name()})"
 
     def table(self) -> "Table":
         """Returns the table class the column is a part of"""

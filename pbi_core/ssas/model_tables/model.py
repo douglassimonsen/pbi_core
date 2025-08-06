@@ -32,9 +32,6 @@ class Model(SsasModelTable):
 
     modified_time: datetime.datetime
 
-    def lineage_name(self) -> str:
-        return self.name
-
     def cultures(self) -> list["Culture"]:
         return self.tabular_model.cultures.find_all({"model_id": self.id})
 
