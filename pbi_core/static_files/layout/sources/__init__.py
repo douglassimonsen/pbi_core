@@ -26,8 +26,6 @@ class TransformOutputRoleRef(BaseValidation):
 
 def get_source(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
-        keys = list(v.keys())
-        assert len(keys) == 1, f"Expected single key, got {keys}"
         mapper = {
             "Column": "ColumnSource",
             "HierarchyLevel": "HierarchyLevelSource",
@@ -40,9 +38,9 @@ def get_source(v: object | dict[str, Any]) -> str:
             "Literal": "LiteralSource",
             "SelectRef": "SelectRef",
         }
-
-        if keys[0] in mapper:
-            return mapper[keys[0]]
+        for key in v:
+            if key in mapper:
+                return mapper[key]
         msg = f"Unknown Filter: {v.keys()}"
         raise TypeError(msg)
     return v.__class__.__name__

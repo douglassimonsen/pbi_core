@@ -230,8 +230,6 @@ class ColumnExpression(LayoutNode):
 
 def get_expression(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
-        keys = list(v.keys())
-        assert len(keys) == 1, f"Expected single key, got {keys}"
         mapper = {
             "solid": "SolidColorExpression",
             "linearGradient2": "LinearGradient2Expression",
@@ -259,13 +257,16 @@ def get_expression(v: object | dict[str, Any]) -> str:
             raise ValueError(msg)
 
         if "expr" in v:
-            if v["expr"] in expr_mapper:
-                return expr_mapper[v["expr"]]
+            # Column has multiple keys, so we need to check them
+            for k in v["expr"]:
+                if k in expr_mapper:
+                    return expr_mapper[k]
             msg = f"Unknown expression type: {v['expr']}"
             raise ValueError(msg)
 
-        if keys[0] in mapper:
-            return mapper[keys[0]]
+        for key in v:
+            if key in mapper:
+                return mapper[key]
 
         msg = f"Unknown class: {v.keys()}"
         raise TypeError(msg)

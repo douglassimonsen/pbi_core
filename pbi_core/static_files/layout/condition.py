@@ -274,7 +274,7 @@ class NotCondition(LayoutNode):
 
 
 class ExistsConditionHelper(LayoutNode):
-    Expression: DataSource
+    Expression: Source  # cannot be DataSource, might only be a ProtoSourceRef?
 
 
 class ExistsCondition(LayoutNode):

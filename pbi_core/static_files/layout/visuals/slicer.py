@@ -6,7 +6,7 @@ from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.expansion_state import ExpansionState
 from pbi_core.static_files.layout.selector import SelectorData
 
-from .base import BaseVisual
+from .base import BaseVisual, PropertyDef
 from .table import ColumnProperty
 
 
@@ -28,3 +28,4 @@ class Slicer(BaseVisual):
     syncGroup: SyncGroup | None = None
     cachedFilterDisplayItems: list[CachedFilterDisplayItems] | None = None
     expansionStates: list[ExpansionState] | None = None
+    objects: dict[str, list[PropertyDef]] | None = None

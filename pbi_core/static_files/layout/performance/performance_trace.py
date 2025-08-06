@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 import jinja2
-from pyadomd import Pyadomd
+from pbi_pyadomd import Connection
 
 from pbi_core.logging import get_logger
 from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
@@ -134,7 +134,7 @@ class Performance:
 class Subscriber:
     trace_records: dict[str, list[dict[str, Any]]]
 
-    def __init__(self, subscription_create_command: str, conn: Pyadomd, events: Iterable[TraceEvents]) -> None:
+    def __init__(self, subscription_create_command: str, conn: Connection, events: Iterable[TraceEvents]) -> None:
         self.cursor = conn.cursor()
         self.cursor.execute_dax(
             subscription_create_command,
@@ -210,12 +210,11 @@ class PerformanceTrace:
         def thread_func(command: str) -> ThreadResult:
             try:
                 with self.get_conn() as conn:
-                    cursor = conn.cursor()
-                    cursor.execute_dax(command)
-                    rows_returned = len(cursor.fetch_all(limit=500))
+                    reader = conn.execute_dax(command)
+                    rows_returned = len(reader.fetch_all(limit=500))
 
-                    # See note in Cursor.fetch_stream() documentation for why we do this
-                    cursor.reader.close()
+                    # See note in Reader.fetch_stream() documentation for why we do this
+                    reader.close()
 
             except ValueError as e:
                 return ThreadResult(
@@ -272,5 +271,5 @@ class PerformanceTrace:
             for command_result in command_results
         ]
 
-    def get_conn(self) -> Pyadomd:
+    def get_conn(self) -> Connection:
         return self.db.server.conn(db_name=self.db.db_name).open()

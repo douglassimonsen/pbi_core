@@ -3,8 +3,8 @@ from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
 import backoff
+import pbi_pyadomd
 import psutil
-import pyadomd
 from bs4 import BeautifulSoup
 
 from pbi_core.logging import get_logger
@@ -48,9 +48,9 @@ class BaseServer:
             return f"Provider=MSOLAP;Data Source={self.host}:{self.port};Initial Catalog={db_name};"
         return f"Provider=MSOLAP;Data Source={self.host}:{self.port};"
 
-    def conn(self, db_name: str | None = None) -> pyadomd.Pyadomd:
-        """Returns a pyadomd connection."""
-        return pyadomd.Pyadomd(self.conn_str(db_name))
+    def conn(self, db_name: str | None = None) -> pbi_pyadomd.Connection:
+        """Returns a pbi_pyadomd connection."""
+        return pbi_pyadomd.connect(self.conn_str(db_name))
 
     def __repr__(self) -> str:
         return f"Server(host={self.host}:{self.port})"
@@ -85,8 +85,7 @@ class BaseServer:
 
         """
         with self.conn(db_name) as conn:
-            cursor = conn.cursor()
-            return cursor.execute_xml(query)
+            return conn.execute_xml(query)
 
     def tabular_models(self) -> list[BaseTabularModel]:
         """Creates a list of the Tabular models existing in the SSAS server.
@@ -120,7 +119,7 @@ class BaseServer:
                     db_name="---",
                 ),  # specifically choosing non-existant values to verify we get at least one error
             )
-        except pyadomd.AdomdErrorResponseException as e:
+        except pbi_pyadomd.AdomdErrorResponseException as e:
             error_message = str(e.Message)
             if error_message == SKU_ERROR:
                 return
@@ -209,7 +208,7 @@ class LocalServer(BaseServer):
         )
         try:
             self.query_xml(load_command)
-        except pyadomd.AdomdErrorResponseException as e:
+        except pbi_pyadomd.AdomdErrorResponseException as e:
             if (
                 "user does not have permission to restore the database, or the database already exists and AllowOverwrite is not specified"  # noqa: E501
                 in str(e.Message)
@@ -218,7 +217,8 @@ class LocalServer(BaseServer):
                 self.query_xml(COMMAND_TEMPLATES["db_delete.xml"].render(db_name=db_name))
                 self.query_xml(load_command)
             else:
-                raise
+                raise pbi_pyadomd.AdomdErrorResponseException from e
+
         self.default_db = db_name  # needed so the DAX queries are pointed to the right DB by defauilt
         logger.info("Tabular Model load complete")
         tab_model = LocalTabularModel(db_name=db_name, server=self, pbix_path=path)

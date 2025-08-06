@@ -59,6 +59,7 @@ file-encoding = "utf8"
 line-length = 120
 preview = true
 target-version = "py311"
+exclude = ["test*"]
 
 [tool.ruff.lint]
 select = ["ALL"]
