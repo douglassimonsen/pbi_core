@@ -4,3 +4,4 @@ venv
 workspaces
 docs/build
 *.env
+dist
