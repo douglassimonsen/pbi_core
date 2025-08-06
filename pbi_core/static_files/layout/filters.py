@@ -74,7 +74,7 @@ class TransformMeta(BaseModel):
         for source in ret:
             if isinstance(source, ColumnSource):
                 input_tables.add(source.Column.table())
-            elif isinstance(source, MeasureSource):
+            else:
                 input_tables.add(source.Measure.table())
         if len(input_tables) > 1:
             msg = f"Don't know how to handle multiple inputs: {self}"
@@ -107,13 +107,13 @@ class PrototypeQuery(LayoutNode):
 
     @classmethod
     def unwrap_source(cls, source: Source | ConditionType) -> list[ColumnSource | MeasureSource]:
-        if isinstance(source, (ColumnSource, MeasureSource)):
+        if isinstance(source, ColumnSource | MeasureSource):
             return [source]
         if isinstance(source, AggregationSource):
             return cls.unwrap_source(source.Aggregation.Expression)
 
         if isinstance(source, InCondition):
-            ret = []
+            ret: list[ColumnSource | MeasureSource] = []
             for expr in source.In.Expressions:
                 ret.extend(cls.unwrap_source(expr))
             return ret
@@ -143,7 +143,7 @@ class PrototypeQuery(LayoutNode):
             for col in transformation.Input.Table.Columns:
                 ret.update(self.unwrap_source(col.Expression))
         table_mappings: dict[str, str] = self.table_mapping()
-        ret2 = set()
+        ret2: set[ModelColumnReference | ModelMeasureReference] = set()
         for source in ret:
             if isinstance(source, ColumnSource):
                 ret2.add(
@@ -152,7 +152,7 @@ class PrototypeQuery(LayoutNode):
                         table=table_mappings[source.Column.table()],
                     ),
                 )
-            elif isinstance(source, MeasureSource):
+            else:
                 ret2.add(
                     ModelMeasureReference(
                         measure=source.Measure.column(),

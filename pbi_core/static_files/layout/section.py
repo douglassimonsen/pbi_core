@@ -41,7 +41,7 @@ class Section(LayoutNode):
     id: int | None = None
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
-        ret = set()
+        ret: set[ModelColumnReference | ModelMeasureReference] = set()
         for viz in self.visualContainers:
             ret.update(viz.get_ssas_elements())
         for f in self.filters:

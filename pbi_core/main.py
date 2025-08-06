@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from .logging import get_logger
 from .ssas.server import BaseTabularModel, LocalTabularModel, get_or_create_local_server
@@ -16,16 +16,17 @@ class BaseReport:
 
 class WorkspaceReport(BaseReport):
     ssas: BaseTabularModel
-    rest_commands: Any
 
 
 class LocalReport(BaseReport):
     """An instance of a PowerBI report from a local PBIX file.
 
     Args:
+    ----
         static_files (StaticElements): An instance of all the static files (except DataModel) in the PBIX file
 
     Examples:
+    --------
         .. code-block:: python
            :linenos:
 
@@ -50,12 +51,14 @@ class LocalReport(BaseReport):
         """Creates a ``LocalReport`` instance from a PBIX file.
 
         Args:
+        ----
             path (StrPath): The absolute or local path to the PBIX report
             kill_ssas_on_exit (bool, optional): The LocalReport object depends on a ``msmdsrv.exe`` process that is
                 independent of the Python session process. If this function creates a new ``msmdsrv.exe`` instance
                 and kill_ssas_on_exit is true, the process will be killed on exit.
 
         Returns:
+        -------
             LocalReport: the local PBIX class
 
         """
@@ -69,6 +72,7 @@ class LocalReport(BaseReport):
         """Creates a new PBIX with the information in this class to the given path.
 
         Args:
+        ----
             path (StrPath): the path (relative or absolute) to save the PBIX to
 
         """

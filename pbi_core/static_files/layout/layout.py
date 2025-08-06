@@ -79,7 +79,7 @@ class Layout(LayoutNode):
     _xpath = []
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
-        ret = set()
+        ret: set[ModelColumnReference | ModelMeasureReference] = set()
         for f in self.filters:
             ret.update(f.get_ssas_elements())
         for s in self.sections:

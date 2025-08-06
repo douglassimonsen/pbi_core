@@ -10,5 +10,5 @@ repos:
     rev: "v0.6.3"
     hooks:
       - id: ruff
-        args: ["--fix", "--extend-select", "I"]
+        args: ["--fix", "--extend-select", "I", "--ignore", "FIX002"]
       - id: ruff-format
