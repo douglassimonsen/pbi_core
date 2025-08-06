@@ -29,11 +29,11 @@ T = TypeVar("T")
 
 path.append(str(Path(__file__).parent)[2:])
 clr.AddReference("Microsoft.AnalysisServices.AdomdClient")  # type: ignore
-from Microsoft.AnalysisServices.AdomdClient import (  # type: ignore  # noqa: E402
+from Microsoft.AnalysisServices.AdomdClient import (  # noqa: E402
     AdomdCommand,
     AdomdConnection,
-    AdomdErrorResponseException,  # noqa: F401
-    AdomdTransaction,
+    AdomdErrorResponseException,
+    IDataReader,
 )
 
 __all__ = ["AdomdErrorResponseException"]
@@ -49,21 +49,11 @@ class Description(NamedTuple):
     type_code: str
 
 
-class TypedAdomdTransaction(AdomdTransaction):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-
-class TypedAdomdConnection(AdomdConnection):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def BeginTransaction(self) -> TypedAdomdTransaction:
-        return super().BeginTransaction()
-
-
 class Cursor:
-    def __init__(self, connection: TypedAdomdConnection):
+    _reader: IDataReader
+    _conn: AdomdConnection
+
+    def __init__(self, connection: AdomdConnection):
         self._conn = connection
         self._description: list[Description] = []
 
@@ -153,7 +143,7 @@ class Cursor:
     def __enter__(self) -> Self:
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback) -> None:
+    def __exit__(self, exc_type: Any, exc_value: Any, traceback: Any) -> None:
         self.close()
 
 
@@ -198,5 +188,5 @@ class Pyadomd:
         self.open()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback) -> None:
+    def __exit__(self, exc_type: Any, exc_value: Any, traceback: Any) -> None:
         self.close()

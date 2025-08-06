@@ -28,7 +28,7 @@ class Type_code(NamedTuple):
     type_name: str
 
 
-def _option_type(datatype, data):
+def _option_type(datatype: type, data: Any) -> Any:
     if data:
         return datatype(data)
     if datatype in [bool, int, float] and data == 0:
@@ -36,10 +36,27 @@ def _option_type(datatype, data):
     return None
 
 
+class CDatetime:
+    Year: int
+    Month: int
+    Day: int
+    Hour: int
+    Minute: int
+    Second: int
+
+
+def conv_dt(x: CDatetime) -> datetime | None:
+    return datetime(x.Year, x.Month, x.Day, x.Hour, x.Minute, x.Second) if x else None
+
+
+def conv_obj(x: Any) -> Any:
+    return x
+
+
 adomd_type_map: dict[str, Type_code] = {
     "System.Boolean": Type_code(partial(_option_type, bool), bool.__name__),
     "System.DateTime": Type_code(
-        lambda x: datetime(x.Year, x.Month, x.Day, x.Hour, x.Minute, x.Second) if x else None,
+        conv_dt,
         datetime.__name__,
     ),
     # "System.Decimal": Type_code(
@@ -55,7 +72,7 @@ adomd_type_map: dict[str, Type_code] = {
     "System.Int16": Type_code(partial(_option_type, int), int.__name__),
     "System.Int32": Type_code(partial(_option_type, int), int.__name__),
     "System.Int64": Type_code(partial(_option_type, int), int.__name__),
-    "System.Object": Type_code(lambda x: x, "System.Object"),
+    "System.Object": Type_code(conv_obj, "System.Object"),
 }
 
 
