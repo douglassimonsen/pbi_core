@@ -59,13 +59,13 @@ class LayoutNode(pydantic.BaseModel):
         for attr in dir(self):
             if attr.startswith("_"):
                 continue
-            child_candidate: Any = getattr(self, attr)
+            child_candidate: list[Any] | dict[str, Any] | LayoutNode | int | str = getattr(self, attr)
             if isinstance(child_candidate, list):
-                for val in child_candidate:  # type: ignore
+                for val in child_candidate:
                     if isinstance(val, LayoutNode):
                         ret.append(val)
             elif isinstance(child_candidate, dict):
-                for val in child_candidate.values():  # type: ignore
+                for val in child_candidate.values():
                     if isinstance(val, LayoutNode):
                         ret.append(val)
             elif isinstance(child_candidate, LayoutNode):
@@ -80,7 +80,7 @@ class LayoutNode(pydantic.BaseModel):
     def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
         raise NotImplementedError
 
-    def find_xpath(self, xpath: list[str | int]):
+    def find_xpath(self, xpath: list[str | int]) -> "LayoutNode":
         return _find_xpath(self, xpath)
 
 
@@ -105,7 +105,7 @@ def _set_parents(
     base: list[LayoutNode] | dict[str, LayoutNode] | LayoutNode | int | str,
     last_parent: "LayoutNode",
     curr_xpath: list[str | int],
-):
+) -> None:
     if isinstance(base, list):
         for i, val in enumerate(base):
             _set_parents(val, last_parent, curr_xpath + [i])

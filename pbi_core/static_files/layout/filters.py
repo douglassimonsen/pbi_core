@@ -52,6 +52,7 @@ class PrototypeQuery(LayoutNode):
         for select in self.Select:
             ret.add(self.unwrap_source(select))
         for where in self.Where or []:
+            print(where)
             breakpoint()
         for order_by in self.OrderBy or []:
             ret.add(self.unwrap_source(order_by.Expression))
