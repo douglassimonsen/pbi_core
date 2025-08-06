@@ -5,7 +5,7 @@ from zipfile import ZipFile
 
 from bs4 import BeautifulSoup
 
-from .file_classes import Connections, Settings
+from .file_classes import Connections, Metadata, Settings
 from .layout.layout import Layout
 
 if TYPE_CHECKING:
@@ -26,9 +26,9 @@ class StaticElements:
     # no datamodel, that's handled by the ssas folder
 
     diagram_layout: int
-    metadata: int
 
     layout: Layout
+    metadata: Metadata
     version: Version
     security_bindings: bytes
     settings: Settings
@@ -47,3 +47,6 @@ class StaticElements:
         self.security_bindings = zipfile.read("SecurityBindings")
 
         self.content_types = BeautifulSoup(zipfile.read("[Content_Types].xml").decode("utf-8"), "lxml")
+
+        metadata_json = json.loads(zipfile.read("Metadata").decode(LAYOUT_ENCODING))
+        self.metadata = Metadata.model_validate(metadata_json)
