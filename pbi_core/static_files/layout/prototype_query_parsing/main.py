@@ -161,21 +161,40 @@ DEFINE
 {{order_by}}
 """)
 
+BASIC_FILTER_TEMPLATE = jinja2.Template("""
+    VAR __DS0FilterTable{{index}} =
+        FILTER(
+            KEEPFILTERS(VALUES({{source}})),
+        )
+""")
+
 
 def generate_filter_table(group_name: str, filters: list[Condition], tables: dict[str, "From"]):
-    filter_info: list[Expression] = []
+    filter_info: dict[str, list[Expression]] = {}
     for f in filters:
         x = f.to_query_text(tables)
-        if isinstance(x, tuple):
-            filter_info.extend(x)
-        else:
-            filter_info.append(x)
-    for x in filter_info:
-        print(x.to_text())
+        if not isinstance(x, tuple):
+            x = (x,)
+        for y in x:
+            filter_info.setdefault(y.source, []).append(y)
+
+    for i, (field, processed_filters) in enumerate(filter_info.items()):
+        x = BASIC_FILTER_TEMPLATE.render(
+            index=str(i + 1) if i > 0 else "",
+            source=field,
+        )
+        print(x)
+        continue
+        exit()
+        print(field)
+        for f in processed_filters:
+            print("\t", f)
     exit()
     return """
 VAR __DS0FilterTable =
-    FILTER
+    FILTER(
+        KEEPFILTERS(VALUES({{}}))
+    )
 """
 
 

@@ -28,7 +28,6 @@ class QueryConditionType(IntEnum):
     """Names defined by myself, but based on query outputs from the query tester"""
 
     STANDARD = 0
-    SLOW = 1  # Currently, just the search options
     TOP_N = 2
     MEASURE = 3
 
@@ -61,6 +60,7 @@ class ComparisonHelper(LayoutNode):
 @dataclass
 class Expression:
     template: str
+    source: str
     data: dict[str, str] = field(default_factory=dict)
     expr_type: str = ""
 
@@ -75,12 +75,12 @@ class ContainsCondition(LayoutNode):
     Contains: ComparisonHelper
 
     def get_prototype_query_type(self) -> QueryConditionType:
-        return QueryConditionType.SLOW
+        return QueryConditionType.STANDARD
 
     def to_query_text(self, tables: dict[str, "From"]) -> Expression:
         column = self.Contains.Left.to_query_text(tables)
         val = self.Contains.Right.value()
-        return Expression(f'SEARCH("{val}", {column}, 1, 0) >= 1')
+        return Expression(f'SEARCH("{val}", {column}, 1, 0) >= 1', column)
 
 
 class InExpressionHelper(LayoutNode):
@@ -95,9 +95,9 @@ class InExpressionHelper(LayoutNode):
         return f"In({source}, {', '.join(self.vals())})"
 
     def to_query_text(self, tables: dict[str, "From"]) -> Expression:
-        column = self.Expressions[0].Column.to_query_text(tables)  # type: ignore
+        column: str = self.Expressions[0].Column.to_query_text(tables)  # type: ignore
         vals = ", ".join(self.vals())
-        return Expression(f"{column} IN {{{vals}}}")
+        return Expression(f"{column} IN {{{vals}}}", column)
 
 
 class InTopNExpressionHelper(LayoutNode):
@@ -168,15 +168,16 @@ class ComparisonCondition(LayoutNode):
 
     def to_query_text(self, tables: dict[str, "From"]) -> Expression:
         if isinstance(self.Comparison.Left, AggregationSource):
-            return Expression("")
+            return Expression("", self.Comparison.Left.Aggregation.Expression.to_query_text({}))
         else:
             column = self.Comparison.Left.to_query_text(tables)
             assert isinstance(self.Comparison.Right, LiteralSource)
             value = self.Comparison.Right.value()
             if self.Comparison.ComparisonKind == ComparisonKind.IS_EQUAL and value is None:
-                return Expression(f"ISBLANK({column})")
+                return Expression(f"ISBLANK({column})", column)
             return Expression(
                 "{column} {operator} {value}",
+                column,
                 data={
                     "column": column,
                     "operator": self.Comparison.ComparisonKind.get_operator(),
@@ -213,7 +214,7 @@ class NotCondition(LayoutNode):
             expr.data["operator"] = "<>"
             return expr
         else:
-            return Expression(f"NOT({expr.to_text()})")
+            return Expression(f"NOT({expr.to_text()})", expr.source)
 
 
 NonCompositeConditions = BasicConditions | NotCondition
@@ -227,8 +228,6 @@ class CompositeConditionHelper(LayoutNode):
         types = tuple(sorted({self.Left.get_prototype_query_type(), self.Right.get_prototype_query_type()}))
         if len(types) == 1:
             return types[0]
-        if types == (QueryConditionType.STANDARD, QueryConditionType.SLOW):
-            return QueryConditionType.SLOW
         raise ValueError(types)
 
     def to_query_text(self, tables: dict[str, "From"]) -> tuple[Expression, Expression]:
@@ -255,7 +254,7 @@ class OrCondition(LayoutNode):
 
     def to_query_text(self, tables: dict[str, "From"]) -> Expression:
         _or_ = self.Or.to_query_text(tables)
-        return Expression(f"OR({_or_[0].to_text()}, {_or_[1].to_text()})")
+        return Expression(f"OR({_or_[0].to_text()}, {_or_[1].to_text()})", _or_[0].source)
 
 
 def get_type(v: Any) -> str:
