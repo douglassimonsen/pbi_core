@@ -37,9 +37,13 @@ class Title(LayoutNode):
 
 
 class VisualTooltipProperties(LayoutNode):
+    background: Expression | None = None
+    fontFamily: Expression | None = None
     section: Expression | None = None
     show: Expression | None = None
+    titleFontColor: Expression | None = None
     type: Expression | None = None
+    valueFontColor: Expression | None = None
 
 
 class VisualTooltip(LayoutNode):
@@ -96,7 +100,9 @@ class VisualHeader(LayoutNode):
 class VisualLinkProperties(LayoutNode):
     bookmark: Expression | None = None
     show: Expression | None = None
+    tooltip: Expression | None = None
     type: Expression | None = None
+    webUrl: Expression | None = None
 
 
 class VisualLink(LayoutNode):

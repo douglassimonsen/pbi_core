@@ -40,6 +40,7 @@ class VisualLayoutInfoPosition(LayoutNode):
     z: float = 0.0  # z is not always present, default to 0
     width: float
     height: float
+    tabOrder: int | None = None
 
     def __str__(self) -> str:
         return f"({self.x}, {self.y}, {self.z}, {self.width}, {self.height})"
@@ -114,6 +115,7 @@ class DataVolume(IntEnum):
     NA2 = 2
     NA3 = 3
     NA = 4
+    NA5 = 5
 
 
 class SampleDataReduction(LayoutNode):
@@ -126,6 +128,10 @@ class WindowDataReduction(LayoutNode):
 
 class TopDataReduction(LayoutNode):
     Top: dict[str, int]
+
+
+class BottomDataReduction(LayoutNode):
+    Bottom: dict[str, int]
 
 
 class OverlappingPointsSample(LayoutNode):
@@ -145,6 +151,8 @@ def get_reduction(v: object | dict[str, Any]) -> str:
             return "WindowDataReduction"
         if "Top" in v:
             return "TopDataReduction"
+        if "Bottom" in v:
+            return "BottomDataReduction"
         if "OverlappingPointsSample" in v:
             return "OverlappingPointReduction"
         msg = f"Unknown Filter: {v.keys()}"
@@ -156,6 +164,7 @@ PrimaryDataReduction = Annotated[
     Annotated[SampleDataReduction, Tag("SampleDataReduction")]
     | Annotated[WindowDataReduction, Tag("WindowDataReduction")]
     | Annotated[TopDataReduction, Tag("TopDataReduction")]
+    | Annotated[BottomDataReduction, Tag("BottomDataReduction")]
     | Annotated[OverlappingPointReduction, Tag("OverlappingPointReduction")],
     Discriminator(get_reduction),
 ]
@@ -305,6 +314,7 @@ class ExpansionStateLevel(LayoutNode):
 class ExpansionStateChild(LayoutNode):
     isToggled: bool = False
     identityValues: list[Source]
+    children: list["ExpansionStateChild"] | None = None
 
 
 class ExpansionStateRoot(LayoutNode):
