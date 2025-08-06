@@ -2,10 +2,9 @@ import datetime
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
-from pbi_parsers import dax
-
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.enums import DataState, DataType
+from pbi_parsers import dax
 
 from .base import SsasRenameRecord, SsasTable
 from .column import Column

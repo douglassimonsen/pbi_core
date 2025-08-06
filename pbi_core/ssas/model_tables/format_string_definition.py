@@ -1,9 +1,8 @@
 import datetime
 from typing import TYPE_CHECKING
 
-from pbi_parsers import dax
-
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
+from pbi_parsers import dax
 
 from .base import SsasEditableRecord, SsasTable
 

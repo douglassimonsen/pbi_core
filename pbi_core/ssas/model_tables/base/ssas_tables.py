@@ -2,10 +2,9 @@ from typing import TYPE_CHECKING, Any
 
 import pydantic
 from bs4 import BeautifulSoup
-from structlog import get_logger
-
 from pbi_core.ssas.server._commands import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from pbi_core.ssas.server.utils import OBJECT_COMMAND_TEMPLATES
+from structlog import get_logger
 
 from .base_ssas_table import SsasTable
 from .enums import RefreshType

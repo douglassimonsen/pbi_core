@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
 from bs4 import BeautifulSoup
-
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.enums import DataCategory
 

@@ -4,7 +4,6 @@ from textwrap import dedent
 
 import jinja2
 from git import TYPE_CHECKING
-
 from pbi_core.ruff.dax import DaxFormattingRules, DaxPerformanceRules
 from pbi_core.ruff.layout import LayoutRules, SectionRules, ThemeRules, VisualRules
 

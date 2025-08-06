@@ -3,14 +3,12 @@ import shutil
 from typing import TYPE_CHECKING, Any, cast
 
 import bs4
-from structlog import get_logger
-
 from pbi_core.ssas.server.utils import COMMAND_TEMPLATES
+from structlog import get_logger
 
 logger = get_logger()
 if TYPE_CHECKING:
     from _typeshed import StrPath
-
     from pbi_core.ssas.model_tables import (
         KPI,
         AlternateOf,

@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import openpyxl
-
 from pbi_core import LocalReport
 from pbi_core.static_files import Layout, Section
 

@@ -1,9 +1,8 @@
 from enum import IntEnum
 from typing import Annotated, Any
 
-from pydantic import Discriminator, Field, Tag
-
 from pbi_core.static_files.layout._base_node import LayoutNode
+from pydantic import Discriminator, Field, Tag
 
 from .column import ColumnSource
 from .hierarchy import HierarchyLevelSource

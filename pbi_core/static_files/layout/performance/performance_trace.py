@@ -11,11 +11,10 @@ from pathlib import Path
 from typing import Any
 
 import jinja2
-from pbi_pyadomd import Connection
-
 from pbi_core.logging import get_logger
 from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 from pbi_core.ssas.server.trace.trace_enums import TraceEvents
+from pbi_pyadomd import Connection
 
 logger = get_logger()
 TRACE_DIR = Path(__file__).parent / "templates"

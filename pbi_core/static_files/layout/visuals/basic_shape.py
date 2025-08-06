@@ -1,9 +1,8 @@
 # ruff: noqa: N815
 from typing import TYPE_CHECKING
 
-from pydantic import ConfigDict
-
 from pbi_core.static_files.layout._base_node import LayoutNode
+from pydantic import ConfigDict
 
 from .base import BaseVisual
 from .properties.base import Expression

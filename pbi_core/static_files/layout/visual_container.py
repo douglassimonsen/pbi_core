@@ -2,10 +2,9 @@
 from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
-from pydantic import Discriminator, Json, Tag
-
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
+from pydantic import Discriminator, Json, Tag
 
 from ._base_node import LayoutNode
 from .condition import Condition

@@ -1,5 +1,4 @@
 import click
-
 from pbi_core.misc import remove_workspaces
 from pbi_core.ssas.setup import interactive_setup
 

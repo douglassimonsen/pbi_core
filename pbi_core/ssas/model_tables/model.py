@@ -2,10 +2,9 @@ import datetime
 from enum import IntEnum
 from typing import TYPE_CHECKING, Literal
 
-from pydantic import Json
-
 from pbi_core.lineage import LineageNode
 from pbi_core.pydantic.main import BaseValidation
+from pydantic import Json
 
 from .base import RefreshType, SsasModelRecord
 

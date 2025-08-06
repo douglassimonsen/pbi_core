@@ -1,8 +1,7 @@
 from typing import TYPE_CHECKING, Annotated, Any
 
-from pydantic import Discriminator, Tag
-
 from pbi_core.static_files.layout._base_node import LayoutNode
+from pydantic import Discriminator, Tag
 
 from .base import SourceExpression, SourceRef
 

@@ -179,7 +179,7 @@ class PrototypeQuery(LayoutNode):
         Note:
             Although generally the DAX queries generated are identical across different models,
                 they can theoretically be different. If you can create a specific case of this,
-                please add it to the PBYX repo!
+                please add it to the pbi_core repo!
 
         Args:
             model (LocalTabularModel): The SSAS model to generate the DAX against.
