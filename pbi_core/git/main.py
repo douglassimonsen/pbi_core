@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from .change_classes import DiffReport
-from .layout import layout_diff
+from .layout_diffs import layout_diff
 from .ssas import ssas_diff
 
 if TYPE_CHECKING:

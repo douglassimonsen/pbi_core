@@ -16,7 +16,6 @@ from .sources import Source
 from .visuals.base import FilterSortOrder, ProjectionConfig, PropertyDef
 from .visuals.main import Visual
 from .visuals.properties.base import Expression
-from .visuals.properties.vc_properties import BackgroundProperties
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server import LocalTabularModel
@@ -268,7 +267,7 @@ class QueryBindingAggregates(LayoutNode):
 
 
 class Highlight(LayoutNode):
-    # TODO: merge with VisualFilterExpression. For some reason, 
+    # TODO: merge with VisualFilterExpression. For some reason,
     # pydantic thinks From should be None when using the visal filter expression
     Version: int | None = None
     From: list[FromType] | None = None

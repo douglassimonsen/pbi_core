@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Any
 
 from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
 from pbi_core.ssas.server.tabular_model.tabular_model import LocalTabularModel
@@ -12,7 +13,7 @@ skip_fields: dict[str, list[str]] = {
 }
 
 
-def get_enum_name(val: Enum) -> str | None:
+def get_enum_name(val: Any) -> str | None:
     """Get the name of an enum value."""
     if isinstance(val, Enum):
         return val.name

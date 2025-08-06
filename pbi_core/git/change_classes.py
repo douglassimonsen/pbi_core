@@ -18,23 +18,30 @@ class Change:
 
 
 @dataclass
-class FilterChange:
-    pass
-
-
-@dataclass
-class LayoutChange(Change):
-    filters: list[FilterChange] = field(default_factory=list)
-
-
-@dataclass
-class SectionChange(Change):
-    filters: list[FilterChange] = field(default_factory=list)
+class FilterChange(Change):
+    entity: Any
+    field_changes: dict[str, tuple[Any, Any]] = field(default_factory=dict)  # field name to [old_value, new_value]
 
 
 @dataclass
 class VisualChange(Change):
+    entity: Any
     filters: list[FilterChange] = field(default_factory=list)
+    field_changes: dict[str, tuple[Any, Any]] = field(default_factory=dict)  # field name to [old_value, new_value]
+
+
+@dataclass
+class SectionChange(Change):
+    entity: Any
+    filters: list[FilterChange] = field(default_factory=list)
+    field_changes: dict[str, tuple[Any, Any]] = field(default_factory=dict)  # field name to [old_value, new_value]
+
+
+@dataclass
+class LayoutChange(Change):
+    entity: Any
+    filters: list[FilterChange] = field(default_factory=list)
+    field_changes: dict[str, tuple[Any, Any]] = field(default_factory=dict)  # field name to [old_value, new_value]
 
 
 @dataclass
