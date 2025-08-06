@@ -1,7 +1,10 @@
 from typing import TYPE_CHECKING, Any, Optional
 
+from .logging import get_logger
 from .ssas.server import BaseTabularModel, LocalTabularModel, get_or_create_local_server
 from .static_elements import StaticElements
+
+logger = get_logger()
 
 if TYPE_CHECKING:
     from _typeshed import StrPath
@@ -52,6 +55,7 @@ class LocalReport(BaseReport):
             kill_ssas_on_exit (bool, optional): The LocalReport object depends on a ``msmdsrv.exe`` process that is independent of the Python session process. If this function creates a new ``msmdsrv.exe`` instance and kill_ssas_on_exit is true, the process will be killed on exit.
 
         """
+        logger.info("Loading PBIX", path=path)
         server = get_or_create_local_server(kill_on_exit=kill_ssas_on_exit)
         ssas = server.load_pbix(path)
         static_elements = StaticElements.load_pbix(path)
