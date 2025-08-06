@@ -10,7 +10,7 @@ python -m pip install .[dev,docs,internationalization]
 pre-commit install
 ```
 
-# Sphinx
+# Running the Documentation Server
 
 ```shell
 python -m pip install .[docs]

@@ -455,7 +455,7 @@ class VisualContainer(LayoutNode):
         """Returns a unique identifier for the visual container.
 
         Seems to stay the same after edits and after copies of the visual are made (the copies are
-            assigned new, unrelated IDs).
+            assigned new, unrelated IDs). In some cases, it appears that the name is only unique within a section.
 
         Raises:
             ValueError: If the visual container does not have an ID or a name defined in the config.
