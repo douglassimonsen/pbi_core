@@ -12,6 +12,11 @@ TEMPLATES = {
 }
 
 
+def name_formatter(name: str) -> str:
+    """Format names for display in markdown."""
+    return name.replace("_", " ").title()
+
+
 def to_markdown(diff_report: "DiffReport") -> str:
     summary = TEMPLATES["summary"].render(diff_report=diff_report)
     tables_without_changes = ", ".join(table for table, changes in diff_report.ssas_changes.items() if not changes)
@@ -20,6 +25,7 @@ def to_markdown(diff_report: "DiffReport") -> str:
         ssas_changes=diff_report.ssas_changes,
         tables_with_changes=tables_with_changes,
         tables_without_changes=tables_without_changes,
+        name_formatter=name_formatter,
     )
     main = TEMPLATES["main"].render(summary=summary, ssas=ssas)
     return main

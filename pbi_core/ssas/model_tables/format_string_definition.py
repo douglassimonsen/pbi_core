@@ -76,3 +76,6 @@ class FormatStringDefinition(SsasEditableRecord):
             msg = "Failed to parse DAX expression from format string definition"
             raise ValueError(msg)
         return ret
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.id}, on: {self.object()!r})"

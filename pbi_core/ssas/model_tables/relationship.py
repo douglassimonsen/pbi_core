@@ -114,3 +114,6 @@ class Relationship(SsasRenameRecord):
                 self.to_column().get_lineage(lineage_type),
             ],
         )
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.id}, from: {self.from_table()!r}, to: {self.to_table()!r})"

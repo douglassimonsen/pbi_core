@@ -1,7 +1,7 @@
 # SSAS Changes
 
 {% for table, changes in tables_with_changes.items() %}
-## {{ table.capitalize() }}
+## {{ name_formatter(table) }}
 
 {% for change in changes %}
 - {{ change.entity.__repr__() }}: {{ change.change_type.value.capitalize() }}
@@ -9,7 +9,7 @@
    | Field | From | To  |
    | ----- | ---- | --- |
   {% for field, (old_value, new_value) in change.field_changes.items() -%}
-   | {{ field }} | {{ old_value }} | {{ new_value }} |
+   | {{ name_formatter(field) }} | {{ old_value or "No Value*" }} | {{ new_value or "*No Value*" }} |
   {% endfor %}
   {% endif %}
 {% endfor %}

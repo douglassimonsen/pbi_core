@@ -12,12 +12,20 @@ skip_fields: dict[str, list[str]] = {
 }
 
 
-def get_enum_name(val: Enum) -> str:
+def get_enum_name(val: Enum) -> str | None:
     """Get the name of an enum value."""
-    return val.name if isinstance(val, Enum) else str(val)
+    if isinstance(val, Enum):
+        return val.name
+    if val is not None:
+        return str(val)
+    return None
 
 
-def compare_fields(ssas_category: str, parent_entity: SsasTable, child_entity: SsasTable) -> SsasChange | None:
+def compare_fields(
+    ssas_category: str,
+    parent_entity: SsasTable,
+    child_entity: SsasTable,
+) -> SsasChange | None:
     fields = set(parent_entity.model_fields.keys()) - {"tabular_model", "id"} - set(skip_fields.get(ssas_category, []))
     field_changes = {
         field_name: (getattr(parent_entity, field_name), getattr(child_entity, field_name))
