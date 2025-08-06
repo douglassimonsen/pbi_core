@@ -3,43 +3,122 @@ import typing
 if typing.TYPE_CHECKING:
     from ..server.tabular_model import SsasTable
 
-from ._group import Group as Group
-from .alternate_of import AlternateOf as AlternateOf
-from .annotation import Annotation as Annotation
-from .attribute_hierarchy import AttributeHierarchy as AttributeHierarchy
-from .calculation_group import CalculationGroup as CalculationGroup
-from .calculation_item import CalculationItem as CalculationItem
-from .column import Column as Column
-from .column_permission import ColumnPermission as ColumnPermission
-from .culture import Culture as Culture
-from .detail_row_definition import DetailRowDefinition as DetailRowDefinition
-from .expression import Expression as Expression
-from .extended_property import ExtendedProperty as ExtendedProperty
-from .format_string_definition import FormatStringDefinition as FormatStringDefinition
-from .group_by_column import GroupByColumn as GroupByColumn
-from .hierarchy import Hierarchy as Hierarchy
-from .kpi import Kpi as Kpi
-from .level import Level as Level
-from .linguistic_metadata import LinguisticMetadata as LinguisticMetadata
-from .measure import Measure as Measure
-from .model import Model as Model
-from .object_translation import ObjectTranslation as ObjectTranslation
-from .partition import Partition as Partition
-from .perspective import Perspective as Perspective
-from .perspective_column import PerspectiveColumn as PerspectiveColumn
-from .perspective_hierarchy import PerspectiveHierarchy as PerspectiveHierarchy
-from .perspective_measure import PerspectiveMeasure as PerspectiveMeasure
-from .perspective_set import PerspectiveSet as PerspectiveSet
-from .perspective_table import PerspectiveTable as PerspectiveTable
-from .query_group import QueryGroup as QueryGroup
-from .refresh_policy import RefreshPolicy as RefreshPolicy
-from .related_column_detail import RelatedColumnDetail as RelatedColumnDetail
-from .relationship import Relationship as Relationship
-from .role import Role as Role
-from .role_membership import RoleMembership as RoleMembership
-from .set import Set as Set
-from .table import Table as Table
-from .table_permission import TablePermission as TablePermission
-from .variation import Variation as Variation
+from ._group import Group
+from .alternate_of import AlternateOf
+from .annotation import Annotation
+from .attribute_hierarchy import AttributeHierarchy
+from .calculation_group import CalculationGroup
+from .calculation_item import CalculationItem
+from .column import Column
+from .column_permission import ColumnPermission
+from .culture import Culture
+from .detail_row_definition import DetailRowDefinition
+from .expression import Expression
+from .extended_property import ExtendedProperty
+from .format_string_definition import FormatStringDefinition
+from .group_by_column import GroupByColumn
+from .hierarchy import Hierarchy
+from .kpi import KPI
+from .level import Level
+from .linguistic_metadata import LinguisticMetadata
+from .measure import Measure
+from .model import Model
+from .object_translation import ObjectTranslation
+from .partition import Partition
+from .perspective import Perspective
+from .perspective_column import PerspectiveColumn
+from .perspective_hierarchy import PerspectiveHierarchy
+from .perspective_measure import PerspectiveMeasure
+from .perspective_set import PerspectiveSet
+from .perspective_table import PerspectiveTable
+from .query_group import QueryGroup
+from .refresh_policy import RefreshPolicy
+from .related_column_detail import RelatedColumnDetail
+from .relationship import Relationship
+from .role import Role
+from .role_membership import RoleMembership
+from .set import Set
+from .table import Table
+from .table_permission import TablePermission
+from .variation import Variation
 
-FIELD_TYPES: dict[str, type["SsasTable"]] = {"annotations": Annotation, "tables": Table}
+__all__ = [
+    "Group",
+    "AlternateOf",
+    "Annotation",
+    "AttributeHierarchy",
+    "CalculationGroup",
+    "CalculationItem",
+    "Column",
+    "ColumnPermission",
+    "Culture",
+    "DetailRowDefinition",
+    "Expression",
+    "ExtendedProperty",
+    "FormatStringDefinition",
+    "GroupByColumn",
+    "Hierarchy",
+    "KPI",
+    "Level",
+    "LinguisticMetadata",
+    "Measure",
+    "Model",
+    "ObjectTranslation",
+    "Partition",
+    "Perspective",
+    "PerspectiveColumn",
+    "PerspectiveHierarchy",
+    "PerspectiveMeasure",
+    "PerspectiveSet",
+    "PerspectiveTable",
+    "QueryGroup",
+    "RefreshPolicy",
+    "RelatedColumnDetail",
+    "Relationship",
+    "Role",
+    "RoleMembership",
+    "Set",
+    "Table",
+    "TablePermission",
+    "Variation",
+]
+
+FIELD_TYPES: dict[str, type["SsasTable"]] = {
+    "alternate_of": AlternateOf,
+    "annotations": Annotation,
+    "attribute_hierarchies": AttributeHierarchy,
+    "calculation_groups": CalculationGroup,
+    "calculation_items": CalculationItem,
+    "column_permissions": ColumnPermission,
+    "columns": Column,
+    "cultures": Culture,
+    "detail_row_definitions": DetailRowDefinition,
+    "expressions": Expression,
+    "extended_properties": ExtendedProperty,
+    "format_string_definitions": FormatStringDefinition,
+    "group_by_columns": GroupByColumn,
+    "hierarchies": Hierarchy,
+    "kpis": KPI,
+    "levels": Level,
+    "linguistic_metadata": LinguisticMetadata,
+    "measures": Measure,
+    "model": Model,
+    "object_translations": ObjectTranslation,
+    "partitions": Partition,
+    "perspective_columns": PerspectiveColumn,
+    "perspective_hierarchies": PerspectiveHierarchy,
+    "perspective_measure": PerspectiveMeasure,
+    "perspective_sets": PerspectiveSet,
+    "perspective_table": PerspectiveTable,
+    "perspective": Perspective,
+    "query_groups": QueryGroup,
+    "relationships": Relationship,
+    "refresh_policy": RefreshPolicy,
+    "related_column_details": RelatedColumnDetail,
+    "role_membership": RoleMembership,
+    "roles": Role,
+    "sets": Set,
+    "table_permissions": TablePermission,
+    "tables": Table,
+    "variations": Variation,
+}

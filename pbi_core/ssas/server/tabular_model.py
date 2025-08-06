@@ -11,15 +11,23 @@ if TYPE_CHECKING:
     from _typeshed import StrPath
 
     from ..model_tables import (
+        KPI,
         Annotation,
+        AttributeHierarchy,
         Column,
+        Culture,
         Expression,
         Group,
         Hierarchy,
+        Level,
+        LinguisticMetadata,
         Measure,
         Model,
+        Partition,
         QueryGroup,
+        Relationship,
         Table,
+        Variation,
     )
     from .server import BaseServer
 
@@ -29,12 +37,20 @@ class BaseTabularModel:
     server: "BaseServer"
     model: "Model"
     columns: "Group[Column]"
+    cultures: "Group[Culture]"
+    linguistic_metadata: "Group[LinguisticMetadata]"
     measures: "Group[Measure]"
     query_groups: "Group[QueryGroup]"
     expressions: "Group[Expression]"
     hierarchies: "Group[Hierarchy]"
+    kpis: "Group[KPI]"
     tables: "Group[Table]"
     annotations: "Group[Annotation]"
+    partitions: "Group[Partition]"
+    relationships: "Group[Relationship]"
+    variations: "Group[Variation]"
+    attribute_hierarchies: "Group[AttributeHierarchy]"
+    levels: "Group[Level]"
 
     def __init__(self, db_name: str, server: "BaseServer") -> None:
         self.db_name = db_name
@@ -54,9 +70,10 @@ class BaseTabularModel:
 
         xml_schema = self.server.query_xml(COMMAND_TEMPLATES["discover_schema.xml"].render(db_name=self.db_name))
         schema = discover_xml_to_dict(xml_schema)
+        print(schema.keys())
         for field_name, type_instance in FIELD_TYPES.items():
             objects = [
-                type_instance.parse_obj({**row, "_tabular_model": self})
+                type_instance.model_validate({**row, "_tabular_model": self})
                 for row in schema[type_instance._db_type_name()]
             ]
             setattr(self, field_name, objects)

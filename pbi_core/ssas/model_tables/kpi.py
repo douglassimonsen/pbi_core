@@ -1,5 +1,20 @@
+import datetime
+from typing import TYPE_CHECKING
+
 from ..server.tabular_model import SsasTable
 
+if TYPE_CHECKING:
+    from .measure import Measure
 
-class Kpi(SsasTable):
-    pass
+
+class KPI(SsasTable):
+    measure_id: int
+    status_expression: str
+    status_graphic: str
+    target_expression: str
+    target_format_string: str
+
+    modified_time: datetime.datetime
+
+    def measure(self) -> "Measure":
+        return self.tabular_model.measures.get({"id": self.measure_id})

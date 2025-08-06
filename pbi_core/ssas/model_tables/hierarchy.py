@@ -1,5 +1,33 @@
+import datetime
+from typing import TYPE_CHECKING
+from uuid import UUID
+
 from ..server.tabular_model import SsasTable
+
+if TYPE_CHECKING:
+    from .level import Level
+    from .table import Table
+    from .variation import Variation
 
 
 class Hierarchy(SsasTable):
-    pass
+    hide_members: int
+    hierarchy_storage_id: int
+    is_hidden: bool
+    lineage_tag: UUID
+    name: str
+    state: int
+    table_id: int
+
+    modified_time: datetime.datetime
+    refreshed_time: datetime.datetime
+    structure_modified_time: datetime.datetime
+
+    def table(self) -> "Table":
+        return self.tabular_model.tables.get({"id": self.table_id})
+
+    def levels(self) -> list["Level"]:
+        return self.tabular_model.levels.find_all({"hierarchy_id": self.id})
+
+    def variations(self) -> list["Variation"]:
+        return self.tabular_model.variations.find_all({"default_hierarchy_id": self.id})

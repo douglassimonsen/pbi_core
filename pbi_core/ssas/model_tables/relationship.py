@@ -1,5 +1,51 @@
+import datetime
+from typing import TYPE_CHECKING, Optional
+
 from ..server.tabular_model import SsasTable
+
+if TYPE_CHECKING:
+    from .column import Column
+    from .model import Model
+    from .table import Table
+    from .variation import Variation
 
 
 class Relationship(SsasTable):
-    pass
+    cross_filtering_behavior: int
+    from_column_id: int
+    from_cardinality: int
+    from_table_id: int
+    is_active: bool
+    join_on_date_behavior: int
+    model_id: int
+    name: str
+    relationship_storage_id: Optional[int] = None
+    relationship_storage2_id: Optional[int] = None
+    refreshed_time: datetime.datetime
+    rely_on_referential_integrity: bool
+    security_filtering_behavior: int
+    state: int
+    to_cardinality: int
+    to_column_id: int
+    to_table_id: int
+    type: int
+
+    modified_time: datetime.datetime
+
+    def from_table(self) -> "Table":
+        return self.tabular_model.tables.get({"id": self.from_table_id})
+
+    def to_table(self) -> "Table":
+        return self.tabular_model.tables.get({"id": self.to_table_id})
+
+    def from_column(self) -> "Column":
+        return self.tabular_model.columns.get({"id": self.from_column_id})
+
+    def to_column(self) -> "Column":
+        return self.tabular_model.columns.get({"id": self.to_column_id})
+
+    def model(self) -> "Model":
+        return self.tabular_model.model
+
+    def variations(self) -> list["Variation"]:
+        return self.tabular_model.variations.find_all({"relationship_id": self.id})
