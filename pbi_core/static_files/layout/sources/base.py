@@ -1,7 +1,10 @@
 from enum import IntEnum
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from .._base_node import LayoutNode
+
+if TYPE_CHECKING:
+    from ..filters import From
 
 
 class EntityType(IntEnum):
@@ -52,6 +55,11 @@ class SourceExpression(LayoutNode):
 
     def column(self) -> str:
         return self.Property
+
+    def to_query_text(self, target_tables: dict[str, "From"]):
+        table_name: str = target_tables[self.table()].Entity  # type: ignore
+        column_name: str = self.column()  # type: ignore
+        return f"'{table_name}'[{column_name}]"
 
     @staticmethod
     def create(table: str, column: str) -> "SourceExpression":

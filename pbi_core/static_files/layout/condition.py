@@ -33,7 +33,7 @@ class QueryConditionType(IntEnum):
 
 
 class ComparisonKind(IntEnum):
-    IS_BLANK = 0
+    IS_EQUAL = 0
     IS_GREATER_THAN = 1
     IS_GREATER_THAN_OR_EQUAL_TO = 2
     IS_LESS_THAN = 3
@@ -41,6 +41,7 @@ class ComparisonKind(IntEnum):
 
     def get_operator(self) -> str:
         OPERATOR_MAPPING = {
+            ComparisonKind.IS_EQUAL: "=",
             ComparisonKind.IS_GREATER_THAN: ">",
             ComparisonKind.IS_GREATER_THAN_OR_EQUAL_TO: ">=",
             ComparisonKind.IS_LESS_THAN: "<",
@@ -63,7 +64,9 @@ class ContainsCondition(LayoutNode):
         return QueryConditionType.SLOW
 
     def to_query_text(self, tables: dict[str, "From"]) -> str:
-        breakpoint()
+        column = self.Contains.Left.to_query_text(tables)
+        val = self.Contains.Right.value()
+        return f'SEARCH("{val}", {column}, 1, 0) >= 1'
 
 
 class InExpressionHelper(LayoutNode):
@@ -78,10 +81,9 @@ class InExpressionHelper(LayoutNode):
         return f"In({source}, {', '.join(self.vals())})"
 
     def to_query_text(self, tables: dict[str, "From"]) -> str:
-        table_name: str = tables[self.Expressions[0].Column.table()].Entity  # type: ignore
-        column_name: str = self.Expressions[0].Column.column()  # type: ignore
+        column = self.Expressions[0].Column.to_query_text(tables)  # type: ignore
         vals = ", ".join(self.vals())
-        return f"'{table_name}'[{column_name}] IN {{{vals}}}"
+        return f"{column} IN {{{vals}}}"
 
 
 class InTopNExpressionHelper(LayoutNode):
@@ -151,15 +153,14 @@ class ComparisonCondition(LayoutNode):
 
     def to_query_text(self, tables: dict[str, "From"]) -> str:
         if isinstance(self.Comparison.Left, AggregationSource):
-            raise ValueError
+            return ""
         else:
-            table_name: str = tables[self.Comparison.Left.Column.table()].Entity  # type: ignore
-            column_name: str = self.Comparison.Left.Column.column()  # type: ignore
-            if self.Comparison.ComparisonKind == ComparisonKind.IS_BLANK:
-                return f"ISBLANK('{table_name}'[{column_name}])"
-            assert isinstance(self.Comparison.Right, LiteralSource)
+            column = self.Comparison.Left.to_query_text(tables)
             value = self.Comparison.Right.value()
-            return f"'{table_name}'[{column_name}] {self.Comparison.ComparisonKind.get_operator()} {value}"
+            if self.Comparison.ComparisonKind == ComparisonKind.IS_EQUAL and value is None:
+                return f"ISBLANK({column})"
+            assert isinstance(self.Comparison.Right, LiteralSource)
+            return f"{column} {self.Comparison.ComparisonKind.get_operator()} {value}"
 
 
 BasicConditions = ContainsCondition | InCondition | ComparisonCondition
@@ -179,6 +180,11 @@ class NotCondition(LayoutNode):
         return self.Not.Expression.get_prototype_query_type()
 
     def to_query_text(self, tables: dict[str, "From"]) -> str:
+        """
+        Microsoft does minute optimizations for the prototypeQuery -> DAX translation.
+
+        One is converting Not(x = 1) to x <> 1
+        """
         return f"NOT({self.Not.Expression.to_query_text(tables)})"
 
 
