@@ -4,6 +4,7 @@ from .base import Expression
 
 
 class BackgroundProperties(LayoutNode):
+    color: Expression | None = None
     show: Expression | None = None
     transparency: Expression | None = None
 
@@ -109,6 +110,17 @@ class VisualLink(LayoutNode):
     properties: VisualLinkProperties | None = None
 
 
+class VisualHeaderTooltipProperties(LayoutNode):
+    text: Expression | None
+    background: Expression | None = None
+    titleFontColor: Expression | None = None
+    section: Expression | None = None
+
+
+class VisualHeaderTooltip(LayoutNode):
+    properties: VisualHeaderTooltipProperties
+
+
 class VCProperties(LayoutNode):
     background: list[Background] | None = None
     border: list[Border] | None = None
@@ -116,6 +128,6 @@ class VCProperties(LayoutNode):
     stylePreset: list[StylePreset] | None = None
     title: list[Title] | None = None
     visualHeader: list[VisualHeader] | None = None
-    visualHeaderTooltip: int | None = None
+    visualHeaderTooltip: list[VisualHeaderTooltip] | None = None
     visualLink: list[VisualLink] | None = None
     visualTooltip: list[VisualTooltip] | None = None

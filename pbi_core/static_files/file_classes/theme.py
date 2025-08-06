@@ -2,15 +2,13 @@
 
 from pydantic_extra_types.color import Color
 
-from ..layout.visuals.properties.base import LiteralExpression
-
 from ._base import BaseFileModel
 
 base_val = bool | int | str
 
 
 class TextClass(BaseFileModel):
-    fontSize: LiteralExpression
+    fontSize: int
     fontFace: str
     color: Color
 

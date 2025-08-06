@@ -306,7 +306,7 @@ class DataTransformSelect(LayoutNode):
 
 class ExpansionStateLevel(LayoutNode):
     queryRefs: list[str]
-    isCollapsed: bool
+    isCollapsed: bool = False
     identityKeys: list[Source] | None = None
     identityValues: list[None] | None = None
 
@@ -335,8 +335,8 @@ class DataTransform(LayoutNode):
     projectionOrdering: dict[str, list[int]]
     projectionActiveItems: dict[str, list[ProjectionConfig]] | None = None
     splits: list[Split] | None = None
-    queryMetadata: QueryMetadata
-    visualElements: list[DataTransformVisualElement]
+    queryMetadata: QueryMetadata | None = None
+    visualElements: list[DataTransformVisualElement] | None = None
     selects: list[DataTransformSelect]
     expansionStates: list[ExpansionState] | None = None
 

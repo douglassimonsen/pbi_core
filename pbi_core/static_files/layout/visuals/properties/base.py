@@ -52,6 +52,10 @@ class ConditionalSource(LayoutNode):
     Conditional: ConditionalSourceHelper
 
 
+class ConditionalExpression(LayoutNode):
+    expr: ConditionalSource
+
+
 def get_subexpr_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "ThemeDataColor" in v:
@@ -107,6 +111,7 @@ Color = Annotated[
 
 class SolidExpression(LayoutNode):
     color: Color
+    value: LiteralSource | None = None  # TODO: explore the cases here more
 
 
 class SolidColorExpression(LayoutNode):
@@ -115,6 +120,29 @@ class SolidColorExpression(LayoutNode):
 
 class StrategyExpression(LayoutNode):
     strategy: LiteralExpression | LiteralSource  # TODO: explore the cases here more
+
+
+class ExtremeColor(LayoutNode):
+    color: LiteralSource
+    value: LiteralSource
+
+
+def get_color_helper_type(v: object | dict[str, Any]) -> str:
+    if isinstance(v, dict):
+        if "solid" in v:
+            return "SolidExpression"
+        if "color" in v:
+            return "ExtremeColor"
+        msg = f"Unknown class: {v.keys()}"
+        breakpoint()
+        raise TypeError(msg)
+    return v.__class__.__name__
+
+
+LinearGradient2HelperExtreme = Annotated[
+    Annotated[SolidExpression, Tag("SolidExpression")] | Annotated[ExtremeColor, Tag("ExtremeColor")],
+    Discriminator(get_color_helper_type),
+]
 
 
 class LinearGradient2Helper(LayoutNode):
@@ -152,6 +180,13 @@ class ResourcePackageAccess(LayoutNode):
     expr: ResourcePackageAccessExpression
 
 
+class ImageExpression(LayoutNode):
+    kind: str  # TODO: enum
+    layout: LiteralExpression
+    verticalAlignment: LiteralExpression
+    value: ConditionalExpression
+
+
 def get_expression(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "solid" in v:
@@ -160,6 +195,9 @@ def get_expression(v: object | dict[str, Any]) -> str:
             return "LinearGradient2Expression"
         if "linearGradient3" in v:
             return "LinearGradient3Expression"
+
+        if "kind" in v:
+            return "ImageExpression"
 
         if "expr" in v:
             if "Measure" in v["expr"]:
@@ -184,6 +222,7 @@ Expression = Annotated[
     | Annotated[SolidColorExpression, Tag("SolidColorExpression")]
     | Annotated[LinearGradient2Expression, Tag("LinearGradient2Expression")]
     | Annotated[LinearGradient3Expression, Tag("LinearGradient3Expression")]
-    | Annotated[ResourcePackageAccess, Tag("ResourcePackageAccess")],
+    | Annotated[ResourcePackageAccess, Tag("ResourcePackageAccess")]
+    | Annotated[ImageExpression, Tag("ImageExpression")],
     Discriminator(get_expression),
 ]

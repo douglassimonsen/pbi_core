@@ -5,7 +5,9 @@ from typing import Annotated, Any
 from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
-from .sources import AggregationSource, DataSource, LiteralSource, Source, SourceRef
+from .sources import DataSource, LiteralSource, Source, SourceRef
+from .sources.aggregation import ScopedEvalExpression
+from .sources.arithmetic import ScopedEval
 
 
 class ExpressionVersion(IntEnum):
@@ -157,7 +159,17 @@ class DateSpan(LayoutNode):
     DateSpan: _DateSpanHelper
 
 
-def get_comparison_union_type(v: object | dict[str, Any]) -> str:
+class RangePercentHelper(LayoutNode):
+    Min: ScopedEval
+    Max: ScopedEval
+    Percent: float
+
+
+class RangePercent(LayoutNode):
+    RangePercent: RangePercentHelper
+
+
+def get_comparison_right_union_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "Literal" in v:
             return "LiteralSource"
@@ -165,22 +177,25 @@ def get_comparison_union_type(v: object | dict[str, Any]) -> str:
             return "AnyValue"
         if "DateSpan" in v:
             return "DateSpan"
+        if "RangePercent" in v:
+            return "RangePercent"
         raise TypeError(v)
     return v.__class__.__name__
 
 
-ComparisonUnion = Annotated[
+ComparisonRightUnion = Annotated[
     Annotated[LiteralSource, Tag("LiteralSource")]
     | Annotated[AnyValue, Tag("AnyValue")]
-    | Annotated[DateSpan, Tag("DateSpan")],
-    Discriminator(get_comparison_union_type),
+    | Annotated[DateSpan, Tag("DateSpan")]
+    | Annotated[RangePercent, Tag("RangePercent")],
+    Discriminator(get_comparison_right_union_type),
 ]
 
 
 class ComparisonConditionHelper(LayoutNode):
     ComparisonKind: ComparisonKind
-    Left: DataSource | AggregationSource
-    Right: LiteralSource | AnyValue | DateSpan
+    Left: ScopedEvalExpression
+    Right: ComparisonRightUnion
 
 
 class ComparisonCondition(LayoutNode):
