@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
 from ..server.tabular_model import SsasRenameTable
+from .column import Column
 
 if TYPE_CHECKING:
     from .kpi import KPI
@@ -33,3 +34,18 @@ class Measure(SsasRenameTable):
 
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})
+
+    def data(self, column: Column, head: int = 100) -> list[dict[str, int | float | str]]:
+        column_name = column.full_name()
+        ret = self.tabular_model.server.query_dax(
+            f'EVALUATE TOPN({head}, ADDCOLUMNS(VALUES({column_name}), "measure", [{self.name}]))',
+            db_name=self.tabular_model.db_name,
+        )
+        clean_name = column_name.replace("'", "")  # sure this will get more complicated lol
+        return [
+            {
+                "column_value": x[clean_name],
+                "measure_value": x["[measure]"],
+            }
+            for x in ret
+        ]

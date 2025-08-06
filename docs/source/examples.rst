@@ -38,3 +38,10 @@ This example shows how to extract data from report columns
    report = LocalReport.load_pbix("example.pbix")
    values = report.ssas.columns.find({"explicit_name": "a"}).data()
    print(values)
+   values2 = report.ssas.tables.find({"name": "Table"}).data()
+   print(values2)
+
+   measure = report.ssas.measures.find({"name": "Measure"})
+   column = measure.table().columns()[1]  # the first column is a hidden row-count column that can't be used in measures
+   values3 = measure.data(column, 10)
+   print(values3)

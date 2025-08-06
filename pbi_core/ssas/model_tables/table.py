@@ -3,6 +3,7 @@ from typing import Optional
 from uuid import UUID
 
 from ..server.tabular_model import SsasRefreshTable
+from .column import Column
 
 
 class Table(SsasRefreshTable):
@@ -22,3 +23,13 @@ class Table(SsasRefreshTable):
 
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
+
+    def data(self, head: int = 100) -> list[int | float | str]:
+        ret = self.tabular_model.server.query_dax(
+            f"EVALUATE TOPN({head}, ALL('{self.name}'))",
+            db_name=self.tabular_model.db_name,
+        )
+        return [next(iter(row.values())) for row in ret]
+
+    def columns(self) -> list[Column]:
+        return [column for column in self.tabular_model.columns if column.table_id == self.id]

@@ -59,10 +59,15 @@ class Column(SsasRenameTable):
     def data(self, head: int = 100) -> list[int | float | str]:
         table_name = self.table().name
         ret = self.tabular_model.server.query_dax(
-            f"EVALUATE TOPN({head}, SELECTCOLUMNS(ALL('{table_name}'), '{table_name}'[{self.explicit_name}]))",
+            f"EVALUATE TOPN({head}, SELECTCOLUMNS(ALL('{table_name}'), {self.full_name()}))",
             db_name=self.tabular_model.db_name,
         )
         return [next(iter(row.values())) for row in ret]
+
+    def full_name(self) -> str:
+        """Returns the fully qualified name for DAX queries"""
+        table_name = self.table().name
+        return f"'{table_name}'[{self.explicit_name}]"
 
     def repr_name(self) -> str:
         if self.explicit_name is not None:
@@ -72,9 +77,10 @@ class Column(SsasRenameTable):
         return str(self.id)
 
     def table(self) -> "Table":
+        """Returns the table class the column is a part of"""
         return self.tabular_model.tables.find({"id": self.table_id})
 
-    def attribute_hierarchy(self) -> Optional["AttributeHierarchy"]:
+    def attribute_hierarchy(self) -> "AttributeHierarchy":
         return self.tabular_model.attribute_hierarchies.find({"id": self.attribute_hierarchy_id})
 
     def levels(self) -> list["Level"]:
