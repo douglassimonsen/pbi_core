@@ -44,7 +44,7 @@ class Model(SsasModelTable):
         return self.tabular_model.query_groups.find_all({"model_id": self.id})
 
     @classmethod
-    def _db_plural_type_name(cls) -> str:
+    def _db_command_obj_name(cls) -> str:
         return "Model"
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:

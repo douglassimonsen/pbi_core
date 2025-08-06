@@ -34,7 +34,7 @@ class Hierarchy(SsasRenameTable):
         return self.tabular_model.variations.find_all({"default_hierarchy_id": self.id})
 
     @classmethod
-    def _db_plural_type_name(cls) -> str:
+    def _db_command_obj_name(cls) -> str:
         return "Hierarchies"
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:

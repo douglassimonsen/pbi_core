@@ -71,11 +71,15 @@ class BaseTabularModel:
     model: "Model"
     alternate_ofs: "Group[AlternateOf]"
     annotations: "Group[Annotation]"
+    """Notes that can be attached to a variety other SSAS objects"""
+
     attribute_hierarchies: "Group[AttributeHierarchy]"
     calc_dependencies: "Group[CalcDependency]"
     calculation_groups: "Group[CalculationGroup]"
     calculation_items: "Group[CalculationItem]"
     columns: "Group[Column]"
+    """Columns include source (MQuery) and calculate columns from tables"""
+
     column_permissions: "Group[ColumnPermission]"
     cultures: "Group[Culture]"
     data_sources: "Group[DataSource]"
@@ -91,6 +95,8 @@ class BaseTabularModel:
     measures: "Group[Measure]"
     object_translations: "Group[ObjectTranslation]"
     partitions: "Group[Partition]"
+    """Partitions are generally accessed to edit the Power Query of a Table"""
+
     perspectives: "Group[Perspective]"
     perspective_columns: "Group[PerspectiveColumn]"
     perspective_hierarchies: "Group[PerspectiveHierarchy]"
@@ -105,6 +111,8 @@ class BaseTabularModel:
     role_memberships: "Group[RoleMembership]"
     sets: "Group[Set]"
     tables: "Group[Table]"
+    """This class contains the logical elements of a PowerBI table"""
+
     table_permissions: "Group[TablePermission]"
     variations: "Group[Variation]"
 
@@ -193,10 +201,16 @@ class SsasTable(pydantic.BaseModel):
         return cls.__name__
 
     @classmethod
-    def _db_plural_type_name(cls) -> str:
+    def _db_command_obj_name(cls) -> str:
+        """
+        This method returns the name of the object expected by their XMLA commands. Generally a simple pluralization, but occasionally different.
+        """
         return cls.__name__ + "s"
 
     def pbi_core_name(self) -> str:
+        """Returns the value of the name field of the record (not type). Uses the _repr_name_field to determine the field to use.
+
+        Defaults to self.name"""
         return getattr(self, self._repr_name_field)
 
     def __repr__(self) -> str:
@@ -238,6 +252,18 @@ class SsasTable(pydantic.BaseModel):
 
     @staticmethod
     def render_xml_command(values: dict[str, Any], command: Command, db_name: str) -> str:
+        """
+        XMLA commands: create/alter/delete/rename/refresh. Commands are generally in the form:
+        <batch>
+            <create/alter...>
+                <db>
+            </create/alter...>
+            <entity-schema.../>
+            <records.../>
+        </batch>
+
+        Entity schemas can be found at `pbi_core/ssas/server/command_templates/schema`
+        """
         fields = []
         for field_name, field_value in values.items():
             if field_name not in command.field_order:
@@ -251,11 +277,15 @@ class SsasTable(pydantic.BaseModel):
         return command.base_template.render(db_name=db_name, entity_def=xml_entity_definition)
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+        """Creates a lineage node tracking the data parents/children of a record"""
         return LineageNode(self, lineage_type)
 
 
 class SsasAlter(SsasTable):
     def alter(self) -> None:
+        """
+        Updates a non-name field of an object
+        """
         data = {
             self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
         }
@@ -272,6 +302,7 @@ class SsasRename(SsasTable):
     _db_name_field: str = "not_defined"
 
     def rename(self) -> None:
+        """Updates a name field of an object"""
         data = {
             self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
         }
@@ -350,7 +381,7 @@ class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
     _commands: BaseCommands
 
     def model_post_init(self, __context: Any) -> None:
-        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
 
         self._commands = BaseCommands(
             alter=templates["alter.xml"],
@@ -363,7 +394,7 @@ class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
     _commands: RenameCommands
 
     def model_post_init(self, __context: Any) -> None:
-        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
 
         self._commands = RenameCommands(
             alter=templates["alter.xml"],
@@ -377,7 +408,7 @@ class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefres
     _commands: RefreshCommands
 
     def model_post_init(self, __context: Any) -> None:
-        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
 
         self._commands = RefreshCommands(
             alter=templates["alter.xml"],
@@ -392,7 +423,7 @@ class SsasModelTable(SsasAlter, SsasRefresh, SsasRename):
     _commands: ModelCommands
 
     def model_post_init(self, __context: Any) -> None:
-        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
 
         self._commands = ModelCommands(
             alter=templates["alter.xml"],

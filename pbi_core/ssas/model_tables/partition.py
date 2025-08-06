@@ -31,6 +31,8 @@ class PartitionType(IntEnum):
 
 
 class Partition(SsasRefreshTable):
+    """Partitions are a child of Tables. They contain the Power Query code. Data refreshes occur on the Partition-level"""
+
     data_view: int
     mode: PartitionMode
     name: str

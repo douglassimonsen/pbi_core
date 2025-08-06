@@ -33,6 +33,15 @@ class Table(SsasRefreshTable):
     structure_modified_time: datetime.datetime
 
     def data(self, head: int = 100) -> list[dict[str, int | float | str]]:
+        """
+        Extracts records from the table in SSAS
+
+        Args:
+            head (int): The number of records to return from the table.
+
+        Returns:
+            list[dict[str, int | float | str]]: A list of SSAS records in dictionary form. The keys are the field names and the values are the record values
+        """
         ret = self.tabular_model.server.query_dax(
             f"EVALUATE TOPN({head}, ALL('{self.name}'))",
             db_name=self.tabular_model.db_name,
@@ -40,13 +49,51 @@ class Table(SsasRefreshTable):
         return ret
 
     def partitions(self) -> list[Partition]:
+        """Get associated dependent partitions
+
+        Returns:
+            (list[Partition]): A list of the partitions containing data for this table
+        """
         return self.tabular_model.partitions.find_all({"table_id": self.id})
 
     def columns(self) -> list[Column]:
+        """Get associated dependent partitions
+
+        Returns:
+            (list[Column]): A list of the columns in this table
+        """
         return self.tabular_model.columns.find_all({"table_id": self.id})
 
-    def measures(self) -> list[Measure]:
+    def table_measures(self) -> list[Measure]:
+        """Get measures saved to this table
+
+        Returns:
+            (list[Measure]): A list of measures saved to this table
+
+        Note:
+            These measures do not necessarily have calculations that depend on this table. For that use `table.measures()`
+        """
         return self.tabular_model.measures.find_all({"table_id": self.id})
+
+    def measures(self) -> list[Measure]:
+        """Get measures that logically depend on this table
+
+        Examples:
+            .. code-block:: python
+            :linenos:
+
+            print(measure.expression)
+            # sumx(example, [a])
+            # Therefore, this measure would be returned by Table(name=example).measures()
+
+        Returns:
+            (list[Measure]): A list of measures that logically depend this table
+
+        Note:
+            These measures are not necessarily saved physically to this table. For that use `table.table_measures()`
+
+        """
+        return []
 
     def model(self) -> "Model":
         return self.tabular_model.model

@@ -39,7 +39,7 @@ class LinguisticMetadata(SsasBaseTable):
         return self.culture().pbi_core_name()
 
     @classmethod
-    def _db_plural_type_name(cls) -> str:
+    def _db_command_obj_name(cls) -> str:
         return "LinguisticMetadata"
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
