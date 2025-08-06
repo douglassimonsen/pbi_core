@@ -46,12 +46,14 @@ class LocalReport(BaseReport):
         self.static_files = static_files
 
     @staticmethod
-    def load_pbix(path: "StrPath", kill_ssas_on_exit: bool = True) -> "LocalReport":
+    def load_pbix(path: "StrPath", *, kill_ssas_on_exit: bool = True) -> "LocalReport":
         """Creates a ``LocalReport`` instance from a PBIX file.
 
         Args:
             path (StrPath): The absolute or local path to the PBIX report
-            kill_ssas_on_exit (bool, optional): The LocalReport object depends on a ``msmdsrv.exe`` process that is independent of the Python session process. If this function creates a new ``msmdsrv.exe`` instance and kill_ssas_on_exit is true, the process will be killed on exit.
+            kill_ssas_on_exit (bool, optional): The LocalReport object depends on a ``msmdsrv.exe`` process that is
+                independent of the Python session process. If this function creates a new ``msmdsrv.exe`` instance
+                and kill_ssas_on_exit is true, the process will be killed on exit.
 
         Returns:
             LocalReport: the local PBIX class

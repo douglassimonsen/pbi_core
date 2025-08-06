@@ -52,6 +52,7 @@ def ssas_diff(
 
 
 def layout_diff(parent: "Layout", child: "Layout") -> None:
+    print(parent, child)
     breakpoint()
 
 

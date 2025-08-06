@@ -164,7 +164,7 @@ class LocalServer(BaseServer):
         """
         path = pathlib.Path(path)
         if not path.exists():
-            msg = f"The path to the PBIX does not exist:{path.absolute().as_posix()}"
+            msg = f"The path to the PBIX does not exist: {path.absolute().as_posix()}"
             raise FileNotFoundError(msg)
         if db_name is None:
             db_name = path.stem

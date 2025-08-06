@@ -3,7 +3,8 @@ from typing import Any
 
 from pydantic import ConfigDict
 
-from .._base_node import LayoutNode
+from pbi_core.static_files.layout._base_node import LayoutNode
+
 from .base import BaseVisual
 from .properties import Expression
 

@@ -80,13 +80,9 @@ class LayoutNode(pydantic.BaseModel):
                 continue
             child_candidate: list[Any] | dict[str, Any] | LayoutNode | int | str = getattr(self, attr)
             if isinstance(child_candidate, list):
-                for val in child_candidate:
-                    if isinstance(val, LayoutNode):
-                        ret.append(val)
+                ret.extend(val for val in child_candidate if isinstance(val, LayoutNode))
             elif isinstance(child_candidate, dict):
-                for val in child_candidate.values():
-                    if isinstance(val, LayoutNode):
-                        ret.append(val)
+                ret.extend(val for val in child_candidate.values() if isinstance(val, LayoutNode))
             elif isinstance(child_candidate, LayoutNode):
                 ret.append(child_candidate)
         return ret

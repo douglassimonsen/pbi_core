@@ -12,27 +12,21 @@ from .table import TableChart
 from .text_box import TextBox
 
 
-def get_visual(v: Any) -> str:  # noqa: PLR0911
+def get_visual(v: Any) -> str:
     if isinstance(v, dict):
         assert "visualType" in v
         assert isinstance(v["visualType"], str)
-        match v["visualType"]:
-            case "barChart":
-                return "BarChart"
-            case "basicShape":
-                return "BasicShape"
-            case "columnChart":
-                return "ColumnChart"
-            case "pieChart":
-                return "PieChart"
-            case "tableEx":
-                return "TableChart"
-            case "slicer":
-                return "Slicer"
-            case "textbox":
-                return "TextBox"
-            case _:
-                return "BaseVisual"
+
+        mapping = {
+            "barChart": "BarChart",
+            "basicShape": "BasicShape",
+            "columnChart": "ColumnChart",
+            "pieChart": "PieChart",
+            "slicer": "Slicer",
+            "tableEx": "TableChart",
+            "textbox": "TextBox",
+        }
+        return mapping.get(v["visualType"], "BaseVisual")
     return cast("str", v.__class__.__name__)
 
 

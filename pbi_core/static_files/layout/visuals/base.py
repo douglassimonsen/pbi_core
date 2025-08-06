@@ -1,16 +1,17 @@
+# ruff: noqa: N815
 from typing import TYPE_CHECKING, Any
 
 from pydantic import ConfigDict
 
-from ....lineage import LineageNode, LineageType
-from ....ssas.model_tables import Column, Measure
-from .._base_node import LayoutNode
-from ..filters import PrototypeQuery
-from ..sources.column import ColumnSource
-from ..sources.measure import MeasureSource
+from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.static_files.layout._base_node import LayoutNode
+from pbi_core.static_files.layout.filters import PrototypeQuery
+from pbi_core.static_files.layout.sources.column import ColumnSource
+from pbi_core.static_files.layout.sources.measure import MeasureSource
 
 if TYPE_CHECKING:
-    from ....ssas.server import BaseTabularModel
+    from pbi_core.ssas.model_tables import Column, Measure
+    from pbi_core.ssas.server import BaseTabularModel
 
 
 class BaseVisual(LayoutNode):
@@ -26,7 +27,7 @@ class BaseVisual(LayoutNode):
 
     @property
     def id(self) -> str:
-        """Obviously terrible, but works for now lol"""
+        """Obviously terrible, but works for now lol."""
         return self.visualType
 
     def pbi_core_name(self) -> str:

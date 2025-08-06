@@ -1,14 +1,11 @@
 from dataclasses import dataclass, field
 from enum import IntEnum
-from typing import TYPE_CHECKING, Annotated, Any, cast
+from typing import Annotated, Any, cast
 
 from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
 from .sources import AggregationSource, DataSource, LiteralSource, Source, SourceRef
-
-if TYPE_CHECKING:
-    from .filters import From
 
 
 class ExpressionVersion(IntEnum):
@@ -74,14 +71,6 @@ class Expression:
 class ContainsCondition(LayoutNode):
     Contains: ComparisonHelper
 
-    def get_prototype_query_type(self) -> QueryConditionType:
-        return QueryConditionType.STANDARD
-
-    def to_query_text(self, tables: dict[str, "From"]) -> Expression:
-        column = self.Contains.Left.to_query_text(tables)
-        val = self.Contains.Right.value()
-        return Expression(f'SEARCH("{val}", {column}, 1, 0) >= 1', column)
-
 
 class InExpressionHelper(LayoutNode):
     Expressions: list[DataSource]
@@ -94,21 +83,12 @@ class InExpressionHelper(LayoutNode):
         source = self.Expressions[0].__repr__()
         return f"In({source}, {', '.join(self.vals())})"
 
-    def to_query_text(self, tables: dict[str, "From"]) -> Expression:
-        column: str = self.Expressions[0].Column.to_query_text(tables)
-        vals = ", ".join(self.vals())
-        return Expression(f"{column} IN {{{vals}}}", column)
-
 
 class InTopNExpressionHelper(LayoutNode):
     """Internal representation of the Top N option."""
 
     Expressions: list[DataSource]
     Table: SourceRef
-
-    def to_query_text(self, tables: dict[str, "From"]) -> Expression:
-        breakpoint()
-        raise NotImplementedError
 
 
 class InCondition(LayoutNode):
@@ -118,14 +98,6 @@ class InCondition(LayoutNode):
 
     def __repr__(self) -> str:
         return self.In.__repr__()
-
-    def get_prototype_query_type(self) -> QueryConditionType:
-        if isinstance(self.In, InTopNExpressionHelper):
-            return QueryConditionType.TOP_N
-        return QueryConditionType.STANDARD
-
-    def to_query_text(self, tables: dict[str, "From"]) -> Expression:
-        return self.In.to_query_text(tables)
 
 
 class TimeUnit(IntEnum):
@@ -161,30 +133,6 @@ class ComparisonConditionHelper(LayoutNode):
 class ComparisonCondition(LayoutNode):
     Comparison: ComparisonConditionHelper
 
-    def get_prototype_query_type(self) -> QueryConditionType:
-        if isinstance(self.Comparison.Left, AggregationSource):
-            return QueryConditionType.MEASURE
-        return QueryConditionType.STANDARD
-
-    def to_query_text(self, tables: dict[str, "From"]) -> Expression:
-        if isinstance(self.Comparison.Left, AggregationSource):
-            return Expression("", self.Comparison.Left.Aggregation.Expression.to_query_text({}))
-        column = self.Comparison.Left.to_query_text(tables)
-        assert isinstance(self.Comparison.Right, LiteralSource)
-        value = self.Comparison.Right.value()
-        if self.Comparison.ComparisonKind == ComparisonKind.IS_EQUAL and value is None:
-            return Expression(f"ISBLANK({column})", column)
-        return Expression(
-            "{column} {operator} {value}",
-            column,
-            data={
-                "column": column,
-                "operator": self.Comparison.ComparisonKind.get_operator(),
-                "value": str(value),
-            },
-            expr_type="Comparison",
-        )
-
 
 BasicConditions = ContainsCondition | InCondition | ComparisonCondition
 
@@ -199,20 +147,6 @@ class NotCondition(LayoutNode):
     def __repr__(self) -> str:
         return f"Not({self.Not.Expression.__repr__()})"
 
-    def get_prototype_query_type(self) -> QueryConditionType:
-        return self.Not.Expression.get_prototype_query_type()
-
-    def to_query_text(self, tables: dict[str, "From"]) -> Expression:
-        """Microsoft does minute optimizations for the prototypeQuery -> DAX translation.
-
-        One is converting Not(x = 1) to x <> 1
-        """
-        expr = self.Not.Expression.to_query_text(tables)
-        if expr.expr_type == "Comparison" and expr.data["operator"] == "=":
-            expr.data["operator"] = "<>"
-            return expr
-        return Expression(f"NOT({expr.to_text()})", expr.source)
-
 
 NonCompositeConditions = BasicConditions | NotCondition
 
@@ -221,37 +155,13 @@ class CompositeConditionHelper(LayoutNode):
     Left: NonCompositeConditions
     Right: NonCompositeConditions
 
-    def get_prototype_query_type(self) -> QueryConditionType:
-        types = tuple(sorted({self.Left.get_prototype_query_type(), self.Right.get_prototype_query_type()}))
-        if len(types) == 1:
-            return types[0]
-        raise ValueError(types)
-
-    def to_query_text(self, tables: dict[str, "From"]) -> tuple[Expression, Expression]:
-        left = self.Left.to_query_text(tables)
-        right = self.Right.to_query_text(tables)
-        return (left, right)
-
 
 class AndCondition(LayoutNode):
     And: CompositeConditionHelper
 
-    def get_prototype_query_type(self) -> QueryConditionType:
-        return self.And.get_prototype_query_type()
-
-    def to_query_text(self, tables: dict[str, "From"]) -> tuple[Expression, Expression]:
-        return self.And.to_query_text(tables)
-
 
 class OrCondition(LayoutNode):
     Or: CompositeConditionHelper
-
-    def get_prototype_query_type(self) -> QueryConditionType:
-        return self.Or.get_prototype_query_type()
-
-    def to_query_text(self, tables: dict[str, "From"]) -> Expression:
-        _or_ = self.Or.to_query_text(tables)
-        return Expression(f"OR({_or_[0].to_text()}, {_or_[1].to_text()})", _or_[0].source)
 
 
 def get_type(v: Any) -> str:  # noqa: PLR0911
@@ -292,9 +202,3 @@ class Condition(LayoutNode):
 
     def __repr__(self) -> str:
         return f"Condition({self.Condition.__repr__()})"
-
-    def get_prototype_query_type(self) -> QueryConditionType:
-        return self.Condition.get_prototype_query_type()
-
-    def to_query_text(self, tables: dict[str, "From"]) -> Expression | tuple[Expression, Expression]:
-        return self.Condition.to_query_text(tables)
