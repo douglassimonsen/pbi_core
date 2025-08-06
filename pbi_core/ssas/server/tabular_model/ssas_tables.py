@@ -32,7 +32,7 @@ class SsasAlter(SsasTable):
     The `alter <https://learn.microsoft.com/en-us/analysis-services/tmsl/alter-command-tmsl?view=asallproducts-allversions>`_ spec
     """  # noqa: E501
 
-    _commands: BaseCommands
+    _commands: BaseCommands  # pyright: ignore reportIncompatibleVariableOverride
 
     def alter(self) -> None:
         """Updates a non-name field of an object."""
@@ -55,7 +55,7 @@ class SsasRename(SsasTable):
     """  # noqa: E501
 
     _db_name_field: str = "not_defined"
-    _commands: RenameCommands
+    _commands: RenameCommands  # pyright: ignore reportIncompatibleVariableOverride
 
     def rename(self) -> None:
         """Updates a name field of an object."""
@@ -99,7 +99,7 @@ class SsasDelete(SsasTable):
     """  # noqa: E501
 
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
-    _commands: BaseCommands
+    _commands: BaseCommands  # pyright: ignore reportIncompatibleVariableOverride
 
     def delete(self) -> None:
         data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
@@ -120,7 +120,7 @@ class SsasRefresh(SsasTable):
 
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
     _refresh_type: RefreshType
-    _commands: RefreshCommands
+    _commands: RefreshCommands  # pyright: ignore reportIncompatibleVariableOverride
 
     def refresh(self) -> None:
         data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
@@ -137,7 +137,7 @@ class SsasRefresh(SsasTable):
 class SsasReadonlyTable(SsasTable):
     """Class for SSAS records that implement no command."""
 
-    _commands: NoCommands
+    _commands: NoCommands  # pyright: ignore reportIncompatibleVariableOverride
 
 
 class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
@@ -145,7 +145,7 @@ class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
 
     def model_post_init(self, __context: Any, /) -> None:
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
-        self._commands = BaseCommands(
+        self._commands = BaseCommands(  # pyright: ignore reportIncompatibleVariableOverride
             alter=templates["alter.xml"],
             create=templates["create.xml"],
             delete=templates["delete.xml"],
@@ -159,7 +159,7 @@ class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
         if self._db_command_obj_name() == "ExtendedPropertys":
             breakpoint()
-        self._commands = RenameCommands(
+        self._commands = RenameCommands(  # pyright: ignore reportIncompatibleVariableOverride
             alter=templates["alter.xml"],
             create=templates["create.xml"],
             delete=templates["delete.xml"],
@@ -173,7 +173,7 @@ class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefres
     def model_post_init(self, __context: Any, /) -> None:
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
 
-        self._commands = RefreshCommands(
+        self._commands = RefreshCommands(  # pyright: ignore reportIncompatibleVariableOverride
             alter=templates["alter.xml"],
             create=templates["create.xml"],
             delete=templates["delete.xml"],
@@ -190,7 +190,7 @@ class SsasModelTable(SsasAlter, SsasRefresh, SsasRename):
     def model_post_init(self, __context: Any, /) -> None:
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
 
-        self._commands = ModelCommands(
+        self._commands = ModelCommands(  # pyright: ignore reportIncompatibleVariableOverride
             alter=templates["alter.xml"],
             refresh=templates["refresh.xml"],
             rename=templates["rename.xml"],

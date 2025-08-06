@@ -4,7 +4,7 @@ import pydantic
 from structlog import get_logger
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server._commands import Command, Commands
+from pbi_core.ssas.server._commands import Command
 from pbi_core.ssas.server.utils import ROW_TEMPLATE, python_to_xml
 
 if TYPE_CHECKING:
@@ -26,7 +26,6 @@ class SsasTable(pydantic.BaseModel):
     model_config = SsasConfig
     tabular_model: "BaseTabularModel"
     _read_only_fields: ClassVar[tuple[str, ...]] = ()
-    _commands: Commands
     id: Final[int] = pydantic.Field(frozen=True)
     _db_field_names: ClassVar[dict[str, str]] = {}
     _repr_name_field: str = "name"
