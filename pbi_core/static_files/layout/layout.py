@@ -1,8 +1,8 @@
 # ruff: noqa: N815
 from enum import Enum
-from typing import Annotated, Any, cast
+from typing import Any
 
-from pydantic import Discriminator, Json, Tag
+from pydantic import Json
 
 from ._base_node import LayoutNode
 from .bookmark import LayoutBookmarkChild
@@ -28,40 +28,19 @@ class ThemeInfo(LayoutNode):
 
 
 class ThemeCollection(LayoutNode):
-    baseTheme: ThemeInfo
+    baseTheme: ThemeInfo | None = None
     customTheme: ThemeInfo | None = None
 
 
-class SettingsV2(LayoutNode):
-    useNewFilterPaneExperience: bool
-    allowChangeFilterTypes: bool
-    useStylableVisualContainerHeader: bool
-    useEnhancedTooltips: bool = True
-    exportDataMode: int  # def an enum
+class Settings(LayoutNode):
+    allowChangeFilterTypes: bool = True
     allowDataPointLassoSelect: bool = False
-
-
-class SettingsV1(LayoutNode):
-    isPersistentUserStateDisabled: bool
-    hideVisualContainerHeader: bool
+    exportDataMode: int = 0  # def an enum
+    hideVisualContainerHeader: bool = False
+    isPersistentUserStateDisabled: bool = False
+    useEnhancedTooltips: bool = True
+    useNewFilterPaneExperience: bool = True
     useStylableVisualContainerHeader: bool = True
-
-
-def get_settings(v: Any) -> str:
-    if isinstance(v, dict):
-        if "isPersistentUserStateDisabled" in v:
-            return "SettingsV1"
-        if "useNewFilterPaneExperience" in v:
-            return "SettingsV2"
-        msg = f"Unknown Filter: {v.keys()}"
-        raise ValueError(msg)
-    return cast("str", v.__class__.__name__)
-
-
-Settings = Annotated[
-    Annotated[SettingsV1, Tag("SettingsV1")] | Annotated[SettingsV2, Tag("SettingsV2")],
-    Discriminator(get_settings),
-]
 
 
 class LayoutConfig(LayoutNode):

@@ -53,11 +53,13 @@ class FromEntity(LayoutNode):
 
 class PrimaryProjections(LayoutNode):
     Projections: list[int]
+    SuppressedProjections: list[int] | None = None
     Subtotal: int | None = None
 
 
 class BindingPrimary(LayoutNode):
     Groupings: list[PrimaryProjections]
+    Expansion: Any | None = None
 
 
 class DataVolume(IntEnum):

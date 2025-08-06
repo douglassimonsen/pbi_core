@@ -27,3 +27,7 @@ class KPI(SsasBaseTable):
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
         return LineageNode(self, lineage_type, [self.measure().get_lineage(lineage_type)])
+
+    @classmethod
+    def _db_command_obj_name(cls) -> str:
+        return "Kpis"

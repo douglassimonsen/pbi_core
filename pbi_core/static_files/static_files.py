@@ -6,7 +6,7 @@ from zipfile import ZipFile
 
 import bs4
 
-from .file_classes import Connections, DiagramLayout, Metadata, Settings
+from .file_classes import Connections, DiagramLayout, Metadata, Settings, parse_diagram_layout
 from .file_classes.theme import Theme
 from .layout._base_node import _set_parents
 from .layout.layout import Layout
@@ -97,7 +97,7 @@ class StaticFiles:
         metadata = Metadata.model_validate(metadata_json)
 
         diagram_json = json.loads(zipfile.read("DiagramLayout").decode(LAYOUT_ENCODING))
-        diagram_layout = DiagramLayout.model_validate(diagram_json)
+        diagram_layout = parse_diagram_layout(diagram_json)
 
         settings_json = json.loads(zipfile.read("Settings").decode(LAYOUT_ENCODING))
         settings = Settings.model_validate(settings_json)

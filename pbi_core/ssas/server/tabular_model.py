@@ -8,7 +8,6 @@ import pydantic
 from structlog import get_logger
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.server import LocalServer
 
 from ._commands import BaseCommands, Command, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from .utils import (
@@ -215,9 +214,8 @@ class LocalTabularModel(BaseTabularModel):
         super().__init__(db_name, server)
 
     def save_pbix(self, path: "StrPath") -> None:
-        assert isinstance(self.server, LocalServer)
         shutil.copy(self.pbix_path, path)
-        self.server.save_pbix(path, self.db_name)  # the server is always a local server in this case
+        self.server.save_pbix(path, self.db_name)  # pyright: ignore reportAttributeAccessIssue  # the server is always a local server in this case
 
 
 def discover_xml_to_dict(xml: bs4.BeautifulSoup) -> dict[str, list[dict[Any, Any]]]:
@@ -296,6 +294,7 @@ class SsasTable(pydantic.BaseModel):
         def case_helper(field_name: str) -> str:
             SPECIAL_CASES = {  # noqa: N806
                 "owerBI": "owerbi",
+                "KPIID": "KpiId",
             }
             for old_segment, new_segment in SPECIAL_CASES.items():
                 field_name = field_name.replace(old_segment, new_segment)
@@ -504,7 +503,6 @@ class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
 
     def model_post_init(self, __context: Any, /) -> None:
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
-
         self._commands = BaseCommands(
             alter=templates["alter.xml"],
             create=templates["create.xml"],
