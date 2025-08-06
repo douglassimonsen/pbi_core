@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Literal, Optional
 from uuid import UUID
 
 from ..server.tabular_model import SsasRenameTable, SsasTable
@@ -27,7 +27,10 @@ class Expression(SsasRenameTable):
     def query_group(self) -> Optional["QueryGroup"]:
         return self.tabular_model.query_groups.find({"id": self.query_group_id})
 
-    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
-        parent_nodes: list[Optional[SsasTable]] = [self.model(), self.query_group()]
-        parent_lineage = [p.get_lineage() for p in parent_nodes if p is not None]
-        return LineageNode(self, parent_lineage)
+    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(self)
+        else:
+            parent_nodes: list[Optional[SsasTable]] = [self.model(), self.query_group()]
+            parent_lineage = [p.get_lineage(lineage_type) for p in parent_nodes if p is not None]
+            return LineageNode(self, parent_lineage)

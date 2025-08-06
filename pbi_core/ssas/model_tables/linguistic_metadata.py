@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 from ...lineage import LineageNode
 from ..server.tabular_model import SsasBaseTable
@@ -22,5 +22,8 @@ class LinguisticMetadata(SsasBaseTable):
     def _db_plural_type_name(cls) -> str:
         return "LinguisticMetadata"
 
-    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
-        return LineageNode(self, [self.culture().get_lineage()])
+    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(self)
+        else:
+            return LineageNode(self, [self.culture().get_lineage(lineage_type)])

@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 from uuid import UUID
 
 from ...lineage import LineageNode
@@ -37,12 +37,18 @@ class Hierarchy(SsasRenameTable):
     def _db_plural_type_name(cls) -> str:
         return "Hierarchies"
 
-    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
-        return LineageNode(
-            self,
-            [
-                self.table().get_lineage(),
-            ],
-            # + [l.get_lineage() for l in self.levels()]
-            # + [v.get_lineage() for v in self.variations()],
-        )
+    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(
+                self,
+                [level.get_lineage(lineage_type) for level in self.levels()]
+                + [variation.get_lineage(lineage_type) for variation in self.variations()],
+            )
+
+        else:
+            return LineageNode(
+                self,
+                [
+                    self.table().get_lineage(lineage_type),
+                ],
+            )

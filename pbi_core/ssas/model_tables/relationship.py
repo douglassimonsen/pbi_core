@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Literal, Optional
 
 from ...lineage import LineageNode
 from ..server.tabular_model import SsasRenameTable
@@ -51,14 +51,16 @@ class Relationship(SsasRenameTable):
     def variations(self) -> list["Variation"]:
         return self.tabular_model.variations.find_all({"relationship_id": self.id})
 
-    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
-        return LineageNode(
-            self,
-            [
-                self.from_table().get_lineage(),
-                self.to_table().get_lineage(),
-                self.from_column().get_lineage(),
-                self.to_column().get_lineage(),
-            ]
-            + [variation.get_lineage() for variation in self.variations()],
-        )
+    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(self, [variation.get_lineage(lineage_type) for variation in self.variations()])
+        else:
+            return LineageNode(
+                self,
+                [
+                    self.from_table().get_lineage(lineage_type),
+                    self.to_table().get_lineage(lineage_type),
+                    self.from_column().get_lineage(lineage_type),
+                    self.to_column().get_lineage(lineage_type),
+                ],
+            )

@@ -1,11 +1,12 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from ...lineage import LineageNode
 from ..server.tabular_model import SsasReadonlyTable
 
 if TYPE_CHECKING:
     from .column import Column
+    from .level import Level
 
 
 class AttributeHierarchy(SsasReadonlyTable):
@@ -19,5 +20,11 @@ class AttributeHierarchy(SsasReadonlyTable):
     def column(self) -> "Column":
         return self.tabular_model.columns.find({"id": self.column_id})
 
-    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
-        return LineageNode(self, [self.column().get_lineage()])
+    def levels(self) -> list["Level"]:
+        return self.tabular_model.levels.find_all({"hierarchy_id": self.id})
+
+    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(self, [level.get_lineage(lineage_type) for level in self.levels()])
+        else:
+            return LineageNode(self, [self.column().get_lineage(lineage_type)])

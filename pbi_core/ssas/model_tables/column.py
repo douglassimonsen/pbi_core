@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, ClassVar, Optional
+from typing import TYPE_CHECKING, ClassVar, Literal, Optional
 from uuid import UUID
 
 from ...lineage import LineageNode
@@ -57,10 +57,15 @@ class Column(SsasRenameTable):
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
-        parent_nodes: list[Optional[SsasTable]] = [self.table(), self.attribute_hierarchy(), self.sort_by_column()]
-        parent_lineage = [p.get_lineage() for p in parent_nodes if p is not None]
-        return LineageNode(self, parent_lineage)
+    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+        if lineage_type == "children":
+            children_nodes: list[Optional[SsasTable]] = [self.attribute_hierarchy()]
+            children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
+            return LineageNode(self, children_lineage)
+        else:
+            parent_nodes: list[Optional[SsasTable]] = [self.table(), self.sort_by_column()]
+            parent_lineage = [p.get_lineage(lineage_type) for p in parent_nodes if p is not None]
+            return LineageNode(self, parent_lineage)
 
     def data(self, head: int = 100) -> list[int | float | str]:
         table_name = self.table().name

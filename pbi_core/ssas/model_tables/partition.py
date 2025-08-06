@@ -1,6 +1,6 @@
 import datetime
 from enum import IntEnum
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Literal, Optional
 
 from ...lineage import LineageNode
 from ..server.tabular_model import SsasRefreshTable, SsasTable
@@ -56,7 +56,10 @@ class Partition(SsasRefreshTable):
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})
 
-    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
-        parent_nodes: list[Optional[SsasTable]] = [self.table(), self.query_group()]
-        parent_lineage: list[LineageNode] = [c.get_lineage() for c in parent_nodes if c is not None]
-        return LineageNode(self, parent_lineage)
+    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(self)
+        else:
+            parent_nodes: list[Optional[SsasTable]] = [self.table(), self.query_group()]
+            parent_lineage: list[LineageNode] = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
+            return LineageNode(self, parent_lineage)

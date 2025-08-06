@@ -1,6 +1,6 @@
 import pathlib
 import shutil
-from typing import TYPE_CHECKING, Any, ClassVar, Optional, Type, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Type, cast
 
 import pydantic
 from bs4 import BeautifulSoup, Tag
@@ -226,7 +226,7 @@ class SsasTable(pydantic.BaseModel):
         xml_entity_definition = command.template.render(rows=xml_row)
         return command.base_template.render(db_name=db_name, entity_def=xml_entity_definition)
 
-    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
         return LineageNode(self)
 
 

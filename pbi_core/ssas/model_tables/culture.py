@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from ...lineage import LineageNode
 from ..server.tabular_model import SsasRenameTable
@@ -23,5 +23,8 @@ class Culture(SsasRenameTable):
     def model(self) -> "Model":
         return self.tabular_model.model
 
-    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
-        return LineageNode(self, [self.linguistic_metdata().get_lineage(), self.model().get_lineage()])
+    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(self, [self.linguistic_metdata().get_lineage(lineage_type)])
+        else:
+            return LineageNode(self, [self.model().get_lineage(lineage_type)])

@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Literal, Optional
 from uuid import UUID
 
 from ...lineage import LineageNode
@@ -51,7 +51,10 @@ class Measure(SsasRenameTable):
             for x in ret
         ]
 
-    def get_lineage(self, children: bool = False, parents: bool = True) -> LineageNode:
-        parent_nodes: list[Optional[SsasTable]] = [self.KPI(), self.table()]
-        parent_lineage = [c.get_lineage() for c in parent_nodes if c is not None]
-        return LineageNode(self, parent_lineage)
+    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(self)
+        else:
+            parent_nodes: list[Optional[SsasTable]] = [self.KPI(), self.table()]
+            parent_lineage = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
+            return LineageNode(self, parent_lineage)
