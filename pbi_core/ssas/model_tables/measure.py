@@ -49,11 +49,11 @@ class Measure(SsasRenameTable):
             col.full_name() + "," for col in columns
         )  # this should eventually be converted to jinja imo
         command = f"""
-        EVALUATE SUMMARIZECOLUMNS(
+        EVALUATE TOPN({head}, SUMMARIZECOLUMNS(
             {column_str}
             {columns[0].table().name},
             "measure", {self.full_name()}
-        )
+        ))
         """
         return self.tabular_model.server.query_dax(command)
 
