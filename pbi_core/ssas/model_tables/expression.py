@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 from uuid import UUID
 
 from pbi_core.ssas.server.tabular_model import SsasRenameTable, SsasTable
@@ -24,7 +24,7 @@ class Expression(SsasRenameTable):
     def model(self) -> "Model":
         return self.tabular_model.model
 
-    def query_group(self) -> Optional["QueryGroup"]:
+    def query_group(self) -> "QueryGroup | None":
         return self.tabular_model.query_groups.find({"id": self.query_group_id})
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:

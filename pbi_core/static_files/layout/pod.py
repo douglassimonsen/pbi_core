@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class Parameter(LayoutNode):
-    _parent: "Pod"
+    _parent: "Pod"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     name: str
     boundFilter: str
@@ -28,7 +28,7 @@ class PodType(IntEnum):
 
 
 class Pod(LayoutNode):
-    _parent: "Layout"
+    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     id: int | None = None
     name: str

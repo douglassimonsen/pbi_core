@@ -1,10 +1,10 @@
+from pbi_core.static_files.layout._base_node import LayoutNode
 
-from ..._base_node import LayoutNode
 from .base import Expression
 
 
 class FilterProperties(LayoutNode):
-    isInvertedSelectionMode: Expression
+    isInvertedSelectionMode: Expression  # noqa: N815
 
 
 class FilterPropertiesContainer(LayoutNode):

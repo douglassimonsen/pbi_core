@@ -1,6 +1,6 @@
 import pathlib
 from datetime import UTC, datetime
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 import backoff
 import bs4
@@ -140,7 +140,7 @@ class LocalServer(BaseServer):
     def __init__(
         self,
         host: str = "localhost",
-        workspace_directory: Optional["StrPath"] = None,
+        workspace_directory: "StrPath | None" = None,
         pid: int | None = None,
         *,
         kill_on_exit: bool = True,

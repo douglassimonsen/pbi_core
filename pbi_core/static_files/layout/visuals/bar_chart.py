@@ -1,6 +1,6 @@
+# ruff: noqa: N815
 from typing import Any
 
-from git import Optional
 from pydantic import ConfigDict
 
 from .._base_node import LayoutNode
@@ -9,13 +9,13 @@ from .properties import Expression
 
 
 class TitleProperties(LayoutNode):
-    text: Optional[Expression] = None
-    heading: Optional[Expression] = None
-    fontFamily: Optional[Expression] = None
-    fontColor: Optional[Expression] = None
-    fontSize: Optional[Expression] = None
-    alignment: Optional[Expression] = None
-    show: Optional[Expression] = None
+    text: Expression | None = None
+    heading: Expression | None = None
+    fontFamily: Expression | None = None
+    fontColor: Expression | None = None
+    fontSize: Expression | None = None
+    alignment: Expression | None = None
+    show: Expression | None = None
 
 
 class TitlePropertiesGroup(LayoutNode):
@@ -23,18 +23,18 @@ class TitlePropertiesGroup(LayoutNode):
 
 
 class VisualHeaderProperties(LayoutNode):
-    showTooltipButton: Optional[Expression] = None
-    showSmartNarrativeButton: Optional[Expression] = None
-    showVisualInformationButton: Optional[Expression] = None
-    showVisualWarningButton: Optional[Expression] = None
+    showTooltipButton: Expression | None = None
+    showSmartNarrativeButton: Expression | None = None
+    showVisualInformationButton: Expression | None = None
+    showVisualWarningButton: Expression | None = None
 
-    show: Optional[Expression] = None
-    background: Optional[Expression] = None
-    transparency: Optional[Expression] = None
-    foreground: Optional[Expression] = None
-    showDrillRoleSelector: Optional[Expression] = None
-    showFocusModeButton: Optional[Expression] = None
-    showOptionsMenu: Optional[Expression] = None
+    show: Expression | None = None
+    background: Expression | None = None
+    transparency: Expression | None = None
+    foreground: Expression | None = None
+    showDrillRoleSelector: Expression | None = None
+    showFocusModeButton: Expression | None = None
+    showOptionsMenu: Expression | None = None
 
 
 class VisualHeadersPropertiesGroup(LayoutNode):
@@ -45,12 +45,12 @@ class BarChartVCObjects(LayoutNode):
     background: Any = None
     general: Any = None
     title: list[TitlePropertiesGroup]
-    visualHeader: Optional[list[VisualHeadersPropertiesGroup]] = None
+    visualHeader: list[VisualHeadersPropertiesGroup] | None = None
     visualTooltip: Any = None
 
 
 class BarChart(BaseVisual):
     visualType: str = "barChart"
     model_config = ConfigDict(extra="forbid")
-    vcObjects: Optional[BarChartVCObjects] = None
+    vcObjects: BarChartVCObjects | None = None
     columnProperties: Any = None

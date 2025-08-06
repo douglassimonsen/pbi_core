@@ -24,7 +24,7 @@ class Direction(IntEnum):
 
 
 class Orderby(LayoutNode):
-    _parent: "TopNFilterMeta"
+    _parent: "TopNFilterMeta"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     Direction: Direction
     Expression: Source
@@ -69,7 +69,7 @@ class PrototypeQuery(LayoutNode):
         return ret
 
     def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult:
-        raw_query = self.model_dump_json()
+        raw_query: dict[Any, Any] = self.model_dump_json()
         dax_query = pbi_translation.prototype_query(
             raw_query,
             model.db_name,
@@ -91,18 +91,18 @@ class PrototypeQuery(LayoutNode):
 
 
 class TopNFilterMeta(PrototypeQuery):
-    _parent: "_SubqueryHelper2"
+    _parent: "_SubqueryHelper2"  # pyright: ignore reportIncompatibleVariableOverride=false
     Top: int
 
 
 class _SubqueryHelper2(LayoutNode):
-    _parent: "_SubqueryHelper"
+    _parent: "_SubqueryHelper"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     Query: TopNFilterMeta
 
 
 class _SubqueryHelper(LayoutNode):
-    _parent: "Subquery"
+    _parent: "Subquery"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     Subquery: _SubqueryHelper2
 
@@ -112,7 +112,7 @@ class SubQueryType(IntEnum):
 
 
 class Subquery(LayoutNode):
-    _parent: "VisualFilterExpression"
+    _parent: "VisualFilterExpression"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     Name: str
     Expression: _SubqueryHelper
@@ -137,7 +137,7 @@ From = Annotated[
 
 
 class FilterExpression(LayoutNode):
-    _parent: "Filter"
+    _parent: "Filter"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     Version: int
     From: list["From"]
@@ -173,7 +173,7 @@ class Filter(LayoutNode):
 
 
 class VisualFilterExpression(LayoutNode):
-    _parent: "VisualFilter"
+    _parent: "VisualFilter"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     Version: int | None = None
     From: list["From"] | None = None
@@ -193,12 +193,12 @@ class VisualFilter(Filter):
 
 
 class BookmarkFilter(VisualFilter):
-    _parent: "BookmarkFilters"
+    _parent: "BookmarkFilters"  # pyright: ignore reportIncompatibleVariableOverride=false
 
 
 class PageFilter(Filter):
-    _parent: "Section"
+    _parent: "Section"  # pyright: ignore reportIncompatibleVariableOverride=false
 
 
 class GlobalFilter(Filter):
-    _parent: "Layout"
+    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false

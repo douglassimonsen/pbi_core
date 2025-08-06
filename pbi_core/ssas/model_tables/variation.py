@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.server.tabular_model import SsasRenameTable
@@ -17,7 +17,7 @@ class Variation(SsasRenameTable):
     name: str
     relationship_id: int
 
-    def get_column(self) -> Optional["Column"]:
+    def get_column(self) -> "Column | None":
         """Name is bad to not shadow the column field in this entity :(."""
         return self.tabular_model.columns.find({"id": self.column_id})
 

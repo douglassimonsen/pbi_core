@@ -5,7 +5,7 @@ from .column import ColumnSource
 
 
 class _GroupSourceHelper(LayoutNode):
-    _parent: "GroupSource"
+    _parent: "GroupSource"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     Expression: SourceRef
     GroupedColumns: list[ColumnSource]

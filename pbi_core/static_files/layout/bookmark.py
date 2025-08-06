@@ -59,7 +59,7 @@ class BookmarkVisual(LayoutNode):
 
 
 class BookmarkSection(LayoutNode):
-    _parent: "ExplorationState"
+    _parent: "ExplorationState"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     visualContainers: dict[str, BookmarkVisual] | None = None
     filters: BookmarkFilters | None = None
@@ -67,7 +67,7 @@ class BookmarkSection(LayoutNode):
 
 
 class ExplorationState(LayoutNode):
-    _parent: "Bookmark"
+    _parent: "Bookmark"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     version: float
     sections: dict[str, BookmarkSection]
@@ -77,7 +77,7 @@ class ExplorationState(LayoutNode):
 
 
 class BookmarkOptions(LayoutNode):
-    _parent: "Bookmark"
+    _parent: "Bookmark"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     targetVisualNames: list[str] | None = None
     applyOnlyToTargetVisuals: bool = False
@@ -87,7 +87,7 @@ class BookmarkOptions(LayoutNode):
 
 
 class Bookmark(LayoutNode):
-    _parent: "Layout"
+    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     options: BookmarkOptions | None
     explorationState: ExplorationState | None
@@ -111,7 +111,7 @@ class Bookmark(LayoutNode):
 
 
 class BookmarkFolder(LayoutNode):
-    _parent: "Layout"
+    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
     displayName: str
     name: str  # acts as an ID
     children: list[Bookmark]

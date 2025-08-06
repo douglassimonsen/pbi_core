@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 from uuid import UUID
 
 from pbi_core.lineage import LineageNode, LineageType
@@ -32,7 +32,7 @@ class Measure(SsasRenameTable):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    def KPI(self) -> Optional["KPI"]:  # noqa: N802
+    def KPI(self) -> "KPI | None":  # noqa: N802
         if self.kpi_id is not None:
             return self.tabular_model.kpis.find({"id": self.kpi_id})
         return None

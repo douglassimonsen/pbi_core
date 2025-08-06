@@ -1,6 +1,6 @@
 import pathlib
 from functools import cached_property
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from pbi_core.logging import get_logger
 
@@ -50,7 +50,7 @@ class SSASProcess:
     def __init__(
         self,
         pid: int | None = None,
-        workspace_directory: Optional["StrPath"] = None,
+        workspace_directory: "StrPath | None" = None,
         *,
         kill_on_exit: bool = True,
     ) -> None:

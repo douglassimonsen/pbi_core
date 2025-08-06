@@ -20,7 +20,7 @@ class ResourcePackageItemType(IntEnum):
 
 
 class ResourcePackageItem(LayoutNode):
-    _parent: "ResourcePackageDetails"
+    _parent: "ResourcePackageDetails"  # pyright: ignore reportIncompatibleVariableOverride=false
     name: str | None = None
     path: str
     type: ResourcePackageItemType
@@ -36,7 +36,7 @@ class ResourcePackageDetailsType(IntEnum):
 
 
 class ResourcePackageDetails(LayoutNode):
-    _parent: "ResourcePackage"
+    _parent: "ResourcePackage"  # pyright: ignore reportIncompatibleVariableOverride=false
     disabled: bool
     items: list[ResourcePackageItem] = []
     type: ResourcePackageDetailsType
@@ -45,5 +45,5 @@ class ResourcePackageDetails(LayoutNode):
 
 
 class ResourcePackage(LayoutNode):
-    _parent: "Layout"
+    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
     resourcePackage: ResourcePackageDetails

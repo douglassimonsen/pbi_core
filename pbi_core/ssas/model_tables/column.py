@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, ClassVar, Literal, Optional
+from typing import TYPE_CHECKING, ClassVar, Literal
 from uuid import UUID
 
 from pbi_core.lineage import LineageNode, LineageType
@@ -172,7 +172,7 @@ class Column(SsasRenameTable):
         full_dependencies = [c for c in self.tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
         return [x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)]
 
-    def sort_by_column(self) -> Optional["Column"]:
+    def sort_by_column(self) -> "Column | None":
         if self.sort_by_column_id is None:
             return None
         return self.tabular_model.columns.find({"id": self.sort_by_column_id})

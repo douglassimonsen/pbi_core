@@ -26,7 +26,7 @@ class VisualHowCreated(Enum):
 
 
 class VisualConfig(LayoutNode):
-    _parent: "VisualContainer"
+    _parent: "VisualContainer"  # pyright: ignore reportIncompatibleVariableOverride=false
     _name_field = "name"
 
     layouts: Any | None = None
@@ -116,7 +116,7 @@ class Query(LayoutNode):
 
 
 class VisualContainer(LayoutNode):
-    _parent: "Section"
+    _parent: "Section"  # pyright: ignore reportIncompatibleVariableOverride=false
     _name_field = "name"
 
     x: float

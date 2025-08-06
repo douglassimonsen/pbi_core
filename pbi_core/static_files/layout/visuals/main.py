@@ -16,7 +16,6 @@ def get_visual(v: Any) -> str:  # noqa: PLR0911
     if isinstance(v, dict):
         assert "visualType" in v
         assert isinstance(v["visualType"], str)
-        # textbox
         match v["visualType"]:
             case "barChart":
                 return "BarChart"

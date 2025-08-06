@@ -25,7 +25,7 @@ class SectionConfig(LayoutNode):
 
 
 class Section(LayoutNode):
-    _parent: "Layout"
+    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
     height: int
     width: int
     displayOption: DisplayOption

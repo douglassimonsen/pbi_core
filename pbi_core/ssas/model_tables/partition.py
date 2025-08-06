@@ -1,6 +1,6 @@
 import datetime
 from enum import IntEnum
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.server.tabular_model import SsasRefreshTable, SsasTable
@@ -49,7 +49,7 @@ class Partition(SsasRefreshTable):
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
 
-    def query_group(self) -> Optional["QueryGroup"]:
+    def query_group(self) -> "QueryGroup | None":
         try:
             return self.tabular_model.query_groups.find({"id": self.table_id})
         except RowNotFoundError:
