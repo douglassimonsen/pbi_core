@@ -11,6 +11,11 @@ from pbi_core.lineage import LineageNode, LineageType
 
 
 class Expression(SsasRenameRecord):
+    """TBD.
+
+    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/61f98e45-d5e3-4435-b829-2f2f043839c1
+    """
+
     description: str | None = None
     expression: str
     kind: int

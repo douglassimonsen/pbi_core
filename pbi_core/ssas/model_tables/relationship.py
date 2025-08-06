@@ -12,6 +12,11 @@ if TYPE_CHECKING:
 
 
 class Relationship(SsasRenameRecord):
+    """TBD.
+
+    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/35bb4a68-b97e-409b-a5dd-14695fd99139
+    """
+
     cross_filtering_behavior: int
     from_column_id: int
     from_cardinality: int

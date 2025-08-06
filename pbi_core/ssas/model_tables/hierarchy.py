@@ -12,6 +12,11 @@ if TYPE_CHECKING:
 
 
 class Hierarchy(SsasRenameRecord):
+    """TBD.
+
+    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/4eff6661-1458-4c5a-9875-07218f1458e5
+    """
+
     hide_members: int
     hierarchy_storage_id: int
     is_hidden: bool

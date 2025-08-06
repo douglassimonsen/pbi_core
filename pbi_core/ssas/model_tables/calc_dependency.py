@@ -2,6 +2,11 @@ from pbi_core.ssas.server.tabular_model import SsasReadonlyRecord
 
 
 class CalcDependency(SsasReadonlyRecord):
+    """TBD.
+
+    SSAS spec:
+    """
+
     database_name: str
     object_type: str
     table: str | None = None

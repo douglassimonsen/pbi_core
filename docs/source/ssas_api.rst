@@ -5,6 +5,7 @@ SSAS API
    :maxdepth: 2
    :caption: Contents:
 
+   ssas_records/_group
    ssas_records/alternate_of
    ssas_records/annotation
    ssas_records/attribute_hierarchy

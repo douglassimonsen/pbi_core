@@ -112,6 +112,11 @@ class LinguisticMetadataContent(BaseValidation):
 
 
 class LinguisticMetadata(SsasEditableRecord):
+    """TBD.
+
+    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/f8924a45-70da-496a-947a-84b8d5beaae6
+    """
+
     content: pydantic.Json[LinguisticMetadataContent]
     content_type: int
     culture_id: int

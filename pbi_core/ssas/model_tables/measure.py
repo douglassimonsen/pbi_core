@@ -14,6 +14,11 @@ if TYPE_CHECKING:
 
 
 class Measure(SsasRenameRecord):
+    """TBD.
+
+    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ab331e04-78f7-49f0-861f-3f155b8b4c5b
+    """
+
     data_category: str | None = None
     data_type: int
     description: str | None = None

@@ -10,6 +10,11 @@ if TYPE_CHECKING:
 
 
 class QueryGroup(SsasEditableRecord):
+    """TBD.
+
+    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/40b3830b-25ee-41a6-87d2-49616028dd13
+    """
+
     description: str | None = None
     folder: str
     model_id: int

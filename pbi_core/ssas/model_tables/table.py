@@ -16,6 +16,11 @@ if TYPE_CHECKING:
 
 
 class Table(SsasRefreshRecord):
+    """TBD.
+
+    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/6360ac84-0717-4170-bce0-284cbef419ca
+    """
+
     _refresh_type = RefreshType.DataOnly
 
     alternate_source_precedence: int

@@ -7,17 +7,40 @@ from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
 class ObjectType(IntEnum):
     MODEL = 1
+    DATASOURCE = 2
     TABLE = 3
     COLUMN = 4
+    ATTRIBUTE_HIERARCHY = 5
+    PARTITION = 6
+    RELATIONSHIP = 7
     MEASURE = 8
     HIERARCHY = 9
-    UNKNOWN = 12
+    LEVEL = 10
+    KPI = 12
+    CULTURE = 13
+    LINGUISTIC_METADATA = 15
+    PERSPECTIVE = 29
+    PERSPECTIVE_TABLE = 30
+    PERSPECTIVE_COLUMN = 31
+    PERSPECTIVE_HIERARCHY = 32
+    PERSPECTIVE_MEASURE = 33
+    ROLE = 34
+    ROLE_MEMBERSHIP = 35
+    TABLE_PERMISSION = 36
+    VARIATION = 37
     EXPRESSION = 41
+    COLUMN_PERMISSION = 42
+    CALCULATION_GROUP = 46
     QUERY_GROUP = 51
 
 
 # TODO: remove Any
 class Annotation(SsasRenameRecord):
+    """TBD.
+
+    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7a16a837-cb88-4cb2-a766-a97c4d0e1f43
+    """
+
     object_id: int
     object_type: ObjectType
     name: str

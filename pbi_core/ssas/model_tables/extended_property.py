@@ -15,6 +15,11 @@ class ExtendedPropertyValue(BaseValidation):
 
 
 class ExtendedProperty(SsasRenameRecord):
+    """TBD.
+
+    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/5c1521e5-defe-4ba2-9558-b67457e94569
+    """
+
     object_id: int
     object_type: int
     name: str

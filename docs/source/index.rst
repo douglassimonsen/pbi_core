@@ -57,6 +57,7 @@ Goals of this package:
    :maxdepth: 2
    :caption: Contents:
 
+   pbi_core
    examples
    layout_api
    ssas_api
