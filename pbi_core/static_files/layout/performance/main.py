@@ -31,8 +31,5 @@ def get_performance(model: LocalTabularModel, func: Callable[[LocalTabularModel]
 
 
     """
-    with PerformanceTrace(model) as perf_trace:
-        func(model)
-        perf = perf_trace.get_performance()
-    print(next(perf))
-    return Performance(0, 0)
+    perf_trace = PerformanceTrace(model, [lambda: func(model)])
+    return perf_trace.get_performance()[1]
