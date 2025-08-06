@@ -205,46 +205,46 @@ class SsasTable(pydantic.BaseModel):
         self.tabular_model.server.query_xml(query, db_name)
 
     def model_post_init(self, __context: Any) -> None:
-        from ..model_tables import _base
+        from ..model_tables import _commands
 
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
         match self.__annotations__["_commands"]:
-            case _base.SsasRefreshCommands:
-                self._commands = _base.SsasRefreshCommands(
+            case _commands.SsasRefreshCommands:
+                self._commands = _commands.SsasRefreshCommands(
                     alter=templates["alter.xml"],
                     create=templates["create.xml"],
                     delete=templates["delete.xml"],
                     rename=templates["rename.xml"],
                     refresh=templates["refresh.xml"],
                 )
-            case _base.SsasRenameCommands:
-                self._commands = _base.SsasRenameCommands(
+            case _commands.SsasRenameCommands:
+                self._commands = _commands.SsasRenameCommands(
                     alter=templates["alter.xml"],
                     create=templates["create.xml"],
                     delete=templates["delete.xml"],
                     rename=templates["rename.xml"],
                 )
-            case _base.SsasBaseCommands:
-                self._commands = _base.SsasBaseCommands(
+            case _commands.SsasBaseCommands:
+                self._commands = _commands.SsasBaseCommands(
                     alter=templates["alter.xml"], create=templates["create.xml"], delete=templates["delete.xml"]
                 )
-            case _base.SsasModelCommands:
-                self._commands = _base.SsasModelCommands(
+            case _commands.SsasModelCommands:
+                self._commands = _commands.SsasModelCommands(
                     alter=templates["alter.xml"], refresh=templates["refresh.xml"], rename=templates["rename.xml"]
                 )
-            case _base.NoCommands:
-                self._commands = _base.NoCommands()
+            case _commands.NoCommands:
+                self._commands = _commands.NoCommands()
             case _:
                 raise ValueError(f"Unknown type for _commands property on table: {self._db_type_name()}")
 
 
 class SSASBaseTable(SsasTable):
     def model_post_init(self, __context: Any) -> None:
-        from ..model_tables import _base
+        from ..model_tables import _commands
 
         templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
 
-        self._commands = _base.SsasBaseCommands(
+        self._commands = _commands.SsasBaseCommands(
             alter=templates["alter.xml"],
             create=templates["create.xml"],
             delete=templates["delete.xml"],

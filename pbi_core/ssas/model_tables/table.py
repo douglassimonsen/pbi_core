@@ -3,7 +3,7 @@ from typing import Optional
 from uuid import UUID
 
 from ..server.tabular_model import SsasTable
-from ._base import SsasRefreshCommands
+from ._commands import SsasRefreshCommands
 
 
 class Table(SsasTable):

@@ -2,7 +2,7 @@ import datetime
 from typing import TYPE_CHECKING, Any
 
 from ..server.tabular_model import SsasTable
-from ._base import SsasBaseCommands
+from ._commands import SsasBaseCommands
 
 if TYPE_CHECKING:
     from .culture import Culture

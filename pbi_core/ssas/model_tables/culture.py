@@ -2,7 +2,7 @@ import datetime
 from typing import TYPE_CHECKING
 
 from ..server.tabular_model import SsasTable
-from ._base import SsasRenameCommands
+from ._commands import SsasRenameCommands
 
 if TYPE_CHECKING:
     from .linguistic_metadata import LinguisticMetadata

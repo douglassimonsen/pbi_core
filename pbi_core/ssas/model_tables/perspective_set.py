@@ -1,5 +1,5 @@
 from ..server.tabular_model import SsasTable
-from ._base import NoCommands
+from ._commands import NoCommands
 
 
 class PerspectiveSet(SsasTable):

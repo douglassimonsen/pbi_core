@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, Optional
 
 from ..server.tabular_model import SsasTable
-from ._base import SsasBaseCommands
+from ._commands import SsasBaseCommands
 
 if TYPE_CHECKING:
     from .expression import Expression

@@ -3,7 +3,7 @@ from enum import IntEnum
 from typing import Any, Optional
 
 from ..server.tabular_model import SsasTable
-from ._base import SsasRenameCommands
+from ._commands import SsasRenameCommands
 
 
 class ObjectType(IntEnum):

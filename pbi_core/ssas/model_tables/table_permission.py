@@ -1,5 +1,5 @@
 from ..server.tabular_model import SsasTable
-from ._base import SsasBaseCommands
+from ._commands import SsasBaseCommands
 
 
 class TablePermission(SsasTable):

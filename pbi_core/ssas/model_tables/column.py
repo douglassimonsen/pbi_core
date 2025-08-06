@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional
 from uuid import UUID
 
 from ..server.tabular_model import SSASBaseTable
-from ._base import SsasRenameCommands
+from ._commands import SsasRenameCommands
 
 if TYPE_CHECKING:
     from .attribute_hierarchy import AttributeHierarchy

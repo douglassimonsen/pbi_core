@@ -3,7 +3,7 @@ from enum import IntEnum
 from typing import TYPE_CHECKING, Optional
 
 from ..server.tabular_model import SsasTable
-from ._base import SsasRefreshCommands
+from ._commands import SsasRefreshCommands
 
 if TYPE_CHECKING:
     from .query_group import QueryGroup

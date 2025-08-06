@@ -1,5 +1,5 @@
 from ..server.tabular_model import SsasTable
-from ._base import SsasRenameCommands
+from ._commands import SsasRenameCommands
 
 
 class CalculationItem(SsasTable):

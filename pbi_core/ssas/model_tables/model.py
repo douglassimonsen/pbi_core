@@ -4,7 +4,7 @@ from typing import Any, Optional
 from pydantic import Json
 
 from ..server.tabular_model import SsasTable
-from ._base import SsasModelCommands
+from ._commands import SsasModelCommands
 
 
 class Model(SsasTable):
