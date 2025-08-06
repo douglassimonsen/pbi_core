@@ -5,6 +5,23 @@ from mermaid import Link, MermaidDiagram, Node
 LineageType = Literal["children"] | Literal["parents"]
 
 
+"""
+#ffffcc, #ffcc99, #ffcccc,
+#ff99cc, #ffccff, #cc99ff,
+#ccccff, #99ccff, #ccffff,
+#99ffcc, #ccffcc, #ccff99,
+"""
+
+CLASS_STYLES = {
+    "AttributeHierarchy": "fill:#ffffcc,stroke:#333,stroke-width:1px",
+    "Column": "fill:#ffcc99,stroke:#333,stroke-width:1px",
+    "Culture": "fill:#ffcccc,stroke:#333,stroke-width:1px",
+    "LinguisticMetadata": "fill:#ff99cc,stroke:#333,stroke-width:1px",
+    "Measure": "fill:#ffccff,stroke:#333,stroke-width:1px",
+    "Table": "fill:#cc99ff,stroke:#333,stroke-width:1px",
+}
+
+
 class LineageNode:
     value: Any
     relatives: list["LineageNode"]
@@ -19,7 +36,10 @@ class LineageNode:
         nodes = [node]
         links = []
         for relative in self.relatives:
-            child_node = Node(id=f"{relative.value.__class__.__name__}-{relative.value.id}")
+            child_node = Node(
+                id=f"{relative.value.__class__.__name__}-{relative.value.id}",
+                style=CLASS_STYLES[relative.value.__class__.__name__],
+            )
             child_nodes, child_links = relative._to_mermaid_helper(child_node)
             links.append(Link(nodes[0], child_node))
             links.extend(child_links)
