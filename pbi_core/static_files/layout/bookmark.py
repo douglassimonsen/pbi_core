@@ -32,9 +32,19 @@ class HighlightSelection(LayoutNode):
     metadata: list[str] | None = None
 
 
+class CachedValueItems(LayoutNode):
+    identities: list[HighlightScope]
+    valueMap: list[str]
+
+
+class FilterExpressionMetadata(LayoutNode):
+    expressions: list[Source]
+    cachedValueItems: list[CachedValueItems]
+
+
 class Highlight(LayoutNode):
     selection: list[HighlightSelection]
-    filterExpressionMetadata: int | None = None
+    filterExpressionMetadata: FilterExpressionMetadata | None = None
 
 
 class DisplayMode(Enum):
@@ -81,6 +91,7 @@ class BookmarkSection(LayoutNode):
 
 class OutspacePaneProperties(LayoutNode):
     expanded: Expression | None = None
+    visible: Expression | None = None
 
 
 class OutspacePane(LayoutNode):

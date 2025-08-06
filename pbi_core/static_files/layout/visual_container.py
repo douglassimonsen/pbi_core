@@ -125,10 +125,14 @@ class BindingExpansion(LayoutNode):
     Instances: Instance
 
 
+class Synch(LayoutNode):
+    Groupings: list[int]
+
+
 class BindingPrimary(LayoutNode):
     Groupings: list[PrimaryProjections]
     Expansion: BindingExpansion | None = None
-    Synchronization: int | None = None
+    Synchronization: list[Synch] | None = None
 
 
 class DataVolume(IntEnum):
@@ -137,6 +141,7 @@ class DataVolume(IntEnum):
     NA3 = 3
     NA = 4
     NA5 = 5
+    NA6 = 6
 
 
 class SampleDataReduction(LayoutNode):
@@ -225,11 +230,17 @@ PrimaryDataReduction = Annotated[
 ]
 
 
+class Scope(LayoutNode):
+    Algorithm: PrimaryDataReduction
+    Scope: dict[str, list[int]]
+
+
 class DataReductionType(LayoutNode):
     DataVolume: DataVolume
     Primary: PrimaryDataReduction | None = None
     Secondary: PrimaryDataReduction | None = None
     Intersection: PrimaryDataReduction | None = None
+    Scoped: list[Scope] | None = None
 
 
 class AggregateSourceScope(LayoutNode):

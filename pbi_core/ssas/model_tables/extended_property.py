@@ -5,13 +5,14 @@ from pydantic import Json
 from pbi_core.pydantic import BaseValidation
 from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
+from ...static_files.layout.sources.column import ColumnSource
 from .enums import ObjectType
 
 
 class ExtendedPropertyValue(BaseValidation):
     version: int
     daxTemplateName: str | None = None
-    groupedColumns: int | None = None
+    groupedColumns: list[ColumnSource] | None = None
     binningMetadata: int | None = None
 
 

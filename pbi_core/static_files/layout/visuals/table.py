@@ -19,10 +19,15 @@ class DataBarsProperties(LayoutNode):
 
 
 class ColumnFormattingProperties(LayoutNode):
+    backColor: Expression | None = None
+    alignment: Expression | None = None
+
     dataBars: DataBarsProperties | None = None
     fontColor: Expression | None = None
     labelPrecision: Expression | None = None
     labelDisplayUnits: Expression | None = None
+    styleValues: Expression | None = None
+    styleHeader: Expression | None = None
 
 
 class ColumnFormatting(LayoutNode):
@@ -53,6 +58,8 @@ class Values(LayoutNode):
 
 
 class ColumnHeadersProperties(LayoutNode):
+    outlineStyle: Expression | None = None
+    wordWrap: Expression | None = None
     autoSizeColumnWidth: Expression | None = None
     fontColor: Expression | None = None
     fontSize: Expression | None = None

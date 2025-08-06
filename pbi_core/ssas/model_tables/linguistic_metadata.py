@@ -1,6 +1,6 @@
 import datetime
 from enum import IntEnum, StrEnum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pydantic
 from pydantic_extra_types.semantic_version import SemanticVersion
@@ -62,8 +62,13 @@ class VisibilityValue(StrEnum):
     Hidden = "Hidden"
 
 
+class VisibilityState(StrEnum):
+    Authored = "Authored"
+
+
 class VisibilityType(BaseValidation):
     Value: VisibilityValue
+    State: VisibilityState | None = None
 
 
 class NameTypeType(StrEnum):
@@ -114,6 +119,7 @@ class PhrasingAttribute(BaseValidation):
     Antonyms: list[dict[str, TermDefinition]] = []
     Prepositions: list[dict[str, TermDefinition]] = []
     Verbs: list[dict[str, TermDefinition]] = []
+    Nouns: list[dict[str, TermDefinition]] = []
 
 
 class RelationshipPhrasing(BaseValidation):
@@ -133,6 +139,7 @@ class RelationshipRoleEntity(BaseValidation):
 
 class RelationshipRole(BaseValidation):
     Target: RelationshipRoleEntity
+    Nouns: Any | None = None
 
 
 class SemanticSlot(BaseValidation):

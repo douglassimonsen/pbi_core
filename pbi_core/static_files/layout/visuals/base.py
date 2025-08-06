@@ -76,6 +76,10 @@ class PropertyDef(LayoutNode):
     selector: Selector | None = None
 
 
+class QueryOptions(LayoutNode):
+    allowOverlappingPointsSample: bool
+
+
 class BaseVisual(LayoutNode):
     model_config = ConfigDict(extra="allow")
 
@@ -88,7 +92,7 @@ class BaseVisual(LayoutNode):
     # vcObjects means "visual container objects"
     vcObjects: VCProperties | None = None
     visualType: str = "unknown"
-    queryOptions: int = None
+    queryOptions: QueryOptions = None
     showAllRoles: int = None
     display: Display | None = None
 
