@@ -45,11 +45,11 @@ html_theme_options = {
     "logo": {
         "text": "📊 Pbyx",
     },
-    "github_url": "https://github.com/sphinx-gallery/sphinx-gallery",
+    "github_url": "http://gitea.matthew-hamilton.com/PowerBI/pbi_core",
     "icon_links": [
         {
             "name": "PyPI",
-            "url": "https://pypi.org/project/sphinx-gallery",
+            "url": "http://gitea.matthew-hamilton.com/PowerBI/pbi_core",
             "icon": "fa-solid fa-box",
         },
     ],
