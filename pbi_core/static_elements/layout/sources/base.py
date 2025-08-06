@@ -23,7 +23,7 @@ class Entity(LayoutNode):
         return Entity.model_validate({"Entity": entity})
 
     def __repr__(self) -> str:
-        return f"Entity({self.Entity})"
+        return f"Entity({self.Name}: {self.Entity})"
 
 
 class Source(LayoutNode):

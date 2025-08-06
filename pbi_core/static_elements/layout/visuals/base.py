@@ -5,9 +5,10 @@ from pydantic import ConfigDict
 from ....lineage import LineageNode, LineageType
 from .._base_node import LayoutNode
 from ..filters import PrototypeQuery
+from ..sources.column import ColumnSource
 
 if TYPE_CHECKING:
-    pass
+    from ....ssas.server import BaseTabularModel
 
 
 class BaseVisual(LayoutNode):
@@ -21,8 +22,20 @@ class BaseVisual(LayoutNode):
     vcObjects: Any
     visualType: str = "unknown"
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    @property
+    def id(self) -> str:
+        """Obviously terrible, but works for now lol"""
+        return self.visualType
+
+    def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
+        ret = []
+        table_mapping = self.prototypeQuery.table_mapping()
         children = self.prototypeQuery.dependencies()
-        print(children)
-        breakpoint()
-        return LineageNode(self, lineage_type)
+        for child in children:
+            if isinstance(child, ColumnSource):
+                col_candidates = tabular_model.columns.find_all({"explicit_name": child.Column.column()})
+                for candidate in col_candidates:
+                    if candidate.table().name == table_mapping[child.Column.table()]:
+                        ret.append(candidate)
+                        break
+        return LineageNode(self, lineage_type, relatives=[child.get_lineage(lineage_type) for child in ret])

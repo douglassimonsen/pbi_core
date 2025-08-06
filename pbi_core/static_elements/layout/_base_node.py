@@ -5,7 +5,7 @@ import pydantic
 from ...lineage import LineageNode, LineageType
 
 if TYPE_CHECKING:
-    pass
+    from ...ssas.server import BaseTabularModel
 
 LAYOUT_ENCODING = "utf-16-le"
 
@@ -74,5 +74,5 @@ class LayoutNode(pydantic.BaseModel):
             return super().__str__()
         return f"{self.__class__.__name__}({getattr(self, self._name_field)})"
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
         raise NotImplementedError

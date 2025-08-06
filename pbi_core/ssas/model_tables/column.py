@@ -93,6 +93,9 @@ class Column(SsasRenameTable):
             return self.inferred_name
         return str(self.id)
 
+    def __repr__(self) -> str:
+        return f"Column({self.table().name}.{self.repr_name()})"
+
     def table(self) -> "Table":
         """Returns the table class the column is a part of"""
         return self.tabular_model.tables.find({"id": self.table_id})

@@ -33,6 +33,12 @@ class PrototypeQuery(LayoutNode):
     Where: Optional[list[Condition]] = None
     OrderBy: Optional[list[Orderby]] = None
 
+    def table_mapping(self) -> dict[str, str]:
+        ret = {}
+        for table in self.From:
+            ret[table.Name] = table.Entity
+        return ret
+
     def dependencies(self) -> set[ColumnSource]:
         ret = set()
         for select in self.Select:

@@ -21,6 +21,7 @@ CLASS_STYLES = {
     "Measure": "fill:#ffccff,stroke:#333,stroke-width:1px",
     "Table": "fill:#cc99ff,stroke:#333,stroke-width:1px",
     "Partition": "fill:#ccccff,stroke:#333,stroke-width:1px",
+    "Model": "fill:#99ccff,stroke:#333,stroke-width:1px",
 }
 
 
