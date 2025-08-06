@@ -35,6 +35,7 @@ class SettingsV2(LayoutNode):
     useNewFilterPaneExperience: bool
     allowChangeFilterTypes: bool
     useStylableVisualContainerHeader: bool
+    useEnhancedTooltips: bool = True
     exportDataMode: int  # def an enum
 
 

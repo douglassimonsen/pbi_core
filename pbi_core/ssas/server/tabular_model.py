@@ -61,6 +61,8 @@ if TYPE_CHECKING:
         Table,
         TablePermission,
         Variation,
+
+        SsasTable
     )
     from .server import BaseServer
 
@@ -148,6 +150,27 @@ class BaseTabularModel:
                     for row in schema[type_instance._db_type_name()]
                 ])
                 setattr(self, field_name, objects)
+
+    def TABULAR_FIELDS(self) -> tuple[str]:
+        """
+        Returns a list of all the field names for the SSAS tables in the tabular model
+        
+        No calc_dependencies, it's not a real table but a view
+        No model, since it's not a "real" table
+        """
+        return (
+            'alternate_of', 'annotations', 'attribute_hierarchies',
+            'calculation_groups', 'calculation_items', 'column_permissions', 
+            'columns', 'cultures', 'data_sources', 'detail_row_definitions', 
+            'expressions', 'extended_properties', 'format_string_definitions', 
+            'group_by_columns', 'hierarchies', 'kpis', 'levels', 'linguistic_metadata', 
+            'measures', 'object_translations', 'partitions', 'perspective', 
+            'perspective_columns', 'perspective_hierarchies', 'perspective_measure', 
+            'perspective_sets', 'perspective_table', 'query_groups', 'refresh_policy', 
+            'related_column_details', 'relationships', 'role_membership', 'roles', 
+            'sets', 'table_permissions', 'tables', 'variations',
+        )  # type: ignore
+
 
 
 class LocalTabularModel(BaseTabularModel):
