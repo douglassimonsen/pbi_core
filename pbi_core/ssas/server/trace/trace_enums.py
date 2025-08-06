@@ -1,3 +1,4 @@
+# C:\Program Files\Microsoft SQL Server\MSAS16.MSSQLSERVER\OLAP\bin\Resources\1033\tracedefinition.xml
 # ruff: noqa: E501
 from enum import IntEnum
 
@@ -63,6 +64,9 @@ class TraceEvents(IntEnum):
     EXISTING_CONNECTION = 41  # Existing user connection.
     EXISTING_SESSION = 42  # Existing session.
     SESSION_INITIALIZE = 43  # Session Initialize.
+
+    def get_columns(self) -> IntEnum:
+        return event_column_mapping[self]
 
 
 class DiscoverBeginColumns(IntEnum):
@@ -647,3 +651,100 @@ class SessionInitializeColumns(IntEnum):
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
     REQUESTPROPERTIES = 45  # XMLA request properties.
+
+
+class CommandBeginColumns(IntEnum):
+    EVENTCLASS = 0
+    EVENTSUBCLASS = 1
+    CURRENTTIME = 2
+    STARTTIME = 3
+    SESSITON = 8
+    CONNECTIONID = 25
+    DATABASENAME = 28
+    NTUSERNAME = 32
+    NTDOMAINNAME = 33
+    CLIENTPROCESSID = 36
+    APPLICATIONNAME = 37
+    SESSIONID = 39
+    NTCANONICALUSERNAME = 40
+    SPID = 41
+    TEXTDATA = 42
+    SERVERNAME = 43
+    REQUESTPARAMETERS = 44
+    REQUESTPROPERTIES = 45
+    ACTIVITYID = 46
+    REQUESTID = 47
+    USEROBJECTID = 51
+    APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
+
+
+class CommandEndColumns(IntEnum):
+    EVENTCLASS = 0
+    EVENTSUBCLASS = 1
+    CURRENTTIME = 2
+    STARTTIME = 3
+    ENDTIME = 4
+    DURATION = 5
+    CPUTIME = 6
+    SESSITON = 8
+    INTEGERDATA = 10
+    SEVERITY = 22
+    SUCCESS = 23
+    ERROR = 24
+    CONNECTIONID = 25
+    DATABASENAME = 28
+    NTUSERNAME = 32
+    NTDOMAINNAME = 33
+    CLIENTPROCESSID = 36
+    APPLICATIONNAME = 37
+    SESSIONID = 39
+    NTCANONICALUSERNAME = 40
+    SPID = 41
+    TEXTDATA = 42
+    SERVERNAME = 43
+    ACTIVITYID = 46
+    REQUESTID = 47
+    ERRORTYPE = 49
+    USEROBJECTID = 51
+    APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
+
+
+event_column_mapping = {
+    TraceEvents.AUDIT_ADMIN_OPERATIONS_EVENT: AuditAdminOperationsEventColumns,
+    TraceEvents.AUDIT_LOGIN: AuditLoginColumns,
+    TraceEvents.AUDIT_LOGOUT: AuditLogoutColumns,
+    TraceEvents.AUDIT_OBJECT_PERMISSION_EVENT: AuditObjectPermissionEventColumns,
+    TraceEvents.AUDIT_SERVER_STARTS_AND_STOPS: AuditServerStartsAndStopsColumns,
+    TraceEvents.COMMAND_BEGIN: CommandBeginColumns,
+    TraceEvents.COMMAND_END: CommandEndColumns,
+    TraceEvents.DEADLOCK: DeadlockColumns,
+    TraceEvents.DISCOVER_BEGIN: DiscoverBeginColumns,
+    TraceEvents.DISCOVER_END: DiscoverEndColumns,
+    TraceEvents.ERROR: ErrorEventColumns,
+    TraceEvents.EXISTING_CONNECTION: ExistingConnectionColumns,
+    TraceEvents.EXISTING_SESSION: ExistingSessionColumns,
+    TraceEvents.FILE_SAVE_BEGIN: FileSaveBeginColumns,
+    TraceEvents.FILE_SAVE_END: FileSaveEndColumns,
+    TraceEvents.FILE_LOAD_BEGIN: FileLoadBeginColumns,
+    TraceEvents.FILE_LOAD_END: FileLoadEndColumns,
+    TraceEvents.LOCK_ACQUIRED: LockAcquiredColumns,
+    TraceEvents.LOCK_RELEASED: LockReleasedColumns,
+    TraceEvents.LOCK_TIMEOUT: LockTimeoutColumns,
+    TraceEvents.LOCK_WAITING: LockWaitingColumns,
+    TraceEvents.NOTIFICATION: NotificationColumns,
+    TraceEvents.PAGEIN_BEGIN: PageInBeginColumns,
+    TraceEvents.PAGEIN_END: PageInEndColumns,
+    TraceEvents.PAGEOUT_BEGIN: PageOutBeginColumns,
+    TraceEvents.PAGEOUT_END: PageOutEndColumns,
+    TraceEvents.QUERY_BEGIN: QueryBeginColumns,
+    TraceEvents.QUERY_END: QueryEndColumns,
+    TraceEvents.SERVER_STATE_DISCOVER_BEGIN: ServerStateDiscoverBeginColumns,
+    TraceEvents.SERVER_STATE_DISCOVER_DATA: ServerStateDiscoverDataColumns,
+    TraceEvents.SERVER_STATE_DISCOVER_END: ServerStateDiscoverEndColumns,
+    TraceEvents.SESSION_INITIALIZE: SessionInitializeColumns,
+    TraceEvents.USER_DEFINED: UserDefinedColumns,
+}

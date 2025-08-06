@@ -1,3 +1,3 @@
-from .main import Performance
+from .main import Performance, get_performance
 
-__all__ = ["Performance"]
+__all__ = ["Performance", "get_performance"]

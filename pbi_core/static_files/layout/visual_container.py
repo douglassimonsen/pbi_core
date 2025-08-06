@@ -1,5 +1,4 @@
 # ruff: noqa: N815
-import time
 from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, cast
 
@@ -18,7 +17,7 @@ if TYPE_CHECKING:
 
     from .section import Section
 
-from .performance import Performance
+from .performance import Performance, get_performance
 
 
 class SingleVisualGroup(LayoutNode):
@@ -203,14 +202,7 @@ class VisualContainer(LayoutNode):
             Total Seconds to Query
             Total Rows Retrieved
         """
-        start = time.time()
-        data = self.get_data(model)
-        rows_retrieved = len(data.data) if data is not None else 0
-        end = time.time()
-        return Performance(
-            total_seconds=(end - start),
-            rows_retrieved=rows_retrieved,
-        )
+        return get_performance(model, self.get_data)
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
         """Returns the SSAS elements (columns and measures) this visual is directly dependent on."""
