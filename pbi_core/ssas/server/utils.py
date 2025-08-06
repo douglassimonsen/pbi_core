@@ -125,7 +125,10 @@ BASE_REFRESH_TEMPLATE = jinja2.Template(
 )
 BASE_RENAME_TEMPLATE = jinja2.Template(
     """
-<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">>
+<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Alter xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+    <DatabaseID>{{db_name}}</DatabaseID>
+  </Alter>
   <Rename xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
     <DatabaseID>{{db_name}}</DatabaseID>
     {{entity_def}}

@@ -256,8 +256,6 @@ class SsasRename(SsasTable):
             self._commands.rename,
             self.tabular_model.db_name,
         )
-        print(xml_command)
-        breakpoint()
         logger.info("Syncing Rename Changes to SSAS", obj=self._db_type_name())
         self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
