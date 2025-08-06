@@ -84,7 +84,7 @@ flowchart TD
   level --> attribute_hierarchy --> column
   relationship & column_permission & group_by_column --> column --> table
   linguistic_metadata --> culture --> model
-  expression --> model & query_group
+  expression --> query_group
   level & variation --> hierarchy --> table
   kpi --> measure --> table --> model
   partition --> table & query_group

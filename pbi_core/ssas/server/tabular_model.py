@@ -125,11 +125,18 @@ class BaseTabularModel:
         xml_schema = self.server.query_xml(COMMAND_TEMPLATES["discover_schema.xml"].render(db_name=self.db_name))
         schema = discover_xml_to_dict(xml_schema)
         for field_name, type_instance in FIELD_TYPES.items():
-            objects = Group([
-                type_instance.model_validate({**row, "_tabular_model": self})
-                for row in schema[type_instance._db_type_name()]
-            ])
-            setattr(self, field_name, objects)
+            if field_name == "model":
+                object = type_instance.model_validate({
+                    **schema[type_instance._db_type_name()][0],
+                    "_tabular_model": self,
+                })
+                setattr(self, field_name, object)
+            else:
+                objects = Group([
+                    type_instance.model_validate({**row, "_tabular_model": self})
+                    for row in schema[type_instance._db_type_name()]
+                ])
+                setattr(self, field_name, objects)
 
 
 class LocalTabularModel(BaseTabularModel):
