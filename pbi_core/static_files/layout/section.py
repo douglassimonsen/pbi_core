@@ -14,7 +14,7 @@ from .performance import Performance, get_performance
 from .visual_container import VisualContainer
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
+    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel, LocalTabularModel
 
     from .layout import Layout
 
@@ -75,7 +75,7 @@ class Section(LayoutNode):
         children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
         return LineageNode(self, lineage_type, children_lineage)
 
-    def get_performance(self, model: "BaseTabularModel") -> Performance:
+    def get_performance(self, model: "LocalTabularModel") -> list[Performance]:
         """Calculates various metrics on the speed of the visual.
 
         Current Metrics:
