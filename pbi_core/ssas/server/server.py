@@ -32,9 +32,13 @@ class BaseServer:
     port: int
     "A Port to the background SSAS instance"
 
-    def __init__(self, host: str, port: int) -> None:
+    default_db: str | None
+    """The default DB to use when executing DAX"""
+
+    def __init__(self, host: str, port: int, default_db: str | None=None) -> None:
         self.host = host
         self.port = port
+        self.default_db = default_db
 
         self.check_ssas_sku()
 
@@ -56,7 +60,16 @@ class BaseServer:
     def __repr__(self) -> str:
         return f"Server(host={self.host}:{self.port})"
 
-    def query_dax(self, query: str, db_name: Optional[str] = None) -> list[dict[str, Any]]:
+    def query_dax(self, query: str, db_name: str | bool | None = True) -> list[dict[str, Any]]:
+        """
+        db_name: when bool and == True, uses the DB last loaded by this server instance (almost always the db of the loaded PBI unless you're manually reassigning server instances)
+                 when None or False, no db is supplied
+                 when a string, just passed to the client
+        """
+        if db_name is True:
+            db_name = self.default_db
+        elif db_name is False:
+            db_name = None
         with self.conn(db_name) as conn:
             cursor = conn.cursor()
             cursor.executeDAX(query)
@@ -169,6 +182,7 @@ class LocalServer(BaseServer):
                 self.query_xml(load_command)
             else:
                 raise
+        self.default_db = db_name  # needed so the DAX queries are pointed to the right DB by defauilt
         logger.info("Tabular Model load complete")
         tab_model = LocalTabularModel(db_name=db_name, server=self, pbix_path=path)
         tab_model.sync_from()
