@@ -9,7 +9,7 @@ base_val = bool | int | str
 
 class TextClass(BaseFileModel):
     fontSize: int
-    fontFact: str
+    fontFace: str
     color: Color
 
 

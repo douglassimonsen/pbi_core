@@ -1,4 +1,5 @@
 import json
+import zipfile
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from zipfile import ZipFile
@@ -6,6 +7,7 @@ from zipfile import ZipFile
 from bs4 import BeautifulSoup
 
 from .file_classes import Connections, DiagramLayout, Metadata, Settings
+from .file_classes.theme import Theme
 from .layout.layout import Layout
 
 if TYPE_CHECKING:
@@ -19,6 +21,9 @@ class Version:
     major: int
     minor: int
 
+    def __str__(self) -> str:
+        return f"{self.major}.{self.minor}"
+
 
 class StaticElements:
     content_types: BeautifulSoup
@@ -30,6 +35,7 @@ class StaticElements:
     version: Version
     security_bindings: bytes
     settings: Settings
+    themes: dict[str, Theme]
 
     def __init__(
         self,
@@ -41,6 +47,7 @@ class StaticElements:
         version: Version,
         security_bindings: bytes,
         settings: Settings,
+        themes: dict[str, Theme],
     ):
         self.content_types = content_types
         self.connections = connections
@@ -50,10 +57,23 @@ class StaticElements:
         self.version = version
         self.security_bindings = security_bindings
         self.settings = settings
+        self.themes = themes
 
     @staticmethod
     def load_pbix(path: "StrPath") -> "StaticElements":
         zipfile = ZipFile(path, mode="r")
+
+        themes = {}
+        theme_paths = [
+            x.split("/")[-1]
+            for x in zipfile.namelist()
+            if x.startswith("Report/StaticResources/SharedResources/BaseThemes")
+        ]
+        for theme_path in theme_paths:
+            theme_json = json.loads(
+                zipfile.read(f"Report/StaticResources/SharedResources/BaseThemes/{theme_path}").decode("utf-8")
+            )
+            themes[theme_path] = Theme.model_validate(theme_json)
 
         layout_json = json.loads(zipfile.read("Report/Layout").decode(LAYOUT_ENCODING))
         layout = Layout.model_validate(layout_json)
@@ -63,6 +83,7 @@ class StaticElements:
 
         major, minor = zipfile.read("Version").decode(LAYOUT_ENCODING).split(".")
         version = Version(int(major), int(minor))
+
         security_bindings = zipfile.read("SecurityBindings")
 
         content_types = BeautifulSoup(zipfile.read("[Content_Types].xml").decode("utf-8"), "lxml")
@@ -73,11 +94,23 @@ class StaticElements:
         diagram_json = json.loads(zipfile.read("DiagramLayout").decode(LAYOUT_ENCODING))
         diagram_layout = DiagramLayout.model_validate(diagram_json)
 
-        diagram_json = json.loads(zipfile.read("Settings").decode(LAYOUT_ENCODING))
-        settings = Settings.model_validate(diagram_json)
+        settings_json = json.loads(zipfile.read("Settings").decode(LAYOUT_ENCODING))
+        settings = Settings.model_validate(settings_json)
         return StaticElements(
-            content_types, connections, diagram_layout, layout, metadata, version, security_bindings, settings
+            content_types, connections, diagram_layout, layout, metadata, version, security_bindings, settings, themes
         )
 
     def save_pbix(self, path: "StrPath") -> None:
-        pass
+        with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+            for path_name, theme_info in self.themes.items():
+                zf.writestr(
+                    f"Report/StaticResources/SharedResources/BaseThemes/{path_name}",
+                    theme_info.model_dump_json().encode("utf-8"),
+                )
+            zf.writestr("Report/layout", self.layout.model_dump_json().encode(LAYOUT_ENCODING))
+            zf.writestr("[Content_Types].xml", str(self.connections).encode("utf-8"))
+            zf.writestr("Connections", self.connections.model_dump_json().encode("utf-8"))
+            zf.writestr("DiagramLayout", self.diagram_layout.model_dump_json().encode(LAYOUT_ENCODING))
+            zf.writestr("Metadata", self.metadata.model_dump_json().encode(LAYOUT_ENCODING))
+            zf.writestr("Settings", self.settings.model_dump_json().encode(LAYOUT_ENCODING))
+            zf.writestr("Version", str(self.version))
