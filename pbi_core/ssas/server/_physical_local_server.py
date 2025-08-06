@@ -30,12 +30,12 @@ class SSASProcess:
             (implemented via atexit lib)
 
     Examples:
-        .. code-block:: python
-           :linenos:
+        ```python
 
            SSASProcess('tmp/workspace')  # generates a new SSAS Process and generates workspace documents at 'tmp/workspace'
            SSASProcess(4321)  # connects to an existing SSAS Process at 4321
            SSASProcess('tmp/workspace', False)  # Generates a new SSAS Process and allows it to run beyond the lifetime of the Python script
+        ```
 
     Raises:
         ValueError: If both or none of ``pid`` and ``workspace_directory`` are specified

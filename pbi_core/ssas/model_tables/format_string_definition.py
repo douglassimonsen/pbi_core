@@ -1,5 +1,7 @@
 import datetime
 
+from pbi_parsers import dax
+
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
 from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
@@ -61,3 +63,11 @@ class FormatStringDefinition(SsasRenameRecord):
             raise TypeError(msg)
 
         return type_mapper[self.object_type].find(self.object_id)
+
+    def expression_ast(self) -> dax.Expression | None:
+        if not isinstance(self.expression, str):
+            return None
+        ret = dax.to_ast(self.expression)
+        if ret is None:
+            raise ValueError("Failed to parse DAX expression from format string definition")
+        return ret

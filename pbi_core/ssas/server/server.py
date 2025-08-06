@@ -77,12 +77,10 @@ class BaseServer:
         The query should be a valid XMLA command.
 
         Args:
-        ----
             query (str): The XMLA query to execute.
             db_name (str | None): The name of the database to execute the query against.
 
         Returns:
-        -------
             BeautifulSoup: The result of the query parsed as a BeautifulSoup object.
 
         """
@@ -94,7 +92,6 @@ class BaseServer:
         """Creates a list of the Tabular models existing in the SSAS server.
 
         Note:
-        ----
             Generally tabular models in the local environment correspond 1-1 with a PBIX report open in the Desktop app
 
         """
@@ -110,8 +107,7 @@ class BaseServer:
         Since we could also fail due to the server not being instantiated, we use a backoff decorator
         to retry the command a few times before giving up.
 
-        Raises
-        ------
+        Raises:
             TypeError: If the SSAS instance is running an incorrect SKU version.
             ValueError: If the SSAS instance is not running or the command fails for another reason.
                 This is used to trigger the backoff retry.
@@ -143,7 +139,6 @@ class BaseServer:
         """Utility function to convert a PBIX report name to an equivalent name for the DB in the SSAS instance.
 
         Note:
-        ----
             Raises a warning if the db_name is changed to inform user that the db_name does not match their input
 
         """
@@ -161,7 +156,6 @@ class LocalServer(BaseServer):
     to a PBIX file. Also creates a background SSAS instance and workspace to handle processing if none is provided.
 
     Args:
-    ----
         kill_on_exit (bool): Indicates if the background SSAS instance handling
             processing should be terminated at the end of the python session
 
@@ -195,8 +189,7 @@ class LocalServer(BaseServer):
     def load_pbix(self, path: "StrPath", *, db_name: str | None = None) -> LocalTabularModel:
         """Takes a Path to a PBIX report and loads the PBIX Datamodel to the SSAS instance in the SSASProcess.
 
-        Raises
-        ------
+        Raises:
             FileNotFoundError: when the path to the PBIX file does not exist
             AdomdErrorResponseException: Occurs when the DB already exists
 
@@ -247,7 +240,6 @@ def list_local_servers() -> list[LocalServer]:
     """Returns all active SSAS instances on a computer accessible from the python instance.
 
     Note:
-    ----
         The main thing that would block a SSAS instance from being verified by a python
         instance is insufficient permissions
 
@@ -267,7 +259,6 @@ def get_or_create_local_server(*, kill_on_exit: bool = True) -> LocalServer:
     a corresponding workspace folder. If no matching process is found, this function generates a new process.
 
     Args:
-    ----
         kill_on_exit (bool, optional): **If** this function creates a new instance of a local SSAS process, this
             argument will control if the process is killed at the end of the Python session.
 

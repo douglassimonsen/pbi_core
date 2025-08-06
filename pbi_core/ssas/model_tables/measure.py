@@ -2,6 +2,8 @@ import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
+from pbi_parsers import dax
+
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.model_tables.enums import DataState, DataType
 from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
@@ -54,6 +56,14 @@ class Measure(SsasRenameRecord):
 
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
+
+    def expression_ast(self) -> dax.Expression | None:
+        if not isinstance(self.expression, str):
+            return None
+        ret = dax.to_ast(self.expression)
+        if ret is None:
+            raise ValueError("Failed to parse DAX expression from measure")
+        return ret
 
     def detail_rows_definition(self) -> "DetailRowDefinition | None":
         if self.detail_rows_definition_id is None:

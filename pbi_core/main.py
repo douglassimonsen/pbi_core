@@ -27,18 +27,15 @@ class LocalReport(BaseReport):
     """An instance of a PowerBI report from a local PBIX file.
 
     Args:
-    ----
         static_files (StaticElements): An instance of all the static files (except DataModel) in the PBIX file
 
     Examples:
-    --------
-        .. code-block:: python
-           :linenos:
+        ```python
+        from pbi_core import LocalReport
 
-           from pbi_core import LocalReport
-
-           report = LocalReport.load_pbix("example.pbix")
-           report.save_pbix("example_out.pbix")
+        report = LocalReport.load_pbix("example.pbix")
+        report.save_pbix("example_out.pbix")
+        ```
 
     """
 
@@ -57,23 +54,20 @@ class LocalReport(BaseReport):
         """Creates a ``LocalReport`` instance from a PBIX file.
 
         Args:
-        ----
                 path (StrPath): The absolute or local path to the PBIX report
                 kill_ssas_on_exit (bool, optional): The LocalReport object depends on a ``msmdsrv.exe`` process that is
                     independent of the Python session process. If this function creates a new ``msmdsrv.exe`` instance
                     and kill_ssas_on_exit is true, the process will be killed on exit.
 
         Examples:
-        --------
-            .. code-block:: python
-               :linenos:
+            ```python
 
                from pbi_core import LocalReport
 
                report = LocalReport.load_pbix("example.pbix")
+            ```
 
         Returns:
-        -------
                 LocalReport: the local PBIX class
 
         """
@@ -87,17 +81,15 @@ class LocalReport(BaseReport):
         """Creates a new PBIX with the information in this class to the given path.
 
         Examples:
-        --------
-            .. code-block:: python
-               :linenos:
+            ```python
 
                from pbi_core import LocalReport
 
                report = LocalReport.load_pbix("example.pbix")
+            ```
                report.save_pbix("example_out.pbix")
 
         Args:
-        ----
                 path (StrPath): the path (relative or absolute) to save the PBIX to
 
         """

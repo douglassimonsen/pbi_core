@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, ClassVar, Literal
 from uuid import UUID, uuid4
 
 from bs4 import BeautifulSoup
+from pbi_parsers import dax
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.logging import get_logger
@@ -72,6 +73,11 @@ class Column(SsasRenameRecord):  # noqa: PLR0904
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
+
+    def expression_ast(self) -> dax.Expression | None:
+        if not isinstance(self.expression, str):
+            return None
+        return dax.to_ast(self.expression)
 
     def is_system_table(self) -> bool:
         return bool(self.system_flags >> 1 % 2)

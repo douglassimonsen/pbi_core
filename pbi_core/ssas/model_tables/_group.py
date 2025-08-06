@@ -23,8 +23,7 @@ class Group(list[T]):  # noqa: FURB189
             It returns the first record to match all items
         3. If match_val is a function, it returns the first record to return true when passed to the function
 
-        Raises
-        ------
+        Raises:
             RowNotFoundError: when no value matches the match_val
 
         """

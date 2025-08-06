@@ -82,6 +82,15 @@ class Partition(SsasRefreshRecord):
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
 
+    def expression_ast(self) -> dax.Expression | None:
+        if self.type != PartitionType.M:
+            logger.warning("Attempted to get AST of non-M partition", partition=self.name, type=self.type)
+            return None
+        ret = pq.to_ast(self.query_definition)
+        if ret is None:
+            raise ValueError("Failed to parse M expression from partition query definition")
+        return ret
+
     def expression_source(self) -> "Expression | None":
         if self.expression_source_id is None:
             return None
