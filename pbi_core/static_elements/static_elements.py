@@ -32,6 +32,7 @@ class StaticElements:
     settings: Settings
 
     def __init__(self, path: "StrPath"):
+        # should eventually convert into a load method with a standard init method
         zipfile = ZipFile(path, mode="r")
 
         layout_json = json.loads(zipfile.read("Report/Layout").decode(LAYOUT_ENCODING))
