@@ -1,6 +1,8 @@
 from typing import Annotated, Any, cast
 
-from pydantic import BaseModel, Discriminator, Tag
+from pydantic import Discriminator, Tag
+
+from pbi_core.pydantic.main import BaseValidation
 
 from .aggregation import AggregationSource, DataSource
 from .arithmetic import ArithmeticSource
@@ -13,11 +15,11 @@ from .measure import MeasureSource
 from .proto import ProtoSourceRef
 
 
-class RoleRef(BaseModel):
+class RoleRef(BaseValidation):
     Role: str
 
 
-class TransformOutputRoleRef(BaseModel):
+class TransformOutputRoleRef(BaseValidation):
     TransformOutputRoleRef: RoleRef
     Name: str
 

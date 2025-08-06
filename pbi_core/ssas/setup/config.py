@@ -2,13 +2,14 @@ from pathlib import Path
 from typing import Any
 
 import jinja2
-from pydantic import BaseModel
+
+from pbi_core.pydantic import BaseValidation
 
 PACKAGE_DIR = Path(__file__).parents[2]
 assert PACKAGE_DIR.name == "pbi_core"
 
 
-class PbyxConfig(BaseModel):
+class PbyxConfig(BaseValidation):
     cert_dir: Path
     msmdsrv_ini: Path
     msmdsrv_exe: Path

@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from structlog import get_logger
 
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.pydantic.main import BaseValidation
 from pbi_core.ssas.server._commands import Command
 from pbi_core.ssas.server.utils import ROW_TEMPLATE, python_to_xml
 
@@ -13,18 +14,7 @@ if TYPE_CHECKING:
 logger = get_logger()
 
 
-SsasConfig = pydantic.ConfigDict(
-    arbitrary_types_allowed=True,
-    extra="forbid",
-    use_enum_values=False,
-    json_schema_mode_override="serialization",
-    validate_assignment=True,
-    protected_namespaces=(),
-)
-
-
-class SsasTable(pydantic.BaseModel):
-    model_config = SsasConfig
+class SsasTable(BaseValidation):
     tabular_model: "BaseTabularModel"
     _read_only_fields: ClassVar[tuple[str, ...]] = ()
     id: Final[int] = pydantic.Field(frozen=True)

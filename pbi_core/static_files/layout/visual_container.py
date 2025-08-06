@@ -208,6 +208,3 @@ class VisualContainer(LayoutNode):
         for f in self.filters:
             ret.update(f.get_ssas_elements())
         return ret
-
-    def __format__(self, fmt: str) -> str:
-        return f"{self!s:{fmt}}"

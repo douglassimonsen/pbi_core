@@ -1,26 +1,19 @@
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, Self, TypeVar
 
-import pydantic
-
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.pydantic.main import BaseValidation
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
 
 LAYOUT_ENCODING = "utf-16-le"
 
-MODEL_CONFIG = pydantic.ConfigDict(
-    extra="forbid",
-    use_enum_values=False,
-    json_schema_mode_override="serialization",
-    validate_assignment=True,
-)
+
 T = TypeVar("T", bound="LayoutNode")
 
 
-class LayoutNode(pydantic.BaseModel):
-    model_config = MODEL_CONFIG
+class LayoutNode(BaseValidation):
     _name_field: str | None = None  # name of the field used to populate __repr__
     _parent: "LayoutNode"
     _xpath: list[str | int]

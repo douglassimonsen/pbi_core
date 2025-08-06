@@ -1,25 +1,17 @@
 import datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Json
+from pydantic import Json
 
+from pbi_core.pydantic import BaseValidation
 from pbi_core.ssas.server.tabular_model import SsasRenameRecord
 
 
-class ExtendedPropertyValue(BaseModel):
+class ExtendedPropertyValue(BaseValidation):
     version: int
     daxTemplateName: str | None = None  # noqa: N815
     groupedColumns: Any = None  # noqa: N815
     binningMetadata: Any = None  # noqa: N815
-
-    model_config = ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
 
 
 class ExtendedProperty(SsasRenameRecord):

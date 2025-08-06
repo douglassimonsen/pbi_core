@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from pbi_core.pydantic.main import BaseValidation
 
 
-class ModelColumnReference(BaseModel):
+class ModelColumnReference(BaseValidation):
     column: str
     table: str
 
@@ -14,7 +14,7 @@ class ModelColumnReference(BaseModel):
         return hash((self.column, self.table))
 
 
-class ModelTableReference(BaseModel):
+class ModelTableReference(BaseValidation):
     table: str
 
     def __eq__(self, other: object) -> bool:
@@ -26,7 +26,7 @@ class ModelTableReference(BaseModel):
         return hash(self.table)
 
 
-class ModelMeasureReference(BaseModel):
+class ModelMeasureReference(BaseValidation):
     measure: str
     table: str
 

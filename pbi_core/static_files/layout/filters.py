@@ -3,8 +3,9 @@ from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, cast
 
 import pbi_translation
-from pydantic import BaseModel, Discriminator, Tag
+from pydantic import Discriminator, Tag
 
+from pbi_core.pydantic.main import BaseValidation
 from pbi_core.static_files.layout.sources.literal import LiteralSource
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
@@ -32,7 +33,7 @@ class Orderby(LayoutNode):
 
 
 # TODO: remove Any
-class PrototypeQueryResult(BaseModel):
+class PrototypeQueryResult(BaseValidation):
     data: list[dict[str, Any]]
     dax_query: str
     column_mapping: dict[str, str]
@@ -42,26 +43,26 @@ class InputParameter(LiteralSource):
     Name: str
 
 
-class InputTableColumn(BaseModel):
+class InputTableColumn(BaseValidation):
     Expression: Source
     Role: str | None = None
 
 
-class InputTable(BaseModel):
+class InputTable(BaseValidation):
     Name: str
     Columns: list[InputTableColumn]
 
 
-class TransformInput(BaseModel):
+class TransformInput(BaseValidation):
     Parameters: list[InputParameter]
     Table: InputTable
 
 
-class TransformOutput(BaseModel):
+class TransformOutput(BaseValidation):
     Table: InputTable
 
 
-class TransformMeta(BaseModel):
+class TransformMeta(BaseValidation):
     Name: str
     Algorithm: str
     Input: TransformInput

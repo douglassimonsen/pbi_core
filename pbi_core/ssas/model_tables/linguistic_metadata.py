@@ -5,13 +5,14 @@ import pydantic
 from pydantic_extra_types.semantic_version import SemanticVersion
 
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.pydantic import BaseValidation
 from pbi_core.ssas.server.tabular_model import SsasEditableRecord
 
 if TYPE_CHECKING:
     from .culture import Culture
 
 
-class EntityDefinitionBinding(pydantic.BaseModel):
+class EntityDefinitionBinding(BaseValidation):
     ConceptualEntity: str
     ConceptualProperty: str | None = None
     VariationSource: str | None = None
@@ -19,59 +20,24 @@ class EntityDefinitionBinding(pydantic.BaseModel):
     Hierarchy: str | None = None
     HierarchyLevel: str | None = None
 
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
 
-
-class EntityDefinition(pydantic.BaseModel):
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
+class EntityDefinition(BaseValidation):
     Binding: EntityDefinitionBinding
 
 
-class TermSource(pydantic.BaseModel):
+class TermSource(BaseValidation):
     Type: str | None = None  # TODO: enum
     Agent: str
 
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
 
-
-class TermDefinition(pydantic.BaseModel):
+class TermDefinition(BaseValidation):
     State: str  # TODO: enum
     Source: TermSource
     Weight: float
     Type: str | None = None  # TODO: enum
 
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
 
-
-class LinguisticMetadataEntity(pydantic.BaseModel):
+class LinguisticMetadataEntity(BaseValidation):
     Weight: float | None = None
     State: str  # TODO: enum
     Terms: Any = None  # list[dict[str, TermDefinition]] = None
@@ -83,49 +49,19 @@ class LinguisticMetadataEntity(pydantic.BaseModel):
     NameType: Any = None
     Units: list[str] = []
 
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
 
-
-class RelationshipBinding(pydantic.BaseModel):
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
+class RelationshipBinding(BaseValidation):
     ConceptualEntity: str
 
 
-class PhrasingAttributeRole(pydantic.BaseModel):
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
+class PhrasingAttributeRole(BaseValidation):
     Role: str
 
 
 # TODO: Subtype
-class PhrasingAttribute(pydantic.BaseModel):
+class PhrasingAttribute(BaseValidation):
     model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        # extra="forbid",  # TODO: undo comment
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
+        extra="forbid",
     )
     Adjective: PhrasingAttributeRole | None = None
     Measurement: PhrasingAttributeRole | None = None
@@ -138,15 +74,7 @@ class PhrasingAttribute(pydantic.BaseModel):
     Verbs: list[Any] = []
 
 
-class RelationshipPhrasing(pydantic.BaseModel):
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
+class RelationshipPhrasing(BaseValidation):
     Name: PhrasingAttribute | None = None
     Attribute: PhrasingAttribute | None = None
     Verb: PhrasingAttribute | None = None
@@ -157,39 +85,15 @@ class RelationshipPhrasing(pydantic.BaseModel):
     Weight: float | None = None
 
 
-class RelationshipRoleEntity(pydantic.BaseModel):
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
+class RelationshipRoleEntity(BaseValidation):
     Entity: str
 
 
-class RelationshipRole(pydantic.BaseModel):
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
+class RelationshipRole(BaseValidation):
     Target: RelationshipRoleEntity
 
 
-class LinguisticMetadataRelationship(pydantic.BaseModel):
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
+class LinguisticMetadataRelationship(BaseValidation):
     Binding: RelationshipBinding
     Phrasings: list[RelationshipPhrasing] = []
     Roles: dict[str, RelationshipRole | Any]
@@ -198,15 +102,7 @@ class LinguisticMetadataRelationship(pydantic.BaseModel):
     Conditions: Any = None
 
 
-class LinguisticMetadataContent(pydantic.BaseModel):
-    model_config = pydantic.ConfigDict(
-        arbitrary_types_allowed=True,
-        extra="forbid",
-        use_enum_values=False,
-        json_schema_mode_override="serialization",
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
+class LinguisticMetadataContent(BaseValidation):
     Version: SemanticVersion
     Language: str
     DynamicImprovement: str | None = None
