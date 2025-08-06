@@ -2,12 +2,14 @@ import datetime
 from typing import TYPE_CHECKING
 
 from ..server.tabular_model import SsasTable
+from ._base import SsasBaseCommands
 
 if TYPE_CHECKING:
     from .measure import Measure
 
 
 class KPI(SsasTable):
+    _commands: SsasBaseCommands
     measure_id: int
     status_expression: str
     status_graphic: str

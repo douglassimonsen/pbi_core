@@ -3,9 +3,11 @@ from typing import Optional
 from uuid import UUID
 
 from ..server.tabular_model import SsasTable
+from ._base import SsasRefreshCommands
 
 
 class Table(SsasTable):
+    _commands: SsasRefreshCommands
     alternate_source_precedence: int
     data_category: Optional[str] = None
     description: Optional[str] = None

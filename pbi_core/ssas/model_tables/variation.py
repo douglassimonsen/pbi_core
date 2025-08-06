@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, Optional
 
 from ..server.tabular_model import SsasTable
+from ._base import SsasRenameCommands
 
 if TYPE_CHECKING:
     from .column import Column
@@ -9,6 +10,7 @@ if TYPE_CHECKING:
 
 
 class Variation(SsasTable):
+    _commands: SsasRenameCommands
     column: Optional[Any] = None
     column_id: int
     default_hierarchy_id: int

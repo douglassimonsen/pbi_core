@@ -1,5 +1,6 @@
 from ..server.tabular_model import SsasTable
+from ._base import SsasBaseCommands
 
 
 class PerspectiveColumn(SsasTable):
-    pass
+    _commands: SsasBaseCommands

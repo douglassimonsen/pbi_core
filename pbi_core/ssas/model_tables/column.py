@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional
 from uuid import UUID
 
 from ..server.tabular_model import SsasTable
+from ._base import SsasRenameCommands
 
 if TYPE_CHECKING:
     from .attribute_hierarchy import AttributeHierarchy
@@ -16,7 +17,7 @@ class Column(SsasTable):
         "description": "Description",
     }
     _read_only_fields = ("table_id",)
-
+    _commands: SsasRenameCommands
     alignment: int
     attribute_hierarchy_id: int
     column_origin_id: Optional[int] = None

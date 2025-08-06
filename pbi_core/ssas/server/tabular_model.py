@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, cast
 import pydantic
 from bs4 import BeautifulSoup, Tag
 
-from .utils import COMMAND_TEMPLATES
+from .utils import COMMAND_TEMPLATES, OBJECT_COMMAND_TEMPLATES
 
 if TYPE_CHECKING:
     from _typeshed import StrPath
@@ -114,7 +114,6 @@ class BaseTabularModel:
 
         xml_schema = self.server.query_xml(COMMAND_TEMPLATES["discover_schema.xml"].render(db_name=self.db_name))
         schema = discover_xml_to_dict(xml_schema)
-        print(schema.keys())
         for field_name, type_instance in FIELD_TYPES.items():
             objects = [
                 type_instance.model_validate({**row, "_tabular_model": self})
@@ -123,7 +122,12 @@ class BaseTabularModel:
             setattr(self, field_name, objects)
 
     def sync_to(self) -> None:
-        pass
+        from ..model_tables import FIELD_TYPES
+
+        for field_name in FIELD_TYPES.keys():
+            data = cast(list[SsasTable], getattr(self, field_name))
+            for record in data:
+                record.sync_to()
 
 
 class LocalTabularModel(BaseTabularModel):
@@ -165,12 +169,16 @@ class SsasTable(pydantic.BaseModel):  # type: ignore
     model_config = SsasConfig
     tabular_model: "BaseTabularModel"
     _read_only_fields: ClassVar[tuple[str, ...]] = tuple()
-
     id: int
+    _commands: Any
 
     @classmethod
     def _db_type_name(cls) -> str:
         return cls.__name__
+
+    @classmethod
+    def _db_plural_type_name(cls) -> str:
+        return cls.__name__ + "s"
 
     @pydantic.model_validator(mode="before")  # type: ignore
     def to_snake_case(cls: "SsasTable", raw_values: dict[str, Any]) -> dict[str, Any]:
@@ -188,3 +196,40 @@ class SsasTable(pydantic.BaseModel):  # type: ignore
             return field_name
 
         return {case_helper(field_name): field_value for field_name, field_value in raw_values.items()}
+
+    def sync_to(self) -> "SsasTable":
+        return self
+
+    def model_post_init(self, __context: Any) -> None:
+        from ..model_tables import _base
+
+        if "_commands" not in self.__annotations__:
+            return
+
+        templates = OBJECT_COMMAND_TEMPLATES[self._db_plural_type_name()]
+        match self.__annotations__["_commands"]:
+            case _base.SsasRefreshCommands:
+                self._commands = _base.SsasRefreshCommands(
+                    alter=templates["alter.xml"],
+                    create=templates["create.xml"],
+                    delete=templates["delete.xml"],
+                    rename=templates["rename.xml"],
+                    refresh=templates["refresh.xml"],
+                )
+            case _base.SsasRenameCommands:
+                self._commands = _base.SsasRenameCommands(
+                    alter=templates["alter.xml"],
+                    create=templates["create.xml"],
+                    delete=templates["delete.xml"],
+                    rename=templates["rename.xml"],
+                )
+            case _base.SsasBaseCommands:
+                self._commands = _base.SsasBaseCommands(
+                    alter=templates["alter.xml"], create=templates["create.xml"], delete=templates["delete.xml"]
+                )
+            case _base.SsasModelCommands:
+                self._commands = _base.SsasModelCommands(
+                    alter=templates["alter.xml"], refresh=templates["refresh.xml"], rename=templates["rename.xml"]
+                )
+            case _:
+                raise ValueError(f"Unknown type for _commands property on table: {self._db_type_name()}")

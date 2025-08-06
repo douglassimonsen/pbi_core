@@ -3,6 +3,7 @@ from enum import IntEnum
 from typing import Any, Optional
 
 from ..server.tabular_model import SsasTable
+from ._base import SsasRenameCommands
 
 
 class ObjectType(IntEnum):
@@ -21,6 +22,7 @@ class Annotation(SsasTable):
     object_type: ObjectType
     name: str
     value: Optional[Any] = None
+    _commands: SsasRenameCommands
 
     modified_time: datetime.datetime
 

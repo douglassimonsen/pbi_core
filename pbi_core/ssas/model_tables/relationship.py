@@ -2,6 +2,7 @@ import datetime
 from typing import TYPE_CHECKING, Optional
 
 from ..server.tabular_model import SsasTable
+from ._base import SsasRenameCommands
 
 if TYPE_CHECKING:
     from .column import Column
@@ -11,6 +12,7 @@ if TYPE_CHECKING:
 
 
 class Relationship(SsasTable):
+    _commands: SsasRenameCommands
     cross_filtering_behavior: int
     from_column_id: int
     from_cardinality: int

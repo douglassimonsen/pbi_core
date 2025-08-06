@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID
 
 from ..server.tabular_model import SsasTable
+from ._base import SsasRenameCommands
 
 if TYPE_CHECKING:
     from .level import Level
@@ -11,6 +12,7 @@ if TYPE_CHECKING:
 
 
 class Hierarchy(SsasTable):
+    _commands: SsasRenameCommands
     hide_members: int
     hierarchy_storage_id: int
     is_hidden: bool
@@ -31,3 +33,7 @@ class Hierarchy(SsasTable):
 
     def variations(self) -> list["Variation"]:
         return self.tabular_model.variations.find_all({"default_hierarchy_id": self.id})
+
+    @classmethod
+    def _db_plural_type_name(cls) -> str:
+        return "Hierarchies"

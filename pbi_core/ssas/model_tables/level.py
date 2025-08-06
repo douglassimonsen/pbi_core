@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID
 
 from ..server.tabular_model import SsasTable
+from ._base import SsasRenameCommands
 
 if TYPE_CHECKING:
     from .column import Column
@@ -10,6 +11,7 @@ if TYPE_CHECKING:
 
 
 class Level(SsasTable):
+    _commands: SsasRenameCommands
     column_id: int
     hierarchy_id: int
     lineage_tag: UUID

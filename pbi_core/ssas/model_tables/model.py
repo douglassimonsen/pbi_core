@@ -4,9 +4,11 @@ from typing import Any, Optional
 from pydantic import Json
 
 from ..server.tabular_model import SsasTable
+from ._base import SsasModelCommands
 
 
 class Model(SsasTable):
+    _commands: SsasModelCommands
     culture: str
     data_access_options: Json[dict[str, Any]]
     data_source_default_max_connections: int
@@ -24,3 +26,7 @@ class Model(SsasTable):
     version: int
 
     modified_time: datetime.datetime
+
+    @classmethod
+    def _db_plural_type_name(cls) -> str:
+        return "Model"

@@ -1,5 +1,6 @@
 from ..server.tabular_model import SsasTable
+from ._base import SsasRenameCommands
 
 
 class Role(SsasTable):
-    pass
+    _commands: SsasRenameCommands

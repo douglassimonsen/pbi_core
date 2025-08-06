@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
 from ..server.tabular_model import SsasTable
+from ._base import SsasRenameCommands
 
 if TYPE_CHECKING:
     from .kpi import KPI
@@ -10,6 +11,7 @@ if TYPE_CHECKING:
 
 
 class Measure(SsasTable):
+    _commands: SsasRenameCommands
     data_category: Optional[str] = None
     data_type: int
     description: Optional[str] = None
