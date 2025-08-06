@@ -18,6 +18,7 @@ T = TypeVar("T", bound="LayoutNode")
 
 class LayoutNode(pydantic.BaseModel):
     model_config = MODEL_CONFIG
+    _name_field: Optional[str] = None  # name of the field used to populate __repr__
 
     def find_all(self, cls_type: type[T], attributes: Optional[dict[str, Any]] = None) -> list["T"]:
         attributes = attributes or {}
@@ -50,3 +51,8 @@ class LayoutNode(pydantic.BaseModel):
 
     def _children(self) -> list["LayoutNode"]:
         raise NotImplementedError()
+
+    def __str__(self) -> str:
+        if self._name_field is None:
+            return super().__str__()
+        return f"{self.__class__.__name__}({getattr(self, self._name_field)})"

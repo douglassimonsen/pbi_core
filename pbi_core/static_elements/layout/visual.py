@@ -39,6 +39,7 @@ class VisualHowCreated(Enum):
 
 class VisualConfig(LayoutNode):
     parent: "VisualContainer"
+    _name_field = "name"
 
     layouts: Optional[Any] = None
     name: Optional[str] = None
@@ -50,6 +51,7 @@ class VisualConfig(LayoutNode):
 
 class VisualContainer(LayoutNode):
     parent: "Section"
+    _name_field = "name"
 
     x: float
     y: float
@@ -57,7 +59,7 @@ class VisualContainer(LayoutNode):
     width: float
     height: float
     tabOrder: Optional[int] = None
-    dataTransforms: Optional[Any] = None
+    dataTransforms: Optional[Json[Any]] = None
     query: Optional[Any] = None
     filters: Json[list[VisualFilter]] = []
     config: Json[VisualConfig]
