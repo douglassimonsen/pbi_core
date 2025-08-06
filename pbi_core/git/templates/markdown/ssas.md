@@ -4,7 +4,7 @@
 ## {{ table.capitalize() }}
 
 {% for change in changes %}
-- {{ change.entity.pbi_core_name()}}: {{ change.change_type.value.capitalize() }}
+- {{ change.entity.__repr__() }}: {{ change.change_type.value.capitalize() }}
   {% if change.change_type.value == 'UPDATED' %}
    | Field | From | To  |
    | ----- | ---- | --- |
@@ -16,4 +16,4 @@
 
 {% endfor %}
 
-**Tables Without Changes**: {{tables_without_changes}}
+**SSAS Metadata Tables Without Changes**: {{tables_without_changes}}

@@ -8,7 +8,7 @@ from .change_classes import ChangeType, SsasChange
 skip_fields: dict[str, list[str]] = {
     "columns": ["modified_time"],
     "measures": ["modified_time", "structure_modified_time"],
-    "tables": ["modified_time"],
+    "tables": ["modified_time", "system_managed"],
 }
 
 
