@@ -1,9 +1,10 @@
 # ruff: noqa: N815
 from enum import Enum
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from pydantic import Json
 
+from pbi_core.lineage.main import LineageNode, LineageType
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 from ._base_node import LayoutNode
@@ -12,6 +13,9 @@ from .filters import GlobalFilter
 from .pod import Pod
 from .resource_package import ResourcePackage
 from .section import Section
+
+if TYPE_CHECKING:
+    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 
 
 class LayoutOptimization(Enum):
@@ -81,11 +85,31 @@ class Layout(LayoutNode):
     publicCustomVisuals: list[PublicCustomVisual] = []
     _xpath = []
 
-    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+    def pbi_core_name(self) -> str:  # noqa: PLR6301
+        return "Layout"
+
+    def get_ssas_elements(
+        self,
+        *,
+        include_sections: bool = True,
+        include_filters: bool = True,
+    ) -> set[ModelColumnReference | ModelMeasureReference]:
         """Returns the SSAS elements (columns and measures) this report is directly dependent on."""
         ret: set[ModelColumnReference | ModelMeasureReference] = set()
-        for f in self.filters:
-            ret.update(f.get_ssas_elements())
-        for s in self.sections:
-            ret.update(s.get_ssas_elements())
+        if include_filters:
+            for f in self.filters:
+                ret.update(f.get_ssas_elements())
+        if include_sections:
+            for s in self.sections:
+                ret.update(s.get_ssas_elements())
         return ret
+
+    def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(self, lineage_type)
+
+        entities = self.get_ssas_elements()
+        children_nodes = [ref.to_model(tabular_model) for ref in entities]
+
+        children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
+        return LineageNode(self, lineage_type, children_lineage)

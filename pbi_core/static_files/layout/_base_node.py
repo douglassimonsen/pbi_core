@@ -18,6 +18,9 @@ class LayoutNode(BaseValidation):
     _parent: "LayoutNode"
     _xpath: list[str | int]
 
+    def pbi_core_name(self) -> str:
+        raise NotImplementedError
+
     def find_all(
         self,
         cls_type: type[T],
@@ -138,5 +141,5 @@ def _set_parents(
             if field_name.startswith("_"):
                 continue
             field_value = getattr(base, field_name)
-            if isinstance(field_value, (list, dict, LayoutNode)):
+            if isinstance(field_value, list | dict | LayoutNode):
                 _set_parents(field_value, base, [*curr_xpath, field_name])

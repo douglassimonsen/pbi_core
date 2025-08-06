@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Annotated, Any, cast
 
 from pydantic import Discriminator, Json, Tag
 
+from pbi_core.lineage.main import LineageNode, LineageType
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 from ._base_node import LayoutNode
@@ -13,6 +14,7 @@ from .visuals.main import Visual
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server import LocalTabularModel
+    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 
     from .section import Section
 
@@ -160,6 +162,11 @@ class VisualContainer(LayoutNode):
     config: Json[VisualConfig]
     id: int | None = None
 
+    def pbi_core_name(self) -> str:
+        viz = self.config.singleVisual
+        assert viz is not None
+        return viz.visualType
+
     def name(self) -> str | None:
         if self.config.singleVisual is not None:
             return f"{self.config.singleVisual.visualType}(x={round(self.x, 2)}, y={round(self.y, 2)}, z={round(self.z, 2)})"  # noqa: E501
@@ -214,3 +221,17 @@ class VisualContainer(LayoutNode):
         for f in self.filters:
             ret.update(f.get_ssas_elements())
         return ret
+
+    # TODO: replace ._parent with a get_parent method
+    def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(self, lineage_type)
+
+        viz_entities = self.get_ssas_elements()
+        page_filters = self._parent.get_ssas_elements(include_visuals=False)
+        report_filters = self._parent._parent.get_ssas_elements(include_sections=False)
+        entities = viz_entities | page_filters | report_filters
+        children_nodes = [ref.to_model(tabular_model) for ref in entities]
+
+        children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
+        return LineageNode(self, lineage_type, children_lineage)
