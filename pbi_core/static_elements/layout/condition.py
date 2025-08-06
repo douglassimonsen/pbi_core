@@ -1,5 +1,8 @@
 import inspect
 from enum import IntEnum
+from typing import Annotated, Any, Union
+
+from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
 from .sources import AggregationSource, DataSource, LiteralSource, SourceRef
@@ -121,8 +124,45 @@ class OrCondition(LayoutNode):
     Or: CompositeConditionHelper
 
 
+def get_type(v: Any) -> str:
+    if isinstance(v, dict):
+        if "And" in v.keys():
+            return "AndCondition"
+        elif "Or" in v.keys():
+            return "OrCondition"
+        elif "Left" in v.keys():
+            return "NonCompositeConditions"
+        elif "In" in v.keys():
+            return "InCondition"
+        elif "Not" in v.keys():
+            return "NotCondition"
+        elif "Contains" in v.keys():
+            return "ContainsCondition"
+        elif "Comparison" in v.keys():
+            return "ComparisonCondition"
+        print(v.keys())
+        breakpoint()
+        raise ValueError
+    else:
+        return v.__class__.__name__
+
+
+ConditionType = Annotated[
+    Union[
+        Annotated[NonCompositeConditions, Tag("NonCompositeConditions")],
+        Annotated[AndCondition, Tag("AndCondition")],
+        Annotated[OrCondition, Tag("OrCondition")],
+        Annotated[InCondition, Tag("InCondition")],
+        Annotated[NotCondition, Tag("NotCondition")],
+        Annotated[ContainsCondition, Tag("ContainsCondition")],
+        Annotated[ComparisonCondition, Tag("ComparisonCondition")],
+    ],
+    Discriminator(get_type),
+]
+
+
 class Condition(LayoutNode):
-    Condition: NonCompositeConditions | AndCondition | OrCondition
+    Condition: ConditionType
 
     def __repr__(self) -> str:
         return f"Condition({self.Condition.__repr__()})"
