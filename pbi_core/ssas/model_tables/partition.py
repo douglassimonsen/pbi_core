@@ -3,6 +3,7 @@ from enum import IntEnum
 from typing import TYPE_CHECKING
 
 from bs4 import BeautifulSoup
+from pbi_parsers import dax, pq
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.logging import get_logger
@@ -82,14 +83,18 @@ class Partition(SsasRefreshRecord):
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
 
-    def expression_ast(self) -> dax.Expression | None:
-        if self.type != PartitionType.M:
-            logger.warning("Attempted to get AST of non-M partition", partition=self.name, type=self.type)
+    def expression_ast(self) -> dax.Expression | pq.Expression | None:
+        if self.type == PartitionType.Calculated:
+            ret = pq.to_ast(self.query_definition)
+            if ret is None:
+                raise ValueError("Failed to parse DAX expression from partition query definition")
+        elif self.type == PartitionType.M:
+            ret = dax.to_ast(self.query_definition)
+            if ret is None:
+                raise ValueError("Failed to parse M expression from partition query definition")
+        else:
+            logger.warning("Attempted to get AST of non-M/DAX partition", partition=self.name, type=self.type)
             return None
-        ret = pq.to_ast(self.query_definition)
-        if ret is None:
-            raise ValueError("Failed to parse M expression from partition query definition")
-        return ret
 
     def expression_source(self) -> "Expression | None":
         if self.expression_source_id is None:

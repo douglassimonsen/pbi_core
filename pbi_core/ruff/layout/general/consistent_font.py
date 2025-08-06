@@ -25,7 +25,7 @@ def get_fonts(layout: Layout) -> set[str]:
     return fonts
 
 
-class ConsistentFontRule(BaseRule):
+class ConsistentFont(BaseRule):
     id = "GEN-001"
     name = "Consistent Font"
     description = "No more than 2 fonts should be used in a report"
