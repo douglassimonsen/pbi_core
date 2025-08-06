@@ -38,6 +38,7 @@ class ColumnFormatting(LayoutNode):
 class TotalProperties(LayoutNode):
     totals: Expression | None = None
     fontColor: Expression | None = None
+    fontFamily: Expression | None = None
     fontSize: Expression | None = None
     outline: Expression | None = None
 

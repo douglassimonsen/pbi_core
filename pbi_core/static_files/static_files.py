@@ -60,6 +60,9 @@ class StaticFiles:
         self.settings = settings
         self.themes = themes
 
+    def __repr__(self) -> str:
+        return f"StaticFiles(version={self.version})"
+
     @staticmethod
     def load_pbix(path: "StrPath") -> "StaticFiles":  # noqa: PLR0914
         zipfile = ZipFile(path, mode="r")
