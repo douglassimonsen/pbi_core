@@ -3,4 +3,4 @@ from .main import LocalReport
 from .static_elements import layout
 
 __all__ = ["layout", "ssas", "LocalReport"]
-__version__ = "0.1.0"
+__version__ = "0.2.0"
