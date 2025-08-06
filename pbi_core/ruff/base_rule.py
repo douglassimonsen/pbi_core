@@ -15,14 +15,6 @@ class RuleResult:
 
 
 class BaseRule:
+    id: str
     name: str
     description: str
-
-    @classmethod
-    def check(cls) -> list["RuleResult"]:
-        """Check if the rule is violated.
-
-        This method should be overridden in subclasses.
-        """
-        msg = "This method should be overridden in subclasses."
-        raise NotImplementedError(msg)
