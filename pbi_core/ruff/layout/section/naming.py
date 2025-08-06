@@ -11,7 +11,7 @@ class ProperSectionName(BaseRule):
 
     @classmethod
     def check(cls, section: Section) -> list[RuleResult]:
-        section_name = section.name
+        section_name = section.displayName
         if "_" in section_name:
             return [
                 RuleResult(

@@ -73,7 +73,7 @@ class CamelCaseVariable(BaseRule):
                     f"Variable name should be in camelCase format. "
                     f"It was {var.var_name.text}, should be {correct_name}."
                 )
-                context = dax.utils.highlight_section(var)
+                context = dax.utils.highlight_section(var.var_name)
                 results.append(
                     RuleResult(
                         rule=cls,
