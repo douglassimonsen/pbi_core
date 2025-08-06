@@ -19,8 +19,8 @@ Goals of this package:
 - |uncheck| Data/Visual Lineage Tool
    - |check| Low-level SSAS interface for updating PBIX Data Models
    - |check| Low-level interface for updating Static PBIX elements
-   - |uncheck| Inter-SSAS lineage
-   - |uncheck| Inter-layout lineage
+   - |uncheck| Intra-SSAS lineage
+   - |uncheck| Intra-layout lineage
    - |uncheck| Layout-SSAS lineage
 - |check| AST parser for DAX Queries
 - |check| AST parser for M Queries
@@ -55,7 +55,8 @@ Goals of this package:
    :caption: Contents:
 
    examples
-   pbi_core_api
+   layout_api
+   ssas_api
 
 Indices and tables
 ==================

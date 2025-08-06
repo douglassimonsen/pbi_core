@@ -1,4 +1,4 @@
-PBYX API
+SSAS API
 ========
 
 .. automodule:: pbi_core.ssas.server.server
