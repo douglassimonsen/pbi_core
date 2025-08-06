@@ -2,16 +2,12 @@ import pathlib
 import shutil
 from typing import TYPE_CHECKING, Any, ClassVar, Optional, cast
 
-import jinja2
 import pydantic
 from bs4 import BeautifulSoup, Tag
 from structlog import get_logger
 
 from ._commands import BaseCommands, Command, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from .utils import (
-    BASE_ALTER_TEMPLATE,
-    BASE_DELETE_TEMPLATE,
-    BASE_RENAME_TEMPLATE,
     COMMAND_TEMPLATES,
     OBJECT_COMMAND_TEMPLATES,
     ROW_TEMPLATE,
@@ -216,7 +212,7 @@ class SsasTable(pydantic.BaseModel):
         self.tabular_model.server.query_xml(query, db_name)
 
     @staticmethod
-    def render_xml_command(values: dict, base_command_template: jinja2.Template, command: Command, db_name: str):
+    def render_xml_command(values: dict, command: Command, db_name: str):
         fields = []
         for field_name, field_value in values.items():
             if field_name not in command.field_order:
@@ -227,7 +223,7 @@ class SsasTable(pydantic.BaseModel):
         fields = command.sort(fields)
         xml_row = ROW_TEMPLATE.render(fields=fields)
         xml_entity_definition = command.template.render(rows=xml_row)
-        return base_command_template.render(db_name=db_name, entity_def=xml_entity_definition)
+        return command.base_template.render(db_name=db_name, entity_def=xml_entity_definition)
 
 
 class SsasAlter(SsasTable):
@@ -237,7 +233,6 @@ class SsasAlter(SsasTable):
         }
         xml_command = self.render_xml_command(
             data,
-            BASE_ALTER_TEMPLATE,
             self._commands.alter,
             self.tabular_model.db_name,
         )
@@ -254,7 +249,6 @@ class SsasRename(SsasTable):
         }
         xml_command = self.render_xml_command(
             data,
-            BASE_RENAME_TEMPLATE,
             self._commands.rename,
             self.tabular_model.db_name,
         )
@@ -270,7 +264,6 @@ class SsasCreate(SsasTable):
         # }
         # xml_command = cls.render_xml_command(
         #     data,
-        #     BASE_RENAME_TEMPLATE,
         #     cls._commands.rename,
         #     tabular_model.db_name,
         # )
@@ -286,7 +279,6 @@ class SsasDelete(SsasTable):
         data = {k: v for k, v in self.model_dump().items() if k == self._db_id_field}
         xml_command = self.render_xml_command(
             data,
-            BASE_DELETE_TEMPLATE,
             self._commands.delete,
             self.tabular_model.db_name,
         )
