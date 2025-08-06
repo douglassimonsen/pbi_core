@@ -11,7 +11,7 @@
 
 **pbi_ruff**: Currently residing in the pbi_core repository, this is a collection of ruff-style rules for Power BI reports. Rules are used to ensure that Power BI reports follow best practices and maintainability standards. Rules are applied to the layout, DAX, and PowerQuery entities in the Power BI report.
 
-**pyadomd**: A fork of the [original pyadomd library](https://github.com/S-C-O-U-T/Pyadomd), which is a Python client for the Microsoft Analysis Services Tabular Data Model. Adds logging, more typing at the C# and python level, and some additional features such as support for streaming results. Additions were done to support various downstream libraries.
+**pbi_pyadomd**: A fork of the [original pyadomd library](https://github.com/S-C-O-U-T/Pyadomd), which is a Python client for the Microsoft Analysis Services Tabular Data Model. Adds logging, more typing at the C# and python level, and some additional features such as support for streaming results. Additions were done to support various downstream libraries.
 
 **pbi_gui**: A graphical user interface for the PBI_CORE library, providing a user-friendly way to interact with the functionality of the PBI_CORE and pbi_ruff libraries. 
 
@@ -23,7 +23,7 @@ flowchart TD
     pbi_gui
     pbi_core
     pbi_ruff
-    pyadomd
+    pbi_pyadomd
     pbi_translation
     pbi_parsers
     pbi_git
@@ -33,7 +33,7 @@ flowchart TD
     pbi_server -- Uses to retrieve data from reports --> pbi_core
     pbi_server -- Uses to identify issues in reports --> pbi_ruff
     pbi_ruff -- Uses to retrieve data from reports --> pbi_core
-    pbi_core -- Used to connect with SSAS backend --> pyadomd
+    pbi_core -- Used to connect with SSAS backend --> pbi_pyadomd
     pbi_core -- Uses to translate Prototype Query to DAX Query --> pbi_translation
     pbi_ruff -- Uses to introspect DAX and M Queries --> pbi_parsers
 ```
