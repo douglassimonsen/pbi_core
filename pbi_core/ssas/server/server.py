@@ -4,12 +4,13 @@ from typing import TYPE_CHECKING, Any, Optional
 
 import backoff
 import bs4
+import psutil
 
 from ...logging import get_logger
 from .._pyadomd import pyadomd
 from ._physical_local_server import SSASProcess
-from .tabular_model import TabularModel
-from .utils import COMMAND_TEMPLATES, ROOT_FOLDER, SKU_ERROR
+from .tabular_model import BaseTabularModel, LocalTabularModel
+from .utils import COMMAND_TEMPLATES, ROOT_FOLDER, SKU_ERROR, get_msmdsrv_info
 
 logger = get_logger()
 
@@ -27,12 +28,10 @@ class BaseServer:
 
     host: str
     port: int
-    db_name: str
 
-    def __init__(self, host: str, port: int, db_name: str) -> None:
+    def __init__(self, host: str, port: int) -> None:
         self.host = host
         self.port = port
-        self.db_name = db_name
 
         self.check_ssas_sku()
 
@@ -46,7 +45,7 @@ class BaseServer:
         return pyadomd.Pyadomd(self.conn_str(db_name))
 
     def __repr__(self) -> str:
-        return f"Server(host={self.port}, port={self.port}, db={self.db_name})"
+        return f"Server(host={self.host}:{self.port})"
 
     def query_dax(self, query: str, db_name: Optional[str] = None) -> list[dict[str, Any]]:
         with self.conn(db_name) as conn:
@@ -61,8 +60,10 @@ class BaseServer:
             cursor = conn.cursor()
             return cursor.executeXML(query)
 
-    def databases(self) -> list[TabularModel]:
-        return []
+    def tabular_models(self) -> list[BaseTabularModel]:
+        # Query based on https://learn.microsoft.com/en-us/previous-versions/sql/sql-server-2012/ms126314(v=sql.110)
+        dbs = self.query_dax(COMMAND_TEMPLATES["list_dbs.xml"].render())
+        return [BaseTabularModel(row["CATALOG_NAME"], self) for row in dbs]
 
     @backoff.on_exception(backoff.expo, ValueError, max_time=10)
     def check_ssas_sku(self) -> None:
@@ -88,7 +89,6 @@ class LocalServer(BaseServer):
 
     def __init__(
         self,
-        db_name: str,
         host: str = "localhost",
         workspace_directory: Optional["StrPath"] = None,
         pid: Optional[int] = None,
@@ -100,12 +100,12 @@ class LocalServer(BaseServer):
             self.physical_process = SSASProcess(pid=pid)
         else:
             workspace_directory = workspace_directory or (
-                ROOT_FOLDER / f"workspaces/{db_name}/{datetime.now(UTC).strftime(DT_FORMAT)}"
+                ROOT_FOLDER / f"workspaces/{datetime.now(UTC).strftime(DT_FORMAT)}"
             )
             self.physical_process = SSASProcess(workspace_directory=workspace_directory)
-        super().__init__(host, self.physical_process.port, db_name)
+        super().__init__(host, self.physical_process.port)
 
-    def load_pbix(self, path: "StrPath", db_name: Optional[str] = None) -> None:
+    def load_pbix(self, path: "StrPath", db_name: Optional[str] = None) -> LocalTabularModel:
         path = pathlib.Path(path)
         if db_name is None:
             db_name = path.stem
@@ -116,10 +116,15 @@ class LocalServer(BaseServer):
             )
         )
         logger.info("PBIX load complete")
+        return LocalTabularModel(db_name=db_name, server=self, pbix_path=path)
 
     def save_pbix(self, path: "StrPath", db_name: str) -> None:
         path = pathlib.Path(path)
-        pass
+        self.query_xml(
+            COMMAND_TEMPLATES["image_save.xml"].render(
+                db_name=db_name, target_path=self.sanitize_xml(path.absolute().as_posix())
+            )
+        )
 
     @staticmethod
     def sanitize_xml(xml_text: str) -> str:
@@ -132,3 +137,26 @@ class LocalServer(BaseServer):
         if orig_db_name != db_name:
             logger.warn("db_name changed", original_name=orig_db_name, new_name=db_name)
         return db_name
+
+    def __repr__(self) -> str:
+        return f"LocalServer(port={self.port})"
+
+
+def list_local_servers() -> list[LocalServer]:
+    ret: list[LocalServer] = []
+    for process in psutil.process_iter():
+        if get_msmdsrv_info(process) is not None:
+            ret.append(LocalServer(pid=process.pid, kill_on_exit=False))
+    return ret
+
+
+def get_or_create_local_server() -> LocalServer:
+    candidates: list[LocalServer] = list_local_servers()
+    if candidates:
+        return candidates[0]
+    return LocalServer()
+
+
+def terminate_all_local_servers() -> None:
+    for server in list_local_servers():
+        server.physical_process.terminate()

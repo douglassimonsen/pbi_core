@@ -14,7 +14,7 @@ import subprocess  # nosec. It's necessary to run the msmdsrv exe
 import backoff
 import psutil
 
-from .utils import COMMAND_TEMPLATES
+from .utils import COMMAND_TEMPLATES, get_msmdsrv_info
 
 logger = get_logger()
 PORT_ACCESS_TRIES = 5
@@ -56,7 +56,11 @@ class SSASProcess:
             self._workspace_directory = self._get_workspace_directory()
 
     def _get_workspace_directory(self) -> pathlib.Path:
-        raise NotImplementedError()
+        proc = psutil.Process(self.pid)
+        proc_info = get_msmdsrv_info(proc)
+        if proc_info is None:
+            raise ValueError("This PID doesn't correspond to a valid SSAS instance")
+        return proc_info.workspace_directory
 
     @property
     def workspace_directory(self) -> pathlib.Path:
@@ -140,11 +144,12 @@ class SSASProcess:
             raise ValueError("The process will not terminate")
 
     def terminate(self) -> None:
-        # TODO: should there be a check to ensure that self.pid still points to the msmdsrv.exe?
         try:
             p = psutil.Process(self.pid)
         except psutil.NoSuchProcess:  # something else killed it??
             logger.info("SSAS Proc already terminated", pid=self.pid)
+            return
+        if not get_msmdsrv_info(p):  # indicates another process has already taken this PID
             return
         p.terminate()
         self.wait_until_terminated(p)
