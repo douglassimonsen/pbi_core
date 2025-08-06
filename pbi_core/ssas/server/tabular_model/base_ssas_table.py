@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Any, ClassVar, Final
 
 import pydantic
+from bs4 import BeautifulSoup
 from structlog import get_logger
 
 from pbi_core.lineage import LineageNode, LineageType
@@ -90,9 +91,9 @@ class SsasTable(pydantic.BaseModel):
         """Helper function to remove the ``.tabular_model.server`` required to run a DAX query from an SSAS element."""
         self.tabular_model.server.query_dax(query, db_name=db_name)
 
-    def query_xml(self, query: str, db_name: str | None = None) -> None:
+    def query_xml(self, query: str, db_name: str | None = None) -> BeautifulSoup:
         """Helper function to remove the ``.tabular_model.server`` required to run an XML query from an SSAS element."""
-        self.tabular_model.server.query_xml(query, db_name)
+        return self.tabular_model.server.query_xml(query, db_name)
 
     @staticmethod
     def render_xml_command(values: dict[str, Any], command: Command, db_name: str) -> str:

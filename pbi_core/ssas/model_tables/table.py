@@ -2,6 +2,8 @@ import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
+from bs4 import BeautifulSoup
+
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.server.tabular_model import RefreshType, SsasRefreshRecord
 
@@ -123,7 +125,7 @@ class Table(SsasRefreshRecord):
             )
         return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])
 
-    def refresh(self) -> None:
+    def refresh(self) -> BeautifulSoup:
         """Needs a model refresh to properly propogate the update."""
         super().refresh()
-        self.model().refresh()
+        return self.model().refresh()

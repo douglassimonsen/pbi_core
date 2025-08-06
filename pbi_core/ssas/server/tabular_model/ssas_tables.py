@@ -1,6 +1,7 @@
 from typing import Any
 
 import pydantic
+from bs4 import BeautifulSoup
 from structlog import get_logger
 
 from pbi_core.ssas.server._commands import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
@@ -34,7 +35,7 @@ class SsasAlter(SsasTable):
 
     _commands: BaseCommands  # pyright: ignore reportIncompatibleVariableOverride
 
-    def alter(self) -> None:
+    def alter(self) -> BeautifulSoup:
         """Updates a non-name field of an object."""
         data = {
             self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
@@ -45,7 +46,7 @@ class SsasAlter(SsasTable):
             self.tabular_model.db_name,
         )
         logger.info("Syncing Alter Changes to SSAS", obj=self._db_type_name())
-        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+        return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
 class SsasRename(SsasTable):
@@ -57,7 +58,7 @@ class SsasRename(SsasTable):
     _db_name_field: str = "not_defined"
     _commands: RenameCommands  # pyright: ignore reportIncompatibleVariableOverride
 
-    def rename(self) -> None:
+    def rename(self) -> BeautifulSoup:
         """Updates a name field of an object."""
         data = {
             self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
@@ -68,7 +69,7 @@ class SsasRename(SsasTable):
             self.tabular_model.db_name,
         )
         logger.info("Syncing Rename Changes to SSAS", obj=self._db_type_name())
-        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+        return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
 class SsasCreate(SsasTable):
@@ -78,7 +79,7 @@ class SsasCreate(SsasTable):
     """  # noqa: E501
 
     @classmethod
-    def create(cls: type["SsasCreate"], tabular_model: BaseTabularModel, **kwargs: dict[str, Any]) -> None:
+    def create(cls: type["SsasCreate"], tabular_model: BaseTabularModel, **kwargs: dict[str, Any]) -> BeautifulSoup:
         # data = {
         #     cls._db_field_names.get(k, k): v for k, v in kwargs.items() if k not in cls._read_only_fields
         # }
@@ -89,7 +90,7 @@ class SsasCreate(SsasTable):
         # )
         # logger.info("Syncing Rename Changes to SSAS", obj=cls._db_type_name())
         # tabular_model.server.query_xml(xml_command, db_name=tabular_model.db_name)
-        pass
+        raise NotImplementedError
 
 
 class SsasDelete(SsasTable):
@@ -101,7 +102,7 @@ class SsasDelete(SsasTable):
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
     _commands: BaseCommands  # pyright: ignore reportIncompatibleVariableOverride
 
-    def delete(self) -> None:
+    def delete(self) -> BeautifulSoup:
         data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
         xml_command = self.render_xml_command(
             data,
@@ -109,7 +110,7 @@ class SsasDelete(SsasTable):
             self.tabular_model.db_name,
         )
         logger.info("Syncing Delete Changes to SSAS", obj=self._db_type_name())
-        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+        return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
 class SsasRefresh(SsasTable):
@@ -122,7 +123,7 @@ class SsasRefresh(SsasTable):
     _refresh_type: RefreshType
     _commands: RefreshCommands  # pyright: ignore reportIncompatibleVariableOverride
 
-    def refresh(self) -> None:
+    def refresh(self) -> BeautifulSoup:
         data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
         data["RefreshType"] = self._refresh_type
         xml_command = self.render_xml_command(
@@ -131,7 +132,7 @@ class SsasRefresh(SsasTable):
             self.tabular_model.db_name,
         )
         logger.info("Syncing Refresh Changes to SSAS", obj=self)
-        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+        return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
 class SsasReadonlyRecord(SsasTable):

@@ -2,14 +2,23 @@ import datetime
 from enum import IntEnum
 from typing import TYPE_CHECKING
 
+from bs4 import BeautifulSoup
+
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.logging import get_logger
 from pbi_core.ssas.server.tabular_model import SsasRefreshRecord, SsasTable
 
 from ._group import RowNotFoundError
+from .column import Column
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from .query_group import QueryGroup
     from .table import Table
+
+
+logger = get_logger()
 
 
 class PartitionMode(IntEnum):
@@ -66,3 +75,37 @@ class Partition(SsasRefreshRecord):
         parent_nodes: list[SsasTable | None] = [self.table(), self.query_group()]
         parent_lineage: list[LineageNode] = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
         return LineageNode(self, lineage_type, parent_lineage)
+
+    def remove_columns(self, dropped_columns: "Iterable[Column | str | None]") -> BeautifulSoup:
+        def pq_escape(x: str) -> str:
+            """Beginning of column escaping for power query."""
+            return x.replace('"', '""')
+
+        """Adds a Table.RemoveColumns statement to the end of the Partition's PowerQuery.
+
+        This means the upon refresh, the columns will not be included in the table
+        """
+        new_dropped_columns = []
+        for col in dropped_columns:
+            if isinstance(col, Column):
+                # Tables have a column named "RowNumber-<UUID>" that cannot be removed in the PowerQuery
+                if col._column_type() != "CALC_COLUMN" and not col.is_key:
+                    new_dropped_columns.append(col.explicit_name)
+            elif isinstance(col, str):
+                new_dropped_columns.append(col)
+
+        # TODO: create a powerquery parser to do this robustly
+        new_dropped_columns = [pq_escape(x) for x in new_dropped_columns]
+        logger.info("Updating partition to drop columns", table=self.table().name, columns=new_dropped_columns)
+        lines = self.query_definition.split("\n")
+        final_table_name = lines[-1].strip()
+        setup = "\n".join(lines[:-2])
+
+        prior_updates = setup.count("pbi_update")  # used to keep statement variables unique when applied multiple times
+        new_final_table_name = f"pbi_update{prior_updates}"
+
+        cols = ", ".join(f'"{x}"' for x in new_dropped_columns)
+        setup += f",\n    {new_final_table_name} = Table.RemoveColumns({final_table_name}, {{{cols}}})"
+        setup += f"\nin\n    {new_final_table_name}"
+        self.query_definition = setup
+        return self.alter()

@@ -12,6 +12,8 @@ logger = get_logger()
 if TYPE_CHECKING:
     from _typeshed import StrPath
 
+    from pbi_core.ssas.model_tables.table import Table
+
 
 class BaseReport:
     pass
@@ -146,9 +148,9 @@ class LocalReport(BaseReport):
         }
         used_columns = {x for x in ret if isinstance(x, Column)}
 
-        tables_to_drop = {
-            t for t in self.ssas.tables if t not in used_tables and not t.name.startswith("DateTableTemplate")
-        }
+        # In the examples I've seen, there's a table named "DateTableTemplate_<UUID>" that doesn't seem used,
+        # but breaks the system when removed
+        tables_to_drop = {t for t in self.ssas.tables if t not in used_tables and not t.is_private}
         columns_to_drop = {
             c
             for c in self.ssas.columns
@@ -156,6 +158,12 @@ class LocalReport(BaseReport):
             and not c.table().name.startswith("DateTableTemplate")
             and c.table() not in tables_to_drop
         }
+        affected_tables: dict[Table, list[Column]] = {}
+        for c in columns_to_drop:
+            t = c.table()
+            if t not in tables_to_drop:
+                affected_tables.setdefault(t, []).append(c)
+
         measures_to_drop = {m for m in self.ssas.measures if m not in used_measures}
         # TODO: convert to batch deletion
         for t in tables_to_drop:
@@ -164,6 +172,9 @@ class LocalReport(BaseReport):
             c.delete()
         for m in measures_to_drop:
             m.delete()
+        for affected_table, table_columns_to_drop in affected_tables.items():
+            for partition in affected_table.partitions():
+                partition.remove_columns(table_columns_to_drop)
 
 
 def column_finder(c: Column, reference: ModelColumnReference) -> bool:
