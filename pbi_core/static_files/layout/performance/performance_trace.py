@@ -63,10 +63,6 @@ class Subscriber:
 
 
 class PerformanceTrace:
-    # TODO: create a subthread that runs the subscribe on a separate thread,
-    # collecting the records (+n second delay?), saving to a thread-safe list.
-    # Once the commands have been run, run the delete trace on main thread +
-    # close conn on secondary thread. Return all trace records
     def __init__(
         self,
         db: BaseTabularModel,

@@ -1,19 +1,9 @@
 from collections.abc import Callable
-from dataclasses import dataclass
 from typing import Any
 
 from pbi_core.ssas.server.tabular_model.tabular_model import LocalTabularModel
 
-from .performance_trace import PerformanceTrace
-
-
-@dataclass
-class Performance:
-    total_seconds: float
-    rows_retrieved: int
-
-    def __str__(self) -> str:
-        return f"Performance(time={round(self.total_seconds, 2)}, rows={self.rows_retrieved})"
+from .performance_trace import Performance, PerformanceTrace
 
 
 def get_performance(model: LocalTabularModel, func: Callable[[LocalTabularModel], Any]) -> Performance:
