@@ -5,7 +5,7 @@ from pydantic import Discriminator, Json, Tag
 
 from ._base_node import LayoutNode
 from .filters import PrototypeQuery, VisualFilter
-from .visuals import Visual
+from .visuals.main import Visual
 
 if TYPE_CHECKING:
     from .section import Section

@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any, Optional, cast
 from ._base_node import LayoutNode
 from .condition import Condition
 from .sources import AggregationSource, ColumnSource, Entity, MeasureSource, Source
+from .visuals.properties.filter_properties import FilterObjects
 
 if TYPE_CHECKING:
     from .bookmark import BookmarkFilters
@@ -110,7 +111,7 @@ class Filter(LayoutNode):
     expression: Source
     isLockedInViewMode: bool = False
     isHiddenInViewMode: bool = False
-    objects: Any = None
+    objects: Optional[FilterObjects] = None
     filter: Optional[FilterExpression] = None
     displayName: Optional[str] = None
     ordinal: int = 0
@@ -119,6 +120,9 @@ class Filter(LayoutNode):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.displayName or self.name})"
+
+    def __str__(self) -> str:
+        return super().__str__()
 
 
 class VisualFilterExpression(LayoutNode):

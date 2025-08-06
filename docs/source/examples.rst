@@ -57,3 +57,17 @@ This example displays a lineage chart in HTML:
    report = LocalReport.load_pbix("example.pbix", kill_ssas_on_exit=True)
    col = report.ssas.columns.find({"explicit_name": "MeasureColumn"})
    col.get_lineage("parents").to_mermaid().show()
+
+
+This example displays the ability to easily convert PBIX reports to alternate languages:
+
+.. code-block:: python
+   :linenos:
+
+   from pbi_core import LocalReport
+
+   report = LocalReport.load_pbix("example.pbix", kill_ssas_on_exit=True)
+   x = get_static_elements(report.static_files.layout)
+   x.to_excel("multilang.xlsx")
+
+   set_static_elements("multilang1.xlsx", "example.pbix")

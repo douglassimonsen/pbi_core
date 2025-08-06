@@ -40,11 +40,14 @@ class LayoutNode(pydantic.BaseModel):
             ret.extend(child.find_all(cls_type, attributes))
         return ret
 
-    def find(self, cls_type: type[T], attributes: Optional[dict[str, Any]] = None) -> "T":
-        attributes = attributes or {}
-        if isinstance(self, cls_type) and all(
-            getattr(self, field_name) == field_value for field_name, field_value in attributes.items()
-        ):
+    def find(self, cls_type: type[T], attributes: Optional[dict[str, Any] | Callable[[T], bool]] = None) -> "T":
+        if attributes is None:
+            attributes = lambda x: True  # noqa: E731
+        elif isinstance(attributes, dict):
+            attributes = lambda x: all(  # noqa: E731
+                getattr(x, field_name) == field_value for field_name, field_value in attributes.items()
+            )
+        if isinstance(self, cls_type) and attributes(self):
             return self
         for child in self._children():
             try:

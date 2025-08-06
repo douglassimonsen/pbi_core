@@ -49,12 +49,6 @@ class BookmarkPartialVisual(LayoutNode):
     expansionStates: Optional[Any] = None
 
 
-class BookmarkVisualContainer(LayoutNode):
-    filters: Optional[BookmarkFilters] = None
-    singleVisual: BookmarkPartialVisual
-    highlight: Optional[Highlight] = None
-
-
 class BookmarkVisual(LayoutNode):
     filters: Optional[BookmarkFilters] = None
     singleVisual: BookmarkPartialVisual
@@ -92,11 +86,10 @@ class BookmarkOptions(LayoutNode):
 class Bookmark(LayoutNode):
     _parent: "Layout"
 
-    options: Optional[BookmarkOptions] = None
-    explorationState: Optional[ExplorationState] = None
+    options: Optional[BookmarkOptions]
+    explorationState: Optional[ExplorationState]
     name: str  # acts as an ID
     displayName: str
-    children: Optional[Any] = None
 
     def match_current_filters(self) -> None:
         raise NotImplementedError
@@ -107,7 +100,6 @@ class BookmarkFolder(LayoutNode):
     displayName: str
     name: str  # acts as an ID
     children: list[Bookmark]
-    options: Optional[dict[str, Any]] = None
 
 
 def get_bookmark_type(v: Any) -> str:
