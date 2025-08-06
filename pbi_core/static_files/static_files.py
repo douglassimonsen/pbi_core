@@ -25,7 +25,7 @@ class Version:
         return f"{self.major}.{self.minor}"
 
 
-class StaticElements:
+class StaticFiles:
     content_types: BeautifulSoup
     connections: Connections
     # no datamodel, that's handled by the ssas folder
@@ -60,7 +60,7 @@ class StaticElements:
         self.themes = themes
 
     @staticmethod
-    def load_pbix(path: "StrPath") -> "StaticElements":
+    def load_pbix(path: "StrPath") -> "StaticFiles":
         zipfile = ZipFile(path, mode="r")
 
         themes = {}
@@ -96,7 +96,7 @@ class StaticElements:
 
         settings_json = json.loads(zipfile.read("Settings").decode(LAYOUT_ENCODING))
         settings = Settings.model_validate(settings_json)
-        return StaticElements(
+        return StaticFiles(
             content_types, connections, diagram_layout, layout, metadata, version, security_bindings, settings, themes
         )
 

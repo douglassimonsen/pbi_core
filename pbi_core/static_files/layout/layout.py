@@ -44,3 +44,6 @@ class Layout(LayoutNode):
     theme: Optional[str] = None
     pods: list[Pod] = []
     publicCustomVisuals: list[PublicCustomVisual] = []
+
+    def get_static_elements(self) -> None:
+        breakpoint()

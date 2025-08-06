@@ -8,12 +8,12 @@ from .layout import (
     ResourcePackageItemType,
     Section,
 )
-from .static_elements import StaticElements
+from .static_files import StaticFiles
 
 __all__ = [
     "Section",
     "Layout",
-    "StaticElements",
+    "StaticFiles",
     "LayoutNode",
     "ResourcePackage",
     "ResourcePackageDetails",

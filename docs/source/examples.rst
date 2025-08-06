@@ -45,3 +45,15 @@ This example shows how to extract data from report columns
    column = measure.table().columns()[1]  # the first column is a hidden row-count column that can't be used in measures
    values3 = measure.data(column, 10)
    print(values3)
+
+
+This example displays a lineage chart in HTML:
+
+.. code-block:: python
+   :linenos:
+
+   from pbi_core import LocalReport
+
+   report = LocalReport.load_pbix("example.pbix", kill_ssas_on_exit=True)
+   col = report.ssas.columns.find({"explicit_name": "MeasureColumn"})
+   col.get_lineage("parents").to_mermaid().show()

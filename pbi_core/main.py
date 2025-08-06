@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, Any
 
 from .logging import get_logger
 from .ssas.server import BaseTabularModel, LocalTabularModel, get_or_create_local_server
-from .static_elements import StaticElements
+from .static_files import StaticFiles
 
 logger = get_logger()
 
@@ -24,7 +24,7 @@ class LocalReport(BaseReport):
     An instance of a PowerBI report from a local PBIX file.
 
     Args:
-        static_elements (StaticElements): An instance of all the static files (except DataModel) in the PBIX file
+        static_files (StaticElements): An instance of all the static files (except DataModel) in the PBIX file
 
     Examples:
         .. code-block:: python
@@ -39,12 +39,12 @@ class LocalReport(BaseReport):
     ssas: LocalTabularModel
     """An instance of a local SSAS Server"""
 
-    static_elements: StaticElements
+    static_files: StaticFiles
     """Classes representing the static design portions of the PBIX report"""
 
-    def __init__(self, ssas: LocalTabularModel, static_elements: StaticElements) -> None:
+    def __init__(self, ssas: LocalTabularModel, static_files: StaticFiles) -> None:
         self.ssas = ssas
-        self.static_elements = static_elements
+        self.static_files = static_files
 
     @staticmethod
     def load_pbix(path: "StrPath", kill_ssas_on_exit: bool = True) -> "LocalReport":
@@ -61,8 +61,8 @@ class LocalReport(BaseReport):
         logger.info("Loading PBIX", path=path)
         server = get_or_create_local_server(kill_on_exit=kill_ssas_on_exit)
         ssas = server.load_pbix(path)
-        static_elements = StaticElements.load_pbix(path)
-        return LocalReport(ssas=ssas, static_elements=static_elements)
+        static_files = StaticFiles.load_pbix(path)
+        return LocalReport(ssas=ssas, static_files=static_files)
 
     def save_pbix(self, path: "StrPath") -> None:
         """
@@ -71,5 +71,5 @@ class LocalReport(BaseReport):
         Args:
             path (StrPath): the path (relative or absolute) to save the PBIX to
         """
-        self.static_elements.save_pbix(path)
+        self.static_files.save_pbix(path)
         self.ssas.save_pbix(path)
