@@ -3,8 +3,9 @@
 
 from pydantic import ConfigDict
 
-from .._base_node import LayoutNode
-from ..selector import Selector
+from pbi_core.static_files.layout._base_node import LayoutNode
+from pbi_core.static_files.layout.selector import Selector
+
 from .base import BaseVisual
 from .column_property import ColumnProperty
 from .properties.base import Expression

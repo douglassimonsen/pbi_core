@@ -3,13 +3,16 @@ from typing import Any
 
 import jinja2
 
+from pbi_core.logging import get_logger
 from pbi_core.pydantic import BaseValidation
+
+logger = get_logger()
 
 PACKAGE_DIR = Path(__file__).parents[2]
 assert PACKAGE_DIR.name == "pbi_core"
 
 
-class PbyxConfig(BaseValidation):
+class PbiCoreStartupConfig(BaseValidation):
     cert_dir: Path
     msmdsrv_ini: Path
     msmdsrv_exe: Path
@@ -29,10 +32,10 @@ class PbyxConfig(BaseValidation):
         return jinja2.Template(self.msmdsrv_ini.read_text())
 
 
-def get_config() -> PbyxConfig:
+def get_startup_config() -> PbiCoreStartupConfig:
     try:
         with (PACKAGE_DIR / "local" / "settings.json").open("r") as f:
-            return PbyxConfig.model_validate_json(f.read())
+            return PbiCoreStartupConfig.model_validate_json(f.read())
     except FileNotFoundError as e:
         msg = 'Please run "python -m pbi_core setup" to initialize dependencies'
         raise FileNotFoundError(msg) from e

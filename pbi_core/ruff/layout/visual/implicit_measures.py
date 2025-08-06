@@ -1,12 +1,15 @@
-from ....static_files.layout.sources.aggregation import AggregationSource
-from ....static_files.layout.visual_container import VisualContainer
-from ...base_rule import BaseRule, RuleResult
+from pbi_core.ruff.base_rule import BaseRule, RuleResult
+from pbi_core.static_files.layout.sources.aggregation import AggregationSource
+from pbi_core.static_files.layout.visual_container import VisualContainer
 
 
 class DiscourageImplicitMeasures(BaseRule):
     id = "VIZ-001"
     name = "Discourage Implicit Measures"
-    description = """Using implicit measures (e.g., SUM(Column)) in visuals can lead to performance issues and unexpected results. It's recommended to create explicit measures in the model for better control and optimization."""
+    description = (
+        "Using implicit measures (e.g., SUM(Column)) in visuals can lead to performance issues and unexpected results."
+        " It's recommended to create explicit measures in the model for better control and optimization."
+    )
 
     @classmethod
     def check(cls, visual: VisualContainer) -> list[RuleResult]:

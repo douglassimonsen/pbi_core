@@ -9,7 +9,7 @@ import backoff
 import psutil
 
 from pbi_core.logging import get_logger
-from pbi_core.ssas.setup import PbyxConfig, get_config
+from pbi_core.ssas.setup import PbiCoreStartupConfig, get_startup_config
 
 from .utils import get_msmdsrv_info
 
@@ -45,7 +45,7 @@ class SSASProcess:
     _workspace_directory: pathlib.Path
     pid: int = -1
     kill_on_exit: bool
-    config: PbyxConfig
+    startup_config: PbiCoreStartupConfig
 
     def __init__(
         self,
@@ -53,7 +53,7 @@ class SSASProcess:
         workspace_directory: "StrPath | None" = None,
         *,
         kill_on_exit: bool = True,
-        config: PbyxConfig | None = None,
+        startup_config: PbiCoreStartupConfig | None = None,
     ) -> None:
         """__init__ is not intended to be directly called.
 
@@ -63,7 +63,7 @@ class SSASProcess:
             ValueError: when either both or neither of the pid and workspace_directory are specified
 
         """
-        self.config = config or get_config()
+        self.startup_config = startup_config or get_startup_config()
         self.kill_on_exit = kill_on_exit
         atexit.register(self._on_exit)
 
@@ -112,7 +112,7 @@ class SSASProcess:
         (self.workspace_directory() / "msmdsrv.ini").write_text(
             self.config.msmdsrv_ini_template().render(
                 data_directory=self.workspace_directory().absolute().as_posix().replace("/", "\\"),
-                certificate_directory=self.config.cert_dir.absolute().as_posix().replace("/", "\\"),
+                certificate_directory=self.startup_config.cert_dir.absolute().as_posix().replace("/", "\\"),
             ),
         )
 

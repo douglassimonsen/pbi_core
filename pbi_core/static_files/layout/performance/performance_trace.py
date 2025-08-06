@@ -115,7 +115,7 @@ class Performance:
         """Pretty print the performance metrics."""
         command_text = textwrap.indent(self.command_text, " " * 8)
         return f"""Performance(
-    Command: 
+    Command:
 
 {command_text}
 

@@ -1,5 +1,7 @@
-from ....static_files.layout.section import Section
-from ...base_rule import BaseRule, RuleResult
+import itertools
+
+from pbi_core.ruff.base_rule import BaseRule, RuleResult
+from pbi_core.static_files.layout.section import Section
 
 MIN_PIXEL_MISALIGNMNET = 10
 
@@ -14,8 +16,9 @@ class VisualXAlignment(BaseRule):
     def check(cls, section: Section) -> list[RuleResult]:
         ret: list[RuleResult] = []
         vizes = sorted(section.visualContainers, key=lambda viz: viz.x)
-        for viz1, viz2 in zip(vizes, vizes[1:], strict=False):
+        for viz1, viz2 in itertools.pairwise(vizes):
             if abs((viz1.x + viz1.width) - viz2.x) < MIN_PIXEL_MISALIGNMNET:
+                msg = f"Visuals '{viz1.name()}' and '{viz2.name()}' are misaligned by <10 pixels on the x-axis."
                 ret.append(
                     RuleResult(
                         rule=cls,
@@ -23,7 +26,7 @@ class VisualXAlignment(BaseRule):
                             "viz1": viz1.name(),
                             "viz2": viz2.name(),
                         },
-                        message=f"Visuals '{viz1.name()}' and '{viz2.name()}' are misaligned by less than 10 pixels on the x-axis.",
+                        message=msg,
                     ),
                 )
         return ret
@@ -39,8 +42,9 @@ class VisualYAlignment(BaseRule):
     def check(cls, section: Section) -> list[RuleResult]:
         ret: list[RuleResult] = []
         vizes = sorted(section.visualContainers, key=lambda viz: viz.y)
-        for viz1, viz2 in zip(vizes, vizes[1:], strict=False):
-            if abs((viz1.x + viz1.width) - viz2.x) < MIN_PIXEL_MISALIGNMNET:
+        for viz1, viz2 in itertools.pairwise(vizes):
+            if abs((viz1.y + viz1.height) - viz2.y) < MIN_PIXEL_MISALIGNMNET:
+                msg = f"Visuals '{viz1.name()}' and '{viz2.name()}' are misaligned by <10 pixels on the y-axis."
                 ret.append(
                     RuleResult(
                         rule=cls,
@@ -48,7 +52,7 @@ class VisualYAlignment(BaseRule):
                             "viz1": viz1.name(),
                             "viz2": viz2.name(),
                         },
-                        message=f"Visuals '{viz1.name()}' and '{viz2.name()}' are misaligned by less than 10 pixels on the y-axis.",
+                        message=msg,
                     ),
                 )
         return ret

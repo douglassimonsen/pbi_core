@@ -1,4 +1,9 @@
-from ...base_rule import BaseRule, RuleResult
+from typing import TYPE_CHECKING
+
+from pbi_core.ruff.base_rule import BaseRule, RuleResult
+
+if TYPE_CHECKING:
+    from pbi_core.static_files.layout.layout import Layout
 
 
 class ConsistentTitle(BaseRule):
@@ -10,5 +15,7 @@ class ConsistentTitle(BaseRule):
     """
 
     @classmethod
-    def check(cls, layout) -> list[RuleResult]:
+    def check(cls, layout: "Layout") -> list[RuleResult]:
+        if cls and layout:
+            return []
         return []

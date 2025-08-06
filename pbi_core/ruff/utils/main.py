@@ -1,6 +1,6 @@
 from typing import Any
 
-from ...static_files.layout.condition import Expression
+from pbi_core.static_files.layout.condition import Expression
 
 MAX_FONTS = 2
 

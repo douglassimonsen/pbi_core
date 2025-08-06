@@ -1,7 +1,6 @@
 from .general import LayoutRules
-from .theme import ThemeRules
 from .section import SectionRules
+from .theme import ThemeRules
 from .visual import VisualRules
 
-
-__all__ = ["LayoutRules", "ThemeRules", "SectionRules", "VisualRules"]
+__all__ = ["LayoutRules", "SectionRules", "ThemeRules", "VisualRules"]

@@ -1,5 +1,5 @@
-from ....static_files.layout.section import Section
-from ...base_rule import BaseRule, RuleResult
+from pbi_core.ruff.base_rule import BaseRule, RuleResult
+from pbi_core.static_files.layout.section import Section
 
 
 class OutOfBounds(BaseRule):

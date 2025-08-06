@@ -24,7 +24,7 @@ class CapitalizeFunctionNames(BaseRule):
         for function in dax.utils.find_all(ast, dax.exprs.FunctionExpression):
             function_name = function.function_name()
             if not function_name.isupper():
-                message = f"Function names should be upper case. It was '{function_name}', should be '{function_name.upper()}'."
+                message = f"Function names should be upper case. It was '{function_name}', should be '{function_name.upper()}'."  # noqa: E501
                 ret.append(
                     RuleResult(
                         rule=cls,

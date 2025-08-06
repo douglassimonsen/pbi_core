@@ -3,8 +3,8 @@ import datetime
 from pydantic import Json
 
 from pbi_core.pydantic import BaseValidation
+from pbi_core.static_files.layout.sources.column import ColumnSource
 
-from ...static_files.layout.sources.column import ColumnSource
 from .base import SsasRenameRecord, SsasTable
 from .enums import ObjectType
 

@@ -5,8 +5,8 @@ from .base import Expression
 
 # TODO: subclass filters so that the properties have fewer None defaults
 class FilterProperties(LayoutNode):
-    isInvertedSelectionMode: Expression | None = None  # noqa: N815
-    requireSingleSelect: Expression | None = None  # noqa: N815
+    isInvertedSelectionMode: Expression | None = None
+    requireSingleSelect: Expression | None = None
 
 
 class FilterPropertiesContainer(LayoutNode):

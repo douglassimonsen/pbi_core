@@ -8,7 +8,7 @@ import pyadomd
 from bs4 import BeautifulSoup
 
 from pbi_core.logging import get_logger
-from pbi_core.ssas.setup import get_config
+from pbi_core.ssas.setup import get_startup_config
 
 from ._physical_local_server import SSASProcess
 from .tabular_model import BaseTabularModel, LocalTabularModel
@@ -174,15 +174,17 @@ class LocalServer(BaseServer):
         *,
         kill_on_exit: bool = True,
     ) -> None:
-        config = get_config()
         if pid is not None:
-            self.physical_process = SSASProcess(pid=pid, kill_on_exit=kill_on_exit, config=config)
+            self.physical_process = SSASProcess(pid=pid, kill_on_exit=kill_on_exit, startup_config=None)
         else:
-            workspace_directory = workspace_directory or (config.workspace_dir / datetime.now(UTC).strftime(DT_FORMAT))
+            startup_config = get_startup_config()
+            workspace_directory = workspace_directory or (
+                startup_config.workspace_dir / datetime.now(UTC).strftime(DT_FORMAT)
+            )
             self.physical_process = SSASProcess(
                 workspace_directory=workspace_directory,
                 kill_on_exit=kill_on_exit,
-                config=config,
+                startup_config=startup_config,
             )
         super().__init__(host, self.physical_process.port)
 

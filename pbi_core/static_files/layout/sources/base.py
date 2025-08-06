@@ -69,9 +69,6 @@ class SourceRef(LayoutNode):
     def table(self) -> str:
         return self.SourceRef.table()
 
-    def column(self) -> str:
-        return "NA"
-
 
 def get_source_expression_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):

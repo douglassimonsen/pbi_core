@@ -5,7 +5,7 @@ from pathlib import Path
 import bs4
 import inquirer
 
-from .config import PACKAGE_DIR, PbyxConfig
+from .config import PACKAGE_DIR, PbiCoreStartupConfig
 
 
 def get_msmdsrv_exe_path() -> str | None:
@@ -125,6 +125,6 @@ def interactive_setup() -> None:
         if PACKAGE_DIR in v.parents:
             config_data[k] = v.relative_to(PACKAGE_DIR)
 
-    out = PbyxConfig(**config_data).model_dump_json(indent=2)
+    out = PbiCoreStartupConfig(**config_data).model_dump_json(indent=2)
     with (target_dir / "settings.json").open("w") as f:
         f.write(out)

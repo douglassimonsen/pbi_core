@@ -1,8 +1,8 @@
-from ....static_files.layout.layout import Layout
-from ....static_files.layout.visual_container import VisualContainer
-from ....static_files.layout.visuals.properties.base import LiteralExpression
-from ...base_rule import BaseRule, RuleResult
-from ...utils.main import get_config_values
+from pbi_core.ruff.base_rule import BaseRule, RuleResult
+from pbi_core.ruff.utils.main import get_config_values
+from pbi_core.static_files.layout.layout import Layout
+from pbi_core.static_files.layout.visual_container import VisualContainer
+from pbi_core.static_files.layout.visuals.properties.base import LiteralExpression
 
 MAX_FONTS = 2
 

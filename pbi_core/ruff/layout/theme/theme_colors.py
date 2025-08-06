@@ -1,4 +1,6 @@
 # NUMPTY PATH for colormath
+from typing import Any
+
 import numpy as np
 from colorblind import colorblind
 from colormath.color_conversions import convert_color
@@ -9,11 +11,12 @@ from pbi_core.ruff.base_rule import BaseRule, RuleResult
 from pbi_core.static_files.file_classes.theme import Theme
 
 
-def patch_asscalar(a):
+def patch_asscalar(a: Any) -> Any:
     return a.item()
 
 
 np.asscalar = patch_asscalar
+MIN_COLOR_DISTANCE = 3
 
 
 def hex_to_rbg(hex_color: str) -> tuple[int, int, int]:
@@ -36,6 +39,8 @@ class ThemeColors(BaseRule):
 
     @classmethod
     def check(cls, themes: dict[str, Theme]) -> list[RuleResult]:
+        if not themes and cls:
+            return []
         return []
 
 
@@ -61,7 +66,7 @@ class ThemeColorsProtanopia(ThemeColors):
             for c2 in protanopia:
                 if c1 == c2:
                     continue
-                if delta_e_cie2000(c1, c2) < 3:
+                if delta_e_cie2000(c1, c2) < MIN_COLOR_DISTANCE:
                     conflicting_colors.append((c1, c2))
         print(conflicting_colors)
         return []
@@ -77,6 +82,8 @@ class ThemeColorsDeuteranopia(ThemeColors):
 
     @classmethod
     def check(cls, themes: dict[str, Theme]) -> list[RuleResult]:
+        if not themes and cls:
+            return []
         return []
 
 
@@ -90,6 +97,8 @@ class ThemeColorsTritanopia(ThemeColors):
 
     @classmethod
     def check(cls, themes: dict[str, Theme]) -> list[RuleResult]:
+        if not themes and cls:
+            return []
         return []
 
 
