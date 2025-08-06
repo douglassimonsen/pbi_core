@@ -149,11 +149,21 @@ class LocalServer(BaseServer):
         if db_name is None:
             db_name = path.stem
         db_name = self.remove_invalid_db_name_chars(db_name)
-        self.query_xml(
-            COMMAND_TEMPLATES["image_load.xml"].render(
-                db_name=db_name, source_path=self.sanitize_xml(path.absolute().as_posix())
-            )
+        load_command = COMMAND_TEMPLATES["image_load.xml"].render(
+            db_name=db_name, source_path=self.sanitize_xml(path.absolute().as_posix())
         )
+        try:
+            self.query_xml(load_command)
+        except pyadomd.AdomdErrorResponseException as e:
+            if (
+                "user does not have permission to restore the database, or the database already exists and AllowOverwrite is not specified"
+                in str(e.Message)
+            ):
+                logger.warn("Removing old version of PBIX data model for new version", db_name=db_name)
+                self.query_xml(COMMAND_TEMPLATES["db_delete.xml"].render(db_name=db_name))
+                self.query_xml(load_command)
+            else:
+                raise
         logger.info("Tabular Model load complete")
         tab_model = LocalTabularModel(db_name=db_name, server=self, pbix_path=path)
         tab_model.sync_from()

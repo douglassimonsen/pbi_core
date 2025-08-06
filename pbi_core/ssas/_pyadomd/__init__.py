@@ -1,1 +1,3 @@
-from .pyadomd import Pyadomd as Pyadomd
+from .pyadomd import Pyadomd
+
+__all__ = ["Pyadomd"]
