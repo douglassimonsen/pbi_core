@@ -2,8 +2,7 @@ import datetime
 from enum import IntEnum
 from typing import Any, Optional
 
-from ..server.tabular_model import SsasTable
-from ._commands import SsasRenameCommands
+from ..server.tabular_model import SsasRenameTable, SsasTable
 
 
 class ObjectType(IntEnum):
@@ -17,12 +16,11 @@ class ObjectType(IntEnum):
     QUERY_GROUP = 51
 
 
-class Annotation(SsasTable):
+class Annotation(SsasRenameTable):
     object_id: int
     object_type: ObjectType
     name: str
     value: Optional[Any] = None
-    _commands: SsasRenameCommands
 
     modified_time: datetime.datetime
 

@@ -1,6 +1,5 @@
-from ..server.tabular_model import SsasTable
-from ._commands import SsasRenameCommands
+from ..server.tabular_model import SsasRenameTable
 
 
-class DataSource(SsasTable):
-    _commands: SsasRenameCommands
+class DataSource(SsasRenameTable):
+    pass

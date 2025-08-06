@@ -1,10 +1,7 @@
-from ..server.tabular_model import SsasTable
-from ._commands import SsasBaseCommands
+from ..server.tabular_model import SsasBaseTable
 
 
-class DetailRowDefinition(SsasTable):
-    _commands: SsasBaseCommands
-
+class DetailRowDefinition(SsasBaseTable):
     @classmethod
     def _db_type_name(cls) -> str:
         return "DetailRowsDefinition"

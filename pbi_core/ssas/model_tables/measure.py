@@ -2,16 +2,14 @@ import datetime
 from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
-from ..server.tabular_model import SsasTable
-from ._commands import SsasRenameCommands
+from ..server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
     from .kpi import KPI
     from .table import Table
 
 
-class Measure(SsasTable):
-    _commands: SsasRenameCommands
+class Measure(SsasRenameTable):
     data_category: Optional[str] = None
     data_type: int
     description: Optional[str] = None

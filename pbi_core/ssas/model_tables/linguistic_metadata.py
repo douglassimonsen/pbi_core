@@ -1,15 +1,13 @@
 import datetime
 from typing import TYPE_CHECKING, Any
 
-from ..server.tabular_model import SsasTable
-from ._commands import SsasBaseCommands
+from ..server.tabular_model import SsasBaseTable
 
 if TYPE_CHECKING:
     from .culture import Culture
 
 
-class LinguisticMetadata(SsasTable):
-    _commands: SsasBaseCommands
+class LinguisticMetadata(SsasBaseTable):
     content: Any
     content_type: int
     culture_id: int

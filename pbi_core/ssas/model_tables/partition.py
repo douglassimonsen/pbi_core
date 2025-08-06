@@ -2,8 +2,7 @@ import datetime
 from enum import IntEnum
 from typing import TYPE_CHECKING, Optional
 
-from ..server.tabular_model import SsasTable
-from ._commands import SsasRefreshCommands
+from ..server.tabular_model import SsasRefreshTable
 
 if TYPE_CHECKING:
     from .query_group import QueryGroup
@@ -29,8 +28,7 @@ class PartitionType(IntEnum):
     Query = 4  # not verified
 
 
-class Partition(SsasTable):
-    _commands: SsasRefreshCommands
+class Partition(SsasRefreshTable):
     data_view: int
     mode: PartitionMode
     name: str

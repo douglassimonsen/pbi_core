@@ -2,8 +2,7 @@ import datetime
 from typing import TYPE_CHECKING, ClassVar, Optional
 from uuid import UUID
 
-from ..server.tabular_model import SSASBaseTable
-from ._commands import SsasRenameCommands
+from ..server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
     from .attribute_hierarchy import AttributeHierarchy
@@ -12,12 +11,12 @@ if TYPE_CHECKING:
     from .table import Table
 
 
-class Column(SSASBaseTable):
+class Column(SsasRenameTable):
     _field_mapping: ClassVar[dict[str, str]] = {
         "description": "Description",
     }
     _read_only_fields = ("table_id",)
-    _commands: SsasRenameCommands
+
     alignment: int
     attribute_hierarchy_id: int
     column_origin_id: Optional[int] = None

@@ -3,12 +3,10 @@ from typing import Any, Optional
 
 from pydantic import Json
 
-from ..server.tabular_model import SsasTable
-from ._commands import SsasModelCommands
+from ..server.tabular_model import SsasModelTable
 
 
-class Model(SsasTable):
-    _commands: SsasModelCommands
+class Model(SsasModelTable):
     culture: str
     data_access_options: Json[dict[str, Any]]
     data_source_default_max_connections: int

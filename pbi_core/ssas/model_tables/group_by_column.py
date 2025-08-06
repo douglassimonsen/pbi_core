@@ -1,6 +1,5 @@
-from ..server.tabular_model import SsasTable
-from ._commands import NoCommands
+from ..server.tabular_model import SsasRenameTable
 
 
-class GroupByColumn(SsasTable):
-    _commands: NoCommands
+class GroupByColumn(SsasRenameTable):
+    pass

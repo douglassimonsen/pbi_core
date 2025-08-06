@@ -2,8 +2,7 @@ import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID
 
-from ..server.tabular_model import SsasTable
-from ._commands import SsasRenameCommands
+from ..server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
     from .level import Level
@@ -11,8 +10,7 @@ if TYPE_CHECKING:
     from .variation import Variation
 
 
-class Hierarchy(SsasTable):
-    _commands: SsasRenameCommands
+class Hierarchy(SsasRenameTable):
     hide_members: int
     hierarchy_storage_id: int
     is_hidden: bool

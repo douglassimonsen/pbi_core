@@ -2,16 +2,14 @@ import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID
 
-from ..server.tabular_model import SsasTable
-from ._commands import SsasRenameCommands
+from ..server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
     from .column import Column
     from .hierarchy import Hierarchy
 
 
-class Level(SsasTable):
-    _commands: SsasRenameCommands
+class Level(SsasRenameTable):
     column_id: int
     hierarchy_id: int
     lineage_tag: UUID

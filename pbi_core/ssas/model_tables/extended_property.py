@@ -1,6 +1,5 @@
-from ..server.tabular_model import SsasTable
-from ._commands import SsasRenameCommands
+from ..server.tabular_model import SsasRenameTable
 
 
-class ExtendedProperty(SsasTable):
-    _commands: SsasRenameCommands
+class ExtendedProperty(SsasRenameTable):
+    pass

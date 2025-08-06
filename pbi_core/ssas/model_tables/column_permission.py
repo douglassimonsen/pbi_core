@@ -1,6 +1,5 @@
-from ..server.tabular_model import SsasTable
-from ._commands import SsasBaseCommands
+from ..server.tabular_model import SsasBaseTable
 
 
-class ColumnPermission(SsasTable):
-    _commands: SsasBaseCommands
+class ColumnPermission(SsasBaseTable):
+    pass

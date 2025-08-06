@@ -138,7 +138,7 @@ class LocalTabularModel(BaseTabularModel):
 
 def discover_xml_to_dict(xml: BeautifulSoup) -> dict[str, list[dict[Any, Any]]]:
     assert xml.results is not None
-    results: list[Tag] = list(xml.results)  # apparently, this is actually fine
+    results: list[Tag] = list(xml.results)  # type: ignore
     results[-1]["name"] = "CALC_DEPENDENCY"
 
     return {
@@ -204,52 +204,8 @@ class SsasTable(pydantic.BaseModel):
     def query_xml(self, query: str, db_name: Optional[str] = None) -> None:
         self.tabular_model.server.query_xml(query, db_name)
 
-    def model_post_init(self, __context: Any) -> None:
-        from ..model_tables import _commands
 
-        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
-        match self.__annotations__["_commands"]:
-            case _commands.SsasRefreshCommands:
-                self._commands = _commands.SsasRefreshCommands(
-                    alter=templates["alter.xml"],
-                    create=templates["create.xml"],
-                    delete=templates["delete.xml"],
-                    rename=templates["rename.xml"],
-                    refresh=templates["refresh.xml"],
-                )
-            case _commands.SsasRenameCommands:
-                self._commands = _commands.SsasRenameCommands(
-                    alter=templates["alter.xml"],
-                    create=templates["create.xml"],
-                    delete=templates["delete.xml"],
-                    rename=templates["rename.xml"],
-                )
-            case _commands.SsasBaseCommands:
-                self._commands = _commands.SsasBaseCommands(
-                    alter=templates["alter.xml"], create=templates["create.xml"], delete=templates["delete.xml"]
-                )
-            case _commands.SsasModelCommands:
-                self._commands = _commands.SsasModelCommands(
-                    alter=templates["alter.xml"], refresh=templates["refresh.xml"], rename=templates["rename.xml"]
-                )
-            case _commands.NoCommands:
-                self._commands = _commands.NoCommands()
-            case _:
-                raise ValueError(f"Unknown type for _commands property on table: {self._db_type_name()}")
-
-
-class SSASBaseTable(SsasTable):
-    def model_post_init(self, __context: Any) -> None:
-        from ..model_tables import _commands
-
-        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
-
-        self._commands = _commands.SsasBaseCommands(
-            alter=templates["alter.xml"],
-            create=templates["create.xml"],
-            delete=templates["delete.xml"],
-        )
-
+class SsasAlter(SsasTable):
     def alter(self) -> None:
         fields = []
         for field_name, field_value in self.model_dump().items():
@@ -267,3 +223,78 @@ class SSASBaseTable(SsasTable):
         )
         logger.info("Syncing Changes to SSAS", obj=self._db_type_name())
         self.query_xml(xml_alter_command, db_name=self.tabular_model.db_name)
+
+
+class SsasRename(SsasTable):
+    def rename(self) -> None:
+        pass
+
+
+class SsasCreate(SsasTable):
+    def create(self) -> None:
+        pass
+
+
+class SsasDelete(SsasTable):
+    def delete(self) -> None:
+        pass
+
+
+class SsasRefresh(SsasTable):
+    def refresh(self) -> None:
+        pass
+
+
+class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
+    def model_post_init(self, __context: Any) -> None:
+        from ..model_tables import _commands
+
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
+
+        self._commands = _commands.SsasBaseCommands(
+            alter=templates["alter.xml"],
+            create=templates["create.xml"],
+            delete=templates["delete.xml"],
+        )
+
+
+class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
+    def model_post_init(self, __context: Any) -> None:
+        from ..model_tables import _commands
+
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
+
+        self._commands = _commands.SsasRenameCommands(
+            alter=templates["alter.xml"],
+            create=templates["create.xml"],
+            delete=templates["delete.xml"],
+            rename=templates["rename.xml"],
+        )
+
+
+class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefresh):
+    def model_post_init(self, __context: Any) -> None:
+        from ..model_tables import _commands
+
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
+
+        self._commands = _commands.SsasRenameCommands(
+            alter=templates["alter.xml"],
+            create=templates["create.xml"],
+            delete=templates["delete.xml"],
+            rename=templates["rename.xml"],
+            refresh=templates["refresh.xml"],
+        )
+
+
+class SsasModelTable(SsasAlter, SsasRefresh, SsasRename):
+    def model_post_init(self, __context: Any) -> None:
+        from ..model_tables import _commands
+
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
+
+        self._commands = _commands.SsasModelCommands(
+            alter=templates["alter.xml"],
+            refresh=templates["refresh.xml"],
+            rename=templates["rename.xml"],
+        )

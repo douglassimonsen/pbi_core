@@ -2,16 +2,14 @@ import datetime
 from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
-from ..server.tabular_model import SsasTable
-from ._commands import SsasRenameCommands
+from ..server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
     from .model import Model
     from .query_group import QueryGroup
 
 
-class Expression(SsasTable):
-    _commands: SsasRenameCommands
+class Expression(SsasRenameTable):
     description: Optional[str] = None
     expression: str
     kind: int

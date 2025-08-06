@@ -2,12 +2,10 @@ import datetime
 from typing import Optional
 from uuid import UUID
 
-from ..server.tabular_model import SsasTable
-from ._commands import SsasRefreshCommands
+from ..server.tabular_model import SsasRefreshTable
 
 
-class Table(SsasTable):
-    _commands: SsasRefreshCommands
+class Table(SsasRefreshTable):
     alternate_source_precedence: int
     data_category: Optional[str] = None
     description: Optional[str] = None

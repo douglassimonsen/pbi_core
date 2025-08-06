@@ -1,8 +1,7 @@
 import datetime
 from typing import TYPE_CHECKING, Optional
 
-from ..server.tabular_model import SsasTable
-from ._commands import SsasRenameCommands
+from ..server.tabular_model import SsasRenameTable
 
 if TYPE_CHECKING:
     from .column import Column
@@ -11,8 +10,7 @@ if TYPE_CHECKING:
     from .variation import Variation
 
 
-class Relationship(SsasTable):
-    _commands: SsasRenameCommands
+class Relationship(SsasRenameTable):
     cross_filtering_behavior: int
     from_column_id: int
     from_cardinality: int
