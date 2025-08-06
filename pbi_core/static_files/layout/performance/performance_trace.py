@@ -1,4 +1,6 @@
 import datetime
+import json
+import math
 import threading
 import time
 from collections.abc import Iterable
@@ -26,10 +28,21 @@ TRACE_DEFAULT_EVENTS = (
     TraceEvents.VERTIPAQ_SE_QUERY_BEGIN,
     TraceEvents.VERTIPAQ_SE_QUERY_END,
     TraceEvents.VERTIPAQ_SE_QUERY_CACHE_MATCH,
+    TraceEvents.VERTIPAQ_SE_QUERY_CACHE_MISS,
     TraceEvents.AGGREGATE_TABLE_REWRITE_QUERY,
     TraceEvents.DIRECT_QUERY_END,
     TraceEvents.QUERY_BEGIN,
+    TraceEvents.EXECUTION_METRICS,
 )
+
+
+def pretty_size(n: int) -> str:
+    units = ["B"] + [f"{p}iB" for p in "KMGTPEZY"]
+
+    prefix = int(math.log(max(n, 1), 1024))
+    prefix = min(prefix, len(units) - 1)
+    pretty_n = round(n / 1024**prefix, 1)
+    return f"{pretty_n} {units[prefix]}"
 
 
 @dataclass
@@ -38,16 +51,35 @@ class ThreadResult:
     rows_returned: int
 
     def get_performance(self, trace_records: list[dict[str, Any]]) -> "Performance":
-        print([t["EventClass"] for t in trace_records])
+        event_info = {}
+        for record in trace_records:
+            event_info[record["EventClass"]] = record
+
+        execution_metrics = json.loads(event_info["EXECUTION_METRICS"]["TextData"])
+        command_text = event_info["QUERY_END"]["TextData"]
+        start_datetime = datetime.datetime.strptime(execution_metrics["timeStart"], "%Y-%m-%dT%H:%M:%S.%f%z")
+        end_datetime = datetime.datetime.strptime(execution_metrics["timeEnd"], "%Y-%m-%dT%H:%M:%S.%f%z")
+        total_duration = execution_metrics["durationMs"]
+        total_cpu_time = execution_metrics["totalCpuTimeMs"]
+        query_cpu_time = execution_metrics["queryProcessingCpuTimeMs"]
+        vertipaq_cpu_time = execution_metrics["vertipaqJobCpuTimeMs"]
+        execution_delay = execution_metrics["executionDelayMs"]
+        approximate_peak_consumption_kb = execution_metrics["approximatePeakMemConsumptionKB"]
+
         for record in trace_records:
             if record.get("EventClass") == "QUERY_END":
                 return Performance(
-                    command_text=record["TextData"],
-                    start_datetime=record["StartTime"],
-                    end_datetime=record["EndTime"],
-                    cpu_time=record["CPUTime"],
-                    duration=record["Duration"],
+                    command_text=command_text,
+                    start_datetime=start_datetime,
+                    end_datetime=end_datetime,
+                    total_duration=total_duration,
+                    total_cpu_time=total_cpu_time,
+                    query_cpu_time=query_cpu_time,
+                    vertipaq_cpu_time=vertipaq_cpu_time,
+                    execution_delay=execution_delay,
+                    approximate_peak_consumption_kb=approximate_peak_consumption_kb,
                     rows_returned=self.rows_returned,
+                    full_trace_log=trace_records,
                 )
         msg = f"Command '{self.command}' not found in trace records."
         raise ValueError(msg)
@@ -58,16 +90,21 @@ class Performance:
     command_text: str
     start_datetime: datetime.datetime
     end_datetime: datetime.datetime
-    cpu_time: int
+    query_cpu_time: int
     # duration is the total time in milliseconds
-    duration: int
+    total_duration: int
+    total_cpu_time: int
+    vertipaq_cpu_time: int
+    execution_delay: int
+    approximate_peak_consumption_kb: int
     rows_returned: int
+    full_trace_log: list[dict[str, Any]]
 
     def __repr__(self) -> str:
-        cmd: str = self.command_text[:100].replace("\n", "\\n")
-        duration = round(self.duration / 1000, 2)
-        cpu_time = round(self.cpu_time / 1000, 2)
-        return f"Performance(duration={duration}, cpu_time={cpu_time}, rows={self.rows_returned}, command={cmd})"
+        total_duration = round(self.total_duration / 1000, 2)
+        total_cpu_time = round(self.total_cpu_time / 1000, 2)
+        approximate_peak_consumption = pretty_size(self.approximate_peak_consumption_kb * 1024)
+        return f"Performance(rows={self.rows_returned}, total_duration={total_duration}, total_cpu_time={total_cpu_time}, peak_consumption={approximate_peak_consumption}"  # noqa: E501
 
 
 class Subscriber:
@@ -78,6 +115,7 @@ class Subscriber:
         self.cursor.execute_dax(subscription_create_command)
         self.events = events
         self.trace_records = {}
+        self.command_request_ids: dict[str, str] = {}
         self.thread = threading.Thread(target=self.poll_cursor, daemon=True)
         self.thread.start()
 
@@ -86,8 +124,9 @@ class Subscriber:
         for record in self.cursor.fetch_stream():
             if "EventClass" in record:
                 record["EventClass"] = event_mapping[record["EventClass"]]
+            self.trace_records.setdefault(record["RequestID"], []).append(record)
             if "TextData" in record:
-                self.trace_records.setdefault(record["TextData"], []).append(record)
+                self.command_request_ids[record["TextData"]] = record["RequestID"]
 
     def kill_polling(self) -> None:
         if self.thread.is_alive():
@@ -116,8 +155,6 @@ class PerformanceTrace:
             stop_time=next_day,
             events=self.events,
         )
-        print(self.trace_create_command)
-        exit()
         self.subscription_create_command = TRACE_TEMPLATES["subscription_create.xml"].render(
             trace_name=trace_name,
             subscription_name=subscription_name,
@@ -161,11 +198,15 @@ class PerformanceTrace:
             command_results = list(dax_executor.map(thread_func, self.commands))
 
         missing_subscription_records = command_results
-        for _ in range(15):
+        for _ in range(5):
             # Testing for 15 seconds to check that all commands have an entry in the trace
             new_missing_subscription_records = []
             for command in missing_subscription_records:
-                command_events = self.subscriber.trace_records.get(command.command, [])
+                request_id = self.subscriber.command_request_ids.get(command.command)
+                if request_id is None:
+                    new_missing_subscription_records.append(command)
+                    continue
+                command_events = self.subscriber.trace_records.get(request_id, [])
                 if not any(x["EventClass"] == "QUERY_END" for x in command_events):
                     new_missing_subscription_records.append(command)
 
@@ -181,7 +222,9 @@ class PerformanceTrace:
         self.subscriber.kill_polling()
 
         return [
-            command_result.get_performance(self.subscriber.trace_records[command_result.command])
+            command_result.get_performance(
+                self.subscriber.trace_records[self.subscriber.command_request_ids[command_result.command]],
+            )
             for command_result in command_results
         ]
 

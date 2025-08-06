@@ -91,6 +91,7 @@ class TraceEvents(IntEnum):
     AGGREGATE_TABLE_REWRITE_INFO = 132  # Aggregate Table Rewrite Info
 
     JOB_GRAPH = 134  # Collection of Job Graph related events.
+    EXECUTION_METRICS = 136
 
     def get_columns(self) -> type[IntEnum]:
         return event_column_mapping[self]
@@ -624,6 +625,8 @@ class DiscoverBeginColumns(IntEnum):
     REQUESTPROPERTIES = (
         45  # Contains the XML for Analysis (XMLA) request properties associated with the discover event.
     )
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class DiscoverEndColumns(IntEnum):
@@ -649,6 +652,8 @@ class DiscoverEndColumns(IntEnum):
     TEXTDATA = 42  # Contains the text data associated with the event.
     SERVERNAME = 43  # Contains the name of the instance on which the discover event occurred.
     REQUESTPROPERTIES = 45  # Contains the properties in the XMLA request.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class ServerStateDiscoverBeginColumns(IntEnum):
@@ -667,6 +672,8 @@ class ServerStateDiscoverBeginColumns(IntEnum):
     TEXTDATA = 42  # Contains the text data associated with the event.
     SERVERNAME = 43  # Contains the name of the instance on which the server state discover event occurred.
     REQUESTPROPERTIES = 45  # Contains the properties of the current XMLA request.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class ServerStateDiscoverDataColumns(IntEnum):
@@ -699,6 +706,8 @@ class ServerStateDiscoverEndColumns(IntEnum):
     SPID = 41  # Contains the server process ID (SPID) that uniquely identifies the user session associated with the server state discover event. The SPID directly corresponds to the session GUID used by XMLA.
     TEXTDATA = 42  # Contains the text data associated with server response to the discover request.
     SERVERNAME = 43  # Contains the name of the instance on which the server state discover event occurred.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class ErrorEventColumns(IntEnum):
@@ -721,6 +730,8 @@ class ErrorEventColumns(IntEnum):
     SERVERNAME = (
         43  # Contains the name of the server running Analysis Services instance on which the error event occurred.
     )
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class FileLoadBeginColumns(IntEnum):
@@ -739,6 +750,8 @@ class FileLoadBeginColumns(IntEnum):
     SESSIONID = 39  # Session GUID.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class FileLoadEndColumns(IntEnum):
@@ -763,6 +776,8 @@ class FileLoadEndColumns(IntEnum):
     SESSIONID = 39  # Session GUID.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class FileSaveBeginColumns(IntEnum):
@@ -781,6 +796,8 @@ class FileSaveBeginColumns(IntEnum):
     SESSIONID = 39  # Session GUID.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class FileSaveEndColumns(IntEnum):
@@ -805,6 +822,8 @@ class FileSaveEndColumns(IntEnum):
     SESSIONID = 39  # Session GUID.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class PageOutBeginColumns(IntEnum):
@@ -823,6 +842,8 @@ class PageOutBeginColumns(IntEnum):
     SESSIONID = 39  # Session GUID.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class PageOutEndColumns(IntEnum):
@@ -847,6 +868,8 @@ class PageOutEndColumns(IntEnum):
     SESSIONID = 39  # Session GUID.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class PageInBeginColumns(IntEnum):
@@ -865,6 +888,8 @@ class PageInBeginColumns(IntEnum):
     SESSIONID = 39  # Session GUID.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class PageInEndColumns(IntEnum):
@@ -889,6 +914,8 @@ class PageInEndColumns(IntEnum):
     SESSIONID = 39  # Session GUID.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class DeadlockColumns(IntEnum):
@@ -897,6 +924,8 @@ class DeadlockColumns(IntEnum):
     DATABASENAME = 28  # Name of the database in which the statement of the user is running.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class LockTimeoutColumns(IntEnum):
@@ -916,6 +945,8 @@ class LockTimeoutColumns(IntEnum):
     NTCANONICALUSERNAME = 40  # Contains the user name associated with the command event. Depending on the environment, the user name is in the following form: - Windows user account (DOMAIN\UserName) - User Principal Name (UPN) (username@domain.com) - Service Principal Name (SPN) (appid@tenantid) - Power BI Service Account (Power BI Service)
     SPID = 41  # Server process ID. This uniquely identifies a user session. This directly corresponds to the session GUID used by XML/A.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class LockAcquiredColumns(IntEnum):
@@ -932,6 +963,8 @@ class LockAcquiredColumns(IntEnum):
     SPID = 41  # Server process ID. This uniquely identifies a user session. This directly corresponds to the session GUID used by XML/A.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class LockReleasedColumns(IntEnum):
@@ -948,6 +981,8 @@ class LockReleasedColumns(IntEnum):
     SPID = 41  # Server process ID. This uniquely identifies a user session. This directly corresponds to the session GUID used by XML/A.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class LockWaitingColumns(IntEnum):
@@ -964,6 +999,8 @@ class LockWaitingColumns(IntEnum):
     SPID = 41  # Server process ID. This uniquely identifies a user session. This directly corresponds to the session GUID used by XML/A.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class AuditLoginColumns(IntEnum):
@@ -981,6 +1018,8 @@ class AuditLoginColumns(IntEnum):
     APPLICATIONNAME = 37  # Name of the client application that created the connection to the server. This column is populated with the values passed by the application rather than the displayed name of the program.
     NTCANONICALUSERNAME = 40  # Contains the user name associated with the command event. Depending on the environment, the user name is in the following form: - Windows user account (DOMAIN\UserName) - User Principal Name (UPN) (username@domain.com) - Service Principal Name (SPN) (appid@tenantid) - Power BI Service Account (Power BI Service)
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class AuditLogoutColumns(IntEnum):
@@ -998,6 +1037,8 @@ class AuditLogoutColumns(IntEnum):
     APPLICATIONNAME = 37  # Name of the client application that created the connection to the server. This column is populated with the values passed by the application rather than the displayed name of the program.
     NTCANONICALUSERNAME = 40  # Contains the user name associated with the command event. Depending on the environment, the user name is in the following form: - Windows user account (DOMAIN\UserName) - User Principal Name (UPN) (username@domain.com) - Service Principal Name (SPN) (appid@tenantid) - Power BI Service Account (Power BI Service)
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class AuditServerStartsAndStopsColumns(IntEnum):
@@ -1009,6 +1050,8 @@ class AuditServerStartsAndStopsColumns(IntEnum):
     ERROR = 24  # Error number of a given event.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class AuditObjectPermissionEventColumns(IntEnum):
@@ -1032,6 +1075,8 @@ class AuditObjectPermissionEventColumns(IntEnum):
     SPID = 41  # Server process ID. This uniquely identifies a user session. This directly corresponds to the session GUID used by XML/A.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class AuditAdminOperationsEventColumns(IntEnum):
@@ -1051,6 +1096,8 @@ class AuditAdminOperationsEventColumns(IntEnum):
     SPID = 41  # Server process ID. This uniquely identifies a user session. This directly corresponds to the session GUID used by XML/A.
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class NotificationColumns(IntEnum):
@@ -1076,6 +1123,8 @@ class NotificationColumns(IntEnum):
     TEXTDATA = 42  # Contains the text data associated with the notification event.
     SERVERNAME = 43  # Contains the name of the Analysis Services instance on which the notification event occurred.
     REQUESTPROPERTIES = 45  # Contains the properties of the XMLA request.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class UserDefinedColumns(IntEnum):
@@ -1092,6 +1141,8 @@ class UserDefinedColumns(IntEnum):
     SPID = 41  # Contains the server process ID (SPID) that uniquely identifies the user session associated with the notification event. The SPID directly corresponds to the session GUID used by XMLA.
     TEXTDATA = 42  # Contains the text data associated with the notification event.
     SERVERNAME = 43  # Contains the name of the Analysis Services instance on which the notification event occurred.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class QueryBeginColumns(IntEnum):
@@ -1114,6 +1165,8 @@ class QueryBeginColumns(IntEnum):
         44  # Contains the parameters for parameterized queries and commands associated with the query event.
     )
     REQUESTPROPERTIES = 45  # Contains the properties of the XMLA request.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class QueryEndColumns(IntEnum):
@@ -1138,6 +1191,8 @@ class QueryEndColumns(IntEnum):
     SPID = 41  # Contains the server process ID (SPID) that uniquely identifies the user session associated with the query event. The SPID directly corresponds to the session GUID used by XMLA.
     TEXTDATA = 42  # Contains the text data associated with the query event.
     SERVERNAME = 43  # Contains the name of the instance on which the query event occurred.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class ExistingConnectionColumns(IntEnum):
@@ -1151,6 +1206,8 @@ class ExistingConnectionColumns(IntEnum):
     APPLICATIONNAME = 37  # Name of the client application that created the connection to the server. This column is populated with the values passed by the application rather than the displayed name of the program.
     SPID = 41  # Server process ID. This uniquely identifies a user session. This directly corresponds to the session GUID used by XML/A.
     SERVERNAME = 43  # Name of the server producing the event.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class ExistingSessionColumns(IntEnum):
@@ -1170,6 +1227,8 @@ class ExistingSessionColumns(IntEnum):
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
     REQUESTPROPERTIES = 45  # XMLA request properties.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class SessionInitializeColumns(IntEnum):
@@ -1187,6 +1246,8 @@ class SessionInitializeColumns(IntEnum):
     TEXTDATA = 42  # Text data associated with the event.
     SERVERNAME = 43  # Name of the server producing the event.
     REQUESTPROPERTIES = 45  # XMLA request properties.
+    ACTIVITYID = 46
+    REQUESTID = 47
 
 
 class CommandBeginColumns(IntEnum):
@@ -1249,6 +1310,16 @@ class CommandEndColumns(IntEnum):
     IDENTITY = 55
 
 
+class ExecutionMetricsColumns(IntEnum):
+    EVENTCLASS = 0
+    DATABASENAME = 28
+    APPLICATIONNAME = 37
+    SPID = 41
+    TEXTDATA = 42
+    ACTIVITYID = 46
+    REQUESTID = 47
+
+
 event_column_mapping: dict[TraceEvents, type[IntEnum]] = {
     TraceEvents.AGGREGATE_TABLE_REWRITE_INFO: AggregateTableRewriteInfoColumns,
     TraceEvents.AGGREGATE_TABLE_REWRITE_QUERY: AggregateTableRewriteQueryColumns,
@@ -1276,6 +1347,7 @@ event_column_mapping: dict[TraceEvents, type[IntEnum]] = {
     TraceEvents.EXISTING_CONNECTION: ExistingConnectionColumns,
     TraceEvents.EXISTING_SESSION: ExistingSessionColumns,
     TraceEvents.EXECUTE_SOURCE_QUERY: ExecuteSourceQueryColumns,
+    TraceEvents.EXECUTION_METRICS: ExecutionMetricsColumns,
     TraceEvents.FILE_SAVE_BEGIN: FileSaveBeginColumns,
     TraceEvents.FILE_SAVE_END: FileSaveEndColumns,
     TraceEvents.FILE_LOAD_BEGIN: FileLoadBeginColumns,
