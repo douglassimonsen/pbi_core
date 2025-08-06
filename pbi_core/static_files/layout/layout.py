@@ -41,6 +41,7 @@ class SettingsV2(LayoutNode):
 class SettingsV1(LayoutNode):
     isPersistentUserStateDisabled: bool
     hideVisualContainerHeader: bool
+    useStylableVisualContainerHeader: bool = True
 
 
 def get_settings(v: Any) -> str:

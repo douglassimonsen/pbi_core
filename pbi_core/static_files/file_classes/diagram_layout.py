@@ -35,7 +35,7 @@ class Diagram(BaseFileModel):
     pinKeyFieldsToTop: bool
     showExtraHeaderInfo: bool
     hideKeyFieldsWhenCollapsed: bool
-    tablesLocked: bool
+    tablesLocked: bool = False
 
 
 class DiagramLayout(BaseFileModel):

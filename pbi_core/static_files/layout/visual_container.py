@@ -73,6 +73,7 @@ class DataReduction(LayoutNode):
 class QueryBinding(LayoutNode):
     IncludeEmptyGroups: bool = False
     Primary: BindingPrimary
+    Secondary: Optional[BindingPrimary] = None
     Projections: list[int] = []
     DataReduction: Any = None
     Aggregates: Any = None

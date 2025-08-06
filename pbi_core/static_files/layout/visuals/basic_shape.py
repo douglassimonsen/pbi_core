@@ -12,3 +12,4 @@ class BasicShape(LayoutNode):
     drillFilterOtherVisuals: bool = True
     objects: Any
     vcObjects: Any = None
+    display: Any = None

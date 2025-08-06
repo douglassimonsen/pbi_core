@@ -15,7 +15,7 @@ class TitleProperties(LayoutNode):
     fontColor: Optional[Expression] = None
     fontSize: Optional[Expression] = None
     alignment: Optional[Expression] = None
-    show: Optional[Expression]
+    show: Optional[Expression] = None
 
 
 class TitlePropertiesGroup(LayoutNode):
@@ -23,10 +23,18 @@ class TitlePropertiesGroup(LayoutNode):
 
 
 class VisualHeaderProperties(LayoutNode):
-    showTooltipButton: Expression
-    showSmartNarrativeButton: Expression
-    showVisualInformationButton: Expression
-    showVisualWarningButton: Expression
+    showTooltipButton: Optional[Expression] = None
+    showSmartNarrativeButton: Optional[Expression] = None
+    showVisualInformationButton: Optional[Expression] = None
+    showVisualWarningButton: Optional[Expression] = None
+
+    show: Optional[Expression] = None
+    background: Optional[Expression] = None
+    transparency: Optional[Expression] = None
+    foreground: Optional[Expression] = None
+    showDrillRoleSelector: Optional[Expression] = None
+    showFocusModeButton: Optional[Expression] = None
+    showOptionsMenu: Optional[Expression] = None
 
 
 class VisualHeadersPropertiesGroup(LayoutNode):
