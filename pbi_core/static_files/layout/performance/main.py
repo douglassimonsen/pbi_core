@@ -3,7 +3,7 @@ from pbi_core.ssas.server.tabular_model.tabular_model import LocalTabularModel
 from .performance_trace import Performance, PerformanceTrace
 
 
-def get_performance(model: LocalTabularModel, commands: list[str]) -> Performance:
+def get_performance(model: LocalTabularModel, commands: list[str]) -> list[Performance]:
     """Calculates performance of a DAX query using a Trace.
 
     Args:
@@ -19,4 +19,4 @@ def get_performance(model: LocalTabularModel, commands: list[str]) -> Performanc
 
     """
     perf_trace = PerformanceTrace(model, commands)
-    return perf_trace.get_performance()[0]
+    return perf_trace.get_performance()

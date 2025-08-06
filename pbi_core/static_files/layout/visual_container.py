@@ -213,7 +213,7 @@ class VisualContainer(LayoutNode):
         if command is None:
             msg = "Cannot get performance for a visual without a query command"
             raise NotImplementedError(msg)
-        return get_performance(model, [command.get_dax(model).DaxExpression])
+        return get_performance(model, [command.get_dax(model).DaxExpression])[0]
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
         """Returns the SSAS elements (columns and measures) this visual is directly dependent on."""

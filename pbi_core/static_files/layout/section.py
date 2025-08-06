@@ -10,6 +10,7 @@ from pbi_core.static_files.model_references import ModelColumnReference, ModelMe
 
 from ._base_node import LayoutNode
 from .filters import PageFilter
+from .performance import Performance, get_performance
 from .visual_container import VisualContainer
 
 if TYPE_CHECKING:
@@ -73,3 +74,21 @@ class Section(LayoutNode):
 
         children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
         return LineageNode(self, lineage_type, children_lineage)
+
+    def get_performance(self, model: "BaseTabularModel") -> Performance:
+        """Calculates various metrics on the speed of the visual.
+
+        Current Metrics:
+            Total Seconds to Query
+            Total Rows Retrieved
+        """
+        commands: list[str] = []
+        for viz in self.visualContainers:
+            if viz.query is not None:
+                command = viz._get_data_command()
+                if command is not None:
+                    commands.append(command.get_dax(model).DaxExpression)
+        if not commands:
+            msg = "Cannot get performance for a page without any querying visuals"
+            raise NotImplementedError(msg)
+        return get_performance(model, commands)
