@@ -91,7 +91,23 @@ class InTopNExpressionHelper(LayoutNode):
     Table: SourceRef
 
 
-# TODO: disciminate
+def get_in_union_type(v: Any) -> str:
+    if isinstance(v, dict):
+        if "Table" in v:
+            return "InTopNExpressionHelper"
+        if "Values" in v:
+            return "InExpressionHelper"
+        raise TypeError(v)
+    return cast("str", v.__class__.__name__)
+
+
+InUnion = Annotated[
+    Annotated[InExpressionHelper, Tag("InExpressionHelper")]
+    | Annotated[InTopNExpressionHelper, Tag("InTopNExpressionHelper")],
+    Discriminator(get_in_union_type),
+]
+
+
 class InCondition(LayoutNode):
     """In is how "is" and "is not" are internally represented."""
 
@@ -116,9 +132,24 @@ class _NowHelper(LayoutNode):
     Now: dict[str, str]  # actually an empty string
 
 
-# TODO: discriminate
+def get_date_span_union_type(v: Any) -> str:
+    if isinstance(v, dict):
+        if "Literal" in v:
+            return "LiteralSource"
+        if "Now" in v:
+            return "_NowHelper"
+        raise TypeError(v)
+    return cast("str", v.__class__.__name__)
+
+
+DateSpanUnion = Annotated[
+    Annotated[LiteralSource, Tag("LiteralSource")] | Annotated[_NowHelper, Tag("_NowHelper")],
+    Discriminator(get_date_span_union_type),
+]
+
+
 class _DateSpanHelper(LayoutNode):
-    Expression: LiteralSource | _NowHelper
+    Expression: DateSpanUnion
     TimeUnit: TimeUnit
 
 
@@ -126,7 +157,24 @@ class DateSpan(LayoutNode):
     DateSpan: _DateSpanHelper
 
 
-# TODO: disciminate
+def get_comparison_union_type(v: Any) -> str:
+    if isinstance(v, dict):
+        if "Literal" in v:
+            return "LiteralSource"
+        if "AnyValue" in v:
+            return "AnyValue"
+        if "DateSpan" in v:
+            return "DateSpan"
+        raise TypeError(v)
+    return cast("str", v.__class__.__name__)
+
+
+ComparisonUnion = Annotated[
+    Annotated[LiteralSource, Tag("LiteralSource")]
+    | Annotated[AnyValue, Tag("AnyValue")]
+    | Annotated[DateSpan, Tag("DateSpan")],
+    Discriminator(get_comparison_union_type),
+]
 
 
 class ComparisonConditionHelper(LayoutNode):

@@ -1,5 +1,5 @@
 # ruff: noqa: N815
-from enum import IntEnum
+from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, cast
 
 import pbi_translation
@@ -179,10 +179,18 @@ class HowCreated(IntEnum):
     NA2 = 5
 
 
-# TODO: make type an enum
+class FilterType(Enum):
+    Advanced = "Advanced"
+    Categorial = "Categorical"
+    Exclude = "Exclude"
+    Passthrough = "Passthrough"
+    RelativeDate = "RelativeDate"
+    TopN = "TopN"
+
+
 class Filter(LayoutNode):
     name: str | None = None
-    type: str = "Categorical"
+    type: FilterType = FilterType.Categorial
     howCreated: HowCreated
     expression: Source | None = None
     isLockedInViewMode: bool = False
