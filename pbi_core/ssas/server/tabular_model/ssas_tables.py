@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import pydantic
 from structlog import get_logger
@@ -8,9 +8,8 @@ from pbi_core.ssas.server.utils import OBJECT_COMMAND_TEMPLATES
 
 from .base_ssas_table import SsasTable
 from .enums import RefreshType
+from .tabular_model import BaseTabularModel
 
-if TYPE_CHECKING:
-    from .tabular_model import BaseTabularModel
 logger = get_logger()
 
 
@@ -79,7 +78,7 @@ class SsasCreate(SsasTable):
     """  # noqa: E501
 
     @classmethod
-    def create(cls: type["SsasCreate"], tabular_model: "BaseTabularModel", **kwargs: dict[str, Any]) -> None:
+    def create(cls: type["SsasCreate"], tabular_model: BaseTabularModel, **kwargs: dict[str, Any]) -> None:
         # data = {
         #     cls._db_field_names.get(k, k): v for k, v in kwargs.items() if k not in cls._read_only_fields
         # }
