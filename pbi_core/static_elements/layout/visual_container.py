@@ -2,34 +2,20 @@ import inspect
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Optional
 
-from pydantic import ConfigDict, Json
+from pydantic import Json
 
 from ._base_node import LayoutNode
 from .filters import VisualFilter
-from .visual_properties import SingleVisualVCObjects
+from .visuals import BaseVisual
 
 if TYPE_CHECKING:
     from .section import Section
 
 
-class SingleVisual(LayoutNode):
-    parent: "VisualConfig"
-
-    model_config = ConfigDict(extra="allow")
-
-    vcObjects: Optional[SingleVisualVCObjects] = None
-    objects: Any = None
-    prototypeQuery: Any = None
-    projections: Any = None
-    hasDefaultSort: bool = False
-    drillFilterOtherVisuals: bool = False
-    visualType: str = "unknown"
-
-
 class SingleVisualGroup(LayoutNode):
     displayName: str
     groupMode: int
-    objects: Optional[SingleVisualVCObjects] = None
+    objects: Optional[Any] = None
     isHidden: bool = False
 
 
@@ -45,7 +31,7 @@ class VisualConfig(LayoutNode):
     name: Optional[str] = None
     parentGroupName: Optional[str] = None
     singleVisualGroup: Optional[SingleVisualGroup] = None
-    singleVisual: Optional[SingleVisual] = None  # split classes to handle the other cases
+    singleVisual: Optional[BaseVisual] = None  # split classes to handle the other cases
     howCreated: Optional[VisualHowCreated] = None
 
 

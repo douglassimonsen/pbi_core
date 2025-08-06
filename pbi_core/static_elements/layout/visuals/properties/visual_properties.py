@@ -3,11 +3,11 @@ from typing import TYPE_CHECKING, Optional
 
 from pydantic import ConfigDict
 
-from ._base_node import LayoutNode
-from .sources import LiteralSource
+from ..._base_node import LayoutNode
+from ...sources import LiteralSource
 
 if TYPE_CHECKING:
-    from .visual import SingleVisual
+    from ..base import BaseVisual
 
 
 class LiteralExpression(LayoutNode):
@@ -29,7 +29,7 @@ class GeneralProperties(LayoutNode):
 
 
 class SingleVisualVCObjects(LayoutNode):
-    parent: "SingleVisual"
+    parent: "BaseVisual"
     model_config = ConfigDict(extra="allow")
 
     background: Optional[list[SingleVisualObjectProperties]] = None

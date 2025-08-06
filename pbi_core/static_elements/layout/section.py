@@ -6,7 +6,7 @@ from uuid import UUID
 from pydantic import ConfigDict, Json
 
 from ._base_node import LayoutNode
-from .visual import VisualContainer
+from .visual_container import VisualContainer
 
 if TYPE_CHECKING:
     from .layout import Layout
