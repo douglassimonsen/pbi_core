@@ -3,3 +3,4 @@ venv
 *.pbix
 workspaces
 docs/build
+*.env
