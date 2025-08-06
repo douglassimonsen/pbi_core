@@ -21,6 +21,10 @@ class TextClasses(BaseFileModel):
 
 
 class Theme(BaseFileModel):
+    """
+    A class mapping the fields of the Theme JSON documented `here <https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-report-themes#set-theme-colors>`
+    """
+
     name: str
     dataColors: list[str] = []
     foreground: str

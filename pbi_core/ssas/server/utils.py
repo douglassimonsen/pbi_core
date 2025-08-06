@@ -23,11 +23,24 @@ SKU_ERROR = "ImageLoad/ImageSave commands supports loading/saving data for Excel
 
 @dataclasses.dataclass
 class ServerInfo:
+    """
+    Basic information about an SSAS instance from its PID
+    """
+
     port: int
     workspace_directory: pathlib.Path
 
 
 def get_msmdsrv_info(process: psutil.Process) -> Optional[ServerInfo]:
+    """
+    Parses ``ServerInfo`` information from PID information.
+
+    Note:
+        This function currently assumes that the SSAS Process is called like
+        ``pbi_core`` calls it. If you don't include the ``-s`` flag in the command,
+        this function will fail
+    """
+
     def check_ports(proc: psutil.Process) -> Optional[int]:
         ports = [
             conn.laddr.port
@@ -69,7 +82,7 @@ def python_to_xml(text: Any) -> str:
         x (Any): a value to be sent to SSAS
 
     Returns:
-        str: A stringified version of the value
+        str: A stringified, xml-safe version of the value
 
     """
     if text in (True, False):
