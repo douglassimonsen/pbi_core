@@ -1,6 +1,7 @@
 from typing import Any, Literal, Optional
 
 from mermaid import Link, MermaidDiagram, Node
+from mermaid.node import NodeShape
 
 LineageType = Literal["children"] | Literal["parents"]
 
@@ -39,6 +40,7 @@ class LineageNode:
             child_node = Node(
                 id=f"{relative.value.__class__.__name__}-{relative.value.id}",
                 style=CLASS_STYLES[relative.value.__class__.__name__],
+                shape=NodeShape.round_edge,
             )
             child_nodes, child_links = relative._to_mermaid_helper(child_node)
             links.append(Link(nodes[0], child_node))
