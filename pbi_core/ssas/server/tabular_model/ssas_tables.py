@@ -120,12 +120,12 @@ class SsasRefresh(SsasTable):
     """  # noqa: E501
 
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
-    _refresh_type: RefreshType
+    _default_refresh_type: RefreshType
     _commands: RefreshCommands  # pyright: ignore reportIncompatibleVariableOverride
 
-    def refresh(self) -> BeautifulSoup:
+    def refresh(self, refresh_type: RefreshType | None = None) -> BeautifulSoup:
         data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
-        data["RefreshType"] = self._refresh_type
+        data["RefreshType"] = refresh_type or self._default_refresh_type
         xml_command = self.render_xml_command(
             data,
             self._commands.refresh,

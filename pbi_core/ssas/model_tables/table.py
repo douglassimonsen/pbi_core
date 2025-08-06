@@ -125,7 +125,11 @@ class Table(SsasRefreshRecord):
             )
         return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])
 
-    def refresh(self) -> BeautifulSoup:
+    def refresh(self, *, include_model_refresh: bool = True) -> list[BeautifulSoup]:  # pyright: ignore reportIncompatibleMethodOverride
         """Needs a model refresh to properly propogate the update."""
-        super().refresh()
-        return self.model().refresh()
+        if include_model_refresh:
+            return [
+                super().refresh(),
+                self.model().refresh(),
+            ]
+        return [super().refresh()]

@@ -3,9 +3,9 @@ from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
 import backoff
-import bs4
 import psutil
 import pyadomd
+from bs4 import BeautifulSoup
 
 from pbi_core.logging import get_logger
 from pbi_core.ssas.setup import get_config
@@ -73,7 +73,7 @@ class BaseServer:
             columns: list[str] = [x[0] for x in cursor.description]
             return [dict(zip(columns, row, strict=False)) for row in data]
 
-    def query_xml(self, query: str, db_name: str | None = None) -> bs4.BeautifulSoup:
+    def query_xml(self, query: str, db_name: str | None = None) -> BeautifulSoup:
         with self.conn(db_name) as conn:
             cursor = conn.cursor()
             return cursor.execute_xml(query)

@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.logging import get_logger
-from pbi_core.ssas.server.tabular_model import SsasRefreshRecord, SsasTable
+from pbi_core.ssas.server.tabular_model import RefreshType, SsasRefreshRecord, SsasTable
 
 from ._group import RowNotFoundError
 from .column import Column
@@ -42,6 +42,8 @@ class Partition(SsasRefreshRecord):
 
     Data refreshes occur on the Partition-level.
     """
+
+    _default_refresh_typ = RefreshType.Full
 
     data_view: int
     data_source_id: int | None = None

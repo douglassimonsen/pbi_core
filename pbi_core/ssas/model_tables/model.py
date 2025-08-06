@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class Model(SsasModelRecord):
-    _refresh_type = RefreshType.Calculate
+    _default_refresh_type = RefreshType.Calculate
 
     culture: str
     data_access_options: Json[dict[str, Any]] = {}
