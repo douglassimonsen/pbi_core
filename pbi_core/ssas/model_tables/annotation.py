@@ -9,7 +9,7 @@ from .enums import ObjectType
 class Annotation(SsasRenameRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7a16a837-cb88-4cb2-a766-a97c4d0e1f43
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7a16a837-cb88-4cb2-a766-a97c4d0e1f43)
     """
 
     object_id: int
@@ -19,68 +19,44 @@ class Annotation(SsasRenameRecord):
 
     modified_time: datetime.datetime
 
-    def object(self) -> SsasTable:  # noqa: PLR0911
+    def object(self) -> SsasTable:
         """Returns the object the annotation is describing.
 
-        Raises
-        ------
+        Raises:
             TypeError: When the Object Type doesn't map to a know SSAS entity type
 
         """
-        match self.object_type:
-            case ObjectType.MODEL:
-                return self.tabular_model.model
-            case ObjectType.DATASOURCE:
-                return self.tabular_model.data_sources.find(self.object_id)
-            case ObjectType.TABLE:
-                return self.tabular_model.tables.find(self.object_id)
-            case ObjectType.COLUMN:
-                return self.tabular_model.columns.find(self.object_id)
-            case ObjectType.ATTRIBUTE_HIERARCHY:
-                return self.tabular_model.attribute_hierarchies.find(self.object_id)
-            case ObjectType.PARTITION:
-                return self.tabular_model.partitions.find(self.object_id)
-            case ObjectType.RELATIONSHIP:
-                return self.tabular_model.relationships.find(self.object_id)
-            case ObjectType.MEASURE:
-                return self.tabular_model.measures.find(self.object_id)
-            case ObjectType.HIERARCHY:
-                return self.tabular_model.hierarchies.find(self.object_id)
-            case ObjectType.LEVEL:
-                return self.tabular_model.levels.find(self.object_id)
-            case ObjectType.KPI:
-                return self.tabular_model.kpis.find(self.object_id)
-            case ObjectType.CULTURE:
-                return self.tabular_model.cultures.find(self.object_id)
-            case ObjectType.LINGUISTIC_METADATA:
-                return self.tabular_model.linguistic_metadata.find(self.object_id)
-            case ObjectType.PERSPECTIVE:
-                return self.tabular_model.perspectives.find(self.object_id)
-            case ObjectType.PERSPECTIVE_TABLE:
-                return self.tabular_model.perspective_tables.find(self.object_id)
-            case ObjectType.PERSPECTIVE_HIERARCHY:
-                return self.tabular_model.perspective_hierarchies.find(self.object_id)
-            case ObjectType.PERSPECTIVE_MEASURE:
-                return self.tabular_model.perspective_measures.find(self.object_id)
-            case ObjectType.ROLE:
-                return self.tabular_model.roles.find(self.object_id)
-            case ObjectType.ROLE_MEMBERSHIP:
-                return self.tabular_model.role_memberships.find(self.object_id)
-            case ObjectType.TABLE_PERMISSION:
-                return self.tabular_model.table_permissions.find(self.object_id)
-            case ObjectType.VARIATION:
-                return self.tabular_model.variations.find(self.object_id)
-            case ObjectType.EXPRESSION:
-                return self.tabular_model.expressions.find(self.object_id)
-            case ObjectType.COLUMN_PERMISSION:
-                return self.tabular_model.column_permissions.find(self.object_id)
-            case ObjectType.CALCULATION_GROUP:
-                return self.tabular_model.calculation_groups.find(self.object_id)
-            case ObjectType.QUERY_GROUP:
-                return self.tabular_model.query_groups.find(self.object_id)
-            case _:
-                msg = f"No logic implemented for type {self.object_type}"
-                raise TypeError(msg)
+        mapper = {
+            ObjectType.ATTRIBUTE_HIERARCHY: self.tabular_model.attribute_hierarchies.find,
+            ObjectType.CALCULATION_GROUP: self.tabular_model.calculation_groups.find,
+            ObjectType.COLUMN: self.tabular_model.columns.find,
+            ObjectType.COLUMN_PERMISSION: self.tabular_model.column_permissions.find,
+            ObjectType.CULTURE: self.tabular_model.cultures.find,
+            ObjectType.DATASOURCE: self.tabular_model.data_sources.find,
+            ObjectType.EXPRESSION: self.tabular_model.expressions.find,
+            ObjectType.HIERARCHY: self.tabular_model.hierarchies.find,
+            ObjectType.KPI: self.tabular_model.kpis.find,
+            ObjectType.LEVEL: self.tabular_model.levels.find,
+            ObjectType.LINGUISTIC_METADATA: self.tabular_model.linguistic_metadata.find,
+            ObjectType.MEASURE: self.tabular_model.measures.find,
+            ObjectType.MODEL: lambda _x: self.tabular_model.model,
+            ObjectType.PARTITION: self.tabular_model.partitions.find,
+            ObjectType.PERSPECTIVE: self.tabular_model.perspectives.find,
+            ObjectType.PERSPECTIVE_HIERARCHY: self.tabular_model.perspective_hierarchies.find,
+            ObjectType.PERSPECTIVE_MEASURE: self.tabular_model.perspective_measures.find,
+            ObjectType.PERSPECTIVE_TABLE: self.tabular_model.perspective_tables.find,
+            ObjectType.QUERY_GROUP: self.tabular_model.query_groups.find,
+            ObjectType.RELATIONSHIP: self.tabular_model.relationships.find,
+            ObjectType.ROLE: self.tabular_model.roles.find,
+            ObjectType.ROLE_MEMBERSHIP: self.tabular_model.role_memberships.find,
+            ObjectType.TABLE: self.tabular_model.tables.find,
+            ObjectType.TABLE_PERMISSION: self.tabular_model.table_permissions.find,
+            ObjectType.VARIATION: self.tabular_model.variations.find,
+        }
+        if self.object_type not in mapper:
+            msg = f"Object Type {self.object_type} does not map to a known SSAS entity type."
+            raise TypeError(msg)
+        return mapper[self.object_type](self.object_id)
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":

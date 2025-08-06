@@ -23,7 +23,8 @@ class RefreshMode(IntEnum):
 class RefreshPolicy(SsasEditableRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/e11ae511-5064-470b-8abc-e2a4dd3999e6
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/e11ae511-5064-470b-8abc-e2a4dd3999e6)
+    This class represents the refresh policy for a partition in a Tabular model.
     """
 
     incremental_granularity: Granularity

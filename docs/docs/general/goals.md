@@ -11,7 +11,7 @@ Goals of this package:
 - [x] AST parser for DAX Queries
 - [x] AST parser for M Queries
 - [ ] Automatic Data Refresh
-    * [ ] with Desktop PBIX SSAS
+    * [x] with Desktop PBIX SSAS
     * [ ] with self-created SSAS
 - [x] Automated Data Extraction
     * [x] At the Column Level
@@ -26,7 +26,7 @@ Goals of this package:
 - [ ] Linting Tools
     * [ ] Layout stylistic Linting
     * [x] DAX Formatter
-    * [ ] DAX Linting
+    * [x] DAX Linting
     * [ ] M Query Linting
 - [ ] Remote PowerBI Manipulation
     * [ ] Incorporating REST API lib

@@ -17,7 +17,7 @@ class MemberType(IntEnum):
 class RoleMembership(SsasEditableRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/dbecc1f4-142b-4765-8374-a4d4dc51313b
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/dbecc1f4-142b-4765-8374-a4d4dc51313b)
     """
 
     identity_provider: str

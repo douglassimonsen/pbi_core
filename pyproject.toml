@@ -40,7 +40,7 @@ dev = [
   # "pbi_translation @ git+http://gitea.matthew-hamilton.com/PowerBI/prototype_parsing/releases/download/v1.0.1/pbi_translation-1.0.1-py2.py3-none-any.whl",
   # "pbi_parser @ git+http://gitea.matthew-hamilton.com/PowerBI/prototype_parsing/releases/download/v1.0.1/pbi_translation-1.0.1-py2.py3-none-any.whl",
 ]
-docs = ["pydata-sphinx-theme>=0.15.4", "sphinx-autobuild>=2024.9.17"]
+docs = ["mkdocs-python>=1.16.12", "mkdocs-material>=9.6.15"]
 internationalization = ['openpyxl>=3.1.5', 'langcodes>=3.4.1']
 
 [tool.hatch.version]

@@ -24,7 +24,7 @@ logger = get_logger()
 
 
 class PartitionMode(IntEnum):
-    """Source: https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions."""
+    """Source: [Microsoft](https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions)."""
 
     Import = 0
     DirectQuery = 1  # not verified
@@ -33,7 +33,7 @@ class PartitionMode(IntEnum):
 
 
 class PartitionType(IntEnum):
-    """Source: https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions."""
+    """Source: [Microsoft](https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions)."""
 
     Query = 1
     Calculated = 2
@@ -56,7 +56,7 @@ class Partition(SsasRefreshRecord):
     They cannot be edited within the Power BI Desktop UI, but can be edited in the
     Tabular Editor or other tools (like this one!). Data refreshes occur on the Partition-level.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/81badb81-31a8-482b-ae16-5fc9d8291d9e
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/81badb81-31a8-482b-ae16-5fc9d8291d9e)
     """
 
     _default_refresh_typ = RefreshType.Full

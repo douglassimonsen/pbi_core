@@ -15,7 +15,7 @@ class Property(IntEnum):
 class ObjectTranslation(SsasEditableRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/1eade819-5599-4ddd-9bf5-7d365806069d
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/1eade819-5599-4ddd-9bf5-7d365806069d)
     """
 
     altered: bool
@@ -30,8 +30,7 @@ class ObjectTranslation(SsasEditableRecord):
     def object(self) -> SsasTable:  # noqa: PLR0911
         """Returns the object the annotation is describing.
 
-        Raises
-        ------
+        Raises:
             TypeError: When the Object Type doesn't map to a know SSAS entity type
 
         """

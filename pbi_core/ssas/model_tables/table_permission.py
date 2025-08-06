@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class MetadataPermission(IntEnum):
-    """Source: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ac2ceeb3-a54e-4bf5-85b0-a770d4b1716e."""
+    """Source: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ac2ceeb3-a54e-4bf5-85b0-a770d4b1716e)."""
 
     Default = 0
     _None = 1
@@ -20,7 +20,7 @@ class MetadataPermission(IntEnum):
 class TablePermission(SsasEditableRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ac2ceeb3-a54e-4bf5-85b0-a770d4b1716e
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ac2ceeb3-a54e-4bf5-85b0-a770d4b1716e)
     """
 
     error_message: str | None = None

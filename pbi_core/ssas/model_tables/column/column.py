@@ -24,9 +24,9 @@ logger = get_logger()
 class Column(SsasRenameRecord):  # noqa: PLR0904
     """A column of an SSAS table.
 
-    PowerBI spec: https://learn.microsoft.com/en-us/analysis-services/tabular-models/column-properties-ssas-tabular?view=asallproducts-allversions
+    PowerBI spec: [Power BI](https://learn.microsoft.com/en-us/analysis-services/tabular-models/column-properties-ssas-tabular?view=asallproducts-allversions)
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b)
     """
 
     _field_mapping: ClassVar[dict[str, str]] = {
@@ -163,7 +163,6 @@ class Column(SsasRenameRecord):  # noqa: PLR0904
         """Returns measures this column is dependent on.
 
         Note:
-        ----
             Calculated columns can use Measures too :(.
 
         """
@@ -191,7 +190,6 @@ class Column(SsasRenameRecord):  # noqa: PLR0904
         """Returns columns dependent on this Column.
 
         Note:
-        ----
             Only occurs when the dependent column is calculated (expression is not None).
 
         """
@@ -221,8 +219,8 @@ class Column(SsasRenameRecord):  # noqa: PLR0904
         """Returns Columns this Column is dependent on.
 
         Note:
-        ----
-            Only occurs when column is calculated.
+            Parent columns are non-empty only when the column is calculated.
+            Columns defined by a PowerQuery import or DirectQuery do not have parent columns.
 
         """
         object_type = self._column_type()
@@ -299,7 +297,6 @@ class Column(SsasRenameRecord):  # noqa: PLR0904
         """Removes column from the SSAS model.
 
         Args:
-        ----
             remote_from_partition_query (bool): If this is True, updates the PowerQuery to drop the column so it doesn't repopulate on data refresh. If the column is calculated (meaning it is not part of the PowerQuery), an info record is logged and nothing else happens.
 
         """  # noqa: E501

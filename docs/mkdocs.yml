@@ -11,6 +11,10 @@ plugins:
   - search
   - mkdocstrings:
       default_handler: python
+      handlers:
+        python:
+          options:
+            backlinks: tree
 
 markdown_extensions:
   - pymdownx.highlight:

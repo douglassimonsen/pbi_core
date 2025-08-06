@@ -7,7 +7,7 @@ from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 class FormatStringDefinition(SsasRenameRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/b756b0c1-c912-4218-80dc-7ff09d0968ff
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/b756b0c1-c912-4218-80dc-7ff09d0968ff)
     """
 
     object_type: ObjectType
@@ -23,8 +23,7 @@ class FormatStringDefinition(SsasRenameRecord):
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.
 
-        Raises
-        ------
+        Raises:
             TypeError: When the Object Type doesn't map to a know SSAS entity type
 
         """

@@ -2,7 +2,7 @@ from enum import Enum, IntEnum
 
 
 class DataState(IntEnum):
-    """Source: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/93d1844f-a6c7-4dda-879b-2e26ed5cd297."""
+    """Source: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/93d1844f-a6c7-4dda-879b-2e26ed5cd297)."""
 
     Ready = 1
     NoData = 3
@@ -15,7 +15,7 @@ class DataState(IntEnum):
 
 
 class ObjectType(IntEnum):
-    """Source: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7a16a837-cb88-4cb2-a766-a97c4d0e1f43."""
+    """Source: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7a16a837-cb88-4cb2-a766-a97c4d0e1f43)."""
 
     MODEL = 1
     DATASOURCE = 2
@@ -47,10 +47,7 @@ class ObjectType(IntEnum):
 
 
 class DataType(IntEnum):
-    """Source: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b (ExplicitDataType
-
-    ).
-    """
+    """Source: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b)."""
 
     Automatic = 1
     String = 2
@@ -65,9 +62,11 @@ class DataType(IntEnum):
 
 
 class DataCategory(Enum):
-    """Source: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/6360ac84-0717-4170-bce0-284cbef419ca.
+    """Source: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/6360ac84-0717-4170-bce0-284cbef419ca).
 
-    Only used for table, the Column and Measure DataCategories are just strings
+    Note:
+        Only used for table, the Column and Measure DataCategories are just strings
+
     """
 
     Unknown = 0

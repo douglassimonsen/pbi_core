@@ -12,11 +12,10 @@ if TYPE_CHECKING:
 class DetailRowDefinition(SsasEditableRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7eb1e044-4eed-467d-b10f-ce208798ddb0
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7eb1e044-4eed-467d-b10f-ce208798ddb0)
 
     Note:
-    ----
-        Additional details can be found here: https://www.sqlbi.com/articles/controlling-drillthrough-in-excel-pivottables-connected-to-power-bi-or-analysis-services/
+        Additional details can be found here: [SQLBI](https://www.sqlbi.com/articles/controlling-drillthrough-in-excel-pivottables-connected-to-power-bi-or-analysis-services/)
 
     """
 

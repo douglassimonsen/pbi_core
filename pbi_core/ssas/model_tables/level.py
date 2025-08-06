@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class Level(SsasRenameRecord):
     """A level in a hierarchy. For example, in a hierarchy of "Date", the levels could be "Year", "Month", and "Day".
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/a010d75e-3b68-4825-898f-62fdeab4557f
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/a010d75e-3b68-4825-898f-62fdeab4557f)
     """
 
     column_id: int

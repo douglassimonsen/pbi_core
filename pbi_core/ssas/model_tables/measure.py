@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 class Measure(SsasRenameRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ab331e04-78f7-49f0-861f-3f155b8b4c5b
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ab331e04-78f7-49f0-861f-3f155b8b4c5b)
     """
 
     data_category: str | None = None
@@ -38,7 +38,6 @@ class Measure(SsasRenameRecord):
     """A foreign key to a FormatStringDefinition object. Used for dynamic-type measure formatting.
 
     Note:
-    ----
         Mutually exclusive with format_string
     """
     is_hidden: bool = False

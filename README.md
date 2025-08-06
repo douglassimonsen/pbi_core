@@ -18,6 +18,12 @@ sphinx-autobuild docs/source docs/build/html
 # http://127.0.0.1:8000
 ```
 
+## Testing
+
+```shell
+
+pip install -e .
+```
 
 filters, condition
 sources:

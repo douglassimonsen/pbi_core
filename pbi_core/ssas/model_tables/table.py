@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 class Table(SsasRefreshRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/6360ac84-0717-4170-bce0-284cbef419ca
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/6360ac84-0717-4170-bce0-284cbef419ca)
     """
 
     _refresh_type = RefreshType.DataOnly
@@ -75,11 +75,9 @@ class Table(SsasRefreshRecord):
         """Extracts records from the table in SSAS.
 
         Args:
-        ----
             head (int): The number of records to return from the table.
 
         Returns:
-        -------
             list[dict[str, int | float | str]]: A list of SSAS records in dictionary form.
                 The keys are the field names and the values are the record values
 
@@ -92,8 +90,7 @@ class Table(SsasRefreshRecord):
     def partitions(self) -> set[Partition]:
         """Get associated dependent partitions.
 
-        Returns
-        -------
+        Returns:
             (set[Partition]): A list of the partitions containing data for this table
 
         """
@@ -102,8 +99,7 @@ class Table(SsasRefreshRecord):
     def columns(self) -> set[Column]:
         """Get associated dependent partitions.
 
-        Returns
-        -------
+        Returns:
             (set[Column]): A list of the columns in this table
 
         """
@@ -118,11 +114,9 @@ class Table(SsasRefreshRecord):
         """Get measures saved to this table.
 
         Returns:
-        -------
             (set[Measure]): A list of measures saved to this table
 
         Note:
-        ----
             These measures do not necessarily have calculations that depend on this table.
                 For that use `table.measures()`
 
@@ -133,20 +127,18 @@ class Table(SsasRefreshRecord):
         """Get measures that logically depend on this table.
 
         Examples:
-        --------
-            .. code-block:: python
-            :linenos:
-
+            ```python
             print(measure.expression)
             # sumx(example, [a])
-            # Therefore, this measure would be returned by Table(name=example).measures()
+
+            Table(name=example).measures()
+            # [..., Measure(name='measure'), ...]
+            ```
 
         Returns:
-        -------
             (set[Measure]): A list of measures that logically depend this table
 
         Note:
-        ----
             These measures are not necessarily saved physically to this table. For that use `table.table_measures()`
 
         """

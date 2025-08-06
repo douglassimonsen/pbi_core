@@ -12,7 +12,8 @@ if TYPE_CHECKING:
 class QueryGroup(SsasEditableRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/40b3830b-25ee-41a6-87d2-49616028dd13
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/40b3830b-25ee-41a6-87d2-49616028dd13)
+    This class represents a group of queries that can be executed together.
     """
 
     _repr_name_field = "folder"

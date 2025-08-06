@@ -37,7 +37,8 @@ class SecurityFilteringBehavior(IntEnum):
 class Relationship(SsasRenameRecord):
     """TBD.
 
-    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/35bb4a68-b97e-409b-a5dd-14695fd99139
+    SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/35bb4a68-b97e-409b-a5dd-14695fd99139)
+    This class represents a relationship between two tables in a Tabular model.
     """
 
     cross_filtering_behavior: CrossFilteringBehavior
@@ -66,7 +67,6 @@ class Relationship(SsasRenameRecord):
         """Returns the table the relationship is using as a filter.
 
         Note:
-        ----
             In the bi-directional case, this table is also filtered
 
         """
@@ -76,7 +76,6 @@ class Relationship(SsasRenameRecord):
         """Returns the table the relationship is being filtered.
 
         Note:
-        ----
             In the bi-directional case, this table is also used as a filter
 
         """
