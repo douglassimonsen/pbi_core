@@ -158,8 +158,10 @@ class LocalServer(BaseServer):
                 db_name=db_name, source_path=self.sanitize_xml(path.absolute().as_posix())
             )
         )
-        logger.info("PBIX load complete")
-        return LocalTabularModel(db_name=db_name, server=self, pbix_path=path)
+        logger.info("Tabular Model load complete")
+        tab_model = LocalTabularModel(db_name=db_name, server=self, pbix_path=path)
+        tab_model.sync_from()
+        return tab_model
 
     def save_pbix(self, path: "StrPath", db_name: str) -> None:
         path = pathlib.Path(path)
