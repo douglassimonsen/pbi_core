@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Optional, cast
 
 from ._base_node import LayoutNode
 from .condition import Condition
-from .sources import Entity, FilterSource, VisualFilterSource
+from .sources import Entity, Source
 
 if TYPE_CHECKING:
     from .bookmark import BookmarkFilters
@@ -21,7 +21,7 @@ class OrderBy(LayoutNode):
     parent: "TopNFilterMeta"
 
     Direction: Direction
-    Expression: VisualFilterSource  # needs aggregationSource
+    Expression: Source
 
 
 class TopNFilterMeta(LayoutNode):
@@ -29,7 +29,7 @@ class TopNFilterMeta(LayoutNode):
 
     Version: int
     From: list[Entity]
-    Select: list[VisualFilterSource]
+    Select: list[Source]
     Where: Optional[list[Condition]] = None
     OrderBy: list[OrderBy]
     Top: int
@@ -75,10 +75,10 @@ class HowCreated(IntEnum):
 
 
 class Filter(LayoutNode):
-    name: str
+    name: Optional[str] = None
     type: str
     howCreated: HowCreated
-    expression: FilterSource
+    expression: Source
     isLockedInViewMode: bool = False
     isHiddenInViewMode: bool = False
     objects: Any = None

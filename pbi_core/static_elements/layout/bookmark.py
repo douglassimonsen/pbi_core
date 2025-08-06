@@ -1,11 +1,13 @@
 import inspect
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Annotated, Any, Optional, Union
+
+from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
 from .condition import BasicConditions
 from .filters import BookmarkFilter
-from .sources import VisualFilterSource
+from .sources import Source
 
 if TYPE_CHECKING:
     from .layout import Layout
@@ -43,7 +45,7 @@ class BookmarkPartialVisual(LayoutNode):
     visualType: str
     objects: dict[str, Any]
     orderBy: Optional[list[Any]] = None
-    activeProjections: Optional[dict[str, list[VisualFilterSource]]] = None
+    activeProjections: Optional[dict[str, list[Source]]] = None
     display: Optional[Display] = None
     expansionStates: Optional[Any] = None
 
@@ -108,6 +110,23 @@ class BookmarkFolder(LayoutNode):
     children: list[Bookmark]
     options: Optional[dict[str, Any]] = None
 
+
+def get_bookmark_type(v: Any) -> str:
+    if isinstance(v, dict):
+        if "explorationState" in v.keys():
+            return "Bookmark"
+        return "BookmarkFolder"
+    else:
+        return v.__class__.__name__
+
+
+LayoutBookmarkChild = Annotated[
+    Union[
+        Annotated[Bookmark, Tag("Bookmark")],
+        Annotated[BookmarkFolder, Tag("BookmarkFolder")],
+    ],
+    Discriminator(get_bookmark_type),
+]
 
 """
 woo boy. Why is this code here? Well, we want a parent attribute on the objects to make user navigation easier

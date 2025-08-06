@@ -4,7 +4,7 @@ from typing import Any, Optional
 from pydantic import Json
 
 from ._base_node import LayoutNode
-from .bookmark import Bookmark, BookmarkFolder
+from .bookmark import LayoutBookmarkChild
 from .filters import GlobalFilter
 from .pod import Pod
 from .resource_package import ResourcePackage
@@ -23,7 +23,7 @@ class PublicCustomVisual(LayoutNode):
 class LayoutConfig(LayoutNode):
     linguisticSchemaSyncVersion: Optional[int] = None
     defaultDrillFilterOtherVisuals: bool = True
-    bookmarks: Optional[list[Bookmark | BookmarkFolder]] = None
+    bookmarks: Optional[list[LayoutBookmarkChild]] = None
     activeSectionIndex: int
     themeCollection: Any
     slowDataSourceSettings: Optional[Any] = None
