@@ -20,6 +20,11 @@ class Entity(LayoutNode):
     def table(self) -> str:
         return self.Entity
 
+    def table_mapping(self) -> dict[str, str]:
+        if self.Name is None:
+            return {}
+        return {self.Name: self.Entity}
+
     @staticmethod
     def create(entity: str) -> "Entity":
         return Entity.model_validate({"Entity": entity})
@@ -54,6 +59,9 @@ SourceRefSource = Annotated[
 class TransformTableRef(LayoutNode):
     TransformTableRef: SourceRefSource
 
+    def table(self) -> str:
+        return self.TransformTableRef.table()
+
 
 class SourceRef(LayoutNode):
     SourceRef: SourceRefSource
@@ -86,7 +94,6 @@ class SourceExpression(LayoutNode):
     Property: str
 
     def table(self) -> str:
-        assert isinstance(self.Expression, SourceRef)
         return self.Expression.table()
 
     def column(self) -> str:

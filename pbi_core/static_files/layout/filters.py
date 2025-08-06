@@ -6,9 +6,10 @@ import pbi_translation
 from pydantic import BaseModel, Discriminator, Tag
 
 from pbi_core.static_files.layout.sources.literal import LiteralSource
+from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 from ._base_node import LayoutNode
-from .condition import Condition
+from .condition import AndCondition, ComparisonCondition, Condition, ConditionType, InCondition, NotCondition
 from .sources import AggregationSource, ColumnSource, Entity, MeasureSource, Source
 from .visuals.properties.filter_properties import FilterObjects
 
@@ -56,7 +57,7 @@ class TransformInput(BaseModel):
 
 
 class TransformOutput(BaseModel):
-    pass
+    Table: InputTable
 
 
 class TransformMeta(BaseModel):
@@ -65,41 +66,100 @@ class TransformMeta(BaseModel):
     Input: TransformInput
     Output: TransformOutput
 
+    def table_mapping(self) -> dict[str, str]:
+        ret: list[ColumnSource | MeasureSource] = []
+        for col in self.Input.Table.Columns:
+            ret.extend(PrototypeQuery.unwrap_source(col.Expression))
+        input_tables: set[str] = set()
+        for source in ret:
+            if isinstance(source, ColumnSource):
+                input_tables.add(source.Column.table())
+            elif isinstance(source, MeasureSource):
+                input_tables.add(source.Measure.table())
+        if len(input_tables) > 1:
+            msg = f"Don't know how to handle multiple inputs: {self}"
+            raise ValueError(msg)
+
+        (input_table,) = input_tables
+        return {
+            self.Output.Table.Name: input_table,
+        }
+
 
 class PrototypeQuery(LayoutNode):
     Version: int
     From: list["From"]
-    Select: list[Source]
-    Where: list[Condition] | None = None
-    OrderBy: list[Orderby] | None = None
-    Transform: list[TransformMeta] | None = None
+    Select: list[Source] = []
+    Where: list[Condition] = []
+    OrderBy: list[Orderby] = []
+    Transform: list[TransformMeta] = []
     Top: int | None = None
 
     def table_mapping(self) -> dict[str, str]:
         ret: dict[str, str] = {}
-        for table in self.From:
-            if table.Name is not None:
-                assert isinstance(table, Entity)
-                ret[table.Name] = table.Entity
+        for from_clause in self.From:
+            ret |= from_clause.table_mapping()
+        for transform in self.Transform:
+            # For measures using Transform outputs, we need to point to the source of that transform table
+            transform_tables = transform.table_mapping()
+            ret |= {k: ret[v] for k, v in transform_tables.items()}
         return ret
 
     @classmethod
-    def unwrap_source(cls, source: Source) -> ColumnSource | MeasureSource:
+    def unwrap_source(cls, source: Source | ConditionType) -> list[ColumnSource | MeasureSource]:
         if isinstance(source, (ColumnSource, MeasureSource)):
-            return source
+            return [source]
         if isinstance(source, AggregationSource):
             return cls.unwrap_source(source.Aggregation.Expression)
+
+        if isinstance(source, InCondition):
+            ret = []
+            for expr in source.In.Expressions:
+                ret.extend(cls.unwrap_source(expr))
+            return ret
+        if isinstance(source, NotCondition):
+            return cls.unwrap_source(source.Not.Expression)
+        if isinstance(source, AndCondition):
+            return [
+                *cls.unwrap_source(source.And.Left),
+                *cls.unwrap_source(source.And.Right),
+            ]
+        if isinstance(source, ComparisonCondition):
+            # Right has no dynamic options, so it's skipped
+            return cls.unwrap_source(source.Comparison.Left)
+        print(source)
         breakpoint()
         raise ValueError
 
-    def dependencies(self) -> set[ColumnSource | MeasureSource]:
+    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
         ret: set[ColumnSource | MeasureSource] = set()
-        ret.update(self.unwrap_source(select) for select in self.Select)
-        for where in self.Where or []:
-            print(where)
-            breakpoint()
-        ret.update(self.unwrap_source(order_by.Expression) for order_by in self.OrderBy or [])
-        return ret
+        for select in self.Select:
+            ret.update(self.unwrap_source(select))
+        for where in self.Where:
+            ret.update(self.unwrap_source(where.Condition))
+        for order_by in self.OrderBy:
+            ret.update(self.unwrap_source(order_by.Expression))
+        for transformation in self.Transform:
+            for col in transformation.Input.Table.Columns:
+                ret.update(self.unwrap_source(col.Expression))
+        table_mappings: dict[str, str] = self.table_mapping()
+        ret2 = set()
+        for source in ret:
+            if isinstance(source, ColumnSource):
+                ret2.add(
+                    ModelColumnReference(
+                        column=source.Column.column(),
+                        table=table_mappings[source.Column.table()],
+                    ),
+                )
+            elif isinstance(source, MeasureSource):
+                ret2.add(
+                    ModelMeasureReference(
+                        measure=source.Measure.column(),
+                        table=source.Measure.table(),
+                    ),
+                )
+        return ret2
 
     def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult:
         raw_query = self.model_dump_json()
@@ -146,6 +206,9 @@ class Subquery(LayoutNode):
     Expression: _SubqueryHelper
     Type: SubQueryType
 
+    def table_mapping(self) -> dict[str, str]:
+        return self.Expression.Subquery.Query.table_mapping()
+
 
 def get_from(v: Any) -> str:
     if isinstance(v, dict):
@@ -162,14 +225,6 @@ From = Annotated[
     Annotated[Entity, Tag("Entity")] | Annotated[Subquery, Tag("Subquery")],
     Discriminator(get_from),
 ]
-
-
-class FilterExpression(LayoutNode):
-    _parent: "Filter"  # pyright: ignore reportIncompatibleVariableOverride=false
-
-    Version: int
-    From: list["From"]
-    Where: list[Condition]
 
 
 class HowCreated(IntEnum):
@@ -196,7 +251,7 @@ class Filter(LayoutNode):
     isLockedInViewMode: bool = False
     isHiddenInViewMode: bool = False
     objects: FilterObjects | None = None
-    filter: FilterExpression | None = None
+    filter: PrototypeQuery | None = None
     displayName: str | None = None
     ordinal: int = 0
     cachedDisplayNames: Any = None
@@ -207,6 +262,11 @@ class Filter(LayoutNode):
 
     def __str__(self) -> str:
         return super().__str__()
+
+    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+        if self.filter is None:
+            return set()
+        return self.filter.get_ssas_elements()
 
 
 class VisualFilterExpression(LayoutNode):

@@ -57,7 +57,7 @@ class BaseVisual(LayoutNode):
         if self.prototypeQuery is None:
             return LineageNode(self, lineage_type, [])
         table_mapping = self.prototypeQuery.table_mapping()
-        children = self.prototypeQuery.dependencies()
+        children = self.prototypeQuery.get_ssas_elements()
         for child in children:
             if isinstance(child, ColumnSource):
                 candidate_columns = tabular_model.columns.find_all({"explicit_name": child.Column.column()})

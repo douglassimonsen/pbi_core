@@ -4,6 +4,8 @@ from typing import Any
 
 from pydantic import Json
 
+from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
+
 from ._base_node import LayoutNode
 from .bookmark import LayoutBookmarkChild
 from .filters import GlobalFilter
@@ -75,3 +77,11 @@ class Layout(LayoutNode):
     pods: list[Pod] = []
     publicCustomVisuals: list[PublicCustomVisual] = []
     _xpath = []
+
+    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+        ret = set()
+        for f in self.filters:
+            ret.update(f.get_ssas_elements())
+        for s in self.sections:
+            ret.update(s.get_ssas_elements())
+        return ret

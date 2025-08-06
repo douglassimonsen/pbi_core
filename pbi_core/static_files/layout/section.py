@@ -5,6 +5,8 @@ from uuid import UUID
 
 from pydantic import ConfigDict, Json
 
+from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
+
 from ._base_node import LayoutNode
 from .filters import PageFilter
 from .visual_container import VisualContainer
@@ -37,3 +39,11 @@ class Section(LayoutNode):
     displayName: str
     name: str
     id: int | None = None
+
+    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+        ret = set()
+        for viz in self.visualContainers:
+            ret.update(viz.get_ssas_elements())
+        for f in self.filters:
+            ret.update(f.get_ssas_elements())
+        return ret

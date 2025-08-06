@@ -1,6 +1,6 @@
 from typing import Annotated, Any, cast
 
-from pydantic import Discriminator, Tag
+from pydantic import BaseModel, Discriminator, Tag
 
 from .aggregation import AggregationSource, DataSource
 from .arithmetic import ArithmeticSource
@@ -11,6 +11,15 @@ from .hierarchy import HierarchyLevelSource
 from .literal import LiteralSource
 from .measure import MeasureSource
 from .proto import ProtoSourceRef
+
+
+class RoleRef(BaseModel):
+    Role: str
+
+
+class TransformOutputRoleRef(BaseModel):
+    TransformOutputRoleRef: RoleRef
+    Name: str
 
 
 def get_source(v: Any) -> str:  # noqa: PLR0911
@@ -29,8 +38,10 @@ def get_source(v: Any) -> str:  # noqa: PLR0911
             return "ArithmeticSource"
         if "SourceRef" in v:
             return "ProtoSourceRef"
+        if "TransformOutputRoleRef" in v:
+            return "TransformOutputRoleRef"
         msg = f"Unknown Filter: {v.keys()}"
-        return "MeasureSource"
+        raise TypeError(msg)
     return cast("str", v.__class__.__name__)
 
 
@@ -41,7 +52,8 @@ Source = Annotated[
     | Annotated[AggregationSource, Tag("AggregationSource")]
     | Annotated[MeasureSource, Tag("MeasureSource")]
     | Annotated[ArithmeticSource, Tag("ArithmeticSource")]
-    | Annotated[ProtoSourceRef, Tag("ProtoSourceRef")],
+    | Annotated[ProtoSourceRef, Tag("ProtoSourceRef")]
+    | Annotated[TransformOutputRoleRef, Tag("TransformOutputRoleRef")],
     Discriminator(get_source),
 ]
 

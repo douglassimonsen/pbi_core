@@ -4,6 +4,8 @@ from typing import TYPE_CHECKING, Annotated, Any, cast
 
 from pydantic import Discriminator, Json, Tag
 
+from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
+
 from ._base_node import LayoutNode
 from .filters import PrototypeQuery, PrototypeQueryResult, VisualFilter
 from .visuals.main import Visual
@@ -120,6 +122,15 @@ QueryCommand = Annotated[
 class Query(LayoutNode):
     Commands: list[QueryCommand]
 
+    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+        ret = set()
+        for command in self.Commands:
+            if isinstance(command, QueryCommand1):
+                ret.update(command.Query.get_ssas_elements())
+            elif isinstance(command, QueryCommand2):
+                ret.update(command.SemanticQueryDataShapeCommand.Query.get_ssas_elements())
+        return ret
+
 
 class VisualContainer(LayoutNode):
     _parent: "Section"  # pyright: ignore reportIncompatibleVariableOverride=false
@@ -158,3 +169,12 @@ class VisualContainer(LayoutNode):
         else:
             query = query_command.SemanticQueryDataShapeCommand.Query
         return query.get_data(model)
+
+    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+        if self.query is None:
+            return set()
+        ret = set()
+        ret.update(self.query.get_ssas_elements())
+        for f in self.filters:
+            ret.update(f.get_ssas_elements())
+        return ret
