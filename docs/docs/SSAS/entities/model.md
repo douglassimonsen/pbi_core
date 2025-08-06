@@ -1,4 +1,4 @@
 # Model
 
 
-::: pbi_corecorecorecore.ssas.model_tables.model.Model
+::: pbi_core.ssas.model_tables.model.Model

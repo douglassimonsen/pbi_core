@@ -1,4 +1,4 @@
 # Variation
 
 
-::: pbi_corecore.ssas.model_tables.variation.Variation
+::: pbi_core.ssas.model_tables.variation.Variation

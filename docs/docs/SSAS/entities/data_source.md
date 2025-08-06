@@ -1,4 +1,4 @@
 # Data Source
 
 
-::: pbi_corecorecorecorecorecore.ssas.model_tables.data_source.DataSource
+::: pbi_core.ssas.model_tables.data_source.DataSource

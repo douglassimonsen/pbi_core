@@ -1,4 +1,4 @@
 # Partition
 
 
-::: pbi_corecore.ssas.model_tables.partition.Partition
+::: pbi_core.ssas.model_tables.partition.Partition
