@@ -22,6 +22,7 @@ if TYPE_CHECKING:
     from .section import Section
 
 
+from .expansion_state import ExpansionState
 from .performance import Performance, get_performance
 
 
@@ -342,6 +343,23 @@ class DataTransformSelectType(LayoutNode):
     underlyingType: int | None = None  # TODO: make enum
 
 
+class ColumnFormattingDataBars(LayoutNode):
+    metadata: str
+
+
+class ColumnFormatting(LayoutNode):
+    dataBars: list[ColumnFormattingDataBars]
+
+
+class Title(LayoutNode):
+    text: list[None]
+
+
+class RelatedObjects(LayoutNode):
+    columnFormatting: ColumnFormatting | None = None
+    title: Title | None = None
+
+
 class DataTransformSelect(LayoutNode):
     displayName: str | None = None
     format: str | None = None
@@ -352,34 +370,7 @@ class DataTransformSelect(LayoutNode):
     sortOrder: FilterSortOrder = FilterSortOrder.NA
     type: DataTransformSelectType | None = None
     expr: Source
-
-
-class ExpansionStateLevel(LayoutNode):
-    queryRefs: list[str]
-    isCollapsed: bool = False
-    isPinned: bool = False
-    isLocked: bool = False
-    identityKeys: list[Source] | None = None
-    identityValues: list[None] | None = None
-
-
-class ExpansionStateChild(LayoutNode):
-    isToggled: bool = False
-    identityValues: list[Source]
-    children: list["ExpansionStateChild"] | None = None
-
-
-class ExpansionStateRoot(LayoutNode):
-    identityValues: list[None] | None = None
-    isToggled: bool = False
-    children: list[ExpansionStateChild] | None = None
-
-
-class ExpansionState(LayoutNode):
-    roles: list[str]
-    isToggled: bool = False
-    levels: list[ExpansionStateLevel] | None = None
-    root: ExpansionStateRoot | None = None
+    relatedObjects: RelatedObjects | None = None
 
 
 class DataTransform(LayoutNode):

@@ -57,6 +57,7 @@ class ColumnHeadersProperties(LayoutNode):
     fontColor: Expression | None = None
     fontSize: Expression | None = None
     outline: Expression | None = None
+    bold: Expression | None = None
 
 
 class ColumnHeaders(LayoutNode):
@@ -97,6 +98,6 @@ class TableChartColumnProperties(LayoutNode):
 
 class TableChart(BaseVisual):
     visualType: str = "tableEx"
-    objects: TableChartColumnProperties
+    objects: TableChartColumnProperties | None = None
     model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None
