@@ -11,7 +11,7 @@ class ColumnSource(LayoutNode):
     NativeReferenceName: Optional[str] = None  # only for Layout.Visual.Query
 
     def __repr__(self) -> str:
-        return f"ColumnSource({self.Column.Expression.table}.{self.Column.Property})"
+        return f"ColumnSource({self.Column.Expression.table()}.{self.Column.Property})"
 
     def filter_name(self) -> str:
         return self.Column.Property
@@ -20,6 +20,9 @@ class ColumnSource(LayoutNode):
         if not isinstance(other, ColumnSource):
             return False
         return (self.Column.column() == other.Column.column()) and (self.Column.table() == other.Column.table())
+
+    def __hash__(self) -> int:
+        return hash((self.Column.column(), self.Column.table()))
 
 
 """

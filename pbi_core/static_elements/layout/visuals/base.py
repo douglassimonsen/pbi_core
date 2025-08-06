@@ -22,5 +22,7 @@ class BaseVisual(LayoutNode):
     visualType: str = "unknown"
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
-        self.prototypeQuery.dependencies()
+        children = self.prototypeQuery.dependencies()
+        print(children)
+        breakpoint()
         return LineageNode(self, lineage_type)
