@@ -129,6 +129,9 @@ to vscode settings
 Property:Microsoft.InfoNav.Explore.VisualContracts.SingleVisualConfig.PrototypeQuery
 Click on QueryDefinition
 C:\Program Files\Microsoft Power BI Desktop\bin\Microsoft.InfoNav.Explore.VisualContracts.dll
+C:\Program Files\Microsoft Power BI Desktop\bin\Microsoft.InfoNav.Insights.Engines.dll
+  ^-- I think this is where the logic is actually constructed, although cannot find the toString method
+
 
 
 # PBI SSAS definitions
