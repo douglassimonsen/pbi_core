@@ -26,7 +26,9 @@ flowchart TD
     pyadomd
     pbi_translation
     pbi_parsers
+    pbi_git
 
+    pbi_git -- Uses to to compare reports --> pbi_core
     pbi_gui -- Uses as a REST API --> pbi_server
     pbi_server -- Uses to retrieve data from reports --> pbi_core
     pbi_server -- Uses to identify issues in reports --> pbi_ruff
