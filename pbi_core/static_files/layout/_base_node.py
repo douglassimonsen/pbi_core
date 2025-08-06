@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from enum import Enum
 from typing import TYPE_CHECKING, Any, Self, TypeVar
 
 from pbi_core.lineage import LineageNode, LineageType
@@ -17,6 +18,33 @@ class LayoutNode(BaseValidation):
     _name_field: str | None = None  # name of the field used to populate __repr__
     _parent: "LayoutNode"
     _xpath: list[str | int]
+
+    @staticmethod
+    def serialize_helper(value: Any) -> Any:
+        """Helper function to serialize a value.
+
+        We need to separate from the main function to handle cases where there is a list of
+        dictionaries such as the visual container properties.
+        """
+        if hasattr(value, "serialize"):
+            return value.serialize()
+        if isinstance(value, list):
+            return [LayoutNode.serialize_helper(val) for val in value]
+        if isinstance(value, dict):
+            return {key: LayoutNode.serialize_helper(val) for key, val in value.items()}
+        if isinstance(value, Enum):
+            return value.name
+        return value
+
+    def serialize(self) -> dict[str, Any]:
+        """Serialize the node to a dictionary.
+
+        Differs from the model_dump_json method in that it does not convert the JSON models back to strings.
+        """
+        ret = {}
+        for field in self.model_fields:
+            ret[field] = self.serialize_helper(getattr(self, field))
+        return ret
 
     def pbi_core_name(self) -> str:
         raise NotImplementedError

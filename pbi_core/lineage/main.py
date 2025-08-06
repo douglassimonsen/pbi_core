@@ -4,7 +4,7 @@ from mermaid import Link, MermaidDiagram, Node
 from mermaid.node import NodeShape
 
 LineageType = Literal["children", "parents"]
-
+"""Literal["children", "parents"]"""
 
 """
 #ffffcc, #ffcc99, #ffcccc,
