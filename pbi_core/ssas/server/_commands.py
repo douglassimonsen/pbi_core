@@ -84,10 +84,12 @@ class NoCommands:
         tree = bs4.BeautifulSoup(text, "xml")
         row = tree.find("xs:complexType", {"name": "row"})
         assert isinstance(row, bs4.element.Tag)
-        ret = []
+        ret: list[str] = []
         for e in row.find_all("xs:element"):
             assert isinstance(e, bs4.element.Tag)
-            ret.append(e["name"])
+            val = e["name"]
+            assert isinstance(val, str)
+            ret.append(val)
         return ret
 
 

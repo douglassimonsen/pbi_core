@@ -1,0 +1,198 @@
+from typing import TYPE_CHECKING, Any
+
+import pydantic
+from structlog import get_logger
+
+from pbi_core.ssas.server._commands import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
+from pbi_core.ssas.server.utils import OBJECT_COMMAND_TEMPLATES
+
+from .base_ssas_table import SsasTable
+from .enums import RefreshType
+
+if TYPE_CHECKING:
+    from .tabular_model import BaseTabularModel
+logger = get_logger()
+
+
+SsasConfig = pydantic.ConfigDict(
+    arbitrary_types_allowed=True,
+    extra="forbid",
+    use_enum_values=False,
+    json_schema_mode_override="serialization",
+    validate_assignment=True,
+    protected_namespaces=(),
+)
+
+
+logger = get_logger()
+
+
+class SsasAlter(SsasTable):
+    """Class for SSAS records that implement alter functionality.
+
+    The `alter <https://learn.microsoft.com/en-us/analysis-services/tmsl/alter-command-tmsl?view=asallproducts-allversions>`_ spec
+    """  # noqa: E501
+
+    _commands: BaseCommands
+
+    def alter(self) -> None:
+        """Updates a non-name field of an object."""
+        data = {
+            self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
+        }
+        xml_command = self.render_xml_command(
+            data,
+            self._commands.alter,
+            self.tabular_model.db_name,
+        )
+        logger.info("Syncing Alter Changes to SSAS", obj=self._db_type_name())
+        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+
+
+class SsasRename(SsasTable):
+    """Class for SSAS records that implement rename functionality.
+
+    The `rename <https://learn.microsoft.com/en-us/analysis-services/tmsl/rename-command-tmsl?view=asallproducts-allversions>`_ spec
+    """  # noqa: E501
+
+    _db_name_field: str = "not_defined"
+    _commands: RenameCommands
+
+    def rename(self) -> None:
+        """Updates a name field of an object."""
+        data = {
+            self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
+        }
+        xml_command = self.render_xml_command(
+            data,
+            self._commands.rename,
+            self.tabular_model.db_name,
+        )
+        logger.info("Syncing Rename Changes to SSAS", obj=self._db_type_name())
+        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+
+
+class SsasCreate(SsasTable):
+    """Class for SSAS records that implement create functionality.
+
+    The `create <https://learn.microsoft.com/en-us/analysis-services/tmsl/create-command-tmsl?view=asallproducts-allversions>`_ spec
+    """  # noqa: E501
+
+    @classmethod
+    def create(cls: type["SsasCreate"], tabular_model: "BaseTabularModel", **kwargs: dict[str, Any]) -> None:
+        # data = {
+        #     cls._db_field_names.get(k, k): v for k, v in kwargs.items() if k not in cls._read_only_fields
+        # }
+        # xml_command = cls.render_xml_command(
+        #     data,
+        #     cls._commands.rename,
+        #     tabular_model.db_name,
+        # )
+        # logger.info("Syncing Rename Changes to SSAS", obj=cls._db_type_name())
+        # tabular_model.server.query_xml(xml_command, db_name=tabular_model.db_name)
+        pass
+
+
+class SsasDelete(SsasTable):
+    """Class for SSAS records that implement delete functionality.
+
+    The `delete <https://learn.microsoft.com/en-us/analysis-services/tmsl/delete-command-tmsl?view=asallproducts-allversions>`_ spec
+    """  # noqa: E501
+
+    _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
+    _commands: BaseCommands
+
+    def delete(self) -> None:
+        data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
+        xml_command = self.render_xml_command(
+            data,
+            self._commands.delete,
+            self.tabular_model.db_name,
+        )
+        logger.info("Syncing Delete Changes to SSAS", obj=self._db_type_name())
+        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+
+
+class SsasRefresh(SsasTable):
+    """Class for SSAS records that implement refresh functionality.
+
+    The `refresh <https://learn.microsoft.com/en-us/analysis-services/tmsl/refresh-command-tmsl?view=asallproducts-allversions>`_ spec
+    """  # noqa: E501
+
+    _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
+    _refresh_type: RefreshType
+    _commands: RefreshCommands
+
+    def refresh(self) -> None:
+        data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
+        data["RefreshType"] = self._refresh_type
+        xml_command = self.render_xml_command(
+            data,
+            self._commands.refresh,
+            self.tabular_model.db_name,
+        )
+        logger.info("Syncing Refresh Changes to SSAS", obj=self)
+        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+
+
+class SsasReadonlyTable(SsasTable):
+    """Class for SSAS records that implement no command."""
+
+    _commands: NoCommands
+
+
+class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
+    _commands: BaseCommands
+
+    def model_post_init(self, __context: Any, /) -> None:
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
+        self._commands = BaseCommands(
+            alter=templates["alter.xml"],
+            create=templates["create.xml"],
+            delete=templates["delete.xml"],
+        )
+
+
+class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
+    _commands: RenameCommands
+
+    def model_post_init(self, __context: Any, /) -> None:
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
+        if self._db_command_obj_name() == "ExtendedPropertys":
+            breakpoint()
+        self._commands = RenameCommands(
+            alter=templates["alter.xml"],
+            create=templates["create.xml"],
+            delete=templates["delete.xml"],
+            rename=templates["rename.xml"],
+        )
+
+
+class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefresh):
+    _commands: RefreshCommands
+
+    def model_post_init(self, __context: Any, /) -> None:
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
+
+        self._commands = RefreshCommands(
+            alter=templates["alter.xml"],
+            create=templates["create.xml"],
+            delete=templates["delete.xml"],
+            rename=templates["rename.xml"],
+            refresh=templates["refresh.xml"],
+        )
+
+
+class SsasModelTable(SsasAlter, SsasRefresh, SsasRename):
+    """Solely used for the single Model record."""
+
+    _commands: ModelCommands
+
+    def model_post_init(self, __context: Any, /) -> None:
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
+
+        self._commands = ModelCommands(
+            alter=templates["alter.xml"],
+            refresh=templates["refresh.xml"],
+            rename=templates["rename.xml"],
+        )
