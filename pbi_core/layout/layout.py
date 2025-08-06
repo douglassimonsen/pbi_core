@@ -3,6 +3,7 @@ from typing import Any, Optional
 from pydantic import Json
 
 from ._base_node import LayoutNode
+from .pod import Pod
 from .resource_package import ResourcePackage
 from .section import Section
 
@@ -16,5 +17,5 @@ class Layout(LayoutNode):
     config: Json[Any]
     layoutOptimization: Any
     theme: Optional[str] = None
-    pods: list[Any] = []
+    pods: list[Pod] = []
     publicCustomVisuals: list[Any] = []
