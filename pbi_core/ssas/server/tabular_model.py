@@ -1,12 +1,12 @@
 import pathlib
 import shutil
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Type, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Optional, Type, cast
 
 import pydantic
 from bs4 import BeautifulSoup, Tag
 from structlog import get_logger
 
-from ...lineage import LineageNode
+from ...lineage import LineageNode, LineageType
 from ._commands import BaseCommands, Command, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from .utils import (
     COMMAND_TEMPLATES,
@@ -233,8 +233,8 @@ class SsasTable(pydantic.BaseModel):
         xml_entity_definition = command.template.render(rows=xml_row)
         return command.base_template.render(db_name=db_name, entity_def=xml_entity_definition)
 
-    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
-        return LineageNode(self)
+    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+        return LineageNode(self, lineage_type)
 
 
 class SsasAlter(SsasTable):

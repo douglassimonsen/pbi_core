@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING
 
-from ...lineage import LineageNode
+from ...lineage import LineageNode, LineageType
 from ..server.tabular_model import SsasBaseTable
 
 if TYPE_CHECKING:
@@ -20,8 +20,8 @@ class KPI(SsasBaseTable):
     def measure(self) -> "Measure":
         return self.tabular_model.measures.find({"id": self.measure_id})
 
-    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
-            return LineageNode(self)
+            return LineageNode(self, lineage_type)
         else:
-            return LineageNode(self, [self.measure().get_lineage(lineage_type)])
+            return LineageNode(self, lineage_type, [self.measure().get_lineage(lineage_type)])

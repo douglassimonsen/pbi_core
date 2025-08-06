@@ -1,13 +1,17 @@
-from typing import Any, Optional
+from typing import Any, Literal, Optional
+
+LineageType = Literal["children"] | Literal["parents"]
 
 
 class LineageNode:
     value: Any
-    parents: list["LineageNode"] = []
+    relatives: list["LineageNode"]
+    lineage_type: LineageType
 
-    def __init__(self, value: Any, parents: Optional[list["LineageNode"]] = None) -> None:
+    def __init__(self, value: Any, lineage_type: LineageType, relatives: Optional[list["LineageNode"]] = None) -> None:
         self.value = value
-        self.parents = parents or []
+        self.relatives = relatives or []
+        self.lineage_type = lineage_type
 
     def to_mermaid(self) -> None:
         raise NotImplementedError

@@ -1,8 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Literal, Optional
+from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
-from ...lineage import LineageNode
+from ...lineage import LineageNode, LineageType
 from ..server.tabular_model import SsasRenameTable, SsasTable
 from .column import Column
 
@@ -51,10 +51,10 @@ class Measure(SsasRenameTable):
             for x in ret
         ]
 
-    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
-            return LineageNode(self)
+            return LineageNode(self, lineage_type)
         else:
             parent_nodes: list[Optional[SsasTable]] = [self.KPI(), self.table()]
             parent_lineage = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
-            return LineageNode(self, parent_lineage)
+            return LineageNode(self, lineage_type, parent_lineage)

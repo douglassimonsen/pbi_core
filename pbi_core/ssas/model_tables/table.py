@@ -1,8 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Literal, Optional
+from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
-from ...lineage import LineageNode
+from ...lineage import LineageNode, LineageType
 from ..server.tabular_model import SsasRefreshTable
 from .column import Column
 
@@ -41,8 +41,8 @@ class Table(SsasRefreshTable):
     def model(self) -> "Model":
         return self.tabular_model.model
 
-    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
-            return LineageNode(self, [c.get_lineage(lineage_type) for c in self.columns()])
+            return LineageNode(self, lineage_type, [c.get_lineage(lineage_type) for c in self.columns()])
         else:
-            return LineageNode(self, [self.model().get_lineage(lineage_type)])
+            return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])

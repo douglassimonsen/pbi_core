@@ -1,8 +1,8 @@
 import datetime
 from enum import IntEnum
-from typing import Any, Literal, Optional
+from typing import Any, Optional
 
-from ...lineage import LineageNode
+from ...lineage import LineageNode, LineageType
 from ..server.tabular_model import SsasRenameTable, SsasTable
 
 
@@ -45,8 +45,8 @@ class Annotation(SsasRenameTable):
             case _:
                 raise ValueError("No Matching Object ID")
 
-    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
-            return LineageNode(self)
+            return LineageNode(self, lineage_type)
         else:
-            return LineageNode(self, [self.parent().get_lineage(lineage_type)])
+            return LineageNode(self, lineage_type, [self.parent().get_lineage(lineage_type)])

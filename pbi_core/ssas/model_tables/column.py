@@ -1,8 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, ClassVar, Literal, Optional
+from typing import TYPE_CHECKING, ClassVar, Optional
 from uuid import UUID
 
-from ...lineage import LineageNode
+from ...lineage import LineageNode, LineageType
 from ..server.tabular_model import SsasRenameTable, SsasTable
 
 if TYPE_CHECKING:
@@ -57,7 +57,7 @@ class Column(SsasRenameTable):
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             children_nodes: list[Optional[SsasTable]] = [self.attribute_hierarchy()]
             children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]

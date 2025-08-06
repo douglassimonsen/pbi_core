@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING, Any, Literal, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
-from pbi_core.lineage import LineageNode
+from pbi_core.lineage import LineageNode, LineageType
 
 from ..server.tabular_model import SsasRenameTable
 
@@ -30,12 +30,13 @@ class Variation(SsasRenameTable):
     def relationship(self) -> "Relationship":
         return self.tabular_model.relationships.find({"id": self.relationship_id})
 
-    def get_lineage(self, lineage_type: Literal["children"] | Literal["parent"]) -> LineageNode:
+    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
-            return LineageNode(self)
+            return LineageNode(self, lineage_type)
         else:
             return LineageNode(
                 self,
+                lineage_type,
                 [
                     self.default_hierarchy().get_lineage(lineage_type),
                     self.relationship().get_lineage(lineage_type),

@@ -1,1 +1,3 @@
-from .main import LineageNode as LineageNode
+from .main import LineageNode, LineageType
+
+__all__ = ["LineageNode", "LineageType"]
