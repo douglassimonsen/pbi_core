@@ -130,7 +130,9 @@ Property:Microsoft.InfoNav.Explore.VisualContracts.SingleVisualConfig.PrototypeQ
 Click on QueryDefinition
 C:\Program Files\Microsoft Power BI Desktop\bin\Microsoft.InfoNav.Explore.VisualContracts.dll
 C:\Program Files\Microsoft Power BI Desktop\bin\Microsoft.InfoNav.Insights.Engines.dll
-  ^-- I think this is where the logic is actually constructed, although cannot find the toString method
+  namespace: Microsoft.InfoNav.Experimental.Insights.Engines.DAX
+    Writer.cs creates the string to SSAS
+
 
 
 
