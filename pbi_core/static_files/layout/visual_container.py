@@ -11,6 +11,7 @@ from ._base_node import LayoutNode
 from .condition import Condition
 from .filters import From as FromType
 from .filters import PrototypeQuery, PrototypeQueryResult, VisualFilter
+from .selector import Selector
 from .sources import Source
 from .visuals.base import FilterSortOrder, ProjectionConfig, PropertyDef
 from .visuals.main import Visual
@@ -346,8 +347,8 @@ class Restatement(LayoutNode):
 
 
 class QueryMetadataFilter(LayoutNode):
-    type: int  # TODO: make enum
-    expression: Source
+    type: int | None = None  # TODO: make enum
+    expression: Source | None = None
 
 
 class QueryMetadata(LayoutNode):
@@ -382,9 +383,14 @@ class Title(LayoutNode):
     text: list[None]
 
 
+class Values(LayoutNode):
+    fontColor: list[Selector]
+
+
 class RelatedObjects(LayoutNode):
     columnFormatting: ColumnFormatting | None = None
     title: Title | None = None
+    values: Values | None = None
 
 
 class DataTransformSelect(LayoutNode):

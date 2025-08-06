@@ -46,6 +46,7 @@ class VisualTooltipProperties(LayoutNode):
     titleFontColor: Expression | None = None
     type: Expression | None = None
     valueFontColor: Expression | None = None
+    fontSize: Expression | None = None
 
 
 class VisualTooltip(LayoutNode):
@@ -116,10 +117,11 @@ class VisualLink(LayoutNode):
 
 
 class VisualHeaderTooltipProperties(LayoutNode):
-    text: Expression | None
+    text: Expression | None = None
     background: Expression | None = None
     titleFontColor: Expression | None = None
     section: Expression | None = None
+    type: Expression | None = None
 
 
 class VisualHeaderTooltip(LayoutNode):

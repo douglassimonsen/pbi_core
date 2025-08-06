@@ -16,6 +16,7 @@ if TYPE_CHECKING:
 
 class GeneralProperties(LayoutNode):
     paragraphs: list[Paragraph] | None = None
+    responsive: Expression | None = None
 
 
 class General(LayoutNode):
@@ -23,7 +24,10 @@ class General(LayoutNode):
 
 
 class ValuePropertiesHelper(LayoutNode):
-    expr: Any  # TODO: should be Source, but causes circular import issues with Subquery
+    expr: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
+    context: Any
+    value: Any
+    propertyDefinitionKind: str
 
 
 class ValueProperties(LayoutNode):

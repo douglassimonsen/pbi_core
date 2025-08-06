@@ -1,5 +1,5 @@
 from ._base_node import LayoutNode
-from .condition import ComparisonCondition
+from .condition import ConditionType
 
 
 class DataViewWildcard(LayoutNode):
@@ -10,7 +10,7 @@ class DataViewWildcard(LayoutNode):
 class SelectorData(LayoutNode):
     roles: list[str] | None = None
     dataViewWildcard: DataViewWildcard | None = None
-    scopeId: ComparisonCondition | None = None
+    scopeId: ConditionType | None = None
 
 
 # TODO: possibly replace with a union?

@@ -276,7 +276,7 @@ class FilterType(Enum):
 
 
 class Scope(LayoutNode):
-    scopeId: ComparisonCondition
+    scopeId: ConditionType
 
 
 class CachedDisplayNames(LayoutNode):
@@ -323,9 +323,23 @@ class VisualFilterExpression(LayoutNode):
 # TODO: visual needs extra fields because it allows measure sources I think
 
 
+class HighlightScope(LayoutNode):
+    scopeId: ConditionType
+
+
+class CachedValueItems(LayoutNode):
+    identities: list[HighlightScope]
+    valueMap: dict[str, str] | list[str]
+
+
+class FilterExpressionMetadata(LayoutNode):
+    expressions: list[Source]
+    cachedValueItems: list[CachedValueItems]
+
+
 class VisualFilter(Filter):
     restatement: str | None = None
-    filterExpressionMetadata: int | None = None
+    filterExpressionMetadata: FilterExpressionMetadata | None = None
 
     def to_bookmark(self) -> "BookmarkFilter":
         return cast("BookmarkFilter", self)

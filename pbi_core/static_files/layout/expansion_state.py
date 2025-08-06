@@ -4,6 +4,11 @@ from ._base_node import LayoutNode
 from .sources import Source
 
 
+class Information(LayoutNode):
+    method: str
+    disabled: bool = False
+
+
 class ExpansionStateLevel(LayoutNode):
     queryRefs: list[str]
     isCollapsed: bool = False
@@ -11,6 +16,7 @@ class ExpansionStateLevel(LayoutNode):
     isLocked: bool = False
     identityKeys: list[Source] | None = None
     identityValues: list[None] | None = None
+    AIInformation: Information | None = None
 
 
 class ExpansionStateChild(LayoutNode):

@@ -5,9 +5,8 @@ from typing import TYPE_CHECKING, Annotated, Any
 from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
-from .condition import ConditionType
 from .expansion_state import ExpansionStateLevel, ExpansionStateRoot
-from .filters import BookmarkFilter, Orderby
+from .filters import BookmarkFilter, FilterExpressionMetadata, HighlightScope, Orderby
 from .sources import Source
 from .visuals.base import PropertyDef
 from .visuals.properties.base import Expression
@@ -24,23 +23,9 @@ class BookmarkFilters(LayoutNode):
     byName: dict[str, BookmarkFilter] = {}
 
 
-class HighlightScope(LayoutNode):
-    scopeId: ConditionType
-
-
 class HighlightSelection(LayoutNode):
     dataMap: dict[str, list[HighlightScope]]
     metadata: list[str] | None = None
-
-
-class CachedValueItems(LayoutNode):
-    identities: list[HighlightScope]
-    valueMap: list[str]
-
-
-class FilterExpressionMetadata(LayoutNode):
-    expressions: list[Source]
-    cachedValueItems: list[CachedValueItems]
 
 
 class Highlight(LayoutNode):

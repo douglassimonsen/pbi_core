@@ -9,6 +9,7 @@ from pbi_core.static_files.layout.selector import Selector
 from .base import BaseVisual
 from .column_property import ColumnProperty
 from .properties.base import Expression
+from .text_box import GeneralProperties
 
 
 class CategoryAxisProperties(LayoutNode):
@@ -24,6 +25,9 @@ class CategoryAxisProperties(LayoutNode):
     showAxisTitle: Expression | None = None
     titleColor: Expression | None = None
     gridlineStyle: Expression | None = None
+    gridlineShow: Expression | None = None
+    labelColor: Expression | None = None
+    titleText: Expression | None = None
 
 
 class CategoryAxis(LayoutNode):
@@ -49,6 +53,11 @@ class LabelsProperties(LayoutNode):
     labelPosition: Expression | None = None
     show: Expression | None = None
     color: Expression | None = None
+    labelDensity: Expression | None = None
+    enableBackground: Expression | None = None
+    backgroundColor: Expression | None = None
+    backgroundTransparency: Expression | None = None
+    showAll: Expression | None = None
 
 
 class Labels(LayoutNode):
@@ -75,6 +84,9 @@ class ValueAxisProperties(LayoutNode):
     titleFontFamily: Expression | None = None
     fontSize: Expression | None = None
     showAxisTitle: Expression | None = None
+    start: Expression | None = None
+    logAxisScale: Expression | None = None
+    axisScale: Expression | None = None
 
 
 class ValueAxis(LayoutNode):
@@ -82,12 +94,50 @@ class ValueAxis(LayoutNode):
     selector: Selector | None = None
 
 
+class General(LayoutNode):
+    properties: GeneralProperties
+
+
+class ZoomProperties(LayoutNode):
+    show: Expression | None = None
+
+
+class Zoom(LayoutNode):
+    properties: ZoomProperties
+
+
+class TotalProperties(LayoutNode):
+    show: Expression | None = None
+
+
+class Total(LayoutNode):
+    properties: TotalProperties
+
+
+class Y1AxisReferenceLineProperties(LayoutNode):
+    show: Expression | None = None
+    displayName: Expression | None = None
+    transparency: Expression | None = None
+    value: Expression | None = None
+    lineColor: Expression | None = None
+    style: Expression | None = None
+
+
+class Y1AxisReferenceLine(LayoutNode):
+    properties: Y1AxisReferenceLineProperties
+    selector: Selector | None = None
+
+
 class ColumnChartColumnProperties(LayoutNode):
     categoryAxis: list[CategoryAxis] | None = None
     dataPoint: list[DataPoint] | None = None
+    general: list[General] | None = None
     labels: list[Labels] | None = None
     legend: list[Legend] | None = None
     valueAxis: list[ValueAxis] | None = None
+    totals: list[Total] | None = None
+    y1AxisReferenceLine: list[Y1AxisReferenceLine] | None = None
+    zoom: list[Zoom] | None = None
 
 
 class ColumnChart(BaseVisual):

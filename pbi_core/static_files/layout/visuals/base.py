@@ -77,7 +77,8 @@ class PropertyDef(LayoutNode):
 
 
 class QueryOptions(LayoutNode):
-    allowOverlappingPointsSample: bool
+    allowOverlappingPointsSample: bool = False
+    keepProjectionOrder: bool = True
 
 
 class BaseVisual(LayoutNode):
@@ -92,8 +93,8 @@ class BaseVisual(LayoutNode):
     # vcObjects means "visual container objects"
     vcObjects: VCProperties | None = None
     visualType: str = "unknown"
-    queryOptions: QueryOptions = None
-    showAllRoles: int = None
+    queryOptions: QueryOptions | None = None
+    showAllRoles: list[str] | None = None
     display: Display | None = None
 
     @property

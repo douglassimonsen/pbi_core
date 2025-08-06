@@ -111,7 +111,16 @@ class Grid(LayoutNode):
     selector: Selector | None = None
 
 
+class GeneralProperties(LayoutNode):
+    pass
+
+
+class General(LayoutNode):
+    properties: GeneralProperties
+
+
 class TableChartColumnProperties(LayoutNode):
+    general: list[General] | None = None
     columnFormatting: list[ColumnFormatting] | None = None
     columnHeaders: list[ColumnHeaders] | None = None
     columnWidth: list[ColumnWidth] | None = None

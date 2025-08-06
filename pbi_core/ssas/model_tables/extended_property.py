@@ -9,11 +9,20 @@ from ...static_files.layout.sources.column import ColumnSource
 from .enums import ObjectType
 
 
+class BinSize(BaseValidation):
+    value: float
+    unit: int
+
+
+class BinningMetadata(BaseValidation):
+    binSize: BinSize
+
+
 class ExtendedPropertyValue(BaseValidation):
     version: int
     daxTemplateName: str | None = None
     groupedColumns: list[ColumnSource] | None = None
-    binningMetadata: int | None = None
+    binningMetadata: BinningMetadata | None = None
 
 
 class ExtendedProperty(SsasRenameRecord):
