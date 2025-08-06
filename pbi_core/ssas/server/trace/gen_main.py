@@ -50,10 +50,11 @@ def gen_event_enums(url: str) -> str:
 with open(Path(__file__).parent / "trace_enums.py", "w") as f:
     f.write("from enum import IntEnum" + SEP)
     f.write(gen_trace_enums("TraceEvents", "/analysis-services-trace-events"))
+    # f.write(gen_event_enums("/command-events-data-columns"))
     f.write(gen_event_enums("/discover-events-data-columns"))
     f.write(gen_event_enums("/discover-server-state-events-data-columns"))
     f.write(gen_event_enums("/errors-and-warnings-events-data-columns"))
-    f.write(gen_event_enums("/file-load-and-save-data-columns"))  # issue
+    f.write(gen_event_enums("/file-load-and-save-data-columns"))
     f.write(gen_event_enums("/lock-events-data-columns"))
     # f.write(gen_event_enums("/progress-reports-data-columns"))
     f.write(gen_event_enums("/security-audit-data-columns"))
