@@ -136,3 +136,13 @@ BASE_RENAME_TEMPLATE = jinja2.Template(
 </Batch>
     """
 )
+BASE_DELETE_TEMPLATE = jinja2.Template(
+    """
+<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Delete xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+    <DatabaseID>{{db_name}}</DatabaseID>
+    {{entity_def}}
+  </Delete>
+</Batch>
+    """
+)

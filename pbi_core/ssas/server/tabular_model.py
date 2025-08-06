@@ -10,6 +10,7 @@ from structlog import get_logger
 from ._commands import BaseCommands, Command, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from .utils import (
     BASE_ALTER_TEMPLATE,
+    BASE_DELETE_TEMPLATE,
     BASE_RENAME_TEMPLATE,
     COMMAND_TEMPLATES,
     OBJECT_COMMAND_TEMPLATES,
@@ -262,13 +263,35 @@ class SsasRename(SsasTable):
 
 
 class SsasCreate(SsasTable):
-    def create(self) -> None:
+    @classmethod
+    def create(cls, tabular_model: "BaseTabularModel", **kwargs) -> None:
+        # data = {
+        #     cls._db_field_names.get(k, k): v for k, v in kwargs.items() if k not in cls._read_only_fields
+        # }
+        # xml_command = cls.render_xml_command(
+        #     data,
+        #     BASE_RENAME_TEMPLATE,
+        #     cls._commands.rename,
+        #     tabular_model.db_name,
+        # )
+        # logger.info("Syncing Rename Changes to SSAS", obj=cls._db_type_name())
+        # tabular_model.server.query_xml(xml_command, db_name=tabular_model.db_name)
         pass
 
 
 class SsasDelete(SsasTable):
+    _db_id_field: str = "ID"
+
     def delete(self) -> None:
-        pass
+        data = {k: v for k, v in self.model_dump().items() if k == self._db_id_field}
+        xml_command = self.render_xml_command(
+            data,
+            BASE_DELETE_TEMPLATE,
+            self._commands.delete,
+            self.tabular_model.db_name,
+        )
+        logger.info("Syncing Delete Changes to SSAS", obj=self._db_type_name())
+        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
 class SsasRefresh(SsasTable):
