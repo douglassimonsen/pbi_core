@@ -66,7 +66,10 @@ def save_entity(entity: dict[str, str], command: str) -> None:
     page = entity["href"]
 
     resp = requests.get(f"{BASE_URL}/{page}", timeout=10)
-    command_text = bs4.BeautifulSoup(resp.text, "lxml").find("pre").text.replace("Â\xa0", " ")
+    command_text = bs4.BeautifulSoup(resp.text, "lxml").find("pre")
+    if command_text is None:
+        raise ValueError
+    command_text = command_text.text.replace("Â\xa0", " ")
     command_text = bs4.BeautifulSoup(command_text, "xml")
     fields = command_text.find_all("xs:complexType", {"name": "row"})[0].find_all("xs:element")
     fields = "\n".join(" " * 8 + str(x) for x in fields)
