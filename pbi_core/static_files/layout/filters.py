@@ -1,5 +1,7 @@
 from enum import IntEnum
-from typing import TYPE_CHECKING, Any, Optional, cast
+from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
+
+from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
 from .condition import Condition
@@ -26,7 +28,7 @@ class Orderby(LayoutNode):
 
 class PrototypeQuery(LayoutNode):
     Version: int
-    From: list[Entity]
+    From: list["From"]
     Select: list[Source]
     Where: Optional[list[Condition]] = None
     OrderBy: Optional[list[Orderby]] = None
@@ -89,11 +91,32 @@ class Subquery(LayoutNode):
     Type: SubQueryType
 
 
+def get_from(v: Any) -> str:
+    if isinstance(v, dict):
+        if "Entity" in v.keys():
+            return "Entity"
+        elif "Expression" in v.keys():
+            return "Subquery"
+        else:
+            raise ValueError(f"Unknown Filter: {v.keys()}")
+    else:
+        return cast(str, v.__class__.__name__)
+
+
+From = Annotated[
+    Union[
+        Annotated[Entity, Tag("Entity")],
+        Annotated[Subquery, Tag("Subquery")],
+    ],
+    Discriminator(get_from),
+]
+
+
 class FilterExpression(LayoutNode):
     _parent: "Filter"
 
     Version: int
-    From: list[Entity]
+    From: list["From"]
     Where: list[Condition]
 
 
@@ -129,7 +152,7 @@ class VisualFilterExpression(LayoutNode):
     _parent: "VisualFilter"
 
     Version: Optional[int] = None
-    From: Optional[list[Entity | Subquery]] = None
+    From: Optional[list["From"]] = None
     Where: list[Condition]
 
 

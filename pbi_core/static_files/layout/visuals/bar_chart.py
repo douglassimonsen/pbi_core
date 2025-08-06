@@ -13,6 +13,9 @@ class TitleProperties(LayoutNode):
     heading: Optional[Expression] = None
     fontFamily: Optional[Expression] = None
     fontColor: Optional[Expression] = None
+    fontSize: Optional[Expression] = None
+    alignment: Optional[Expression] = None
+    show: Optional[Expression]
 
 
 class TitlePropertiesGroup(LayoutNode):
@@ -31,8 +34,11 @@ class VisualHeadersPropertiesGroup(LayoutNode):
 
 
 class BarChartVCObjects(LayoutNode):
+    background: Any = None
+    general: Any = None
     title: list[TitlePropertiesGroup]
-    visualHeader: list[VisualHeadersPropertiesGroup]
+    visualHeader: Optional[list[VisualHeadersPropertiesGroup]] = None
+    visualTooltip: Any = None
 
 
 class BarChart(BaseVisual):

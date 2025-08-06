@@ -1,7 +1,7 @@
 import json
 import zipfile
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 from zipfile import ZipFile
 
 from bs4 import BeautifulSoup
@@ -28,7 +28,7 @@ class Version:
 
 class StaticFiles:
     content_types: BeautifulSoup
-    connections: Connections
+    connections: Optional[Connections]
     # no datamodel, that's handled by the ssas folder
     diagram_layout: DiagramLayout
     layout: Layout
@@ -41,7 +41,7 @@ class StaticFiles:
     def __init__(
         self,
         content_types: BeautifulSoup,
-        connections: Connections,
+        connections: Optional[Connections],
         diagram_layout: DiagramLayout,
         layout: Layout,
         metadata: Metadata,
@@ -80,8 +80,11 @@ class StaticFiles:
         layout = Layout.model_validate(layout_json)
         _set_parents(layout, None, [])  # type: ignore
 
-        connections_json = json.loads(zipfile.read("Connections").decode("utf-8"))
-        connections = Connections.model_validate(connections_json)
+        if "Connections" in zipfile.namelist():
+            connections_json = json.loads(zipfile.read("Connections").decode("utf-8"))
+            connections = Connections.model_validate(connections_json)
+        else:
+            connections = None
 
         major, minor = zipfile.read("Version").decode(LAYOUT_ENCODING).split(".")
         version = Version(int(major), int(minor))

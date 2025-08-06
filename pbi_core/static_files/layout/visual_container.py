@@ -75,6 +75,8 @@ class QueryBinding(LayoutNode):
     Primary: BindingPrimary
     Projections: list[int] = []
     DataReduction: Any = None
+    Aggregates: Any = None
+    SuppressedJoinPredicates: Any = None
     Version: int
 
 

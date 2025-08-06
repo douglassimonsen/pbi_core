@@ -1,7 +1,7 @@
 from enum import Enum
-from typing import Any, Optional
+from typing import Annotated, Any, Optional, Union, cast
 
-from pydantic import Json
+from pydantic import Discriminator, Json, Tag
 
 from ._base_node import LayoutNode
 from .bookmark import LayoutBookmarkChild
@@ -28,13 +28,40 @@ class ThemeInfo(LayoutNode):
 
 class ThemeCollection(LayoutNode):
     baseTheme: ThemeInfo
+    customTheme: Optional[ThemeInfo] = None
 
 
-class Settings(LayoutNode):
+class SettingsV2(LayoutNode):
     useNewFilterPaneExperience: bool
     allowChangeFilterTypes: bool
     useStylableVisualContainerHeader: bool
     exportDataMode: int  # def an enum
+
+
+class SettingsV1(LayoutNode):
+    isPersistentUserStateDisabled: bool
+    hideVisualContainerHeader: bool
+
+
+def get_settings(v: Any) -> str:
+    if isinstance(v, dict):
+        if "isPersistentUserStateDisabled" in v.keys():
+            return "SettingsV1"
+        elif "useNewFilterPaneExperience" in v.keys():
+            return "SettingsV2"
+        else:
+            raise ValueError(f"Unknown Filter: {v.keys()}")
+    else:
+        return cast(str, v.__class__.__name__)
+
+
+Settings = Annotated[
+    Union[
+        Annotated[SettingsV1, Tag("SettingsV1")],
+        Annotated[SettingsV2, Tag("SettingsV2")],
+    ],
+    Discriminator(get_settings),
+]
 
 
 class LayoutConfig(LayoutNode):

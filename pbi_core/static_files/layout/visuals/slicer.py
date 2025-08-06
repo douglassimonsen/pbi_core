@@ -10,3 +10,4 @@ class Slicer(BaseVisual):
     model_config = ConfigDict(extra="forbid")
     columnProperties: Any = None
     syncGroup: Any = None
+    display: Any = None
