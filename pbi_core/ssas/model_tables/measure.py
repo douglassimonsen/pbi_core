@@ -2,6 +2,8 @@ import datetime
 from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
+from pbi_core.ssas.model_tables.calc_dependency import CalcDependency
+
 from ...lineage import LineageNode, LineageType
 from ..server.tabular_model import SsasRenameTable, SsasTable
 from .column import Column
@@ -61,31 +63,66 @@ class Measure(SsasRenameTable):
         return f"Measure({self.table().name}.{self.name})"
 
     def child_measures(self) -> list["Measure"]:
-        """Returns measures that are dependent on this measure"""
+        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+            "referenced_object_type": "MEASURE",
+            "referenced_table": self.table().name,
+            "referenced_object": self.name,
+            "object_type": "MEASURE",
+        })
+        child_keys: list[tuple[str | None, str]] = [(m.table, m.object) for m in dependent_measures]
+        full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in child_keys]
+        direct_dependencies = [x for x in full_dependencies if f"[{self.name}]" in str(x.expression)]
+        return direct_dependencies
+
+    def parent_measures(self) -> list["Measure"]:
+        """Calculated columns can use Measures too :("""
+        dependent_measures: list[CalcDependency] = self.tabular_model.calc_dependencies.find_all({
+            "object_type": "MEASURE",
+            "table": self.table().name,
+            "object": self.name,
+            "referenced_object_type": "MEASURE",
+        })
+        parent_keys = [(m.referenced_table, m.referenced_object) for m in dependent_measures]
+        full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in parent_keys]
+        direct_dependencies = [x for x in full_dependencies if f"[{x.name}]" in str(self.expression)]
+        return direct_dependencies
+
+    def child_columns(self) -> list["Column"]:
+        """Only occurs when the dependent column is calculated (expression is not None)"""
         dependent_measures = self.tabular_model.calc_dependencies.find_all({
             "referenced_object_type": "MEASURE",
             "referenced_table": self.table().name,
             "referenced_object": self.name,
         })
-        dependent_measure_keys = [(m.table, m.object) for m in dependent_measures]
-        ret = [m for m in self.tabular_model.measures if (m.table().name, m.name) in dependent_measure_keys]
-        return ret
+        child_keys = [(m.table, m.object) for m in dependent_measures if m.object_type in ("CALC_COLUMN", "COLUMN")]
+        full_dependencies = [m for m in self.tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
+        direct_dependencies = [x for x in full_dependencies if f"[{self.name}]" in str(x.expression)]
+        return direct_dependencies
 
-    def parent_measures(self) -> list["Measure"]:
-        """Returns measures that this measure is dependent on"""
-        parent_measures = self.tabular_model.calc_dependencies.find_all({
+    def parent_columns(self) -> list["Column"]:
+        """Only occurs when column is calculated"""
+        dependent_measures = self.tabular_model.calc_dependencies.find_all({
             "object_type": "MEASURE",
             "table": self.table().name,
             "object": self.name,
         })
-        parent_measure_keys = [(m.referenced_table, m.referenced_object) for m in parent_measures]
-        ret = [m for m in self.tabular_model.measures if (m.table().name, m.name) in parent_measure_keys]
-        return ret
+        parent_keys = {
+            (m.referenced_table, m.referenced_object)
+            for m in dependent_measures
+            if m.referenced_object_type in ("CALC_COLUMN", "COLUMN")
+        }
+        full_dependencies = [c for c in self.tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
+        direct_dependencies = [x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)]
+        return direct_dependencies
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
-            return LineageNode(self, lineage_type, [c.get_lineage(lineage_type) for c in self.child_measures()])
+            return LineageNode(
+                self, lineage_type, [c.get_lineage(lineage_type) for c in self.child_measures() + self.child_columns()]
+            )
         else:
-            parent_nodes: list[Optional[SsasTable]] = [self.KPI(), self.table()] + self.parent_measures()  # type: ignore
+            parent_nodes: list[Optional[SsasTable]] = (
+                [self.KPI(), self.table()] + self.parent_measures() + self.parent_columns()
+            )  # type: ignore
             parent_lineage = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
             return LineageNode(self, lineage_type, parent_lineage)

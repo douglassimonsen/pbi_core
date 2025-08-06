@@ -117,9 +117,12 @@ class Column(SsasRenameTable):
             "referenced_object_type": object_type,
             "referenced_table": self.table().name,
             "referenced_object": self.explicit_name,
+            "object_type": "MEASURE",
         })
         child_keys: list[tuple[str | None, str]] = [(m.table, m.object) for m in dependent_measures]
-        return [m for m in self.tabular_model.measures if (m.table().name, m.name) in child_keys]
+        full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in child_keys]
+        direct_dependencies = [x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)]
+        return direct_dependencies
 
     def parent_measures(self) -> list["Measure"]:
         """Calculated columns can use Measures too :("""
@@ -128,9 +131,12 @@ class Column(SsasRenameTable):
             "object_type": object_type,
             "table": self.table().name,
             "object": self.explicit_name,
+            "referenced_object_type": "MEASURE",
         })
         parent_keys = [(m.referenced_table, m.referenced_object) for m in dependent_measures]
-        return [m for m in self.tabular_model.measures if (m.table().name, m.name) in parent_keys]
+        full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in parent_keys]
+        direct_dependencies = [x for x in full_dependencies if f"[{x.name}]" in str(self.expression)]
+        return direct_dependencies
 
     def child_columns(self) -> list["Column"]:
         """Only occurs when the dependent column is calculated (expression is not None)"""
@@ -140,8 +146,10 @@ class Column(SsasRenameTable):
             "referenced_table": self.table().name,
             "referenced_object": self.explicit_name,
         })
-        child_keys = [(m.table, m.object) for m in dependent_measures]
-        return [m for m in self.tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
+        child_keys = [(m.table, m.object) for m in dependent_measures if m.object_type in ("CALC_COLUMN", "COLUMN")]
+        full_dependencies = [m for m in self.tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
+        direct_dependencies = [x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)]
+        return direct_dependencies
 
     def parent_columns(self) -> list["Column"]:
         """Only occurs when column is calculated"""
@@ -153,8 +161,14 @@ class Column(SsasRenameTable):
             "table": self.table().name,
             "object": self.explicit_name,
         })
-        parent_keys = {(m.referenced_table, m.referenced_object) for m in dependent_measures}
-        return [c for c in self.tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
+        parent_keys = {
+            (m.referenced_table, m.referenced_object)
+            for m in dependent_measures
+            if m.referenced_object_type in ("CALC_COLUMN", "COLUMN")
+        }
+        full_dependencies = [c for c in self.tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
+        direct_dependencies = [x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)]
+        return direct_dependencies
 
     def sort_by_column(self) -> Optional["Column"]:
         if self.sort_by_column_id is None:
