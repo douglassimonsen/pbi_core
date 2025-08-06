@@ -105,9 +105,6 @@ class RelationshipPhrasingState(StrEnum):
 class PhrasingAttribute(BaseValidation):
     model_config = pydantic.ConfigDict(
         extra="forbid",
-        fields={
-            "_in": "in",
-        },
     )
     Adjective: PhrasingAttributeRole | None = None
     Measurement: PhrasingAttributeRole | None = None

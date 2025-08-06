@@ -452,6 +452,15 @@ class VisualContainer(LayoutNode):
     id: int | None = None
 
     def pbi_core_id(self) -> str:
+        """Returns a unique identifier for the visual container.
+
+        Seems to stay the same after edits and after copies of the visual are made (the copies are
+            assigned new, unrelated IDs).
+
+        Raises:
+            ValueError: If the visual container does not have an ID or a name defined in the config.
+
+        """
         if self.id is not None:
             return str(self.id)
         if self.config.name is not None:
