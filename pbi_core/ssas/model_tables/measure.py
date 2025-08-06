@@ -29,7 +29,7 @@ class Measure(SsasTable):
     structure_modified_time: datetime.datetime
 
     def KPI(self) -> Optional["KPI"]:
-        return self.tabular_model.kpis.get({"id": self.kpi_id})
+        return self.tabular_model.kpis.find({"id": self.kpi_id})
 
     def table(self) -> "Table":
-        return self.tabular_model.tables.get({"id": self.table_id})
+        return self.tabular_model.tables.find({"id": self.table_id})

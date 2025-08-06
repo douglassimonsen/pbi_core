@@ -20,10 +20,10 @@ class Variation(SsasTable):
         """
         Name is bad to not shadow the column field in this entity :(
         """
-        return self.tabular_model.columns.get({"id": self.column_id})
+        return self.tabular_model.columns.find({"id": self.column_id})
 
     def default_hierarchy(self) -> "Hierarchy":
-        return self.tabular_model.hierarchies.get({"id": self.default_hierarchy_id})
+        return self.tabular_model.hierarchies.find({"id": self.default_hierarchy_id})
 
     def relationship(self) -> "Relationship":
-        return self.tabular_model.relationships.get({"id": self.relationship_id})
+        return self.tabular_model.relationships.find({"id": self.relationship_id})

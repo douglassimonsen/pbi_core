@@ -33,16 +33,16 @@ class Relationship(SsasTable):
     modified_time: datetime.datetime
 
     def from_table(self) -> "Table":
-        return self.tabular_model.tables.get({"id": self.from_table_id})
+        return self.tabular_model.tables.find({"id": self.from_table_id})
 
     def to_table(self) -> "Table":
-        return self.tabular_model.tables.get({"id": self.to_table_id})
+        return self.tabular_model.tables.find({"id": self.to_table_id})
 
     def from_column(self) -> "Column":
-        return self.tabular_model.columns.get({"id": self.from_column_id})
+        return self.tabular_model.columns.find({"id": self.from_column_id})
 
     def to_column(self) -> "Column":
-        return self.tabular_model.columns.get({"id": self.to_column_id})
+        return self.tabular_model.columns.find({"id": self.to_column_id})
 
     def model(self) -> "Model":
         return self.tabular_model.model

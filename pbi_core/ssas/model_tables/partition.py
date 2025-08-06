@@ -46,7 +46,7 @@ class Partition(SsasTable):
     refreshed_time: datetime.datetime
 
     def query_group(self) -> Optional["QueryGroup"]:
-        return self.tabular_model.query_groups.get({"id": self.table_id})
+        return self.tabular_model.query_groups.find({"id": self.table_id})
 
     def table(self) -> "Table":
-        return self.tabular_model.tables.get({"id": self.table_id})
+        return self.tabular_model.tables.find({"id": self.table_id})

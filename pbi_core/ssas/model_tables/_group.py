@@ -9,7 +9,7 @@ T = TypeVar("T", bound=idThing)
 
 
 class Group(Sequence[T]):
-    def get(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> T:
+    def find(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> T:
         if isinstance(match_val, int):
             for val in self:
                 if val.id == match_val:

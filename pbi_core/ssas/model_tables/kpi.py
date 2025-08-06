@@ -17,4 +17,4 @@ class KPI(SsasTable):
     modified_time: datetime.datetime
 
     def measure(self) -> "Measure":
-        return self.tabular_model.measures.get({"id": self.measure_id})
+        return self.tabular_model.measures.find({"id": self.measure_id})

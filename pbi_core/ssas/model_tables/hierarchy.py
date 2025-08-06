@@ -24,7 +24,7 @@ class Hierarchy(SsasTable):
     structure_modified_time: datetime.datetime
 
     def table(self) -> "Table":
-        return self.tabular_model.tables.get({"id": self.table_id})
+        return self.tabular_model.tables.find({"id": self.table_id})
 
     def levels(self) -> list["Level"]:
         return self.tabular_model.levels.find_all({"hierarchy_id": self.id})

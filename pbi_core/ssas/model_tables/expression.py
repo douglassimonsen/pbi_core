@@ -24,4 +24,4 @@ class Expression(SsasTable):
         return self.tabular_model.model
 
     def query_group(self) -> Optional["QueryGroup"]:
-        return self.tabular_model.query_groups.get({"id": self.query_group_id})
+        return self.tabular_model.query_groups.find({"id": self.query_group_id})

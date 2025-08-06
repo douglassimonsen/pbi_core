@@ -15,4 +15,4 @@ class LinguisticMetadata(SsasTable):
     modified_time: datetime.datetime
 
     def culture(self) -> "Culture":
-        return self.tabular_model.cultures.get({"id": self.culture_id})
+        return self.tabular_model.cultures.find({"id": self.culture_id})

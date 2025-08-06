@@ -19,7 +19,7 @@ class Level(SsasTable):
     modified_time: datetime.datetime
 
     def column(self) -> "Column":
-        return self.tabular_model.columns.get({"id": self.column_id})
+        return self.tabular_model.columns.find({"id": self.column_id})
 
     def hierarchy(self) -> "Hierarchy":
-        return self.tabular_model.hierarchies.get({"id": self.hierarchy_id})
+        return self.tabular_model.hierarchies.find({"id": self.hierarchy_id})

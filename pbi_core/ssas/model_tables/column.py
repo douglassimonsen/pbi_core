@@ -71,16 +71,16 @@ class Column(SsasTable):
         return str(self.id)
 
     def table(self) -> "Table":
-        return self.tabular_model.tables.get({"id": self.table_id})
+        return self.tabular_model.tables.find({"id": self.table_id})
 
     def attribute_hierarchy(self) -> Optional["AttributeHierarchy"]:
-        return self.tabular_model.attribute_hierarchies.get({"id": self.attribute_hierarchy_id})
+        return self.tabular_model.attribute_hierarchies.find({"id": self.attribute_hierarchy_id})
 
     def levels(self) -> list["Level"]:
         return self.tabular_model.levels.find_all({"column_id": self.id})
 
     def sort_by_column(self) -> "Column":
-        return self.tabular_model.columns.get({"id": self.sort_by_column_id})
+        return self.tabular_model.columns.find({"id": self.sort_by_column_id})
 
     def sorting_columns(self) -> list["Column"]:
         """

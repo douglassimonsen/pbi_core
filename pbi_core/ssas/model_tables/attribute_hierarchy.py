@@ -16,4 +16,4 @@ class AttributeHierarchy(SsasTable):
     refreshed_time: datetime.datetime
 
     def column(self) -> "Column":
-        return self.tabular_model.columns.get({"id": self.column_id})
+        return self.tabular_model.columns.find({"id": self.column_id})
