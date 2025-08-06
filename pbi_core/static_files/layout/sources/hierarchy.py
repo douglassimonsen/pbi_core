@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Annotated, Any, cast
+from typing import TYPE_CHECKING, Annotated, Any
 
 from pydantic import Discriminator, Tag
 
@@ -29,7 +29,7 @@ class _PropertyVariationSourceHelper(LayoutNode):
         return self.PropertyVariationSource.column()
 
 
-def get_hierarchy_expression_type(v: Any) -> str:
+def get_hierarchy_expression_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "PropertyVariationSource" in v:
             return "_PropertyVariationSourceHelper"
@@ -38,7 +38,7 @@ def get_hierarchy_expression_type(v: Any) -> str:
         if "Property" in v:
             return "SourceExpression"
         raise ValueError
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 ConditionType = Annotated[

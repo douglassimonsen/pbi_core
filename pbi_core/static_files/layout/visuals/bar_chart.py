@@ -1,5 +1,4 @@
 # ruff: noqa: N815
-from typing import Any
 
 from pydantic import ConfigDict
 
@@ -63,19 +62,18 @@ class VisualHeadersPropertiesGroup(LayoutNode):
     properties: VisualHeaderProperties
 
 
-# TODO: remove Anys
 class BarChartVCObjects(LayoutNode):
-    background: Any = None
-    general: Any = None
+    background: int = None
+    general: int = None
     title: list[TitlePropertiesGroup] = []
     visualHeader: list[VisualHeadersPropertiesGroup] | None = None
-    visualTooltip: Any = None
+    visualTooltip: int = None
     border: list[BorderPropertiesGroup] | None = None
-    visualHeaderTooltip: Any = None
+    visualHeaderTooltip: int = None
 
 
 class BarChart(BaseVisual):
     visualType: str = "barChart"
     model_config = ConfigDict(extra="forbid")
     vcObjects: BarChartVCObjects | None = None
-    columnProperties: Any = None
+    columnProperties: int = None

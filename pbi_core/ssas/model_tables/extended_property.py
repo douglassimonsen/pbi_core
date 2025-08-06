@@ -1,5 +1,4 @@
 import datetime
-from typing import Any
 
 from pydantic import Json
 
@@ -11,10 +10,9 @@ from .enums import ObjectType
 
 class ExtendedPropertyValue(BaseValidation):
     version: int
-    # TODO: replace Anys
     daxTemplateName: str | None = None  # noqa: N815
-    groupedColumns: Any = None  # noqa: N815
-    binningMetadata: Any = None  # noqa: N815
+    groupedColumns: int = None  # noqa: N815
+    binningMetadata: int = None  # noqa: N815
 
 
 class ExtendedProperty(SsasRenameRecord):

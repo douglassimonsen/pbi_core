@@ -24,7 +24,7 @@ class TransformOutputRoleRef(BaseValidation):
     Name: str
 
 
-def get_source(v: Any) -> str:  # noqa: PLR0911
+def get_source(v: object | dict[str, Any]) -> str:  # noqa: PLR0911
     if isinstance(v, dict):
         if "Column" in v:
             return "ColumnSource"
@@ -44,7 +44,7 @@ def get_source(v: Any) -> str:  # noqa: PLR0911
             return "TransformOutputRoleRef"
         msg = f"Unknown Filter: {v.keys()}"
         raise TypeError(msg)
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 Source = Annotated[

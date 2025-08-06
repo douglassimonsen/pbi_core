@@ -1,6 +1,6 @@
 # ruff: noqa: N815
 from enum import Enum, IntEnum
-from typing import TYPE_CHECKING, Annotated, Any, cast
+from typing import TYPE_CHECKING, Annotated, Any
 
 from pydantic import Discriminator, Json, Tag
 
@@ -9,6 +9,8 @@ from pbi_core.static_files.model_references import ModelColumnReference, ModelMe
 
 from ._base_node import LayoutNode
 from .filters import PrototypeQuery, PrototypeQueryResult, VisualFilter
+from .sources import Source
+from .visuals.base import FilterSortOrder, ProjectionConfig, PropertyDef
 from .visuals.main import Visual
 
 if TYPE_CHECKING:
@@ -24,7 +26,7 @@ from .performance import Performance, get_performance
 class SingleVisualGroup(LayoutNode):
     displayName: str
     groupMode: int
-    objects: Any | None = None
+    objects: int | None = None
     isHidden: bool = False
 
 
@@ -32,11 +34,27 @@ class VisualHowCreated(Enum):
     InsertVisualButton = "InsertVisualButton"
 
 
+class VisualLayoutInfoPosition(LayoutNode):
+    x: float
+    y: float
+    z: float
+    width: float
+    height: float
+
+    def __str__(self) -> str:
+        return f"({self.x}, {self.y}, {self.z}, {self.width}, {self.height})"
+
+
+class VisualLayoutInfo(LayoutNode):
+    id: int
+    position: VisualLayoutInfoPosition
+
+
 class VisualConfig(LayoutNode):
     _parent: "VisualContainer"  # pyright: ignore reportIncompatibleVariableOverride=false
     _name_field = "name"
 
-    layouts: Any | None = None
+    layouts: list[VisualLayoutInfo] | None = None
     name: str | None = None
     parentGroupName: str | None = None
     singleVisualGroup: SingleVisualGroup | None = None
@@ -58,30 +76,73 @@ class FromEntity(LayoutNode):
     Type: EntityType
 
 
-# TODO: remove Anys
 class PrimaryProjections(LayoutNode):
     Projections: list[int]
     SuppressedProjections: list[int] | None = None
     Subtotal: int | None = None
-    Aggregates: Any | None = None
+    Aggregates: int | None = None
     ShowItemsWithNoData: list[int] | None = None
 
 
 class BindingPrimary(LayoutNode):
     Groupings: list[PrimaryProjections]
-    Expansion: Any | None = None
-    Synchronization: Any | None = None
+    Expansion: int | None = None
+    Synchronization: int | None = None
 
 
 class DataVolume(IntEnum):
+    NA1 = 1
+    NA2 = 2
+    NA3 = 3
     NA = 4
 
 
-class PrimaryDataReduction(LayoutNode):
-    Sample: dict[str, Any]
+class SampleDataReduction(LayoutNode):
+    Sample: dict[str, int]
 
 
-class DataReduction(LayoutNode):
+class WindowDataReduction(LayoutNode):
+    Window: dict[str, int]
+
+
+class TopDataReduction(LayoutNode):
+    Top: dict[str, int]
+
+
+class OverlappingPointsSample(LayoutNode):
+    X: dict[str, int]
+    Y: dict[str, int]
+
+
+class OverlappingPointReduction(LayoutNode):
+    OverlappingPointsSample: OverlappingPointsSample
+
+
+def get_reduction(v: object | dict[str, Any]) -> str:
+    if isinstance(v, dict):
+        if "Sample" in v:
+            return "SampleDataReduction"
+        if "Window" in v:
+            return "WindowDataReduction"
+        if "Top" in v:
+            return "TopDataReduction"
+        if "OverlappingPointsSample" in v:
+            return "OverlappingPointReduction"
+        msg = f"Unknown Filter: {v.keys()}"
+        raise ValueError(msg)
+    return v.__class__.__name__
+
+
+PrimaryDataReduction = Annotated[
+    Annotated[SampleDataReduction, Tag("SampleDataReduction")]
+    | Annotated[WindowDataReduction, Tag("WindowDataReduction")]
+    | Annotated[TopDataReduction, Tag("TopDataReduction")]
+    | Annotated[OverlappingPointReduction, Tag("OverlappingPointReduction")],
+    Discriminator(get_reduction),
+]
+
+
+class DataReductionType(LayoutNode):
     DataVolume: DataVolume
     Primary: PrimaryDataReduction
 
@@ -91,10 +152,10 @@ class QueryBinding(LayoutNode):
     Primary: BindingPrimary
     Secondary: BindingPrimary | None = None
     Projections: list[int] = []
-    DataReduction: Any = None
-    Aggregates: Any = None
-    SuppressedJoinPredicates: Any = None
-    Highlights: Any = None
+    DataReduction: DataReductionType | None = None
+    Aggregates: int = None
+    SuppressedJoinPredicates: int = None
+    Highlights: int = None
     Version: int
 
 
@@ -108,7 +169,7 @@ class QueryCommand2(LayoutNode):
     SemanticQueryDataShapeCommand: QueryCommand1
 
 
-def get_query_command(v: Any) -> str:
+def get_query_command(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "SemanticQueryDataShapeCommand" in v:
             return "QueryCommand2"
@@ -116,7 +177,7 @@ def get_query_command(v: Any) -> str:
             return "QueryCommand1"
         msg = f"Unknown Filter: {v.keys()}"
         raise ValueError(msg)
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 QueryCommand = Annotated[
@@ -139,6 +200,70 @@ class Query(LayoutNode):
         return ret
 
 
+class Split(LayoutNode):
+    # TODO: these strings are all stringy ints
+    selects: dict[str, bool]
+
+
+class Restatement(LayoutNode):
+    Restatement: str
+    Name: str
+    Type: int  # TODO: make enum
+    Format: str | None = None
+
+
+class QueryMetadataFilter(LayoutNode):
+    type: int  # TODO: make enum
+    expression: Source
+
+
+class QueryMetadata(LayoutNode):
+    Select: list[Restatement]
+    Filters: list[QueryMetadataFilter] | None = None
+
+
+class DataRole(LayoutNode):
+    Name: str
+    Projection: int
+    isActive: bool
+
+
+class DataTransformVisualElement(LayoutNode):
+    DataRoles: list[DataRole]
+
+
+class DataTransformSelectType(LayoutNode):
+    category: str | None = None
+    underlyingType: int | None = None  # TODO: make enum
+
+
+class AggregateSources(LayoutNode):
+    min: dict[str, int]
+    max: dict[str, int]
+
+
+class DataTransformSelect(LayoutNode):
+    displayName: str
+    format: str | None = None
+    queryName: str
+    roles: dict[str, bool] | None = None
+    sort: int | None = None  # TODO: make enum
+    aggregateSources: AggregateSources | None = None
+    sortOrder: FilterSortOrder = FilterSortOrder.NA
+    type: DataTransformSelectType | None = None
+    expr: Source
+
+
+class DataTransform(LayoutNode):
+    objects: dict[str, list[PropertyDef]]
+    projectionOrdering: dict[str, list[int]]
+    projectionActiveItems: dict[str, list[ProjectionConfig]] | None = None
+    splits: list[Split] | None = None
+    queryMetadata: QueryMetadata
+    visualElements: list[DataTransformVisualElement]
+    selects: list[DataTransformSelect]
+
+
 class VisualContainer(LayoutNode):
     """A Container for visuals in a report page.
 
@@ -155,7 +280,7 @@ class VisualContainer(LayoutNode):
     width: float
     height: float
     tabOrder: int | None = None
-    dataTransforms: Json[Any] | None = None
+    dataTransforms: Json[DataTransform] | None = None
     query: Json[Query] | None = None
     queryHash: int | None = None
     filters: Json[list[VisualFilter]] = []

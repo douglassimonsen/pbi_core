@@ -1,14 +1,15 @@
 # ruff: noqa: N815
-from enum import Enum
-from typing import TYPE_CHECKING, Any
+from enum import Enum, StrEnum
+from typing import TYPE_CHECKING, Annotated, Any
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Discriminator, Tag
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.static_files.layout._base_node import LayoutNode
-from pbi_core.static_files.layout.filters import PrototypeQuery
+from pbi_core.static_files.layout.filters import Filter, PrototypeQuery
 from pbi_core.static_files.layout.sources.column import ColumnSource
 from pbi_core.static_files.layout.sources.measure import MeasureSource
+from pbi_core.static_files.layout.visuals.properties import Expression
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Column, Measure
@@ -17,7 +18,8 @@ if TYPE_CHECKING:
 
 
 class FilterSortOrder(Enum):
-    NA = 1
+    NA = 0
+    NA1 = 1
     NA2 = 2
     NA3 = 3
 
@@ -30,20 +32,69 @@ class Display(LayoutNode):
     mode: DisplayMode
 
 
-# TODO: remove Anys
+class ProjectionConfig(LayoutNode):
+    queryRef: str
+    active: bool = False
+    suppressConcat: bool = False
+
+
+class PropertyDefSelectorId(StrEnum):
+    default = "default"
+    hover = "hover"
+    id = "id"
+    selected = "selected"
+
+
+class PropertyDefSelector(LayoutNode):
+    id: PropertyDefSelectorId | None = None
+    metadata: str | None = None
+
+
+class ColorRule1(LayoutNode):
+    positiveColor: Expression
+    negativeColor: Expression
+    axisColor: Expression
+    reverseDirection: Expression
+    hideText: Expression | None = None
+
+
+def get_property_expression(v: object | dict[str, Any]) -> str:
+    if isinstance(v, dict):
+        if "positiveColor" in v:
+            return "ColorRule1"
+        if "filter" in v:
+            return "Filter"
+        return "Expression"
+    return v.__class__.__name__
+
+
+PropertyExpression = Annotated[
+    Annotated[Expression, Tag("Expression")]
+    | Annotated[Filter, Tag("Filter")]
+    | Annotated[ColorRule1, Tag("ColorRule1")],
+    Discriminator(get_property_expression),
+]
+
+
+class PropertyDef(LayoutNode):
+    properties: dict[str, PropertyExpression]
+    selector: PropertyDefSelector | None = None
+
+
 class BaseVisual(LayoutNode):
     model_config = ConfigDict(extra="allow")
 
-    objects: Any = None
+    objects: dict[str, list[PropertyDef]] = None
     prototypeQuery: PrototypeQuery | None = None
-    projections: Any = None
+    projections: dict[str, list[ProjectionConfig]] | None = None
     hasDefaultSort: bool = False
     drillFilterOtherVisuals: bool = False
     filterSortOrder: FilterSortOrder = FilterSortOrder.NA
-    vcObjects: Any = None
+    # vcObjects means "visual container objects"
+    vcObjects: int = None
     visualType: str = "unknown"
-    queryOptions: Any = None
-    showAllRoles: Any = None
+    queryOptions: int = None
+    showAllRoles: int = None
     display: Display | None = None
 
     @property

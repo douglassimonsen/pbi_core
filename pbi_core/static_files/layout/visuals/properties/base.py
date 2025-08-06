@@ -1,4 +1,4 @@
-from typing import Annotated, Any, cast
+from typing import Annotated, Any
 
 from pydantic import Discriminator, Tag
 
@@ -23,7 +23,7 @@ class ThemeExpression(LayoutNode):
     ThemeDataColor: ThemeDataColor
 
 
-def get_subexpr_type(v: Any) -> str:
+def get_subexpr_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "ThemeDataColor" in v:
             return "ThemeExpression"
@@ -31,7 +31,7 @@ def get_subexpr_type(v: Any) -> str:
             return "LiteralSource"
         if "Measure" in v:
             return "MeasureSource"
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 ColorSubExpression = Annotated[
@@ -54,21 +54,40 @@ class SolidColorExpression(LayoutNode):
     solid: SolidExpression
 
 
-def get_expression(v: Any) -> str:
+class StrategyExpression(LayoutNode):
+    strategy: LiteralExpression
+
+
+class LinearGradient2Helper(LayoutNode):
+    max: SolidExpression
+    min: SolidExpression
+    nullColoringStrategy: StrategyExpression
+
+
+class LinearGradient2Expression(LayoutNode):
+    linearGradient2: LinearGradient2Helper
+
+
+def get_expression(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "solid" in v:
             return "SolidColorExpression"
+        if "linearGradient2" in v:
+            return "LinearGradient2Expression"
+        if "expr" not in v:
+            raise ValueError(f"Unknown Expression: {v.keys()}")
         if "Measure" in v["expr"]:
             return "MeasureExpression"
         if "Literal" in v["expr"]:
             return "LiteralExpression"
         raise ValueError
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 Expression = Annotated[
     Annotated[LiteralExpression, Tag("LiteralExpression")]
     | Annotated[MeasureExpression, Tag("MeasureExpression")]
-    | Annotated[SolidColorExpression, Tag("SolidColorExpression")],
+    | Annotated[SolidColorExpression, Tag("SolidColorExpression")]
+    | Annotated[LinearGradient2Expression, Tag("LinearGradient2Expression")],
     Discriminator(get_expression),
 ]

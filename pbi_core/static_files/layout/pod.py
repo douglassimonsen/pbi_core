@@ -1,6 +1,6 @@
 # ruff: noqa: N815
 from enum import IntEnum
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 from uuid import UUID
 
 from pydantic import Json
@@ -27,14 +27,17 @@ class PodType(IntEnum):
     NA2 = 2
 
 
-# TODO: remove Anys
+class PodConfig(LayoutNode):
+    acceptsFilterContext: bool = False
+
+
 class Pod(LayoutNode):
     _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     id: int | None = None
     name: str
     boundSection: str
-    config: Json[Any]
+    config: Json[PodConfig]
     parameters: Json[list[Parameter]] = []
     type: PodType | None = None
     referenceScope: int | None = None

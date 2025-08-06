@@ -1,12 +1,12 @@
 # ruff: noqa: N815
 from enum import Enum
-from typing import TYPE_CHECKING, Annotated, Any, cast
+from typing import TYPE_CHECKING, Annotated, Any
 
 from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
 from .condition import ConditionType
-from .filters import BookmarkFilter
+from .filters import BookmarkFilter, Orderby
 from .sources import Source
 
 if TYPE_CHECKING:
@@ -30,10 +30,9 @@ class HighlightSelection(LayoutNode):
     metadata: list[str] | None = None
 
 
-# TODO: remove Anys
 class Highlight(LayoutNode):
     selection: list[HighlightSelection]
-    filterExpressionMetadata: Any | None = None
+    filterExpressionMetadata: int | None = None
 
 
 class DisplayMode(Enum):
@@ -44,13 +43,17 @@ class Display(LayoutNode):
     mode: DisplayMode
 
 
+class BookmarkPartialVisualObject(LayoutNode):
+    remove: list[int] | None = None
+
+
 class BookmarkPartialVisual(LayoutNode):
     visualType: str
-    objects: dict[str, Any]
-    orderBy: list[Any] | None = None
+    objects: BookmarkPartialVisualObject
+    orderBy: list[Orderby] | None = None
     activeProjections: dict[str, list[Source]] | None = None
     display: Display | None = None
-    expansionStates: Any | None = None
+    expansionStates: int | None = None
 
 
 class BookmarkVisual(LayoutNode):
@@ -64,7 +67,7 @@ class BookmarkSection(LayoutNode):
 
     visualContainers: dict[str, BookmarkVisual] | None = None
     filters: BookmarkFilters | None = None
-    visualContainerGroups: Any | None = None
+    visualContainerGroups: int | None = None
 
 
 class ExplorationState(LayoutNode):
@@ -74,7 +77,7 @@ class ExplorationState(LayoutNode):
     sections: dict[str, BookmarkSection]
     activeSection: str  # matches the section name?
     filters: BookmarkFilters | None = None
-    objects: Any | None = None
+    objects: int | None = None
 
 
 class BookmarkOptions(LayoutNode):
@@ -118,12 +121,12 @@ class BookmarkFolder(LayoutNode):
     children: list[Bookmark]
 
 
-def get_bookmark_type(v: Any) -> str:
+def get_bookmark_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "explorationState" in v:
             return "Bookmark"
         return "BookmarkFolder"
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 LayoutBookmarkChild = Annotated[

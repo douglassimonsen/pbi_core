@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from enum import IntEnum
-from typing import Annotated, Any, cast
+from typing import Annotated, Any
 
 from pydantic import Discriminator, Tag
 
@@ -91,14 +91,14 @@ class InTopNExpressionHelper(LayoutNode):
     Table: SourceRef
 
 
-def get_in_union_type(v: Any) -> str:
+def get_in_union_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "Table" in v:
             return "InTopNExpressionHelper"
         if "Values" in v:
             return "InExpressionHelper"
         raise TypeError(v)
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 InUnion = Annotated[
@@ -132,14 +132,14 @@ class _NowHelper(LayoutNode):
     Now: dict[str, str]  # actually an empty string
 
 
-def get_date_span_union_type(v: Any) -> str:
+def get_date_span_union_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "Literal" in v:
             return "LiteralSource"
         if "Now" in v:
             return "_NowHelper"
         raise TypeError(v)
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 DateSpanUnion = Annotated[
@@ -157,7 +157,7 @@ class DateSpan(LayoutNode):
     DateSpan: _DateSpanHelper
 
 
-def get_comparison_union_type(v: Any) -> str:
+def get_comparison_union_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "Literal" in v:
             return "LiteralSource"
@@ -166,7 +166,7 @@ def get_comparison_union_type(v: Any) -> str:
         if "DateSpan" in v:
             return "DateSpan"
         raise TypeError(v)
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 ComparisonUnion = Annotated[
@@ -219,7 +219,7 @@ class OrCondition(LayoutNode):
     Or: CompositeConditionHelper
 
 
-def get_type(v: Any) -> str:  # noqa: PLR0911
+def get_type(v: object | dict[str, Any]) -> str:  # noqa: PLR0911
     if isinstance(v, dict):
         if "And" in v:
             return "AndCondition"
@@ -238,7 +238,7 @@ def get_type(v: Any) -> str:  # noqa: PLR0911
         if "Exists" in v:
             return "ExistsCondition"
         raise ValueError
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 ConditionType = Annotated[

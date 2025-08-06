@@ -1,17 +1,22 @@
 # ruff: noqa: N815
-from typing import Any
 
 from pydantic import ConfigDict
 
+from .._base_node import LayoutNode
 from .base import BaseVisual
+from .table import ColumnProperty
 
 
-# TODO: remove Anys
+class SyncGroup(LayoutNode):
+    groupName: str
+    fieldChanges: bool
+
+
 class Slicer(BaseVisual):
     visualType: str = "slicer"
     model_config = ConfigDict(extra="forbid")
-    columnProperties: Any = None
-    syncGroup: Any = None
-    display: Any = None
-    cachedFilterDisplayItems: Any = None
-    expansionStates: Any = None
+    columnProperties: dict[str, ColumnProperty] | None = None
+    syncGroup: SyncGroup
+    display: int = None
+    cachedFilterDisplayItems: int = None
+    expansionStates: int = None

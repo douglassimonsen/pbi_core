@@ -1,6 +1,6 @@
 # ruff: noqa: N815
 from enum import Enum
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from pydantic import Json
 
@@ -13,6 +13,7 @@ from .filters import GlobalFilter
 from .pod import Pod
 from .resource_package import ResourcePackage
 from .section import Section
+from .visuals.base import FilterSortOrder
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
@@ -58,18 +59,17 @@ class Settings(LayoutNode):
     useDefaultAggregateDisplayName: bool = True
 
 
-# TODO: remove Anys
 class LayoutConfig(LayoutNode):
     linguisticSchemaSyncVersion: int | None = None
     defaultDrillFilterOtherVisuals: bool = True
     bookmarks: list[LayoutBookmarkChild] | None = None
     activeSectionIndex: int
     themeCollection: ThemeCollection
-    slowDataSourceSettings: Any | None = None
+    slowDataSourceSettings: int | None = None
     settings: Settings | None = None
     version: float  # looks like a float
-    objects: Any | None = None
-    filterSortOrder: int | None = None  # TODO: to enum
+    objects: int | None = None
+    filterSortOrder: FilterSortOrder = FilterSortOrder.NA
 
 
 class Layout(LayoutNode):

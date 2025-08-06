@@ -1,4 +1,4 @@
-from typing import Annotated, Any, cast
+from typing import Annotated, Any
 
 from pydantic import Discriminator, Tag
 
@@ -12,7 +12,7 @@ from .table import TableChart
 from .text_box import TextBox
 
 
-def get_visual(v: Any) -> str:
+def get_visual(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         assert "visualType" in v
         assert isinstance(v["visualType"], str)
@@ -27,7 +27,7 @@ def get_visual(v: Any) -> str:
             "textbox": "TextBox",
         }
         return mapping.get(v["visualType"], "BaseVisual")
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 Visual = Annotated[

@@ -1,5 +1,5 @@
 from enum import IntEnum
-from typing import Annotated, Any, cast
+from typing import Annotated, Any
 
 from pydantic import Discriminator, Tag
 
@@ -40,14 +40,14 @@ class Source(LayoutNode):
         return self.Source
 
 
-def get_type(v: Any) -> str:
+def get_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "Source" in v:
             return "Source"
         if "Entity" in v:
             return "Entity"
         raise TypeError(v)
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 SourceRefSource = Annotated[
@@ -73,14 +73,14 @@ class SourceRef(LayoutNode):
         return "NA"
 
 
-def get_source_expression_type(v: Any) -> str:
+def get_source_expression_type(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "SourceRef" in v:
             return "SourceRef"
         if "TransformTableRef" in v:
             return "TransformTableRef"
         raise TypeError(v)
-    return cast("str", v.__class__.__name__)
+    return v.__class__.__name__
 
 
 SourceExpressionUnion = Annotated[

@@ -13,7 +13,7 @@ class RowNotFoundError(Exception):
     pass
 
 
-class Group(list[T]):
+class Group(list[T]):  # noqa: FURB189
     def find(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> T:
         """Gets a matching value from the group.
 

@@ -34,7 +34,6 @@ class Orderby(LayoutNode):
     Expression: Source
 
 
-# TODO: remove Any
 class PrototypeQueryResult(BaseValidation):
     data: list[dict[str, Any]]
     dax_query: str
@@ -254,7 +253,7 @@ class FilterType(Enum):
 class Filter(LayoutNode):
     name: str | None = None
     type: FilterType = FilterType.Categorial
-    howCreated: HowCreated
+    howCreated: HowCreated = HowCreated.AUTOMATIC
     expression: Source | None = None
     isLockedInViewMode: bool = False
     isHiddenInViewMode: bool = False
@@ -262,7 +261,7 @@ class Filter(LayoutNode):
     filter: PrototypeQuery | None = None
     displayName: str | None = None
     ordinal: int = 0
-    cachedDisplayNames: Any = None
+    cachedDisplayNames: int = None
     isLinkedAsAggregation: bool = False
 
     def __repr__(self) -> str:
@@ -292,7 +291,7 @@ class VisualFilterExpression(LayoutNode):
 
 class VisualFilter(Filter):
     restatement: str | None = None
-    filterExpressionMetadata: Any | None = None
+    filterExpressionMetadata: int | None = None
 
     def to_bookmark(self) -> "BookmarkFilter":
         return cast("BookmarkFilter", self)
