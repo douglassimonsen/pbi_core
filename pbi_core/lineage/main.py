@@ -25,6 +25,7 @@ CLASS_STYLES = {
     "Model": "fill:#99ccff,stroke:#333,stroke-width:1px",
     # Visuals
     "BarChart": "fill:#ccffff,stroke:#333,stroke-width:1px",
+    "VisualContainer": "fill:#99ffcc,stroke:#333,stroke-width:1px",
 }
 
 

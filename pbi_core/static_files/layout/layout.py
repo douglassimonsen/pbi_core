@@ -81,11 +81,18 @@ class Layout(LayoutNode):
     publicCustomVisuals: list[PublicCustomVisual] = []
     _xpath = []
 
-    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+    def get_ssas_elements(
+        self,
+        *,
+        include_sections: bool = True,
+        include_filters: bool = True,
+    ) -> set[ModelColumnReference | ModelMeasureReference]:
         """Returns the SSAS elements (columns and measures) this report is directly dependent on."""
         ret: set[ModelColumnReference | ModelMeasureReference] = set()
-        for f in self.filters:
-            ret.update(f.get_ssas_elements())
-        for s in self.sections:
-            ret.update(s.get_ssas_elements())
+        if include_filters:
+            for f in self.filters:
+                ret.update(f.get_ssas_elements())
+        if include_sections:
+            for s in self.sections:
+                ret.update(s.get_ssas_elements())
         return ret
