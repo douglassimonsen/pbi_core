@@ -32,18 +32,16 @@ class Annotation(SsasTable):
             case ObjectType.MODEL:
                 return self.tabular_model.model
             case ObjectType.TABLE:
-                vals = self.tabular_model.tables
+                return self.tabular_model.tables.find({"id": self.object_id})
             case ObjectType.COLUMN:
-                vals = self.tabular_model.columns
+                return self.tabular_model.columns.find({"id": self.object_id})
             case ObjectType.MEASURE:
-                vals = self.tabular_model.measures
+                return self.tabular_model.measures.find({"id": self.object_id})
             case ObjectType.HIERARCHY:
-                vals = self.tabular_model.hierarchies
+                return self.tabular_model.hierarchies.find({"id": self.object_id})
             case ObjectType.EXPRESSION:
-                vals = self.tabular_model.expressions
+                return self.tabular_model.expressions.find({"id": self.object_id})
             case ObjectType.QUERY_GROUP:
-                vals = self.tabular_model.query_groups
+                return self.tabular_model.query_groups.find({"id": self.object_id})
             case _:
                 raise ValueError("No Matching Object ID")
-
-        return [x for x in vals if x.id == self.object_id][0]
