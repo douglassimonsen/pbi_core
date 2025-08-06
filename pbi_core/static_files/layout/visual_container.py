@@ -9,6 +9,7 @@ from .visuals.main import Visual
 
 if TYPE_CHECKING:
     from .section import Section
+    from ...ssas.server import LocalTabularModel
 
 
 class SingleVisualGroup(LayoutNode):
@@ -136,3 +137,17 @@ class VisualContainer(LayoutNode):
         if self.config.singleVisual is not None:
             return f"{self.config.singleVisual.visualType}(x={round(self.x, 2)}, y={round(self.y, 2)}, z={round(self.z, 2)})"
         return None
+    
+    def get_data(self, model: "LocalTabularModel") -> list[dict[str, Any]]:
+        if len(self.query.Commands) == 0:
+            return None
+
+        if len(self.query.Commands) > 1:
+            raise NotImplementedError("Cannot get data for multiple commands")
+        
+        query_command = self.query.Commands[0]
+        if isinstance(query_command, QueryCommand1):
+            query = query_command.Query
+        else:
+            query = query_command.SemanticQueryDataShapeCommand.Query
+        return query.get_data(model)

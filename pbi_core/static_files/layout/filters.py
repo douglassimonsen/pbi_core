@@ -8,10 +8,13 @@ from .condition import Condition
 from .sources import AggregationSource, ColumnSource, Entity, MeasureSource, Source
 from .visuals.properties.filter_properties import FilterObjects
 
+import pbi_translation
+
 if TYPE_CHECKING:
     from .bookmark import BookmarkFilters
     from .layout import Layout
     from .section import Section
+    from ...ssas.server import LocalTabularModel
 
 
 class Direction(IntEnum):
@@ -60,6 +63,16 @@ class PrototypeQuery(LayoutNode):
         for order_by in self.OrderBy or []:
             ret.add(self.unwrap_source(order_by.Expression))
         return ret
+    
+    def get_data(self, model: "LocalTabularModel") -> list[dict[str, Any]]:
+        raw_query = self.model_dump_json()
+        dax_query = pbi_translation.prototype_query(
+            raw_query,
+            model.db_name,
+            model.server.port
+        ).DaxExpression
+        print(dax_query)
+        return model.server.query_dax(dax_query)
 
 
 class TopNFilterMeta(PrototypeQuery):

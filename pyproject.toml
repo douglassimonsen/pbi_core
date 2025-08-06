@@ -18,8 +18,9 @@ dev = [
   "python-dotenv>=1.0.1",
   "GitPython>=3.1",
   "jinja2>=3.1.4",
+  "jsondiff>=2.2.1",
   "lxml>=5.3.0",
-  "mermaid @ git+http://gitea.matthew-hamilton.com/gitea/mermaid",
+  "mermaid @ git+http://gitea.matthew-hamilton.com/PowerBI/mermaid",
   "mypy>=1.11.2",
   "pre-commit>=3.8.0",
   "psutil>=6.0.0",
@@ -31,6 +32,7 @@ dev = [
   "sphinx>=8.0.2",
   "semver>=3.0.2",
   "structlog>=24.4.0",
+  # "pbi_translation @ git+http://gitea.matthew-hamilton.com/PowerBI/prototype_parsing/releases/download/v1.0.1/pbi_translation-1.0.1-py2.py3-none-any.whl",
 ]
 docs = ["pydata-sphinx-theme>=0.15.4", "sphinx-autobuild>=2024.9.17"]
 internationalization = ['openpyxl>=3.1.5', 'langcodes>=3.4.1']

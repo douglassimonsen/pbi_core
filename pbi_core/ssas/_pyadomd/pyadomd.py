@@ -15,7 +15,7 @@ limitations under the License.
 from enum import IntEnum
 from pathlib import Path
 from sys import path
-from typing import Any, Iterator, NamedTuple, Optional, Self, TypeVar
+from typing import Any, Iterator, NamedTuple, Optional, Self, TypeVar, TYPE_CHECKING
 
 import clr  # type: ignore[import-untyped]
 from bs4 import BeautifulSoup
@@ -32,9 +32,10 @@ clr.AddReference("Microsoft.AnalysisServices.AdomdClient")  # type: ignore
 from Microsoft.AnalysisServices.AdomdClient import (  # noqa: E402
     AdomdCommand,
     AdomdConnection,
-    AdomdErrorResponseException,
-    IDataReader,
+    AdomdErrorResponseException
 )
+if TYPE_CHECKING:
+    from Microsoft.AnalysisServices.AdomdClient import IDataReader
 
 __all__ = ["AdomdErrorResponseException"]
 
@@ -50,7 +51,7 @@ class Description(NamedTuple):
 
 
 class Cursor:
-    _reader: IDataReader
+    _reader: "IDataReader"
     _conn: AdomdConnection
 
     def __init__(self, connection: AdomdConnection):

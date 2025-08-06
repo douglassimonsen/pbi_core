@@ -90,6 +90,8 @@ class LayoutNode(pydantic.BaseModel):
     def __str__(self) -> str:
         if self._name_field is not None:
             name = getattr(self, self._name_field)
+            if isinstance(name, Callable):
+                name = name()
             return f"{self.__class__.__name__}({name})"
         return super().__str__()
 
