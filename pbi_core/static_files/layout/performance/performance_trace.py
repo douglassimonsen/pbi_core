@@ -1,6 +1,7 @@
 import datetime
 import json
 import math
+import textwrap
 import threading
 import time
 from collections.abc import Iterable
@@ -39,6 +40,7 @@ TRACE_DEFAULT_EVENTS = (
 
 
 def pretty_size(n: int) -> str:
+    """Convert a number of bytes into a human-readable format."""
     units = ["B"] + [f"{p}iB" for p in "KMGTPEZY"]
 
     prefix = int(math.log(max(n, 1), 1024))
@@ -108,6 +110,25 @@ class Performance:
         total_cpu_time = round(self.total_cpu_time / 1000, 2)
         approximate_peak_consumption = pretty_size(self.approximate_peak_consumption_kb * 1024)
         return f"Performance(rows={self.rows_returned}, total_duration={total_duration}, total_cpu_time={total_cpu_time}, peak_consumption={approximate_peak_consumption}"  # noqa: E501
+
+    def pprint(self) -> str:
+        """Pretty print the performance metrics."""
+        command_text = textwrap.indent(self.command_text, " " * 8)
+        return f"""Performance(
+    Command: 
+
+{command_text}
+
+    Start Time: {self.start_datetime.isoformat()}
+    End Time: {self.end_datetime.isoformat()}
+    Total Duration: {self.total_duration} ms
+    Total CPU Time: {self.total_cpu_time} ms
+    Query CPU Time: {self.query_cpu_time} ms
+    Vertipaq CPU Time: {self.vertipaq_cpu_time} ms
+    Execution Delay: {self.execution_delay} ms
+    Approximate Peak Consumption: {pretty_size(self.approximate_peak_consumption_kb * 1024)}
+    Rows Returned: {self.rows_returned}
+)"""
 
 
 class Subscriber:

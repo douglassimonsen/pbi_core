@@ -95,3 +95,57 @@ report = LocalReport.load_pbix("example_pbis/api.pbix")
 report.cleanse_ssas_model()
 report.save_pbix("cull_out.pbix")
 ```
+
+## Performance Analysis
+
+This example shows how to analyze the performance of a Power BI report's visual:
+
+!!! warning
+
+    In the current implementation, the performance trace occassionally hangs. If this happens, you can kill the process and restart it. This is a known issue that will be fixed in a future release.
+
+
+```python
+
+from pbi_core import LocalReport
+
+report = LocalReport.load_pbix("example_pbis/example_section_visibility.pbix")
+# x = report.static_files.layout.sections[0].visualContainers[0].get_performance(report.ssas)
+x = report.static_files.layout.sections[0].get_performance(report.ssas)
+print(x)
+print("=================")
+print(x[0].pprint())
+```
+
+Which generates the following output.
+
+```shell
+2025-07-05 14:07:31 [info     ] Loading PBIX                   path=example_pbis/example_section_visibility.pbix
+2025-07-05 14:07:33 [warning  ] Removing old version of PBIX data model for new version db_name=example_section_visibility
+2025-07-05 14:07:33 [info     ] Tabular Model load complete   
+2025-07-05 14:07:35 [info     ] Beginning trace               
+2025-07-05 14:07:38 [info     ] Running DAX commands          
+2025-07-05 14:07:41 [info     ] Terminating trace             
+[Performance(rows=5, total_duration=0.0, total_cpu_time=0.0, peak_consumption=1.0 MiB]
+=================
+Performance(
+    Command:
+
+        DEFINE VAR __DS0Core =
+                SUMMARIZECOLUMNS('example'[b], "Suma", CALCULATE(SUM('example'[a])))
+
+        EVALUATE
+                __DS0Core
+
+    Start Time: 2025-07-05T19:07:38.450000+00:00
+    End Time: 2025-07-05T19:07:38.453000+00:00
+    Total Duration: 4 ms
+    Total CPU Time: 0 ms
+    Query CPU Time: 0 ms
+    Vertipaq CPU Time: 0 ms
+    Execution Delay: 0 ms
+    Approximate Peak Consumption: 1.0 MiB
+    Rows Returned: 5
+)
+
+```
