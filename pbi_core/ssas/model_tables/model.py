@@ -5,7 +5,7 @@ from pydantic import Json
 
 from pbi_core.lineage import LineageNode, LineageType
 
-from ..server.tabular_model import SsasModelTable
+from ..server.tabular_model import RefreshType, SsasModelTable
 
 if TYPE_CHECKING:
     from .culture import Culture
@@ -14,6 +14,8 @@ if TYPE_CHECKING:
 
 
 class Model(SsasModelTable):
+    _refresh_type = RefreshType.Calculate
+
     culture: str
     data_access_options: Json[dict[str, Any]]
     data_source_default_max_connections: int

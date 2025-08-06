@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
 from ...lineage import LineageNode, LineageType
-from ..server.tabular_model import SsasRefreshTable
+from ..server.tabular_model import RefreshType, SsasRefreshTable
 from .column import Column
 from .measure import Measure
 from .partition import Partition
@@ -13,6 +13,8 @@ if TYPE_CHECKING:
 
 
 class Table(SsasRefreshTable):
+    _refresh_type = RefreshType.DataOnly
+
     alternate_source_precedence: int
     data_category: Optional[str] = None
     description: Optional[str] = None
@@ -30,12 +32,12 @@ class Table(SsasRefreshTable):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    def data(self, head: int = 100) -> list[int | float | str]:
+    def data(self, head: int = 100) -> list[dict[str, int | float | str]]:
         ret = self.tabular_model.server.query_dax(
             f"EVALUATE TOPN({head}, ALL('{self.name}'))",
             db_name=self.tabular_model.db_name,
         )
-        return [next(iter(row.values())) for row in ret]
+        return ret
 
     def partitions(self) -> list[Partition]:
         return self.tabular_model.partitions.find_all({"table_id": self.id})
@@ -62,4 +64,6 @@ class Table(SsasRefreshTable):
             return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])
 
     def refresh(self) -> None:
-        return super().refresh()
+        """Needs a model refresh to properly propogate the update"""
+        super().refresh()
+        self.model().refresh()

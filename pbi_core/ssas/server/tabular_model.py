@@ -328,10 +328,11 @@ class RefreshType(IntEnum):
 
 class SsasRefresh(SsasTable):
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
+    _refresh_type: RefreshType
 
     def refresh(self) -> None:
         data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
-        data["RefreshType"] = RefreshType.DataOnly
+        data["RefreshType"] = self._refresh_type
         xml_command = self.render_xml_command(
             data,
             self._commands.refresh,
