@@ -48,9 +48,6 @@ class BaseServer:
             return f"Provider=MSOLAP;Data Source={self.host}:{self.port};"
 
     def conn(self, db_name: Optional[str] = None) -> pyadomd.Pyadomd:
-        """
-        Retur
-        """
         return pyadomd.Pyadomd(self.conn_str(db_name))
 
     def __repr__(self) -> str:
@@ -92,10 +89,19 @@ class BaseServer:
 
     @staticmethod
     def sanitize_xml(xml_text: str) -> str:
+        """
+        Method to XML-encode characters like "&" so that the Adomd connection doesn't mangle the XMLA commands
+        """
         return xml_text.replace("&", "&amp")
 
     @staticmethod
     def remove_invalid_db_name_chars(orig_db_name: str) -> str:
+        """
+        Utility function to convert a PBIX report name to a legible, but conforming name for the DB in the SSAS instance
+
+        Note:
+            Raises a warning if the db_name is changed to inform user that the db_name does not match their input
+        """
         db_name = orig_db_name.replace("&", " ")[:100]
         db_name = db_name.strip()  # needed to find the correct name, since SSAS does stripping too
         if orig_db_name != db_name:
