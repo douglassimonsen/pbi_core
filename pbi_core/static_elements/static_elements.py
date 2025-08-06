@@ -1,8 +1,11 @@
 import json
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from zipfile import ZipFile
 
-from .file_classes import Connections
+from bs4 import BeautifulSoup
+
+from .file_classes import Connections, Settings
 from .layout.layout import Layout
 
 if TYPE_CHECKING:
@@ -11,9 +14,24 @@ if TYPE_CHECKING:
 LAYOUT_ENCODING = "utf-16-le"
 
 
+@dataclass
+class Version:
+    major: int
+    minor: int
+
+
 class StaticElements:
-    layout: Layout
+    content_types: BeautifulSoup
     connections: Connections
+    # no datamodel, that's handled by the ssas folder
+
+    diagram_layout: int
+    metadata: int
+
+    layout: Layout
+    version: Version
+    security_bindings: bytes
+    settings: Settings
 
     def __init__(self, path: "StrPath"):
         zipfile = ZipFile(path, mode="r")
@@ -24,5 +42,8 @@ class StaticElements:
         connections_json = json.loads(zipfile.read("Connections").decode("utf-8"))
         self.connections = Connections.model_validate(connections_json)
 
-        print(zipfile.read("Connections").decode("utf-8"))
-        breakpoint()
+        major, minor = zipfile.read("Version").decode(LAYOUT_ENCODING).split(".")
+        self.version = Version(int(major), int(minor))
+        self.security_bindings = zipfile.read("SecurityBindings")
+
+        self.content_types = BeautifulSoup(zipfile.read("[Content_Types].xml").decode("utf-8"), "lxml")

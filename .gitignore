@@ -5,3 +5,4 @@ workspaces
 docs/build
 *.env
 dist
+test
