@@ -6,6 +6,7 @@ import pydantic
 from bs4 import BeautifulSoup, Tag
 from structlog import get_logger
 
+from ...lineage import LineageNode
 from ._commands import BaseCommands, Command, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from .utils import (
     COMMAND_TEMPLATES,
@@ -224,6 +225,9 @@ class SsasTable(pydantic.BaseModel):
         xml_row = ROW_TEMPLATE.render(fields=fields)
         xml_entity_definition = command.template.render(rows=xml_row)
         return command.base_template.render(db_name=db_name, entity_def=xml_entity_definition)
+
+    def get_lineage(self) -> LineageNode:
+        return LineageNode(self)
 
 
 class SsasAlter(SsasTable):

@@ -2,7 +2,9 @@ import datetime
 from enum import IntEnum
 from typing import TYPE_CHECKING, Optional
 
-from ..server.tabular_model import SsasRefreshTable
+from ...lineage import LineageNode
+from ..server.tabular_model import SsasRefreshTable, SsasTable
+from ._group import RowNotFoundError
 
 if TYPE_CHECKING:
     from .query_group import QueryGroup
@@ -46,7 +48,15 @@ class Partition(SsasRefreshTable):
     refreshed_time: datetime.datetime
 
     def query_group(self) -> Optional["QueryGroup"]:
-        return self.tabular_model.query_groups.find({"id": self.table_id})
+        try:
+            return self.tabular_model.query_groups.find({"id": self.table_id})
+        except RowNotFoundError:
+            return None
 
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})
+
+    def get_lineage(self) -> LineageNode:
+        children: list[Optional[SsasTable]] = [self.table(), self.query_group()]
+        children_lineage: list[LineageNode] = [c.get_lineage() for c in children if c is not None]
+        return LineageNode(self, children_lineage)

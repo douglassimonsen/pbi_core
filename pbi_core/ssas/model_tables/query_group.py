@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, Optional
 
+from ...lineage import LineageNode
 from ..server.tabular_model import SsasBaseTable
 
 if TYPE_CHECKING:
@@ -17,3 +18,10 @@ class QueryGroup(SsasBaseTable):
 
     def partitions(self) -> list["Partition"]:
         return self.tabular_model.partitions.find_all({"query_group_id": self.id})
+
+    def get_lineage(self) -> LineageNode:
+        return LineageNode(
+            self,
+            [expression.get_lineage() for expression in self.expressions()]
+            + [partition.get_lineage() for partition in self.partitions()],
+        )

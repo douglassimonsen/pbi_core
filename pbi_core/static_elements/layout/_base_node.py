@@ -2,6 +2,8 @@ from typing import TYPE_CHECKING, Any, Optional, TypeVar
 
 import pydantic
 
+from ...lineage import LineageNode
+
 if TYPE_CHECKING:
     pass
 
@@ -56,3 +58,6 @@ class LayoutNode(pydantic.BaseModel):
         if self._name_field is None:
             return super().__str__()
         return f"{self.__class__.__name__}({getattr(self, self._name_field)})"
+
+    def get_lineage(self) -> LineageNode:
+        raise NotImplementedError

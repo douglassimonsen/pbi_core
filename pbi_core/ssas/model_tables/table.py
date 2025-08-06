@@ -1,9 +1,13 @@
 import datetime
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
+from ...lineage import LineageNode
 from ..server.tabular_model import SsasRefreshTable
 from .column import Column
+
+if TYPE_CHECKING:
+    from .model import Model
 
 
 class Table(SsasRefreshTable):
@@ -33,3 +37,9 @@ class Table(SsasRefreshTable):
 
     def columns(self) -> list[Column]:
         return [column for column in self.tabular_model.columns if column.table_id == self.id]
+
+    def model(self) -> Model:
+        return self.tabular_model.model
+
+    def get_lineage(self) -> LineageNode:
+        return LineageNode(self, [self.model().get_lineage()])
