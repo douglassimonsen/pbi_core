@@ -12,6 +12,8 @@ from .filters import PrototypeQuery, PrototypeQueryResult, VisualFilter
 from .sources import Source
 from .visuals.base import FilterSortOrder, ProjectionConfig, PropertyDef
 from .visuals.main import Visual
+from .visuals.properties.base import Expression
+from .visuals.properties.vc_properties import BackgroundProperties
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server import LocalTabularModel
@@ -23,10 +25,22 @@ if TYPE_CHECKING:
 from .performance import Performance, get_performance
 
 
+class BackgroundProperties(LayoutNode):
+    show: Expression | None = None
+
+
+class Background(LayoutNode):
+    properties: BackgroundProperties
+
+
+class SingleVisualGroupProperties(LayoutNode):
+    background: list[Background] | None = None
+
+
 class SingleVisualGroup(LayoutNode):
     displayName: str
     groupMode: int
-    objects: int | None = None
+    objects: SingleVisualGroupProperties | None = None
     isHidden: bool = False
 
 
@@ -81,7 +95,7 @@ class PrimaryProjections(LayoutNode):
     Projections: list[int]
     SuppressedProjections: list[int] | None = None
     Subtotal: int | None = None
-    Aggregates: int | None = None
+    Aggregates: list["QueryBindingAggregates"] | None = None
     ShowItemsWithNoData: list[int] | None = None
 
 
@@ -92,10 +106,14 @@ class Level(LayoutNode):
 
 class InstanceChild(LayoutNode):
     Values: list[Source]
+    Children: list["InstanceChild"] | None = None
+    WindowExpansionInstanceWindowValue: list[int] | None = None  # never seen the element
 
 
 class Instance(LayoutNode):
     Children: list[InstanceChild]
+    WindowExpansionInstanceWindowValue: list[int] | None = None  # never seen the element
+    Values: list[Source] | None = None
 
 
 class BindingExpansion(LayoutNode):
@@ -143,6 +161,24 @@ class OverlappingPointReduction(LayoutNode):
     OverlappingPointsSample: OverlappingPointsSample
 
 
+class WindowExpansionType(LayoutNode):
+    From: list[FromEntity]
+    Levels: list[Level]
+    WindowInstances: Instance
+
+    def __str__(self) -> str:
+        return f"WindowExpansionType(From={self.From}, Levels={self.Levels}, WindowInstances={self.WindowInstances})"
+
+
+class TopNPerLevelDataReductionHelper(LayoutNode):
+    Count: int
+    WindowExpansion: WindowExpansionType
+
+
+class TopNPerLevelDataReduction(LayoutNode):
+    TopNPerLevel: TopNPerLevelDataReductionHelper
+
+
 def get_reduction(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "Sample" in v:
@@ -151,6 +187,8 @@ def get_reduction(v: object | dict[str, Any]) -> str:
             return "WindowDataReduction"
         if "Top" in v:
             return "TopDataReduction"
+        if "TopNPerLevel" in v:
+            return "TopNPerLevelDataReduction"
         if "Bottom" in v:
             return "BottomDataReduction"
         if "OverlappingPointsSample" in v:
@@ -165,7 +203,8 @@ PrimaryDataReduction = Annotated[
     | Annotated[WindowDataReduction, Tag("WindowDataReduction")]
     | Annotated[TopDataReduction, Tag("TopDataReduction")]
     | Annotated[BottomDataReduction, Tag("BottomDataReduction")]
-    | Annotated[OverlappingPointReduction, Tag("OverlappingPointReduction")],
+    | Annotated[OverlappingPointReduction, Tag("OverlappingPointReduction")]
+    | Annotated[TopNPerLevelDataReduction, Tag("TopNPerLevelDataReduction")],
     Discriminator(get_reduction),
 ]
 
@@ -185,10 +224,16 @@ class DataReductionType(LayoutNode):
     Intersection: IntersectionType | None = None
 
 
+class AggregateSourceScope(LayoutNode):
+    PrimaryDepth: int
+
+
 class AggregateSources2(LayoutNode):  # stupid name, but needs to be different from AggregateSources
     # This is a workaround for the fact that AggregateSources is already used in the QueryBindingAggregates class
     Min: dict[str, int] | None = None
     Max: dict[str, int] | None = None
+    Scope: AggregateSourceScope | None = None
+    RespectInstanceFilters: bool = False
 
 
 class AggregateSources(LayoutNode):
@@ -307,6 +352,8 @@ class DataTransformSelect(LayoutNode):
 class ExpansionStateLevel(LayoutNode):
     queryRefs: list[str]
     isCollapsed: bool = False
+    isPinned: bool = False
+    isLocked: bool = False
     identityKeys: list[Source] | None = None
     identityValues: list[None] | None = None
 

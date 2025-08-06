@@ -31,6 +31,7 @@ class CategoryAxis(LayoutNode):
 class DataPointProperties(LayoutNode):
     fill: Expression | None = None
     fillRule: Expression | None = None
+    showAllDataPoints: Expression | None = None
 
 
 class DataPoint(LayoutNode):

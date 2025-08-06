@@ -8,4 +8,5 @@ dist
 test
 *.xlsx
 *.7z
-pbi_core/local/**
+*.VSCodeCounter
+pbi_core/local

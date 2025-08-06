@@ -65,6 +65,7 @@ class SlowDataSourceSettings(LayoutNode):
     isFieldWellButtonEnabled: bool
     isFilterSelectionsButtonEnabled: bool
     isSlicerSelectionsButtonEnabled: bool
+    isApplyAllButtonEnabled: bool = False
 
 
 class OutspacePaneProperties(LayoutNode):

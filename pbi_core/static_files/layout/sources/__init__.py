@@ -4,7 +4,7 @@ from pydantic import Discriminator, Tag
 
 from pbi_core.pydantic.main import BaseValidation
 
-from .aggregation import AggregationSource, DataSource
+from .aggregation import AggregationSource, DataSource, SelectRef
 from .arithmetic import ArithmeticSource
 from .base import Entity, SourceRef
 from .column import ColumnSource
@@ -44,6 +44,8 @@ def get_source(v: object | dict[str, Any]) -> str:  # noqa: PLR0911
             return "TransformOutputRoleRef"
         if "Literal" in v:
             return "LiteralSource"
+        if "SelectRef" in v:
+            return "SelectRef"
         msg = f"Unknown Filter: {v.keys()}"
         raise TypeError(msg)
     return v.__class__.__name__
@@ -58,7 +60,8 @@ Source = Annotated[
     | Annotated[ArithmeticSource, Tag("ArithmeticSource")]
     | Annotated[ProtoSourceRef, Tag("ProtoSourceRef")]
     | Annotated[TransformOutputRoleRef, Tag("TransformOutputRoleRef")]
-    | Annotated[LiteralSource, Tag("LiteralSource")],
+    | Annotated[LiteralSource, Tag("LiteralSource")]
+    | Annotated[SelectRef, Tag("SelectRef")],
     # Discriminator is used to determine the type based on the content of the object
     Discriminator(get_source),
 ]
