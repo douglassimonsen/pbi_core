@@ -41,12 +41,12 @@ class Title(LayoutNode):
 class VisualTooltipProperties(LayoutNode):
     background: Expression | None = None
     fontFamily: Expression | None = None
+    fontSize: Expression | None = None
     section: Expression | None = None
     show: Expression | None = None
     titleFontColor: Expression | None = None
     type: Expression | None = None
     valueFontColor: Expression | None = None
-    fontSize: Expression | None = None
 
 
 class VisualTooltip(LayoutNode):
@@ -62,10 +62,10 @@ class StylePreset(LayoutNode):
 
 
 class BorderProperties(LayoutNode):
-    show: Expression | None = None
     background: Expression | None = None
     color: Expression | None = None
     radius: Expression | None = None
+    show: Expression | None = None
 
 
 class Border(LayoutNode):
@@ -73,27 +73,26 @@ class Border(LayoutNode):
 
 
 class VisualHeaderProperties(LayoutNode):
-    showTooltipButton: Expression | None = None
-    showSmartNarrativeButton: Expression | None = None
-    showVisualInformationButton: Expression | None = None
-    showVisualWarningButton: Expression | None = None
-
-    show: Expression | None = None
     background: Expression | None = None
     border: Expression | None = None
-    transparency: Expression | None = None
     foreground: Expression | None = None
+    show: Expression | None = None
+    showDrillDownExpandButton: Expression | None = None
+    showDrillDownLevelButton: Expression | None = None
     showDrillRoleSelector: Expression | None = None
+    showDrillToggleButton: Expression | None = None
+    showDrillUpButton: Expression | None = None
+    showFilterRestatementButton: Expression | None = None
     showFocusModeButton: Expression | None = None
     showOptionsMenu: Expression | None = None
-    showVisualErrorButton: Expression | None = None
-    showDrillUpButton: Expression | None = None
-    showDrillToggleButton: Expression | None = None
-    showDrillDownLevelButton: Expression | None = None
-    showDrillDownExpandButton: Expression | None = None
-    showSeeDataLayoutToggleButton: Expression | None = None
-    showFilterRestatementButton: Expression | None = None
     showPinButton: Expression | None = None
+    showSeeDataLayoutToggleButton: Expression | None = None
+    showSmartNarrativeButton: Expression | None = None
+    showTooltipButton: Expression | None = None
+    showVisualErrorButton: Expression | None = None
+    showVisualInformationButton: Expression | None = None
+    showVisualWarningButton: Expression | None = None
+    transparency: Expression | None = None
 
 
 class VisualHeader(LayoutNode):
@@ -102,14 +101,14 @@ class VisualHeader(LayoutNode):
 
 class VisualLinkProperties(LayoutNode):
     bookmark: Expression | None = None
+    disabledTooltip: Expression | None = None
+    drillthroughSection: Expression | None = None
+    enabledTooltip: Expression | None = None
     navigationSection: Expression | None = None
     show: Expression | None = None
     tooltip: Expression | None = None
     type: Expression | None = None
     webUrl: Expression | None = None
-    drillthroughSection: Expression | None = None
-    enabledTooltip: Expression | None = None
-    disabledTooltip: Expression | None = None
 
 
 class VisualLink(LayoutNode):
@@ -117,10 +116,10 @@ class VisualLink(LayoutNode):
 
 
 class VisualHeaderTooltipProperties(LayoutNode):
-    text: Expression | None = None
     background: Expression | None = None
-    titleFontColor: Expression | None = None
     section: Expression | None = None
+    text: Expression | None = None
+    titleFontColor: Expression | None = None
     type: Expression | None = None
 
 
@@ -129,15 +128,15 @@ class VisualHeaderTooltip(LayoutNode):
 
 
 class DropShadowProperties(LayoutNode):
-    show: Expression | None = None
-    transparency: Expression | None = None
-    shadowBlur: Expression | None = None
-    shadowDistance: Expression | None = None
     angle: Expression | None = None
-    preset: Expression | None = None
     color: Expression | None = None
     position: Expression | None = None
+    preset: Expression | None = None
+    shadowBlur: Expression | None = None
+    shadowDistance: Expression | None = None
     shadowSpread: Expression | None = None
+    show: Expression | None = None
+    transparency: Expression | None = None
 
 
 class DropShadow(LayoutNode):

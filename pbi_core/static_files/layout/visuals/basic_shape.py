@@ -14,8 +14,8 @@ if TYPE_CHECKING:
 
 class FillPropertiesHelper(LayoutNode):
     fillColor: Expression | None = None
-    transparency: Expression | None = None
     show: Expression | None = None
+    transparency: Expression | None = None
 
 
 class FillProperties(LayoutNode):
@@ -32,9 +32,9 @@ class GeneralProperties(LayoutNode):
 
 class LinePropertiesHelper(LayoutNode):
     lineColor: Expression | None = None
+    roundEdge: Expression | None = None
     transparency: Expression | None = None
     weight: Expression | None = None
-    roundEdge: Expression | None = None
 
 
 class LineProperties(LayoutNode):

@@ -14,19 +14,19 @@ from .text_box import GeneralProperties
 
 class CategoryAxisProperties(LayoutNode):
     axisType: Expression | None = None
-    gridlineColor: Expression | None = None
-    show: Expression | None = None
-    preferredCategoryWidth: Expression | None = None
     concatenateLabels: Expression | None = None
-    maxMarginFactor: Expression | None = None
-    innerPadding: Expression | None = None
     fontSize: Expression | None = None
-    titleFontSize: Expression | None = None
+    gridlineColor: Expression | None = None
+    gridlineShow: Expression | None = None
+    gridlineStyle: Expression | None = None
+    innerPadding: Expression | None = None
+    labelColor: Expression | None = None
+    maxMarginFactor: Expression | None = None
+    preferredCategoryWidth: Expression | None = None
+    show: Expression | None = None
     showAxisTitle: Expression | None = None
     titleColor: Expression | None = None
-    gridlineStyle: Expression | None = None
-    gridlineShow: Expression | None = None
-    labelColor: Expression | None = None
+    titleFontSize: Expression | None = None
     titleText: Expression | None = None
 
 
@@ -47,16 +47,16 @@ class DataPoint(LayoutNode):
 
 
 class LabelsProperties(LayoutNode):
+    backgroundColor: Expression | None = None
+    backgroundTransparency: Expression | None = None
+    color: Expression | None = None
+    enableBackground: Expression | None = None
     fontSize: Expression | None = None
+    labelDensity: Expression | None = None
     labelDisplayUnits: Expression | None = None
     labelOrientation: Expression | None = None
     labelPosition: Expression | None = None
     show: Expression | None = None
-    color: Expression | None = None
-    labelDensity: Expression | None = None
-    enableBackground: Expression | None = None
-    backgroundColor: Expression | None = None
-    backgroundTransparency: Expression | None = None
     showAll: Expression | None = None
 
 
@@ -66,11 +66,11 @@ class Labels(LayoutNode):
 
 
 class LegendProperties(LayoutNode):
-    show: Expression | None = None
-    labelColor: Expression | None = None
-    showTitle: Expression | None = None
     fontSize: Expression | None = None
+    labelColor: Expression | None = None
     position: Expression | None = None
+    show: Expression | None = None
+    showTitle: Expression | None = None
 
 
 class Legend(LayoutNode):
@@ -79,14 +79,14 @@ class Legend(LayoutNode):
 
 
 class ValueAxisProperties(LayoutNode):
-    show: Expression | None = None
-    gridlineShow: Expression | None = None
-    titleFontFamily: Expression | None = None
+    axisScale: Expression | None = None
     fontSize: Expression | None = None
+    gridlineShow: Expression | None = None
+    logAxisScale: Expression | None = None
+    show: Expression | None = None
     showAxisTitle: Expression | None = None
     start: Expression | None = None
-    logAxisScale: Expression | None = None
-    axisScale: Expression | None = None
+    titleFontFamily: Expression | None = None
 
 
 class ValueAxis(LayoutNode):
@@ -115,12 +115,12 @@ class Total(LayoutNode):
 
 
 class Y1AxisReferenceLineProperties(LayoutNode):
-    show: Expression | None = None
     displayName: Expression | None = None
+    lineColor: Expression | None = None
+    show: Expression | None = None
+    style: Expression | None = None
     transparency: Expression | None = None
     value: Expression | None = None
-    lineColor: Expression | None = None
-    style: Expression | None = None
 
 
 class Y1AxisReferenceLine(LayoutNode):

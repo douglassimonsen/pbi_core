@@ -24,8 +24,8 @@ class General(LayoutNode):
 
 
 class ValuePropertiesHelper(LayoutNode):
-    expr: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
     context: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
+    expr: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
     value: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
     propertyDefinitionKind: str | None = None
 

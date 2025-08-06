@@ -19,15 +19,14 @@ class DataBarsProperties(LayoutNode):
 
 
 class ColumnFormattingProperties(LayoutNode):
-    backColor: Expression | None = None
     alignment: Expression | None = None
-
+    backColor: Expression | None = None
     dataBars: DataBarsProperties | None = None
     fontColor: Expression | None = None
-    labelPrecision: Expression | None = None
     labelDisplayUnits: Expression | None = None
-    styleValues: Expression | None = None
+    labelPrecision: Expression | None = None
     styleHeader: Expression | None = None
+    styleValues: Expression | None = None
 
 
 class ColumnFormatting(LayoutNode):
@@ -36,11 +35,11 @@ class ColumnFormatting(LayoutNode):
 
 
 class TotalProperties(LayoutNode):
-    totals: Expression | None = None
     fontColor: Expression | None = None
     fontFamily: Expression | None = None
     fontSize: Expression | None = None
     outline: Expression | None = None
+    totals: Expression | None = None
 
 
 class Total(LayoutNode):
@@ -51,14 +50,14 @@ class Total(LayoutNode):
 class ValuesProperties(LayoutNode):
     backColor: Expression | None = None
     backColorPrimary: Expression | None = None
-    fontColor: Expression | None = None
-    fontFamily: Expression | None = None
-    fontColorPrimary: Expression | None = None
-    fontSize: Expression | None = None
-    urlIcon: Expression | None = None
     backColorSecondary: Expression | None = None
-    wordWrap: Expression | None = None
+    fontColor: Expression | None = None
+    fontColorPrimary: Expression | None = None
+    fontFamily: Expression | None = None
+    fontSize: Expression | None = None
     outline: Expression | None = None
+    urlIcon: Expression | None = None
+    wordWrap: Expression | None = None
 
 
 class Values(LayoutNode):
@@ -68,15 +67,15 @@ class Values(LayoutNode):
 
 class ColumnHeadersProperties(LayoutNode):
     alignment: Expression | None = None
-    outlineStyle: Expression | None = None
-    wordWrap: Expression | None = None
     autoSizeColumnWidth: Expression | None = None
+    backColor: Expression | None = None
+    bold: Expression | None = None
     fontColor: Expression | None = None
     fontFamily: Expression | None = None
     fontSize: Expression | None = None
     outline: Expression | None = None
-    bold: Expression | None = None
-    backColor: Expression | None = None
+    outlineStyle: Expression | None = None
+    wordWrap: Expression | None = None
 
 
 class ColumnHeaders(LayoutNode):
@@ -94,17 +93,17 @@ class ColumnWidth(LayoutNode):
 
 
 class GridProperties(LayoutNode):
-    imageHeight: Expression | None = None
-    textSize: Expression | None = None
-    outlineColor: Expression | None = None
-    rowPadding: Expression | None = None
-    gridVertical: Expression | None = None
     gridHorizontal: Expression | None = None
-    gridHorizontalWeight: Expression | None = None
-    gridVerticalWeight: Expression | None = None
-    gridVerticalColor: Expression | None = None
-    outlineWeight: Expression | None = None
     gridHorizontalColor: Expression | None = None
+    gridHorizontalWeight: Expression | None = None
+    gridVertical: Expression | None = None
+    gridVerticalColor: Expression | None = None
+    gridVerticalWeight: Expression | None = None
+    imageHeight: Expression | None = None
+    outlineColor: Expression | None = None
+    outlineWeight: Expression | None = None
+    rowPadding: Expression | None = None
+    textSize: Expression | None = None
 
 
 class Grid(LayoutNode):
@@ -121,13 +120,13 @@ class General(LayoutNode):
 
 
 class TableChartColumnProperties(LayoutNode):
-    general: list[General] | None = None
     columnFormatting: list[ColumnFormatting] | None = None
     columnHeaders: list[ColumnHeaders] | None = None
     columnWidth: list[ColumnWidth] | None = None
+    general: list[General] | None = None
+    grid: list[Grid] | None = None
     total: list[Total] | None = None
     values: list[Values] | None = None
-    grid: list[Grid] | None = None
 
 
 class TableChart(BaseVisual):

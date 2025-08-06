@@ -1,0 +1,79 @@
+# NUMPTY PATH for colormath
+import numpy
+from colorblind import colorblind
+from colormath.color_conversions import convert_color
+from colormath.color_diff import delta_e_cie2000
+from colormath.color_objects import LabColor, sRGBColor
+
+from ....static_files.file_classes.theme import Theme
+from ...base_rule import BaseRule
+
+
+def patch_asscalar(a):
+    return a.item()
+
+
+numpy.asscalar = patch_asscalar
+
+
+def hex_to_rbg(hex_color: str) -> tuple[int, int, int]:
+    """Convert a hex color string to an RGB tuple."""
+    hex_color = hex_color.lstrip("#")
+    return tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
+
+
+class ThemeColors(BaseRule):
+    id = "THM-001"
+    name = "Theme Colors"
+    description = """
+        All colors used in the report should be defined in the theme.
+        This helps to maintain consistency and makes it easier to change colors later.
+    """
+
+
+class ThemeColorsProtanopia(ThemeColors):
+    id = "THM-002"
+    name = "Theme Colors Protanopia"
+    description = """
+        All data colors should be clearly distinguishable for color vision deficiency.
+        This rule is specifically for Protanopia color vision deficiency.
+    """
+
+    @classmethod
+    def check(cls, themes: dict[str, Theme]):
+        all_colors = set()
+        for theme in themes.values():
+            all_colors.update(theme.dataColors)
+        colors = [[hex_to_rbg(color)] for color in all_colors]
+        protanopia = colorblind.simulate_colorblindness(colors, colorblind_type="protanopia")
+        protanopia: list[tuple[int, int, int]] = [convert_color(sRGBColor(*color[0]), LabColor) for color in protanopia]
+
+        conflicting_colors = []
+        for c1 in protanopia:
+            for c2 in protanopia:
+                if c1 == c2:
+                    continue
+                if delta_e_cie2000(c1, c2) < 3:
+                    conflicting_colors.append((c1, c2))
+        print(conflicting_colors)
+
+
+class ThemeColorsDeuteranopia(ThemeColors):
+    id = "THM-002"
+    name = "Theme Colors Deuteranopia"
+    description: str = """
+        All data colors should be clearly distinguishable for color vision deficiency.
+        This rule is specifically for Deuteranopia color vision deficiency.
+    """
+
+
+class ThemeColorsTritanopia(ThemeColors):
+    id = "THM-003"
+    name = "Theme Colors Tritanopia"
+    description = """
+        All data colors should be clearly distinguishable for color vision deficiency.
+        This rule is specifically for Tritanopia color vision deficiency.
+    """
+
+
+# colorblind
