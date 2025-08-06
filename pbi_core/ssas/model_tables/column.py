@@ -56,7 +56,7 @@ class Column(SsasRenameTable):
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    def data(self, head: int = 100) -> list[dict[str, str]]:
+    def data(self, head: int = 100) -> list[int | float | str]:
         table_name = self.table().name
         ret = self.tabular_model.server.query_dax(
             f"EVALUATE TOPN({head}, SELECTCOLUMNS(ALL('{table_name}'), '{table_name}'[{self.explicit_name}]))",

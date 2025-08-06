@@ -122,14 +122,15 @@ class BaseTabularModel:
 
     def sync_from(self) -> None:
         from ..model_tables import FIELD_TYPES
+        from ..model_tables._group import Group
 
         xml_schema = self.server.query_xml(COMMAND_TEMPLATES["discover_schema.xml"].render(db_name=self.db_name))
         schema = discover_xml_to_dict(xml_schema)
         for field_name, type_instance in FIELD_TYPES.items():
-            objects = [
+            objects = Group([
                 type_instance.model_validate({**row, "_tabular_model": self})
                 for row in schema[type_instance._db_type_name()]
-            ]
+            ])
             setattr(self, field_name, objects)
 
 

@@ -1,4 +1,4 @@
-from typing import Any, Callable, Protocol, Sequence, TypeVar
+from typing import Any, Callable, Protocol, TypeVar
 
 
 class idThing(Protocol):
@@ -8,7 +8,7 @@ class idThing(Protocol):
 T = TypeVar("T", bound=idThing)
 
 
-class Group(Sequence[T]):
+class Group(list[T]):
     def find(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> T:
         if isinstance(match_val, int):
             for val in self:
@@ -16,7 +16,7 @@ class Group(Sequence[T]):
                     return val
         elif isinstance(match_val, dict):
             for val in self:
-                if all(getattr(self, field_name) == field_value for field_name, field_value in match_val.items()):
+                if all(getattr(val, field_name) == field_value for field_name, field_value in match_val.items()):
                     return val
 
         else:
