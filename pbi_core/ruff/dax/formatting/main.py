@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 from pbi_core.ruff.base_rule import RuleGroup, RuleResult
 
 from .camel_case_variable import CamelCaseMeasureName, CamelCaseVariable
+from .capitalize_functions import CapitalizeFunctionNames
 from .magic_numbers import MagicNumbers
 from .unused_variable import UnusedMeasureVariables
 
@@ -17,6 +18,7 @@ class DaxFormattingRules(RuleGroup):
     rules = (
         CamelCaseMeasureName,
         CamelCaseVariable,
+        CapitalizeFunctionNames,
         UnusedMeasureVariables,
         MagicNumbers,
     )
