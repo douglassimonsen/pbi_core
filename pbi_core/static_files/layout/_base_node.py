@@ -53,6 +53,9 @@ class LayoutNode(pydantic.BaseModel):
                 pass
         raise ValueError(f"Object not found: {cls_type}")
 
+    def model_dump_json(self, **kwargs: Any):
+        return super().model_dump_json(round_trip=True, exclude_unset=True, **kwargs)
+
     def next_sibling(self: T) -> T:
         raise NotImplementedError()
 

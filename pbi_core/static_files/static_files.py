@@ -103,16 +103,31 @@ class StaticFiles:
         )
 
     def save_pbix(self, path: "StrPath") -> None:
+        """
+        We use "a" as the write mode because the ssas.save_pbix method already creates a PBIX with the datamodel subfile
+        """
+        data: dict[str, bytes] = {}
+        with zipfile.ZipFile(path, "r", compression=zipfile.ZIP_DEFLATED) as zf:
+            for f in zf.namelist():
+                data[f] = zf.read(f)
+        # breakpoint()
         with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr("Settings", self.settings.model_dump_json().encode(LAYOUT_ENCODING))
+            zf.writestr("Connections", self.connections.model_dump_json().encode("utf-8"))
+            zf.writestr("Version", str(self.version).encode(LAYOUT_ENCODING))
+            zf.writestr(
+                "DiagramLayout", self.diagram_layout.model_dump_json().encode(LAYOUT_ENCODING)
+            )  # has null nodeLineageTag that the source doesn't
             for path_name, theme_info in self.themes.items():
                 zf.writestr(
                     f"Report/StaticResources/SharedResources/BaseThemes/{path_name}",
                     theme_info.model_dump_json().encode("utf-8"),
                 )
-            zf.writestr("Report/layout", self.layout.model_dump_json().encode(LAYOUT_ENCODING))
-            zf.writestr("[Content_Types].xml", str(self.connections).encode("utf-8"))
-            zf.writestr("Connections", self.connections.model_dump_json().encode("utf-8"))
-            zf.writestr("DiagramLayout", self.diagram_layout.model_dump_json().encode(LAYOUT_ENCODING))
-            zf.writestr("Metadata", self.metadata.model_dump_json().encode(LAYOUT_ENCODING))
-            zf.writestr("Settings", self.settings.model_dump_json().encode(LAYOUT_ENCODING))
-            zf.writestr("Version", str(self.version))
+            zf.writestr("DataModel", data["DataModel"])
+            zf.writestr("Report/Layout", self.layout.model_dump_json().encode(LAYOUT_ENCODING))
+            zf.writestr(
+                "[Content_Types].xml", data["[Content_Types].xml"]
+            )  # str(self.connections).encode("utf-8") needs to converted back to XML before being written
+
+        exit()
+        return
