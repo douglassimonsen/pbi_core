@@ -1,11 +1,13 @@
 import inspect
-from enum import Enum
-from typing import TYPE_CHECKING, Any, Optional
+from enum import Enum, IntEnum
+from typing import TYPE_CHECKING, Annotated, Any, Optional, Union
 
-from pydantic import Json
+from pydantic import Discriminator, Json, Tag
 
 from ._base_node import LayoutNode
+from .condition import Condition
 from .filters import VisualFilter
+from .sources import Source
 from .visuals import Visual
 
 if TYPE_CHECKING:
@@ -35,6 +37,112 @@ class VisualConfig(LayoutNode):
     howCreated: Optional[VisualHowCreated] = None
 
 
+class ExecutionMetricsKind(IntEnum):
+    NA = 1
+
+
+class EntityType(IntEnum):
+    Table = 0
+
+
+class FromEntity(LayoutNode):
+    Name: str
+    Entity: str
+    Type: EntityType
+
+
+def get_where(v: Any) -> str:
+    if isinstance(v, dict):
+        if "Condition" in v.keys():
+            return "Condition"
+        else:
+            return "Source"
+    else:
+        if isinstance(obj, Condition):
+            return "Condition"
+        else:
+            return "Source"
+
+
+Where = Annotated[
+    Union[
+        Annotated[Condition, Tag("Condition")],
+        Annotated[Source, Tag("Source")],
+    ],
+    Discriminator(get_where),
+]
+
+
+class QueryHelper(LayoutNode):
+    Version: int
+    From: list[FromEntity]
+    Select: list[Source]
+    Where: list[Where]
+
+
+class PrimaryProjections(LayoutNode):
+    Projections: list[int]
+
+
+class BindingPrimary(LayoutNode):
+    Groupings: list[PrimaryProjections]
+
+
+class DataVolume(IntEnum):
+    NA = 4
+
+
+class PrimaryDataReduction(LayoutNode):
+    Sample: dict
+
+
+class DataReduction(LayoutNode):
+    DataVolume: DataVolume
+    Primary: PrimaryDataReduction
+
+
+class Binding(LayoutNode):
+    Primary: BindingPrimary
+    Projections: list[int]
+    DataReduction: Any
+    Version: int
+
+
+class QueryCommand1(LayoutNode):
+    ExecutionMetricsKind: ExecutionMetricsKind
+    Query: QueryHelper
+    Binding: Binding
+
+
+class QueryCommand2(LayoutNode):
+    SemanticQueryDataShapeCommand: QueryCommand1
+
+
+def get_query_command(v: Any) -> str:
+    if isinstance(v, dict):
+        if "SemanticQueryDataShapeCommand" in v.keys():
+            return "QueryCommand2"
+        elif "ExecutionMetricsKind" in v.keys():
+            return "QueryCommand1"
+        else:
+            raise ValueError(f"Unknown Filter: {v.keys()}")
+    else:
+        return v.__class__.__name__
+
+
+QueryCommand = Annotated[
+    Union[
+        Annotated[QueryCommand1, Tag("QueryCommand1")],
+        Annotated[QueryCommand2, Tag("QueryCommand2")],
+    ],
+    Discriminator(get_query_command),
+]
+
+
+class Query(LayoutNode):
+    Commands: list[QueryCommand]
+
+
 class VisualContainer(LayoutNode):
     parent: "Section"
     _name_field = "name"
@@ -46,7 +154,7 @@ class VisualContainer(LayoutNode):
     height: float
     tabOrder: Optional[int] = None
     dataTransforms: Optional[Json[Any]] = None
-    query: Optional[Any] = None
+    query: Optional[Json[Query]] = None
     filters: Json[list[VisualFilter]] = []
     config: Json[VisualConfig]
     id: Optional[int] = None

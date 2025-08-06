@@ -30,7 +30,7 @@ class _AggregationSourceHelper(LayoutNode):
 class AggregationSource(LayoutNode):
     Aggregation: _AggregationSourceHelper
     Name: Optional[str] = None
-    NativeReferenceName: Optional[str] = None
+    NativeReferenceName: Optional[str] = None  # only for Layout.Visual.Query
 
 
 """

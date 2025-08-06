@@ -8,6 +8,7 @@ from .base import SourceExpression
 class ColumnSource(LayoutNode):
     Column: SourceExpression
     Name: Optional[str] = None  # only seen on a couple TopN filters
+    NativeReferenceName: Optional[str] = None  # only for Layout.Visual.Query
 
     def __repr__(self) -> str:
         return f"ColumnSource({self.Column.Expression.table}.{self.Column.Property})"
