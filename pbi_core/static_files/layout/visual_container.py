@@ -17,6 +17,7 @@ if TYPE_CHECKING:
 
     from .section import Section
 
+
 from .performance import Performance, get_performance
 
 
@@ -171,14 +172,7 @@ class VisualContainer(LayoutNode):
             return f"{self.config.singleVisual.visualType}(x={round(self.x, 2)}, y={round(self.y, 2)}, z={round(self.z, 2)})"  # noqa: E501
         return None
 
-    def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult | None:
-        """Gets data that would populate this visual from the SSAS DB.
-
-        Uses the PrototypeQuery found within query to generate a DAX statement that then gets passed to SSAS.
-
-        Returns None for non-data visuals such as static text boxes
-
-        """
+    def _get_data_command(self) -> PrototypeQuery | None:
         if self.query is None:
             return None
         if len(self.query.Commands) == 0:
@@ -193,6 +187,19 @@ class VisualContainer(LayoutNode):
             query = query_command.Query
         else:
             query = query_command.SemanticQueryDataShapeCommand.Query
+        return query
+
+    def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult | None:
+        """Gets data that would populate this visual from the SSAS DB.
+
+        Uses the PrototypeQuery found within query to generate a DAX statement that then gets passed to SSAS.
+
+        Returns None for non-data visuals such as static text boxes
+
+        """
+        query = self._get_data_command()
+        if query is None:
+            return None
         return query.get_data(model)
 
     def get_performance(self, model: "LocalTabularModel") -> Performance:
@@ -202,7 +209,11 @@ class VisualContainer(LayoutNode):
             Total Seconds to Query
             Total Rows Retrieved
         """
-        return get_performance(model, self.get_data)
+        command = self._get_data_command()
+        if command is None:
+            msg = "Cannot get performance for a visual without a query command"
+            raise NotImplementedError(msg)
+        return get_performance(model, [command.get_dax(model).DaxExpression])
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
         """Returns the SSAS elements (columns and measures) this visual is directly dependent on."""

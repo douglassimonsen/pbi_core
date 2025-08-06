@@ -15,6 +15,8 @@ from .sources import AggregationSource, ColumnSource, Entity, MeasureSource, Sou
 from .visuals.properties.filter_properties import FilterObjects
 
 if TYPE_CHECKING:
+    from pbi_translation.Translation import DataViewQueryTranslationResult
+
     from pbi_core.ssas.server import LocalTabularModel
 
     from .bookmark import BookmarkFilters
@@ -164,13 +166,16 @@ class PrototypeQuery(LayoutNode):
                 )
         return ret2
 
-    def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult:
+    def get_dax(self, model: "LocalTabularModel") -> "DataViewQueryTranslationResult":
         raw_query = self.model_dump_json()
-        dax_query = pbi_translation.prototype_query(
+        return pbi_translation.prototype_query(
             raw_query,
             model.db_name,
             model.server.port,
         )
+
+    def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult:
+        dax_query = self.get_dax(model)
         data = model.server.query_dax(dax_query.DaxExpression)
         column_mapping = dict(
             zip(

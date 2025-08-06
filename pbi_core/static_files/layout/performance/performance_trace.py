@@ -1,7 +1,7 @@
 import datetime
 import threading
 import time
-from collections.abc import Callable, Iterable
+from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
@@ -20,6 +20,26 @@ TRACE_TEMPLATES: dict[str, jinja2.Template] = {
 
 
 @dataclass
+class ThreadResult:
+    command: str
+    rows_returned: int
+
+    def get_performance(self, trace_records: list[dict[str, Any]]) -> "Performance":
+        for record in trace_records:
+            if record.get("TextData") == self.command:
+                return Performance(
+                    command_text=record["TextData"],
+                    start_datetime=record["StartTime"],
+                    end_datetime=record["EndTime"],
+                    cpu_time=record["CPUTime"],
+                    duration=record["Duration"],
+                    rows_returned=self.rows_returned,
+                )
+        msg = f"Command '{self.command}' not found in trace records."
+        raise ValueError(msg)
+
+
+@dataclass
 class Performance:
     command_text: str
     start_datetime: datetime.datetime
@@ -30,10 +50,10 @@ class Performance:
     rows_returned: int
 
     def __repr__(self) -> str:
-        command_text = self.command_text[:100].replace("\n", "\\n")
+        cmd: str = self.command_text[:100].replace("\n", "\\n")
         duration = round(self.duration / 1000, 2)
         cpu_time = round(self.cpu_time / 1000, 2)
-        return f"Performance(duration={duration}, cpu_time={cpu_time}, command={command_text})"
+        return f"Performance(duration={duration}, cpu_time={cpu_time}, rows={self.rows_returned}, command={cmd})"
 
 
 class Subscriber:
@@ -66,12 +86,12 @@ class PerformanceTrace:
     def __init__(
         self,
         db: BaseTabularModel,
-        commands: list[Callable[[], Any]],
+        commands: list[str],
         events: Iterable[TraceEvents] = (TraceEvents.COMMAND_END, TraceEvents.QUERY_END),
     ) -> None:
         self.events = events
         self.db: BaseTabularModel = db
-        self.commands = commands
+        self.commands = [x.replace("\r\n", "\n") for x in commands]
 
         next_day = (datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
         trace_name = f"pbi_core_{next_day.replace(':', '_')}"
@@ -104,25 +124,41 @@ class PerformanceTrace:
             cursor.execute_xml(self.trace_delete_command)
 
     def get_performance(self) -> list[Performance]:
+        def thread_func(command: str) -> ThreadResult:
+            cursor = self.get_conn().cursor()
+            cursor.execute_dax(command)
+            return ThreadResult(
+                command=command,
+                rows_returned=len(cursor.fetch_all()),
+            )
+
         self.initialize_tracing()
 
         with ThreadPoolExecutor() as dax_executor:
-            for command in self.commands:
-                dax_executor.submit(command)
+            command_results = list(dax_executor.map(thread_func, self.commands))
         # TODO: better check for late records in trace
-        time.sleep(3)
+
+        missing_subscription_records = command_results
+        for _ in range(15):
+            # Testing for 5 seconds to check that all commands have an entry in the trace
+            new_missing_subscription_records = [
+                command
+                for command in missing_subscription_records
+                if not any(x.get("TextData") == command.command for x in self.subscriber.trace_records)
+            ]
+
+            if not new_missing_subscription_records:
+                break
+            time.sleep(1)
+            missing_subscription_records = new_missing_subscription_records
+        else:
+            missing_commands = ", ".join(cmd.command for cmd in missing_subscription_records)
+            msg = f"Some commands did not have trace records: {missing_commands}"
+            raise ValueError(msg)
+
         self.subscriber.kill_polling()
-        return [
-            Performance(
-                command_text=record["TextData"],
-                start_datetime=record["StartTime"],
-                end_datetime=record["EndTime"],
-                cpu_time=record["CPUTime"],
-                duration=record["Duration"],
-                rows_returned=record.get("ROWSRETURNED", 0),
-            )
-            for record in self.subscriber.trace_records
-        ]
+
+        return [command_result.get_performance(self.subscriber.trace_records) for command_result in command_results]
 
     def get_conn(self) -> Pyadomd:
         return self.db.server.conn(db_name=self.db.db_name).open()

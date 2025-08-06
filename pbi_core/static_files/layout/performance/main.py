@@ -1,12 +1,9 @@
-from collections.abc import Callable
-from typing import Any
-
 from pbi_core.ssas.server.tabular_model.tabular_model import LocalTabularModel
 
 from .performance_trace import Performance, PerformanceTrace
 
 
-def get_performance(model: LocalTabularModel, func: Callable[[LocalTabularModel], Any]) -> Performance:
+def get_performance(model: LocalTabularModel, commands: list[str]) -> Performance:
     """Calculates performance of a DAX query using a Trace.
 
     Args:
@@ -21,5 +18,5 @@ def get_performance(model: LocalTabularModel, func: Callable[[LocalTabularModel]
 
 
     """
-    perf_trace = PerformanceTrace(model, [lambda: func(model)])
-    return perf_trace.get_performance()[1]
+    perf_trace = PerformanceTrace(model, commands)
+    return perf_trace.get_performance()[0]
