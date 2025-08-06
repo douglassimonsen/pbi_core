@@ -104,7 +104,9 @@ class LayoutConfig(LayoutNode):
 
 
 class Layout(LayoutNode):
-    id: int = -1
+    """Represents the layout of a Power BI report, including sections, filters, and other properties."""
+
+    id: int = -3
     reportId: int = -1
     filters: Json[list[GlobalFilter]] = []
     resourcePackages: list[ResourcePackage]
