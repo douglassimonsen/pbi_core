@@ -3,18 +3,25 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pbix_parsers"
+name = "pbi_core"
 version = "0.0.1"
 dependencies = []
-description = "PBIX Languages -> AST"
+description = "Accessing PBIX files programmatically"
 readme = "README.md"
 
 [project.optional-dependencies]
 dev = [
+  "backoff>=2.2.1",
+  "beautifulsoup4>=4.12.3",
+  "jinja2>=3.1.4",
+  "lxml>=5.3.0",
+  "mypy>=1.11.2",
   "pre-commit>=3.8.0",
   "pytest>=8.3.2",
+  "psutil>=6.0.0",
+  "python_mermaid>=0.1.3",  # underscore is smaller than lower case letters
+  "pythonnet>=3.0.3",
   "structlog>=24.4.0",
-  "python_mermaid>=0.1.3",
 ]
 
 [tool.doc8]
@@ -31,3 +38,4 @@ exclude_dirs = ["tests/**"]
 
 [tool.mypy]
 disable_error_code = "import-untyped"
+exclude = "^pbi_core"

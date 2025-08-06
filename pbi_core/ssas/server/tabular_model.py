@@ -1,0 +1,2 @@
+class TabularModel:
+    pass

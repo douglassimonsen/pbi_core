@@ -1,2 +1,0 @@
-class TabularDB:
-    pass
