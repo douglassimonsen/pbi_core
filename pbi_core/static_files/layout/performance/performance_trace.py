@@ -38,8 +38,9 @@ class ThreadResult:
     rows_returned: int
 
     def get_performance(self, trace_records: list[dict[str, Any]]) -> "Performance":
+        print([t["EventClass"] for t in trace_records])
         for record in trace_records:
-            if record.get("TextData") == self.command:
+            if record.get("EventClass") == "QUERY_END":
                 return Performance(
                     command_text=record["TextData"],
                     start_datetime=record["StartTime"],
@@ -70,13 +71,13 @@ class Performance:
 
 
 class Subscriber:
-    trace_records: list[dict[str, Any]]
+    trace_records: dict[str, list[dict[str, Any]]]
 
     def __init__(self, subscription_create_command: str, conn: Pyadomd, events: Iterable[TraceEvents]) -> None:
         self.cursor = conn.cursor()
         self.cursor.execute_dax(subscription_create_command)
         self.events = events
-        self.trace_records = []
+        self.trace_records = {}
         self.thread = threading.Thread(target=self.poll_cursor, daemon=True)
         self.thread.start()
 
@@ -85,7 +86,8 @@ class Subscriber:
         for record in self.cursor.fetch_stream():
             if "EventClass" in record:
                 record["EventClass"] = event_mapping[record["EventClass"]]
-            self.trace_records.append(record)
+            if "TextData" in record:
+                self.trace_records.setdefault(record["TextData"], []).append(record)
 
     def kill_polling(self) -> None:
         if self.thread.is_alive():
@@ -114,6 +116,8 @@ class PerformanceTrace:
             stop_time=next_day,
             events=self.events,
         )
+        print(self.trace_create_command)
+        exit()
         self.subscription_create_command = TRACE_TEMPLATES["subscription_create.xml"].render(
             trace_name=trace_name,
             subscription_name=subscription_name,
@@ -155,16 +159,15 @@ class PerformanceTrace:
 
         with ThreadPoolExecutor() as dax_executor:
             command_results = list(dax_executor.map(thread_func, self.commands))
-        # TODO: better check for late records in trace
 
         missing_subscription_records = command_results
         for _ in range(15):
-            # Testing for 5 seconds to check that all commands have an entry in the trace
-            new_missing_subscription_records = [
-                command
-                for command in missing_subscription_records
-                if not any(x.get("TextData") == command.command for x in self.subscriber.trace_records)
-            ]
+            # Testing for 15 seconds to check that all commands have an entry in the trace
+            new_missing_subscription_records = []
+            for command in missing_subscription_records:
+                command_events = self.subscriber.trace_records.get(command.command, [])
+                if not any(x["EventClass"] == "QUERY_END" for x in command_events):
+                    new_missing_subscription_records.append(command)
 
             if not new_missing_subscription_records:
                 break
@@ -177,7 +180,10 @@ class PerformanceTrace:
 
         self.subscriber.kill_polling()
 
-        return [command_result.get_performance(self.subscriber.trace_records) for command_result in command_results]
+        return [
+            command_result.get_performance(self.subscriber.trace_records[command_result.command])
+            for command_result in command_results
+        ]
 
     def get_conn(self) -> Pyadomd:
         return self.db.server.conn(db_name=self.db.db_name).open()

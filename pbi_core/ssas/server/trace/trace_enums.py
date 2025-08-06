@@ -96,11 +96,115 @@ class TraceEvents(IntEnum):
         return event_column_mapping[self]
 
 
-class VertipaqSeQueryCacheMissColumns(IntEnum):
+class DaxExtensionExecutionBeginColumns(IntEnum):
+    EVENTCLASS = 0
+    CURRENTTIME = 2
+    INTEGERDATA = 10
+    DATABASENAME = 28
+    TEXTDATA = 42
+    SERVERNAME = 43
+    ACTIVITYID = 46
+    REQUESTID = 47
+    FUNCTIONNAME = 50
+    APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
+
+
+class DaxExtensionExecutionEndColumns(IntEnum):
+    EVENTCLASS = 0
+    CURRENTTIME = 2
+    STARTTIME = 3
+    ENDTIME = 4
+    DURATION = 5
+    CPUTIME = 6
+    INTEGERDATA = 10
+    SEVERITY = 22
+    SUCCESS = 23
+    ERROR = 24
+    DATABASENAME = 28
+    TEXTDATA = 42
+    SERVERNAME = 43
+    ACTIVITYID = 46
+    REQUESTID = 47
+    ERRORTYPE = 49
+    FUNCTIONNAME = 50
+    APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
+
+
+class VertipaqSeQueryBeginColumns(IntEnum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
     STARTTIME = 3
+    JOBID = 7
+    SESSIONTYPE = 8
+    OBJECTID = 11
+    OBJECTTYPE = 12
+    OBJECTNAME = 13
+    OBJECTPATH = 14
+    OBJECTREFERENCE = 15
+    CONNECTIONID = 25
+    DATABASENAME = 28
+    NTUSERNAME = 32
+    NTDOMAINNAME = 33
+    SESSIONID = 39
+    NTCANONICALUSERNAME = 40
+    SPID = 41
+    TEXTDATA = 42
+    SERVERNAME = 43
+    ACTIVITYID = 46
+    REQUESTID = 47
+    USEROBJECTID = 51
+    APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
+
+
+class VertipaqSeQueryEndColumns(IntEnum):
+    EVENTCLASS = 0
+    EVENTSUBCLASS = 1
+    CURRENTTIME = 2
+    STARTTIME = 3
+    ENDTIME = 4
+    DURATION = 5
+    CPUTIME = 6
+    JOBID = 7
+    SESSIONTYPE = 8
+    PROGRESSTOTAL = 9
+    INTEGERDATA = 10
+    OBJECTID = 11
+    OBJECTTYPE = 12
+    OBJECTNAME = 13
+    OBJECTPATH = 14
+    OBJECTREFERENCE = 15
+    SEVERITY = 22
+    SUCCESS = 23
+    ERROR = 24
+    CONNECTIONID = 25
+    DATABASENAME = 28
+    NTUSERNAME = 32
+    NTDOMAINNAME = 33
+    SESSIONID = 39
+    NTCANONICALUSERNAME = 40
+    SPID = 41
+    TEXTDATA = 42
+    SERVERNAME = 43
+    ACTIVITYID = 46
+    REQUESTID = 47
+    ERRORTYPE = 49
+    USEROBJECTID = 51
+    APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
+
+
+class VertipaqSeQueryCacheMissColumns(IntEnum):
+    EVENTCLASS = 0
+    EVENTSUBCLASS = 1
+    CURRENTTIME = 2
     JOBID = 7
     SESSIONTYPE = 8
     OBJECTID = 11
@@ -121,6 +225,36 @@ class VertipaqSeQueryCacheMissColumns(IntEnum):
     REQUESTID = 47
     USEROBJECTID = 51
     APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
+
+
+class VertipaqSeQueryCacheMatchColumns(IntEnum):
+    EVENTCLASS = 0
+    EVENTSUBCLASS = 1
+    CURRENTTIME = 2
+    JOBID = 7
+    SESSIONTYPE = 8
+    OBJECTID = 11
+    OBJECTTYPE = 12
+    OBJECTNAME = 13
+    OBJECTPATH = 14
+    OBJECTREFERENCE = 15
+    CONNECTIONID = 25
+    DATABASENAME = 28
+    NTUSERNAME = 32
+    NTDOMAINNAME = 33
+    SESSIONID = 39
+    NTCANONICALUSERNAME = 40
+    SPID = 41
+    TEXTDATA = 42
+    SERVERDATA = 43
+    ACTIVITYID = 46
+    REQUESTID = 47
+    USEROBJECTID = 51
+    APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
 
 
 class CalculationEvaluationColumns(IntEnum):
@@ -380,6 +514,95 @@ class AggregateTableRewriteInfoColumns(IntEnum):
     ACTIVITYID = 46
     REQUESTID = 47
     APPLICATIONCONTEXT = 52
+
+
+class QuerySubcubeColumns(IntEnum):
+    EVENTCLASS = 0
+    EVENTSUBCLASS = 1
+    CURRENTTIME = 2
+    STARTTIME = 3
+    ENDTIME = 4
+    DURATION = 5
+    CPUTIME = 6
+    OBJECTPATH = 14
+    CONNECTIONID = 25
+    DATABASENAME = 28
+    SESSIONID = 39
+    NTCANONICALUSERNAME = 40
+    SPID = 41
+    TEXTDATA = 42
+    SERVERDATA = 43
+    ACTIVITYID = 46
+    REQUESTID = 47
+    APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
+
+
+class DirectQueryBeginColumns(IntEnum):
+    EVENTCLASS = 0
+    CURRENTIME = 2
+    STARTTIME = 3
+    ENDTIME = 4
+    DURATION = 5
+    CPUTIME = 6
+    JOBID = 7
+    SESSIONTYPE = 8
+    INTEGERDATA = 10
+    OBJECTID = 11
+    OBJECTTYPE = 12
+    OBJECTNAME = 13
+    OBJECTPATH = 14
+    SEVERITY = 22
+    SUCCESS = 23
+    ERROR = 24
+    CONNECTIONID = 25
+    DATABASENAME = 28
+    NTUSERNAME = 32
+    CLIENTPROCESSID = 36
+    SESSIONID = 39
+    SPID = 41
+    TEXTDATA = 42
+    SERVERNAME = 43
+    ACTIVITYID = 46
+    REQUESTID = 47
+    ERRORTYPE = 49
+    APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
+
+
+class DirectQueryEndColumns(IntEnum):
+    EVENTCLASS = 0
+    CURRENTIME = 2
+    STARTTIME = 3
+    ENDTIME = 4
+    DURATION = 5
+    CPUTIME = 6
+    JOBID = 7
+    SESSIONTYPE = 8
+    INTEGERDATA = 10
+    OBJECTID = 11
+    OBJECTTYPE = 12
+    OBJECTNAME = 13
+    OBJECTPATH = 14
+    SEVERITY = 22
+    SUCCESS = 23
+    ERROR = 24
+    CONNECTIONID = 25
+    DATABASENAME = 28
+    NTUSERNAME = 32
+    CLIENTPROCESSID = 36
+    SESSIONID = 39
+    SPID = 41
+    TEXTDATA = 42
+    SERVERNAME = 43
+    ACTIVITYID = 46
+    REQUESTID = 47
+    ERRORTYPE = 49
+    APPLICATIONCONTEXT = 52
+    DATABASEFRIENDLYNAME = 54
+    IDENTITY = 55
 
 
 class DiscoverBeginColumns(IntEnum):
@@ -1027,19 +1250,32 @@ class CommandEndColumns(IntEnum):
 
 
 event_column_mapping: dict[TraceEvents, type[IntEnum]] = {
+    TraceEvents.AGGREGATE_TABLE_REWRITE_INFO: AggregateTableRewriteInfoColumns,
+    TraceEvents.AGGREGATE_TABLE_REWRITE_QUERY: AggregateTableRewriteQueryColumns,
     TraceEvents.AUDIT_ADMIN_OPERATIONS_EVENT: AuditAdminOperationsEventColumns,
     TraceEvents.AUDIT_LOGIN: AuditLoginColumns,
     TraceEvents.AUDIT_LOGOUT: AuditLogoutColumns,
     TraceEvents.AUDIT_OBJECT_PERMISSION_EVENT: AuditObjectPermissionEventColumns,
     TraceEvents.AUDIT_SERVER_STARTS_AND_STOPS: AuditServerStartsAndStopsColumns,
+    TraceEvents.CALCULATION_EVALUATION: CalculationEvaluationColumns,
+    TraceEvents.CALCULATION_EVALUATION_DETAILED_INFORMATION: CalculationEvaluationDetailedInformationColumns,
     TraceEvents.COMMAND_BEGIN: CommandBeginColumns,
     TraceEvents.COMMAND_END: CommandEndColumns,
+    TraceEvents.DAX_EXTENSION_EXECUTION_BEGIN: DaxExtensionExecutionBeginColumns,
+    TraceEvents.DAX_EXTENSION_EXECUTION_END: DaxExtensionExecutionEndColumns,
+    TraceEvents.DAX_EXTENSION_TRACE_ERROR: DaxExtensionTraceErrorColumns,
+    TraceEvents.DAX_EXTENSION_TRACE_INFO: DaxExtensionTraceInfoColumns,
+    TraceEvents.DAX_EXTENSION_TRACE_VERBOSE: DaxExtensionTraceVerboseColumns,
+    TraceEvents.DIRECT_QUERY_BEGIN: DirectQueryBeginColumns,
+    TraceEvents.DIRECT_QUERY_END: DirectQueryEndColumns,
+    TraceEvents.DAX_QUERY_PLAN: DaxQueryPlanColumns,
     TraceEvents.DEADLOCK: DeadlockColumns,
     TraceEvents.DISCOVER_BEGIN: DiscoverBeginColumns,
     TraceEvents.DISCOVER_END: DiscoverEndColumns,
     TraceEvents.ERROR: ErrorEventColumns,
     TraceEvents.EXISTING_CONNECTION: ExistingConnectionColumns,
     TraceEvents.EXISTING_SESSION: ExistingSessionColumns,
+    TraceEvents.EXECUTE_SOURCE_QUERY: ExecuteSourceQueryColumns,
     TraceEvents.FILE_SAVE_BEGIN: FileSaveBeginColumns,
     TraceEvents.FILE_SAVE_END: FileSaveEndColumns,
     TraceEvents.FILE_LOAD_BEGIN: FileLoadBeginColumns,
@@ -1055,9 +1291,17 @@ event_column_mapping: dict[TraceEvents, type[IntEnum]] = {
     TraceEvents.PAGEOUT_END: PageOutEndColumns,
     TraceEvents.QUERY_BEGIN: QueryBeginColumns,
     TraceEvents.QUERY_END: QueryEndColumns,
+    TraceEvents.QUERY_SUBCUBE: QuerySubcubeColumns,
     TraceEvents.SERVER_STATE_DISCOVER_BEGIN: ServerStateDiscoverBeginColumns,
     TraceEvents.SERVER_STATE_DISCOVER_DATA: ServerStateDiscoverDataColumns,
     TraceEvents.SERVER_STATE_DISCOVER_END: ServerStateDiscoverEndColumns,
     TraceEvents.SESSION_INITIALIZE: SessionInitializeColumns,
     TraceEvents.USER_DEFINED: UserDefinedColumns,
+    TraceEvents.VERTIPAQ_SE_QUERY_BEGIN: VertipaqSeQueryBeginColumns,
+    TraceEvents.VERTIPAQ_SE_QUERY_END: VertipaqSeQueryEndColumns,
+    TraceEvents.VERTIPAQ_SE_QUERY_CACHE_MATCH: VertipaqSeQueryCacheMatchColumns,
+    TraceEvents.VERTIPAQ_SE_QUERY_CACHE_MISS: VertipaqSeQueryCacheMissColumns,
+    TraceEvents.WLGROUP_CPU_THROTTLING: WlgroupCpuThrottlingColumns,
+    TraceEvents.WLGROUP_EXCEEDS_MEMORY_LIMIT: WlgroupExceedsMemoryLimitColumns,
+    TraceEvents.WLGROUP_EXCEEDS_PROCESSING_LIMIT: WlgroupExceedsProcessingLimitColumns,
 }
