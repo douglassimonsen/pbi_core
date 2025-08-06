@@ -3,7 +3,7 @@ from enum import IntEnum
 from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasRefreshTable, SsasTable
+from pbi_core.ssas.server.tabular_model import SsasRefreshRecord, SsasTable
 
 from ._group import RowNotFoundError
 
@@ -28,7 +28,7 @@ class PartitionType(IntEnum):
     Query = 4  # not verified
 
 
-class Partition(SsasRefreshTable):
+class Partition(SsasRefreshRecord):
     """Partitions are a child of Tables. They contain the Power Query code.
 
     Data refreshes occur on the Partition-level.

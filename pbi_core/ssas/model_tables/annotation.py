@@ -2,7 +2,7 @@ import datetime
 from enum import IntEnum
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasRenameTable, SsasTable
+from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
 
 class ObjectType(IntEnum):
@@ -17,7 +17,7 @@ class ObjectType(IntEnum):
 
 
 # TODO: remove Any
-class Annotation(SsasRenameTable):
+class Annotation(SsasRenameRecord):
     object_id: int
     object_type: ObjectType
     name: str

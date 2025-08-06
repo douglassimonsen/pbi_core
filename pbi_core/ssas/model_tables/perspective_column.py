@@ -1,5 +1,5 @@
-from pbi_core.ssas.server.tabular_model import SsasBaseTable
+from pbi_core.ssas.server.tabular_model import SsasEditableRecord
 
 
-class PerspectiveColumn(SsasBaseTable):
+class PerspectiveColumn(SsasEditableRecord):
     pass

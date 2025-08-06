@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import RefreshType, SsasRefreshTable
+from pbi_core.ssas.server.tabular_model import RefreshType, SsasRefreshRecord
 
 from .column import Column
 from .measure import Measure
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from .model import Model
 
 
-class Table(SsasRefreshTable):
+class Table(SsasRefreshRecord):
     _refresh_type = RefreshType.DataOnly
 
     alternate_source_precedence: int

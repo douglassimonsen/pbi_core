@@ -2,14 +2,14 @@ import datetime
 from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasRenameTable
+from pbi_core.ssas.server.tabular_model import SsasRenameRecord
 
 if TYPE_CHECKING:
     from .linguistic_metadata import LinguisticMetadata
     from .model import Model
 
 
-class Culture(SsasRenameTable):
+class Culture(SsasRenameRecord):
     linguistic_metadata_id: int
     model_id: int
     name: str

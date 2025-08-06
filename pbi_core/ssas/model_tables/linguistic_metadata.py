@@ -5,7 +5,7 @@ import pydantic
 from pydantic_extra_types.semantic_version import SemanticVersion
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasBaseTable
+from pbi_core.ssas.server.tabular_model import SsasEditableRecord
 
 if TYPE_CHECKING:
     from .culture import Culture
@@ -215,7 +215,7 @@ class LinguisticMetadataContent(pydantic.BaseModel):
     Examples: list[dict[str, dict[str, str]]] | None = None
 
 
-class LinguisticMetadata(SsasBaseTable):
+class LinguisticMetadata(SsasEditableRecord):
     content: pydantic.Json[LinguisticMetadataContent]
     content_type: int
     culture_id: int

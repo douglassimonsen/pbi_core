@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasBaseTable
+from pbi_core.ssas.server.tabular_model import SsasEditableRecord
 
 if TYPE_CHECKING:
     from .expression import Expression
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from .partition import Partition
 
 
-class QueryGroup(SsasBaseTable):
+class QueryGroup(SsasEditableRecord):
     description: str | None = None
     folder: str
     model_id: int

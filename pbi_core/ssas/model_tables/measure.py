@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasRenameTable, SsasTable
+from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
 from .column import Column
 
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from .table import Table
 
 
-class Measure(SsasRenameTable):
+class Measure(SsasRenameRecord):
     data_category: str | None = None
     data_type: int
     description: str | None = None

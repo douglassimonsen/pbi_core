@@ -3,7 +3,7 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Json
 
-from pbi_core.ssas.server.tabular_model import SsasRenameTable
+from pbi_core.ssas.server.tabular_model import SsasRenameRecord
 
 
 class ExtendedPropertyValue(BaseModel):
@@ -22,7 +22,7 @@ class ExtendedPropertyValue(BaseModel):
     )
 
 
-class ExtendedProperty(SsasRenameTable):
+class ExtendedProperty(SsasRenameRecord):
     object_id: int
     object_type: int
     name: str

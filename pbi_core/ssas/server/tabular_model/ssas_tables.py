@@ -134,13 +134,13 @@ class SsasRefresh(SsasTable):
         self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
-class SsasReadonlyTable(SsasTable):
+class SsasReadonlyRecord(SsasTable):
     """Class for SSAS records that implement no command."""
 
     _commands: NoCommands  # pyright: ignore reportIncompatibleVariableOverride
 
 
-class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
+class SsasEditableRecord(SsasCreate, SsasAlter, SsasDelete):
     _commands: BaseCommands
 
     def model_post_init(self, __context: Any, /) -> None:
@@ -152,7 +152,7 @@ class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
         )
 
 
-class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
+class SsasRenameRecord(SsasCreate, SsasAlter, SsasDelete, SsasRename):
     _commands: RenameCommands
 
     def model_post_init(self, __context: Any, /) -> None:
@@ -167,7 +167,7 @@ class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
         )
 
 
-class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefresh):
+class SsasRefreshRecord(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefresh):
     _commands: RefreshCommands
 
     def model_post_init(self, __context: Any, /) -> None:
@@ -182,7 +182,7 @@ class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefres
         )
 
 
-class SsasModelTable(SsasAlter, SsasRefresh, SsasRename):
+class SsasModelRecord(SsasAlter, SsasRefresh, SsasRename):
     """Solely used for the single Model record."""
 
     _commands: ModelCommands

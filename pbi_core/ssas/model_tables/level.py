@@ -3,14 +3,14 @@ from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasRenameTable
+from pbi_core.ssas.server.tabular_model import SsasRenameRecord
 
 if TYPE_CHECKING:
     from .column import Column
     from .hierarchy import Hierarchy
 
 
-class Level(SsasRenameTable):
+class Level(SsasRenameRecord):
     column_id: int
     hierarchy_id: int
     lineage_tag: UUID = uuid4()

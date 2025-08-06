@@ -2,7 +2,7 @@ import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-from pbi_core.ssas.server.tabular_model import SsasRenameTable, SsasTable
+from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
 if TYPE_CHECKING:
     from .model import Model
@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 from pbi_core.lineage import LineageNode, LineageType
 
 
-class Expression(SsasRenameTable):
+class Expression(SsasRenameRecord):
     description: str | None = None
     expression: str
     kind: int

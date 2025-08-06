@@ -1,5 +1,5 @@
-from pbi_core.ssas.server.tabular_model import SsasReadonlyTable
+from pbi_core.ssas.server.tabular_model import SsasReadonlyRecord
 
 
-class AlternateOf(SsasReadonlyTable):
+class AlternateOf(SsasReadonlyRecord):
     pass

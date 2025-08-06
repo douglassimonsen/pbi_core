@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasRenameTable
+from pbi_core.ssas.server.tabular_model import SsasRenameRecord
 
 if TYPE_CHECKING:
     from .level import Level
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from .variation import Variation
 
 
-class Hierarchy(SsasRenameTable):
+class Hierarchy(SsasRenameRecord):
     hide_members: int
     hierarchy_storage_id: int
     is_hidden: bool

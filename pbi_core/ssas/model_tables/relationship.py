@@ -2,7 +2,7 @@ import datetime
 from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasRenameTable
+from pbi_core.ssas.server.tabular_model import SsasRenameRecord
 
 if TYPE_CHECKING:
     from .column import Column
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from .variation import Variation
 
 
-class Relationship(SsasRenameTable):
+class Relationship(SsasRenameRecord):
     cross_filtering_behavior: int
     from_column_id: int
     from_cardinality: int

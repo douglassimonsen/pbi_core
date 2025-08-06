@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any
 from pydantic import Json
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import RefreshType, SsasModelTable
+from pbi_core.ssas.server.tabular_model import RefreshType, SsasModelRecord
 
 if TYPE_CHECKING:
     from .culture import Culture
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from .table import Table
 
 
-class Model(SsasModelTable):
+class Model(SsasModelRecord):
     _refresh_type = RefreshType.Calculate
 
     culture: str

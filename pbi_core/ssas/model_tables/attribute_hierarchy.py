@@ -2,14 +2,14 @@ import datetime
 from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasReadonlyTable
+from pbi_core.ssas.server.tabular_model import SsasReadonlyRecord
 
 if TYPE_CHECKING:
     from .column import Column
     from .level import Level
 
 
-class AttributeHierarchy(SsasReadonlyTable):
+class AttributeHierarchy(SsasReadonlyRecord):
     attribute_hierarchy_storage_id: int
     column_id: int
     state: int

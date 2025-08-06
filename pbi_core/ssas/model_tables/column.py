@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, ClassVar, Literal
 from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
-from pbi_core.ssas.server.tabular_model import SsasRenameTable, SsasTable
+from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
 if TYPE_CHECKING:
     from .attribute_hierarchy import AttributeHierarchy
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from .table import Table
 
 
-class Column(SsasRenameTable):
+class Column(SsasRenameRecord):
     _field_mapping: ClassVar[dict[str, str]] = {
         "description": "Description",
     }

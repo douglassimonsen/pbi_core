@@ -1,5 +1,5 @@
-from pbi_core.ssas.server.tabular_model import SsasBaseTable
+from pbi_core.ssas.server.tabular_model import SsasEditableRecord
 
 
-class ObjectTranslation(SsasBaseTable):
+class ObjectTranslation(SsasEditableRecord):
     pass

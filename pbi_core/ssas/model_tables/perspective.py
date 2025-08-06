@@ -1,5 +1,5 @@
-from pbi_core.ssas.server.tabular_model import SsasRenameTable
+from pbi_core.ssas.server.tabular_model import SsasRenameRecord
 
 
-class Perspective(SsasRenameTable):
+class Perspective(SsasRenameRecord):
     pass

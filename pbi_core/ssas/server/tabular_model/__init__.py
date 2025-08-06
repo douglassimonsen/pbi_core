@@ -1,16 +1,16 @@
 from .base_ssas_table import SsasTable
 from .enums import RefreshType
-from .ssas_tables import SsasBaseTable, SsasModelTable, SsasReadonlyTable, SsasRefreshTable, SsasRenameTable
+from .ssas_tables import SsasEditableRecord, SsasModelRecord, SsasReadonlyRecord, SsasRefreshRecord, SsasRenameRecord
 from .tabular_model import BaseTabularModel, LocalTabularModel
 
 __all__ = [
     "BaseTabularModel",
     "LocalTabularModel",
     "RefreshType",
-    "SsasBaseTable",
-    "SsasModelTable",
-    "SsasReadonlyTable",
-    "SsasRefreshTable",
-    "SsasRenameTable",
+    "SsasEditableRecord",
+    "SsasModelRecord",
+    "SsasReadonlyRecord",
+    "SsasRefreshRecord",
+    "SsasRenameRecord",
     "SsasTable",
 ]

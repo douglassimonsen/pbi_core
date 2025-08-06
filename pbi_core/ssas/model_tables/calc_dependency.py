@@ -1,7 +1,7 @@
-from pbi_core.ssas.server.tabular_model import SsasReadonlyTable
+from pbi_core.ssas.server.tabular_model import SsasReadonlyRecord
 
 
-class CalcDependency(SsasReadonlyTable):
+class CalcDependency(SsasReadonlyRecord):
     database_name: str
     object_type: str
     table: str | None = None
