@@ -2,7 +2,7 @@ import datetime
 from typing import TYPE_CHECKING, ClassVar, Optional
 from uuid import UUID
 
-from ..server.tabular_model import SsasTable
+from ..server.tabular_model import SSASBaseTable
 from ._base import SsasRenameCommands
 
 if TYPE_CHECKING:
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from .table import Table
 
 
-class Column(SsasTable):
+class Column(SSASBaseTable):
     _field_mapping: ClassVar[dict[str, str]] = {
         "description": "Description",
     }

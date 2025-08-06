@@ -123,14 +123,6 @@ class BaseTabularModel:
             ]
             setattr(self, field_name, objects)
 
-    def sync_to(self) -> None:
-        from ..model_tables import FIELD_TYPES
-
-        for field_name in FIELD_TYPES.keys():
-            data = cast(list[SsasTable], getattr(self, field_name))
-            for record in data:
-                record.sync_to()
-
 
 class LocalTabularModel(BaseTabularModel):
     pbix_path: pathlib.Path
@@ -171,8 +163,8 @@ class SsasTable(pydantic.BaseModel):
     model_config = SsasConfig
     tabular_model: "BaseTabularModel"
     _read_only_fields: ClassVar[tuple[str, ...]] = tuple()
+    _commands: Any
     id: int
-    _commands: Any  # Needed for the logic in model_post_init to not create ~35 mypy errors. This is find, since all the subclasses define the real _commands type
     _db_field_names: ClassVar[dict[str, str]] = {}
 
     @classmethod
@@ -212,27 +204,6 @@ class SsasTable(pydantic.BaseModel):
     def query_xml(self, query: str, db_name: Optional[str] = None) -> None:
         self.tabular_model.server.query_xml(query, db_name)
 
-    def sync_to(self) -> None:
-        if not hasattr(self._commands, "alter"):
-            return None
-
-        fields = []
-        for field_name, field_value in self.model_dump().items():
-            db_field_name = self._db_field_names.get(field_name, field_name)
-            if db_field_name in self._read_only_fields or db_field_name not in self._commands.alter.field_order:
-                continue
-            if field_value is None:
-                continue
-            fields.append((db_field_name, python_to_xml(field_value)))
-        fields = self._commands.alter.sort(fields)
-        xml_row = ROW_TEMPLATE.render(fields=fields)
-        xml_entity_definition = self._commands.alter.template.render(rows=xml_row)
-        xml_alter_command = BASE_ALTER_TEMPLATE.render(
-            db_name=self.tabular_model.db_name, entity_def=xml_entity_definition
-        )
-        logger.info("Syncing Changes to SSAS", obj=self._db_type_name())
-        self.query_xml(xml_alter_command, db_name=self.tabular_model.db_name)
-
     def model_post_init(self, __context: Any) -> None:
         from ..model_tables import _base
 
@@ -265,3 +236,34 @@ class SsasTable(pydantic.BaseModel):
                 self._commands = _base.NoCommands()
             case _:
                 raise ValueError(f"Unknown type for _commands property on table: {self._db_type_name()}")
+
+
+class SSASBaseTable(SsasTable):
+    def model_post_init(self, __context: Any) -> None:
+        from ..model_tables import _base
+
+        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_plural_type_name(), {})
+
+        self._commands = _base.SsasBaseCommands(
+            alter=templates["alter.xml"],
+            create=templates["create.xml"],
+            delete=templates["delete.xml"],
+        )
+
+    def alter(self) -> None:
+        fields = []
+        for field_name, field_value in self.model_dump().items():
+            db_field_name = self._db_field_names.get(field_name, field_name)
+            if db_field_name in self._read_only_fields or db_field_name not in self._commands.alter.field_order:
+                continue
+            if field_value is None:
+                continue
+            fields.append((db_field_name, python_to_xml(field_value)))
+        fields = self._commands.alter.sort(fields)
+        xml_row = ROW_TEMPLATE.render(fields=fields)
+        xml_entity_definition = self._commands.alter.template.render(rows=xml_row)
+        xml_alter_command = BASE_ALTER_TEMPLATE.render(
+            db_name=self.tabular_model.db_name, entity_def=xml_entity_definition
+        )
+        logger.info("Syncing Changes to SSAS", obj=self._db_type_name())
+        self.query_xml(xml_alter_command, db_name=self.tabular_model.db_name)
