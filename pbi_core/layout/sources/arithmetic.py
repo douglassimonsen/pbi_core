@@ -1,19 +1,33 @@
 import inspect
+from enum import IntEnum
 from typing import Optional
 
 from .._base_node import LayoutNode
-from .base import SourceExpression
+from .aggregation import AggregationSource, DataSource
 
 
-class ColumnSource(LayoutNode):
-    Column: SourceExpression
-    Name: Optional[str] = None  # only seen on a couple TopN filters
+class ArithmeticOperator(IntEnum):
+    DIVIDE = 3
 
-    def __repr__(self) -> str:
-        return f"ColumnSource({self.Column.Expression.table}.{self.Column.Property})"
 
-    def filter_name(self) -> str:
-        return self.Column.Property
+class ScopedEval2(LayoutNode):
+    Expression: AggregationSource | DataSource
+    Scope: list[str]  # no values have been seen in this field
+
+
+class ScopedEval(LayoutNode):
+    ScopedEval: ScopedEval2
+
+
+class _ArithmeticSourceHelper(LayoutNode):
+    Left: AggregationSource | DataSource
+    Right: ScopedEval
+    Operator: ArithmeticOperator
+
+
+class ArithmeticSource(LayoutNode):
+    Arithmetic: _ArithmeticSourceHelper
+    Name: Optional[str] = None
 
 
 """

@@ -16,7 +16,7 @@ MODEL_CONFIG = pydantic.ConfigDict(
 T = TypeVar("T", bound="LayoutNode")
 
 
-class LayoutNode(pydantic.BaseModel):  # type: ignore
+class LayoutNode(pydantic.BaseModel):
     model_config = MODEL_CONFIG
 
     def find_all(self, cls_type: type[T], attributes: Optional[dict[str, Any]] = None) -> list["T"]:
@@ -26,7 +26,7 @@ class LayoutNode(pydantic.BaseModel):  # type: ignore
             getattr(self, field_name) == field_value for field_name, field_value in attributes.items()
         ):
             ret.append(self)
-        for child in self.children:
+        for child in self._children():
             if (candidates := child.find_all(cls_type, attributes)) is not None:
                 ret.extend(candidates)
         return ret
@@ -37,7 +37,7 @@ class LayoutNode(pydantic.BaseModel):  # type: ignore
             getattr(self, field_name) == field_value for field_name, field_value in attributes.items()
         ):
             return self
-        for child in self.children:
+        for child in self._children():
             if (candidate := child.find(cls_type, attributes)) is not None:
                 return candidate
         raise ValueError(f"Object not found: {cls_type}")
@@ -48,6 +48,5 @@ class LayoutNode(pydantic.BaseModel):  # type: ignore
     def prev_sibling(self: T) -> T:
         raise NotImplementedError()
 
-    @property
-    def children(self) -> list["LayoutNode"]:
+    def _children(self) -> list["LayoutNode"]:
         raise NotImplementedError()

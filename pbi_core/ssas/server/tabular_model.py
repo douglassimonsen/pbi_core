@@ -167,7 +167,7 @@ SsasConfig = pydantic.ConfigDict(
 )
 
 
-class SsasTable(pydantic.BaseModel):  # type: ignore
+class SsasTable(pydantic.BaseModel):
     model_config = SsasConfig
     tabular_model: "BaseTabularModel"
     _read_only_fields: ClassVar[tuple[str, ...]] = tuple()
@@ -183,7 +183,7 @@ class SsasTable(pydantic.BaseModel):  # type: ignore
     def _db_plural_type_name(cls) -> str:
         return cls.__name__ + "s"
 
-    @pydantic.model_validator(mode="before")  # type: ignore
+    @pydantic.model_validator(mode="before")
     def to_snake_case(cls: "SsasTable", raw_values: dict[str, Any]) -> dict[str, Any]:
         def case_helper(field_name: str) -> str:
             special_cases = {

@@ -2,18 +2,29 @@ import inspect
 from typing import Optional
 
 from .._base_node import LayoutNode
-from .base import SourceExpression
+from .base import SourceRef
+from .column import ColumnSource
 
 
-class ColumnSource(LayoutNode):
-    Column: SourceExpression
-    Name: Optional[str] = None  # only seen on a couple TopN filters
+class _GroupSourceHelper(LayoutNode):
+    parent: "GroupSource"
+
+    Expression: SourceRef
+    GroupedColumns: list[ColumnSource]
+    Property: str
+
+
+class GroupSource(LayoutNode):
+    GroupRef: _GroupSourceHelper
+    Name: Optional[str] = None
 
     def __repr__(self) -> str:
-        return f"ColumnSource({self.Column.Expression.table}.{self.Column.Property})"
+        table = self.GroupRef.Expression.table
+        column = self.GroupRef.Property
+        return f"GroupRef({table}.{column})"
 
     def filter_name(self) -> str:
-        return self.Column.Property
+        return self.GroupRef.Property
 
 
 """
