@@ -7,6 +7,7 @@ SSAS is the Query Engine behind Power BI. It is responsible for storing the data
 There are some metadata tables in SSAS that are not currently mapped in the pbi_core library. These tables are not commonly used in Power BI reports, but they may be useful for advanced scenarios. The following is a list of unmapped tables in SSAS. If you submit a `pbix` file that contains any of these tables, please open an issue on the [pbi_core GitHub repository](https://github.com/douglassimonsen/pbi_core/issues).
 
 Unmapped Tables:
+
 -   alternate_of[Alternate Of]
 -   annotations[Annotations]
 -   calculation_group[Calculation Group]
