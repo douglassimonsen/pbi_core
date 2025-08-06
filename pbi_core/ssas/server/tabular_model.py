@@ -8,7 +8,14 @@ from bs4 import BeautifulSoup, Tag
 from structlog import get_logger
 
 from ._commands import BaseCommands, Command, ModelCommands, NoCommands, RefreshCommands, RenameCommands
-from .utils import BASE_ALTER_TEMPLATE, COMMAND_TEMPLATES, OBJECT_COMMAND_TEMPLATES, ROW_TEMPLATE, python_to_xml
+from .utils import (
+    BASE_ALTER_TEMPLATE,
+    BASE_RENAME_TEMPLATE,
+    COMMAND_TEMPLATES,
+    OBJECT_COMMAND_TEMPLATES,
+    ROW_TEMPLATE,
+    python_to_xml,
+)
 
 logger = get_logger()
 if TYPE_CHECKING:
@@ -219,7 +226,6 @@ class SsasTable(pydantic.BaseModel):
         xml_row = ROW_TEMPLATE.render(fields=fields)
         xml_entity_definition = command.template.render(rows=xml_row)
         return base_command_template.render(db_name=db_name, entity_def=xml_entity_definition)
-        pass
 
 
 class SsasAlter(SsasTable):
@@ -227,11 +233,14 @@ class SsasAlter(SsasTable):
         data = {
             self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
         }
-        xml_alter_command = self.render_xml_command(
-            data, BASE_ALTER_TEMPLATE, self._commands.alter, self.tabular_model.db_name
+        xml_command = self.render_xml_command(
+            data,
+            BASE_ALTER_TEMPLATE,
+            self._commands.alter,
+            self.tabular_model.db_name,
         )
         logger.info("Syncing Alter Changes to SSAS", obj=self._db_type_name())
-        self.query_xml(xml_alter_command, db_name=self.tabular_model.db_name)
+        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
 class SsasRename(SsasTable):
@@ -241,12 +250,16 @@ class SsasRename(SsasTable):
         data = {
             self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
         }
-        BASE_RENAME_COMMAND = ""
-        xml_alter_command = self.render_xml_command(
-            data, BASE_RENAME_COMMAND, self._commands.alter, self.tabular_model.db_name
+        xml_command = self.render_xml_command(
+            data,
+            BASE_RENAME_TEMPLATE,
+            self._commands.rename,
+            self.tabular_model.db_name,
         )
+        print(xml_command)
+        breakpoint()
         logger.info("Syncing Rename Changes to SSAS", obj=self._db_type_name())
-        self.query_xml(xml_alter_command, db_name=self.tabular_model.db_name)
+        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
 class SsasCreate(SsasTable):
