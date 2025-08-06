@@ -45,9 +45,3 @@ class Layout(LayoutNode):
     pods: list[Pod] = []
     publicCustomVisuals: list[PublicCustomVisual] = []
     _xpath = []
-
-    def get_static_elements(self) -> None:
-        for section in self.find_all(Section):
-            x = self.find_xpath(section._xpath)
-            print(x)
-            exit()

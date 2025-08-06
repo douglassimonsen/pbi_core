@@ -3,7 +3,7 @@ from typing import Any, Literal, Optional
 from mermaid import Link, MermaidDiagram, Node
 from mermaid.node import NodeShape
 
-LineageType = Literal["children"] | Literal["parents"]
+LineageType = Literal["children", "parents"]
 
 
 """

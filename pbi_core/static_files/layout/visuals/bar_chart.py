@@ -1,3 +1,5 @@
+from typing import Any
+
 from git import Optional
 from pydantic import ConfigDict
 
@@ -37,3 +39,4 @@ class BarChart(BaseVisual):
     visualType: str = "barChart"
     model_config = ConfigDict(extra="forbid")
     vcObjects: BarChartVCObjects
+    columnProperties: Any

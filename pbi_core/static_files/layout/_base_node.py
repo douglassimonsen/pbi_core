@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, Optional, TypeVar
 
 import pydantic
 
@@ -24,12 +24,17 @@ class LayoutNode(pydantic.BaseModel):
     _parent: "LayoutNode"
     _xpath: list[str | int]
 
-    def find_all(self, cls_type: type[T], attributes: Optional[dict[str, Any]] = None) -> list["T"]:
-        attributes = attributes or {}
+    def find_all(
+        self, cls_type: type[T], attributes: Optional[dict[str, Any] | Callable[[T], bool]] = None
+    ) -> list["T"]:
         ret: list["T"] = []
-        if isinstance(self, cls_type) and all(
-            getattr(self, field_name) == field_value for field_name, field_value in attributes.items()
-        ):
+        if attributes is None:
+            attributes = lambda x: True  # noqa: E731
+        elif isinstance(attributes, dict):
+            attributes = lambda x: all(  # noqa: E731
+                getattr(x, field_name) == field_value for field_name, field_value in attributes.items()
+            )
+        if isinstance(self, cls_type) and attributes(self):
             ret.append(self)
         for child in self._children():
             ret.extend(child.find_all(cls_type, attributes))

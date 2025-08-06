@@ -105,7 +105,7 @@ class Column(SsasRenameTable):
     def levels(self) -> list["Level"]:
         return self.tabular_model.levels.find_all({"column_id": self.id})
 
-    def _column_type(self) -> Literal["COLUMN"] | Literal["CALC_COLUMN"]:
+    def _column_type(self) -> Literal["COLUMN", "CALC_COLUMN"]:
         if self.expression is None:
             return "COLUMN"
         else:

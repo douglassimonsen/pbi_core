@@ -118,10 +118,7 @@ class Filter(LayoutNode):
     isLinkedAsAggregation: bool = False
 
     def __repr__(self) -> str:
-        if self.displayName is not None:
-            return str(super().__repr__())
-        else:
-            return f"{self.__class__.__name__}({self.name})"
+        return f"{self.__class__.__name__}({self.displayName or self.name})"
 
 
 class VisualFilterExpression(LayoutNode):
