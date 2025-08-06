@@ -1,5 +1,7 @@
 from collections.abc import Iterable
 
+from colorama import Fore, Style
+
 
 class RuleGroup:
     name: str
@@ -25,7 +27,7 @@ class RuleResult:
         self.trace = trace
 
     def __repr__(self) -> str:
-        content = f"""{self.rule.id} - {self.rule.name}: {self.message}
+        content = f"""{Fore.RED}{self.rule.id}{Style.RESET_ALL} - {self.rule.name}: {self.message}
 -----
 {self.context}
 -----
