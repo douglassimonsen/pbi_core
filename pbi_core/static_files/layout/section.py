@@ -5,6 +5,7 @@ from uuid import UUID
 
 from pydantic import ConfigDict, Json
 
+from pbi_core.lineage.main import LineageNode, LineageType
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 from ._base_node import LayoutNode
@@ -12,6 +13,8 @@ from .filters import PageFilter
 from .visual_container import VisualContainer
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
+
     from .layout import Layout
 
 
@@ -40,6 +43,9 @@ class Section(LayoutNode):
     name: str
     id: int | None = None
 
+    def pbi_core_name(self) -> str:
+        return self.name
+
     def get_ssas_elements(
         self,
         *,
@@ -55,3 +61,15 @@ class Section(LayoutNode):
             for f in self.filters:
                 ret.update(f.get_ssas_elements())
         return ret
+
+    def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
+        if lineage_type == "children":
+            return LineageNode(self, lineage_type)
+
+        page_filters = self.get_ssas_elements()
+        report_filters = self._parent.get_ssas_elements(include_sections=False)
+        entities = page_filters | report_filters
+        children_nodes = [ref.to_model(tabular_model) for ref in entities]
+
+        children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
+        return LineageNode(self, lineage_type, children_lineage)

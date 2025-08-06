@@ -26,6 +26,8 @@ CLASS_STYLES = {
     # Visuals
     "BarChart": "fill:#ccffff,stroke:#333,stroke-width:1px",
     "VisualContainer": "fill:#99ffcc,stroke:#333,stroke-width:1px",
+    "Section": "fill:#ccffcc,stroke:#333,stroke-width:1px",
+    "Layout": "fill:#ccff99,stroke:#333,stroke-width:1px",
 }
 
 
