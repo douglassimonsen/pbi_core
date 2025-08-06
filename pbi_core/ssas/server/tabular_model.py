@@ -4,9 +4,11 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional, cast
 
 import pydantic
 from bs4 import BeautifulSoup, Tag
+from structlog import get_logger
 
-from .utils import COMMAND_TEMPLATES, OBJECT_COMMAND_TEMPLATES
+from .utils import BASE_ALTER_TEMPLATE, COMMAND_TEMPLATES, OBJECT_COMMAND_TEMPLATES, ROW_TEMPLATE, python_to_xml
 
+logger = get_logger()
 if TYPE_CHECKING:
     from _typeshed import StrPath
 
@@ -171,6 +173,7 @@ class SsasTable(pydantic.BaseModel):  # type: ignore
     _read_only_fields: ClassVar[tuple[str, ...]] = tuple()
     id: int
     _commands: Any  # Needed for the logic in model_post_init to not create ~35 mypy errors. This is find, since all the subclasses define the real _commands type
+    _db_field_names: ClassVar[dict[str, str]] = {}
 
     @classmethod
     def _db_type_name(cls) -> str:
@@ -195,13 +198,40 @@ class SsasTable(pydantic.BaseModel):  # type: ignore
 
             return field_name
 
-        return {case_helper(field_name): field_value for field_name, field_value in raw_values.items()}
+        ret = {}
+        for field_name, field_value in raw_values.items():
+            formatted_field_name = case_helper(field_name)
+            if formatted_field_name != field_name:
+                cls._db_field_names[formatted_field_name] = field_name
+            ret[formatted_field_name] = field_value
+        return ret
 
     def query_dax(self, query: str, db_name: Optional[str] = None) -> None:
         self.tabular_model.server.query_dax(query, db_name)
 
-    def sync_to(self) -> "SsasTable":
-        return self
+    def query_xml(self, query: str, db_name: Optional[str] = None) -> None:
+        self.tabular_model.server.query_xml(query, db_name)
+
+    def sync_to(self) -> None:
+        if not hasattr(self._commands, "alter"):
+            return None
+
+        fields = []
+        for field_name, field_value in self.model_dump().items():
+            db_field_name = self._db_field_names.get(field_name, field_name)
+            if db_field_name in self._read_only_fields or db_field_name not in self._commands.alter.field_order:
+                continue
+            if field_value is None:
+                continue
+            fields.append((db_field_name, python_to_xml(field_value)))
+        fields = self._commands.alter.sort(fields)
+        xml_row = ROW_TEMPLATE.render(fields=fields)
+        xml_entity_definition = self._commands.alter.template.render(rows=xml_row)
+        xml_alter_command = BASE_ALTER_TEMPLATE.render(
+            db_name=self.tabular_model.db_name, entity_def=xml_entity_definition
+        )
+        logger.info("Syncing Changes to SSAS", obj=self._db_type_name())
+        self.query_xml(xml_alter_command, db_name=self.tabular_model.db_name)
 
     def model_post_init(self, __context: Any) -> None:
         from ..model_tables import _base

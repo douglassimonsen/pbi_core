@@ -1,7 +1,8 @@
 import dataclasses
 import pathlib
 import socket
-from typing import Optional
+from typing import Any, Optional
+from xml.sax.saxutils import escape  # nosec
 
 import jinja2
 import psutil
@@ -11,8 +12,8 @@ COMMAND_DIR: pathlib.Path = pathlib.Path(__file__).parent / "command_templates"
 COMMAND_TEMPLATES: dict[str, jinja2.Template] = {
     f.name: jinja2.Template(f.read_text()) for f in COMMAND_DIR.iterdir() if f.is_file()
 }
-OBJECT_COMMAND_TEMPLATES: dict[str, dict[str, jinja2.Template]] = {
-    folder.name: {f.name: jinja2.Template(f.read_text()) for f in folder.iterdir() if f.is_file()}
+OBJECT_COMMAND_TEMPLATES: dict[str, dict[str, str]] = {
+    folder.name: {f.name: f.read_text() for f in folder.iterdir() if f.is_file()}
     for folder in (COMMAND_DIR / "schema").iterdir()
     if folder.is_dir()
 }
@@ -55,3 +56,57 @@ def get_msmdsrv_info(process: psutil.Process) -> Optional[ServerInfo]:
     if (workspace_dir := check_workspace(process)) is None:
         return None
     return ServerInfo(port, workspace_dir)
+
+
+def python_to_xml(text: Any) -> str:
+    """Implements basic XML transformation when returning data to SSAS backend.
+
+    Converts:
+
+    - True/False to true/false
+
+    Args:
+        x (Any): a value to be sent to SSAS
+
+    Returns:
+        str: A stringified version of the value
+
+    """
+    if text in (True, False):
+        return str(text).lower()
+    if isinstance(text, str):
+        text = escape(text)
+    return str(text)
+
+
+ROW_TEMPLATE = jinja2.Template(
+    """
+<row xmlns="urn:schemas-microsoft-com:xml-analysis:rowset">
+{%- for k, v in fields %}
+    <{{k}}>{{v}}</{{k}}>
+{%- endfor %}
+</row>                     
+"""
+)
+BASE_ALTER_TEMPLATE = jinja2.Template(
+    """
+<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Alter xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+    <DatabaseID>{{db_name}}</DatabaseID>
+    {{entity_def}}
+  </Alter>
+</Batch>
+"""
+)
+
+# note that Transaction = true. I think it's necessary, not very tested tbqh
+BASE_REFRESH_TEMPLATE = jinja2.Template(
+    """
+<Batch Transaction="true" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Refresh xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+	<DatabaseID>{{db_name}}</DatabaseID>
+    {{entity_def}}
+  </Refresh>
+</Batch>
+"""
+)
