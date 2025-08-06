@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import Enum, IntEnum
 
 
 class DataState(IntEnum):
@@ -60,7 +60,7 @@ class DataType(IntEnum):
     Unknown = 19
 
 
-class DataCategory(IntEnum):
+class DataCategory(Enum):
     """Source: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/6360ac84-0717-4170-bce0-284cbef419ca.
 
     Only used for table, the Column and Measure DataCategories are just strings
@@ -82,3 +82,4 @@ class DataCategory(IntEnum):
     Rates = 13
     Channel = 14
     Promotion = 15
+    TimeStr = "Time"  # TODO: I think we're accidentally merging two enums. sometimes it's a string in the pbix??

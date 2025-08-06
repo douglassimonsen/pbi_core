@@ -43,6 +43,7 @@ class TermSource(BaseValidation):
 class TermDefinitionState(StrEnum):
     Suggested = "Suggested"
     Generated = "Generated"
+    Deleted = "Deleted"
 
 
 class TermDefinitionType(StrEnum):
@@ -55,10 +56,6 @@ class TermDefinition(BaseValidation):
     Weight: float | None = None
     Type: TermDefinitionType | None = None
     LastModified: datetime.datetime | None = None
-
-
-class LinguisticMetadataState(StrEnum):
-    Generated = "Generated"
 
 
 class VisibilityValue(StrEnum):
@@ -76,7 +73,7 @@ class NameTypeType(StrEnum):
 
 class LinguisticMetadataEntity(BaseValidation):
     Weight: float | None = None
-    State: LinguisticMetadataState
+    State: TermDefinitionState
     Terms: list[dict[str, TermDefinition]] | None = None
     Definition: EntityDefinition | None = None
     Binding: EntityDefinitionBinding | None = None

@@ -180,7 +180,9 @@ class TopNPerLevelDataReduction(LayoutNode):
 
 
 class BinnedLineSampleHelper(LayoutNode):
-    PrimaryScalarKey: int
+    PrimaryScalarKey: int | None = None
+    Count: int | None = None
+    WarningCount: int | None = None
 
 
 class BinnedLineSample(LayoutNode):

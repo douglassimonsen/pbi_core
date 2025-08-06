@@ -47,7 +47,6 @@ class TextRunExpression(LayoutNode):
 
 def get_text_run_type(v: object | str | dict[str, Any]) -> str:
     if isinstance(v, str):
-        print(v)
         return "str"
     if isinstance(v, dict) and "propertyIdentifier" in v:
         return "PropertyIdentifier"

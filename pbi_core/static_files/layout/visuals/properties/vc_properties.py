@@ -101,10 +101,12 @@ class VisualHeader(LayoutNode):
 
 class VisualLinkProperties(LayoutNode):
     bookmark: Expression | None = None
+    navigationSection: Expression | None = None
     show: Expression | None = None
     tooltip: Expression | None = None
     type: Expression | None = None
     webUrl: Expression | None = None
+    drillthroughSection: Expression | None = None
 
 
 class VisualLink(LayoutNode):

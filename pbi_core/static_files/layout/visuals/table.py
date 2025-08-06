@@ -44,6 +44,7 @@ class ValuesProperties(LayoutNode):
     fontColor: Expression | None = None
     fontSize: Expression | None = None
     urlIcon: Expression | None = None
+    backColorSecondary: Expression | None = None
 
 
 class Values(LayoutNode):
@@ -52,6 +53,7 @@ class Values(LayoutNode):
 
 
 class ColumnHeadersProperties(LayoutNode):
+    autoSizeColumnWidth: Expression | None = None
     fontColor: Expression | None = None
     fontSize: Expression | None = None
     outline: Expression | None = None
@@ -74,6 +76,9 @@ class ColumnWidth(LayoutNode):
 class GridProperties(LayoutNode):
     imageHeight: Expression | None = None
     textSize: Expression | None = None
+    outlineColor: Expression | None = None
+    rowPadding: Expression | None = None
+    gridVertical: Expression | None = None
 
 
 class Grid(LayoutNode):

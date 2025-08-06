@@ -21,7 +21,7 @@ class RoleRef(BaseValidation):
 
 class TransformOutputRoleRef(BaseValidation):
     TransformOutputRoleRef: RoleRef
-    Name: str
+    Name: str | None = None
 
 
 def get_source(v: object | dict[str, Any]) -> str:  # noqa: PLR0911

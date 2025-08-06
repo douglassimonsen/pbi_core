@@ -1,4 +1,4 @@
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 
 from pydantic import Discriminator, Tag
 
@@ -7,6 +7,7 @@ from pbi_core.static_files.layout.sources import LiteralSource, MeasureSource, S
 
 from ...condition import ConditionType
 from ...sources.aggregation import AggregationSource, SelectRef
+from ...sources.column import ColumnSource
 
 
 class LiteralExpression(LayoutNode):
@@ -180,8 +181,8 @@ class ResourcePackageAccess(LayoutNode):
     expr: ResourcePackageAccessExpression
 
 
-class ImageExpression(LayoutNode):
-    kind: str  # TODO: enum
+class ImageKindExpression(LayoutNode):
+    kind: Literal["Image"]
     layout: LiteralExpression
     verticalAlignment: LiteralExpression
     value: ConditionalExpression
@@ -190,6 +191,44 @@ class ImageExpression(LayoutNode):
 # TODO: centralize the expr: Source classes
 class SelectRefExpression(LayoutNode):
     expr: SelectRef
+
+
+class ImageExpressionHelper(LayoutNode):
+    name: "Expression"
+    scaling: "Expression"
+    url: "Expression"
+
+
+class ImageExpression(LayoutNode):
+    image: ImageExpressionHelper
+
+
+class GeoJsonExpressionHelper(LayoutNode):
+    name: "Expression"
+    content: "Expression"
+    type: "Expression"
+
+
+class GeoJsonExpression(LayoutNode):
+    geoJson: GeoJsonExpressionHelper
+
+
+class AlgorithmParameter(LiteralSource):
+    Name: str
+
+
+class AlgorithmExpression(LayoutNode):
+    algorithm: str
+    parameters: list[AlgorithmParameter]
+
+
+class ExpressionList(LayoutNode):
+    exprs: list["Expression"]
+    kind: Literal["ExprList"]
+
+
+class ColumnExpression(LayoutNode):
+    expr: ColumnSource
 
 
 def get_expression(v: object | dict[str, Any]) -> str:
@@ -201,10 +240,20 @@ def get_expression(v: object | dict[str, Any]) -> str:
         if "linearGradient3" in v:
             return "LinearGradient3Expression"
 
-        if "kind" in v:
+        if v.get("kind") == "Image":
+            return "ImageKindExpression"
+        if v.get("kind") == "ExprList":
+            return "ExpressionList"
+        if "image" in v:
             return "ImageExpression"
+        if "geoJson" in v:
+            return "GeoJsonExpression"
+        if "algorithm" in v:
+            return "AlgorithmExpression"
 
         if "expr" in v:
+            if "Column" in v["expr"]:
+                return "ColumnExpression"
             if "Measure" in v["expr"]:
                 return "MeasureExpression"
             if "Literal" in v["expr"]:
@@ -224,13 +273,18 @@ def get_expression(v: object | dict[str, Any]) -> str:
 
 Expression = Annotated[
     Annotated[LiteralExpression, Tag("LiteralExpression")]
+    | Annotated[AlgorithmExpression, Tag("AlgorithmExpression")]
+    | Annotated[ColumnExpression, Tag("ColumnExpression")]
     | Annotated[MeasureExpression, Tag("MeasureExpression")]
     | Annotated[AggregationExpression, Tag("AggregationExpression")]
     | Annotated[SolidColorExpression, Tag("SolidColorExpression")]
     | Annotated[LinearGradient2Expression, Tag("LinearGradient2Expression")]
     | Annotated[LinearGradient3Expression, Tag("LinearGradient3Expression")]
     | Annotated[ResourcePackageAccess, Tag("ResourcePackageAccess")]
+    | Annotated[ImageKindExpression, Tag("ImageKindExpression")]
     | Annotated[ImageExpression, Tag("ImageExpression")]
+    | Annotated[ExpressionList, Tag("ExpressionList")]
+    | Annotated[GeoJsonExpression, Tag("GeoJsonExpression")]
     | Annotated[SelectRefExpression, Tag("SelectRefExpression")],
     Discriminator(get_expression),
 ]

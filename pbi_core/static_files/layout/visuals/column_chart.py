@@ -12,6 +12,8 @@ from .properties.base import Expression
 
 
 class CategoryAxisProperties(LayoutNode):
+    axisType: Expression | None = None
+    gridlineColor: Expression | None = None
     show: Expression | None = None
     preferredCategoryWidth: Expression | None = None
     concatenateLabels: Expression | None = None
@@ -21,6 +23,7 @@ class CategoryAxisProperties(LayoutNode):
     titleFontSize: Expression | None = None
     showAxisTitle: Expression | None = None
     titleColor: Expression | None = None
+    gridlineStyle: Expression | None = None
 
 
 class CategoryAxis(LayoutNode):
@@ -45,6 +48,7 @@ class LabelsProperties(LayoutNode):
     labelOrientation: Expression | None = None
     labelPosition: Expression | None = None
     show: Expression | None = None
+    color: Expression | None = None
 
 
 class Labels(LayoutNode):
@@ -70,6 +74,7 @@ class ValueAxisProperties(LayoutNode):
     gridlineShow: Expression | None = None
     titleFontFamily: Expression | None = None
     fontSize: Expression | None = None
+    showAxisTitle: Expression | None = None
 
 
 class ValueAxis(LayoutNode):
