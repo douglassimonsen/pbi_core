@@ -29,6 +29,7 @@ dev = [
   "pythonnet>=3.0.3",
   "requests>=2.32.3",
   "sphinx>=8.0.2",
+  "semver>=3.0.2",
   "structlog>=24.4.0",
 ]
 docs = ["pydata-sphinx-theme>=0.15.4", "sphinx-autobuild-2024.9.17"]
