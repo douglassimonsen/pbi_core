@@ -157,7 +157,7 @@ class PrototypeQuery(LayoutNode):
                 ret2.add(
                     ModelMeasureReference(
                         measure=source.Measure.column(),
-                        table=source.Measure.table(),
+                        table=table_mappings[source.Measure.table()],
                     ),
                 )
         return ret2

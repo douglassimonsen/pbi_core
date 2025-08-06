@@ -50,6 +50,8 @@ class Settings(LayoutNode):
     optOutNewFilterPaneExperience: bool = False
     enableDeveloperMode: bool = False
     filterPaneHiddenInEditMode: bool = False
+    queryLimitOption: int = 6
+    useDefaultAggregateDisplayName: bool = True
 
 
 # TODO: remove Anys

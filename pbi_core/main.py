@@ -1,8 +1,11 @@
 from typing import TYPE_CHECKING
 
 from .logging import get_logger
+from .ssas.model_tables.column import Column
+from .ssas.model_tables.measure import Measure
 from .ssas.server import BaseTabularModel, LocalTabularModel, get_or_create_local_server
 from .static_files import StaticFiles
+from .static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 logger = get_logger()
 
@@ -33,6 +36,7 @@ class LocalReport(BaseReport):
            from pbi_core import LocalReport
 
            report = LocalReport.load_pbix("example.pbix")
+           report.save_pbix("example_out.pbix")
 
     """
 
@@ -78,3 +82,63 @@ class LocalReport(BaseReport):
         """
         self.ssas.save_pbix(path)
         self.static_files.save_pbix(path)
+
+    def cleanse_ssas_model(self) -> None:
+        """Removes all unused tables, columns, and measures in an SSAS model."""
+        report_references = self.static_files.layout.get_ssas_elements()
+        model_values = (
+            [
+                self.ssas.measures.find(lambda c, reference=reference: measure_finder(c, reference))
+                for reference in report_references
+                if isinstance(reference, ModelMeasureReference)
+            ]
+            + [
+                self.ssas.columns.find(lambda c, reference=reference: column_finder(c, reference))
+                for reference in report_references
+                if isinstance(reference, ModelColumnReference)
+            ]
+            + [relationship.to_column() for relationship in self.ssas.relationships]
+            + [relationship.from_column() for relationship in self.ssas.relationships]
+        )
+        ret: list[Measure | Column] = []
+        for val in model_values:
+            ret.append(val)
+            ret.extend(val.parents(recursive=True))
+
+        used_tables = {x.table() for x in ret}
+        used_measures = {
+            x
+            for x in ret
+            if isinstance(
+                x,
+                Measure,
+            )
+        }
+        used_columns = {x for x in ret if isinstance(x, Column)}
+
+        tables_to_drop = {
+            t for t in self.ssas.tables if t not in used_tables and not t.name.startswith("DateTableTemplate")
+        }
+        columns_to_drop = {
+            c
+            for c in self.ssas.columns
+            if c not in used_columns
+            and not c.table().name.startswith("DateTableTemplate")
+            and c.table() not in tables_to_drop
+        }
+        measures_to_drop = {m for m in self.ssas.measures if m not in used_measures}
+        # TODO: convert to batch deletion
+        for t in tables_to_drop:
+            t.delete()
+        for c in columns_to_drop:
+            c.delete()
+        for m in measures_to_drop:
+            m.delete()
+
+
+def column_finder(c: Column, reference: ModelColumnReference) -> bool:
+    return c.explicit_name == reference.column and c.table().name == reference.table
+
+
+def measure_finder(m: Measure, reference: ModelMeasureReference) -> bool:
+    return m.name == reference.measure and m.table().name == reference.table

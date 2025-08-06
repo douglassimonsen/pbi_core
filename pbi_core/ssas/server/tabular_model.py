@@ -1,7 +1,7 @@
 import pathlib
 import shutil
 from enum import IntEnum
-from typing import TYPE_CHECKING, Any, ClassVar, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Final, cast
 
 import bs4
 import pydantic
@@ -250,7 +250,7 @@ class SsasTable(pydantic.BaseModel):
     tabular_model: "BaseTabularModel"
     _read_only_fields: ClassVar[tuple[str, ...]] = ()
     _commands: Any
-    id: int
+    id: Final[int] = pydantic.Field(frozen=True)
     _db_field_names: ClassVar[dict[str, str]] = {}
     _repr_name_field: str = "name"
 
@@ -348,6 +348,12 @@ class SsasTable(pydantic.BaseModel):
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         """Creates a lineage node tracking the data parents/children of a record."""
         return LineageNode(self, lineage_type)
+
+    def __eq__(self, other: "SsasTable") -> bool:
+        return self.id == other.id
+
+    def __hash__(self) -> int:
+        return hash(self.id)
 
 
 class SsasAlter(SsasTable):
