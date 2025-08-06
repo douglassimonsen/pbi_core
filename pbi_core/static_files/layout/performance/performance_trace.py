@@ -127,9 +127,15 @@ class PerformanceTrace:
         def thread_func(command: str) -> ThreadResult:
             cursor = self.get_conn().cursor()
             cursor.execute_dax(command)
+            rows_returned = len(cursor.fetch_all(limit=500))
+
+            # See note in Cursor.fetch_stream() documentation for why we do this
+            cursor._reader.Close()
+
+            # The limit of 500 is to mimic the behavior of PowerBI, which returns by defult 500 rows
             return ThreadResult(
                 command=command,
-                rows_returned=len(cursor.fetch_all()),
+                rows_returned=rows_returned,
             )
 
         self.initialize_tracing()
