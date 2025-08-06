@@ -1,6 +1,6 @@
 from typing import Any, Literal, Optional
 
-from python_mermaid.diagram import Link, MermaidDiagram, Node
+from mermaid import Link, MermaidDiagram, Node
 
 LineageType = Literal["children"] | Literal["parents"]
 
