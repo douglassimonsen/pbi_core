@@ -5,12 +5,14 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+import sys
+from pathlib import Path
 
+sys.path.insert(0, (Path(__file__).parents[2]).absolute().as_posix())
 project = "Pbyx"
 copyright = "2024, asd"
 author = "asd"
 release = "0.0.1"
-
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 

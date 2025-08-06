@@ -27,7 +27,10 @@ class BaseServer:
     """
 
     host: str
+    "A hostname to the background SSAS instance"
+
     port: int
+    "A Port to the background SSAS instance"
 
     def __init__(self, host: str, port: int) -> None:
         self.host = host
@@ -36,12 +39,18 @@ class BaseServer:
         self.check_ssas_sku()
 
     def conn_str(self, db_name: Optional[str] = None) -> str:
+        """
+        Formats the connection string for connecting to the background SSAS instance
+        """
         if db_name:
             return f"Provider=MSOLAP;Data Source={self.host}:{self.port};Initial Catalog={db_name};"
         else:
             return f"Provider=MSOLAP;Data Source={self.host}:{self.port};"
 
     def conn(self, db_name: Optional[str] = None) -> pyadomd.Pyadomd:
+        """
+        Retur
+        """
         return pyadomd.Pyadomd(self.conn_str(db_name))
 
     def __repr__(self) -> str:
@@ -81,11 +90,36 @@ class BaseServer:
                 raise TypeError(f"Incorrect SKUVersion. We got the error: {error_message}")
         raise ValueError("Got a 'file not loaded' type error. Waiting")
 
+    @staticmethod
+    def sanitize_xml(xml_text: str) -> str:
+        return xml_text.replace("&", "&amp")
+
+    @staticmethod
+    def remove_invalid_db_name_chars(orig_db_name: str) -> str:
+        db_name = orig_db_name.replace("&", " ")[:100]
+        db_name = db_name.strip()  # needed to find the correct name, since SSAS does stripping too
+        if orig_db_name != db_name:
+            logger.warn("db_name changed", original_name=orig_db_name, new_name=db_name)
+        return db_name
+
 
 class LocalServer(BaseServer):
+    """
+    A Server running locally on the user's machine.
+
+    This subclass has the ability to load/dump Tabular Models
+    to a PBIX file. Also creates a background SSAS instance and workspace to handle processing if none is provided.
+    """
+
     kill_on_exit: bool
-    _initial_time: datetime
+    """
+    Indicates if the background SSAS instance handling processing should be terminated at the end of the python session
+    """
+
     physical_process: SSASProcess
+    """
+    A Python class handling the lifetime of the SSAS Instance. Interacts with the SSAS instance only as a process
+    """
 
     def __init__(
         self,
@@ -106,6 +140,9 @@ class LocalServer(BaseServer):
         super().__init__(host, self.physical_process.port)
 
     def load_pbix(self, path: "StrPath", db_name: Optional[str] = None) -> LocalTabularModel:
+        """
+        Takes a Path to a PBIX report and loads the PBIX Datamodel to the SSAS instance in the SSASProcess
+        """
         path = pathlib.Path(path)
         if db_name is None:
             db_name = path.stem
@@ -125,18 +162,6 @@ class LocalServer(BaseServer):
                 db_name=db_name, target_path=self.sanitize_xml(path.absolute().as_posix())
             )
         )
-
-    @staticmethod
-    def sanitize_xml(xml_text: str) -> str:
-        return xml_text.replace("&", "&amp")
-
-    @staticmethod
-    def remove_invalid_db_name_chars(orig_db_name: str) -> str:
-        db_name = orig_db_name.replace("&", " ")[:100]
-        db_name = db_name.strip()  # needed to find the correct name, since SSAS does stripping too
-        if orig_db_name != db_name:
-            logger.warn("db_name changed", original_name=orig_db_name, new_name=db_name)
-        return db_name
 
     def __repr__(self) -> str:
         return f"LocalServer(port={self.port})"
