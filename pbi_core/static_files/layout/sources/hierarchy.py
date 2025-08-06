@@ -45,7 +45,7 @@ class HierarchyLevelSource(LayoutNode):
     NativeReferenceName: Optional[str] = None
 
     def __repr__(self) -> str:
-        table = self.HierarchyLevel.Expression.Hierarchy.Expression.table
-        column = self.HierarchyLevel.Expression.Hierarchy.Expression.column
+        table = self.HierarchyLevel.Expression.Hierarchy.Expression.table()
+        column = self.HierarchyLevel.Expression.Hierarchy.Expression.column()
         level = self.HierarchyLevel.Level
         return f"HierarchyLevelSource({table}.{column}.{level})"

@@ -34,6 +34,8 @@ class BaseVisual(LayoutNode):
 
     def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
         ret: list[Column | Measure] = []
+        if self.prototypeQuery is None:
+            return LineageNode(self, lineage_type, [])
         table_mapping = self.prototypeQuery.table_mapping()
         children = self.prototypeQuery.dependencies()
         for child in children:

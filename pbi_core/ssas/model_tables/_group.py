@@ -36,7 +36,7 @@ class Group(list[T]):
         raise RowNotFoundError
 
     def find_all(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> list[T]:
-        ret = []
+        ret: list[T] = []
         if isinstance(match_val, int):
             for val in self:
                 if val.id == match_val:

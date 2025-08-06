@@ -48,8 +48,8 @@ class LineageNode:
         )
 
     def _to_mermaid_helper(self, node: Node) -> tuple[list[Node], list[Link]]:
-        nodes = [node]
-        links = []
+        nodes: list[Node] = [node]
+        links: list[Link] = []
         for relative in self.relatives:
             child_node = self._create_node(relative.value)
             child_nodes, child_links = relative._to_mermaid_helper(child_node)

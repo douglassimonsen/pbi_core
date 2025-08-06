@@ -15,7 +15,7 @@ limitations under the License.
 from enum import IntEnum
 from pathlib import Path
 from sys import path
-from typing import Iterator, NamedTuple, Optional, TypeVar
+from typing import Any, Iterator, NamedTuple, Optional, Self, TypeVar
 
 import clr  # type: ignore[import-untyped]
 from bs4 import BeautifulSoup
@@ -94,7 +94,7 @@ class Cursor:
                 node.name = _clean_name(node.name)
         return ret
 
-    def executeDAX(self, query: str, query_name: Optional[str] = None) -> "Cursor":
+    def executeDAX(self, query: str, query_name: Optional[str] = None) -> Self:
         query_name = query_name or ""
         logger.debug("execute DAX query", query_name=query_name)
         self._cmd = AdomdCommand(query, self._conn)
@@ -111,7 +111,7 @@ class Cursor:
             )
         return self
 
-    def fetchone(self) -> Iterator[tuple]:
+    def fetchone(self) -> Iterator[tuple[Any, ...]]:
         while self._reader.Read():
             yield tuple(
                 convert(
@@ -122,8 +122,8 @@ class Cursor:
                 for i in range(self._field_count)
             )
 
-    def fetchmany(self, size=1) -> list[tuple]:
-        ret: list[tuple] = []
+    def fetchmany(self, size: int = 1) -> list[tuple[Any, ...]]:
+        ret: list[tuple[Any, ...]] = []
         try:
             for _ in range(size):
                 ret.append(next(self.fetchone()))
@@ -131,7 +131,7 @@ class Cursor:
             pass
         return ret
 
-    def fetchall(self) -> list[tuple]:
+    def fetchall(self) -> list[tuple[Any, ...]]:
         """
         Fetches all the rows from the last executed query
         """
@@ -150,7 +150,7 @@ class Cursor:
     def description(self) -> list[Description]:
         return self._description
 
-    def __enter__(self) -> "Cursor":
+    def __enter__(self) -> Self:
         return self
 
     def __exit__(self, exc_type, exc_value, traceback) -> None:
@@ -194,7 +194,7 @@ class Pyadomd:
         """
         return AdmomdState(self.conn.State)
 
-    def __enter__(self) -> "Pyadomd":
+    def __enter__(self) -> Self:
         self.open()
         return self
 

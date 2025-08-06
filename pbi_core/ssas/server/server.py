@@ -60,7 +60,7 @@ class BaseServer:
         with self.conn(db_name) as conn:
             cursor = conn.cursor()
             cursor.executeDAX(query)
-            data: list[tuple[Any]] = cursor.fetchall()
+            data: list[tuple[Any, ...]] = cursor.fetchall()
             columns: list[str] = [x[0] for x in cursor.description]
             return [dict(zip(columns, row)) for row in data]
 

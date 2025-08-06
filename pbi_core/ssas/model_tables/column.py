@@ -146,7 +146,9 @@ class Column(SsasRenameTable):
             "referenced_table": self.table().name,
             "referenced_object": self.explicit_name,
         })
-        child_keys = [(m.table, m.object) for m in dependent_measures if m.object_type in ("CALC_COLUMN", "COLUMN")]
+        child_keys: list[tuple[str, str]] = [
+            (m.table, m.object) for m in dependent_measures if m.object_type in ("CALC_COLUMN", "COLUMN")
+        ]
         full_dependencies = [m for m in self.tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
         direct_dependencies = [x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)]
         return direct_dependencies

@@ -236,7 +236,7 @@ class SsasTable(pydantic.BaseModel):
 
             return field_name
 
-        ret = {}
+        ret: dict[str, Any] = {}
         for field_name, field_value in raw_values.items():
             formatted_field_name = case_helper(field_name)
             if formatted_field_name != field_name:
@@ -264,7 +264,7 @@ class SsasTable(pydantic.BaseModel):
 
         Entity schemas can be found at `pbi_core/ssas/server/command_templates/schema`
         """
-        fields = []
+        fields: list[tuple[str, str]] = []
         for field_name, field_value in values.items():
             if field_name not in command.field_order:
                 continue

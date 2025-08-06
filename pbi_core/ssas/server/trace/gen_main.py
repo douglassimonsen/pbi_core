@@ -28,7 +28,7 @@ def gen_trace_enums(class_name: str, url: str) -> str:
 def gen_event_enums(url: str) -> str:
     logger.info("Processing Columns", url=url)
     time.sleep(2)
-    ret = []
+    ret: list[str] = []
     page = requests.get(BASE_URL + url, timeout=10)
     content = BeautifulSoup(page.content, features="lxml")
     headers: list[str] = [x.text for x in content.find_all("h2")][1:-3]

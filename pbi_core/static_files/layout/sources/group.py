@@ -18,7 +18,7 @@ class GroupSource(LayoutNode):
     Name: Optional[str] = None
 
     def __repr__(self) -> str:
-        table = self.GroupRef.Expression.table
+        table = self.GroupRef.Expression.table()
         column = self.GroupRef.Property
         return f"GroupRef({table}.{column})"
 

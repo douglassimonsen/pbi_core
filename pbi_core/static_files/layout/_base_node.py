@@ -29,12 +29,14 @@ class LayoutNode(pydantic.BaseModel):
     ) -> list["T"]:
         ret: list["T"] = []
         if attributes is None:
-            attributes = lambda x: True  # noqa: E731
+            attribute_lambda: Callable[[T], bool] = lambda x: True  # noqa: E731
         elif isinstance(attributes, dict):
-            attributes = lambda x: all(  # noqa: E731
+            attribute_lambda = lambda x: all(  # noqa: E731
                 getattr(x, field_name) == field_value for field_name, field_value in attributes.items()
             )
-        if isinstance(self, cls_type) and attributes(self):
+        else:
+            attribute_lambda = attributes
+        if isinstance(self, cls_type) and attribute_lambda(self):
             ret.append(self)
         for child in self._children():
             ret.extend(child.find_all(cls_type, attributes))
@@ -42,12 +44,14 @@ class LayoutNode(pydantic.BaseModel):
 
     def find(self, cls_type: type[T], attributes: Optional[dict[str, Any] | Callable[[T], bool]] = None) -> "T":
         if attributes is None:
-            attributes = lambda x: True  # noqa: E731
+            attribute_lambda: Callable[[T], bool] = lambda x: True  # noqa: E731
         elif isinstance(attributes, dict):
-            attributes = lambda x: all(  # noqa: E731
+            attribute_lambda = lambda x: all(  # noqa: E731
                 getattr(x, field_name) == field_value for field_name, field_value in attributes.items()
             )
-        if isinstance(self, cls_type) and attributes(self):
+        else:
+            attribute_lambda = attributes
+        if isinstance(self, cls_type) and attribute_lambda(self):
             return self
         for child in self._children():
             try:
