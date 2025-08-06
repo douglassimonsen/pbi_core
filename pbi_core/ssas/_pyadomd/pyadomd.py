@@ -81,7 +81,7 @@ class Cursor:
             return "_".join(name_parts)
 
         query_name = query_name or ""
-        logger.debug("executeXML query", query_name=query_name)
+        logger.debug("execute XML query", query_name=query_name)
         self._cmd = AdomdCommand(query, self._conn)
         self._reader = self._cmd.ExecuteXmlReader()
         logger.debug("reading query", query_name=query_name)
@@ -94,9 +94,9 @@ class Cursor:
                 node.name = _clean_name(node.name)
         return ret
 
-    def execute(self, query: str, query_name: Optional[str] = None) -> "Cursor":
+    def executeDAX(self, query: str, query_name: Optional[str] = None) -> "Cursor":
         query_name = query_name or ""
-        logger.debug("execute query", query_name=query_name)
+        logger.debug("execute DAX query", query_name=query_name)
         self._cmd = AdomdCommand(query, self._conn)
         self._reader = self._cmd.ExecuteReader()
         self._field_count = self._reader.FieldCount

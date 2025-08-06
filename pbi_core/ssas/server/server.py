@@ -48,6 +48,9 @@ class BaseServer:
             return f"Provider=MSOLAP;Data Source={self.host}:{self.port};"
 
     def conn(self, db_name: Optional[str] = None) -> pyadomd.Pyadomd:
+        """
+        Returns a pyadomd connection
+        """
         return pyadomd.Pyadomd(self.conn_str(db_name))
 
     def __repr__(self) -> str:
@@ -56,7 +59,7 @@ class BaseServer:
     def query_dax(self, query: str, db_name: Optional[str] = None) -> list[dict[str, Any]]:
         with self.conn(db_name) as conn:
             cursor = conn.cursor()
-            cursor.execute(query)
+            cursor.executeDAX(query)
             data: list[tuple[Any]] = cursor.fetchall()
             columns: list[str] = [x[0] for x in cursor.description]
             return [dict(zip(columns, row)) for row in data]
