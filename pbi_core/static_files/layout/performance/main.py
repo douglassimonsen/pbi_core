@@ -46,11 +46,23 @@ class PerformanceTrace:
             trace_name=trace_name,
             subscription_name=subscription_name,
         )
+        self.trace_delete_command = TRACE_TEMPLATES["trace.xml"].render(
+            name=trace_name,
+        )
 
     def __enter__(self) -> "PerformanceTrace":
         self.server.query_xml(self.trace_command)
-        self.server.query_xml(self.subscribe_command)
-        return self
+        with self.server.conn(db_name="951f69ce-bafb-4963-a52e-861674c51728") as conn:
+            cursor = conn.cursor()
+            cursor.execute_dax(self.subscribe_command, query_name="trace")
+            breakpoint()
+            for i in range(0):
+                print(next(cursor.fetchone()))
+            print("done")
+            cursor._cmd.Cancel()
+            breakpoint()
+            cursor._reader.Close()
+            return self
 
     def __exit__(
         self,
@@ -58,13 +70,9 @@ class PerformanceTrace:
         exc_val: BaseException | None,
         exc_tb: TracebackType | None,
     ) -> bool | None:
-        pass
-
-    def _gen_xml(self) -> str:
-        pass
-
-    def subscribe(self) -> None:
-        pass
+        with self.server.conn(db_name="951f69ce-bafb-4963-a52e-861674c51728") as conn:
+            cursor = conn.cursor()
+            cursor.execute_xml(self.trace_delete_command)
 
 
 def get_performance(model: LocalTabularModel, func: Callable[[LocalTabularModel], Any]) -> Performance:

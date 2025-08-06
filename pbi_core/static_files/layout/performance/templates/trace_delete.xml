@@ -1,0 +1,7 @@
+<Command>
+  <Delete IgnoreFailues="false">
+    <Object>
+      <TraceID>{{name}}</TraceID>
+    </Object>
+  </Delete>
+</Command>
