@@ -18,6 +18,9 @@ class LinguisticMetadata(SsasBaseTable):
     def culture(self) -> "Culture":
         return self.tabular_model.cultures.find({"id": self.culture_id})
 
+    def lineage_name(self) -> str:
+        return self.culture().lineage_name()
+
     @classmethod
     def _db_plural_type_name(cls) -> str:
         return "LinguisticMetadata"

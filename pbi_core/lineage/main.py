@@ -20,6 +20,7 @@ CLASS_STYLES = {
     "LinguisticMetadata": "fill:#ff99cc,stroke:#333,stroke-width:1px",
     "Measure": "fill:#ffccff,stroke:#333,stroke-width:1px",
     "Table": "fill:#cc99ff,stroke:#333,stroke-width:1px",
+    "Partition": "fill:#ccccff,stroke:#333,stroke-width:1px",
 }
 
 
@@ -39,6 +40,7 @@ class LineageNode:
         for relative in self.relatives:
             child_node = Node(
                 id=f"{relative.value.__class__.__name__}-{relative.value.id}",
+                content=relative.value.lineage_name(),
                 style=CLASS_STYLES[relative.value.__class__.__name__],
                 shape=NodeShape.round_edge,
             )

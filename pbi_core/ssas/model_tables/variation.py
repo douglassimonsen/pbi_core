@@ -18,6 +18,9 @@ class Variation(SsasRenameTable):
     name: str
     relationship_id: int
 
+    def lineage_name(self) -> str:
+        return self.name
+
     def get_column(self) -> Optional["Column"]:
         """
         Name is bad to not shadow the column field in this entity :(

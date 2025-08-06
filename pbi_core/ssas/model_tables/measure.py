@@ -30,6 +30,9 @@ class Measure(SsasRenameTable):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
+    def lineage_name(self) -> str:
+        return self.name
+
     def KPI(self) -> Optional["KPI"]:
         return self.tabular_model.kpis.find({"id": self.kpi_id})
 

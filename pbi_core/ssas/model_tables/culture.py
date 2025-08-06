@@ -20,6 +20,9 @@ class Culture(SsasRenameTable):
     def linguistic_metdata(self) -> "LinguisticMetadata":
         return self.tabular_model.linguistic_metadata.find({"id": self.linguistic_metadata_id})
 
+    def lineage_name(self) -> str:
+        return self.name
+
     def model(self) -> "Model":
         return self.tabular_model.model
 

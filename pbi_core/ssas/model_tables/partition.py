@@ -47,6 +47,9 @@ class Partition(SsasRefreshTable):
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
 
+    def lineage_name(self) -> str:
+        return self.name
+
     def query_group(self) -> Optional["QueryGroup"]:
         try:
             return self.tabular_model.query_groups.find({"id": self.table_id})

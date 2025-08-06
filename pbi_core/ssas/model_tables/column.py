@@ -58,6 +58,9 @@ class Column(SsasRenameTable):
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
+    def lineage_name(self) -> str:
+        return self.explicit_name or self.inferred_name or str(self.id)
+
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
             children_nodes: list[Column | Measure | AttributeHierarchy] = (

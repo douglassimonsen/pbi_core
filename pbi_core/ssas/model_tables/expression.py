@@ -21,6 +21,9 @@ class Expression(SsasRenameTable):
 
     modified_time: datetime.datetime
 
+    def lineage_name(self) -> str:
+        return self.name
+
     def model(self) -> "Model":
         return self.tabular_model.model
 

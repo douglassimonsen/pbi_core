@@ -5,6 +5,7 @@ from uuid import UUID
 from ...lineage import LineageNode, LineageType
 from ..server.tabular_model import SsasRefreshTable
 from .column import Column
+from .partition import Partition
 
 if TYPE_CHECKING:
     from .model import Model
@@ -28,12 +29,18 @@ class Table(SsasRefreshTable):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
+    def lineage_name(self) -> str:
+        return self.name
+
     def data(self, head: int = 100) -> list[int | float | str]:
         ret = self.tabular_model.server.query_dax(
             f"EVALUATE TOPN({head}, ALL('{self.name}'))",
             db_name=self.tabular_model.db_name,
         )
         return [next(iter(row.values())) for row in ret]
+
+    def partitions(self) -> list[Partition]:
+        return self.tabular_model.partitions.find_all({"table_id": self.id})
 
     def columns(self) -> list[Column]:
         return [column for column in self.tabular_model.columns if column.table_id == self.id]
@@ -43,6 +50,11 @@ class Table(SsasRefreshTable):
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":
-            return LineageNode(self, lineage_type, [c.get_lineage(lineage_type) for c in self.columns()])
+            return LineageNode(
+                self,
+                lineage_type,
+                [col.get_lineage(lineage_type) for col in self.columns()]
+                + [partition.get_lineage(lineage_type) for partition in self.partitions()],
+            )
         else:
             return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])

@@ -194,6 +194,9 @@ class SsasTable(pydantic.BaseModel):
     def _db_plural_type_name(cls) -> str:
         return cls.__name__ + "s"
 
+    def lineage_name(self) -> str:
+        raise NotImplementedError
+
     @pydantic.model_validator(mode="before")
     def to_snake_case(cls: "SsasTable", raw_values: dict[str, Any]) -> dict[str, Any]:
         def update_char(char: str, prev_char: str) -> str:
