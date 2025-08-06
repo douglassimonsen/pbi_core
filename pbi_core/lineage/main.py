@@ -1,7 +1,7 @@
 from typing import Any, Literal, Protocol
 
-from mermaid import Link, MermaidDiagram, Node
-from mermaid.node import NodeShape
+from pbi_mermaid import Link, MermaidDiagram, Node
+from pbi_mermaid.node import NodeShape
 
 """
 #ffffcc, #ffcc99, #ffcccc,
