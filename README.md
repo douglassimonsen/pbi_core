@@ -1,4 +1,6 @@
 # Dev Instructions
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdouglassimonsen%2Fpbi_core.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdouglassimonsen%2Fpbi_core?ref=badge_shield)
+
 
 
 ## Set Up
@@ -143,3 +145,6 @@ C:\Program Files\Microsoft Power BI Desktop\bin\Microsoft.InfoNav.Insights.Engin
 
 # PBI SSAS definitions
 "C:\Program Files\Microsoft Power BI Desktop\bin\Microsoft.PowerBI.Tabular.dll"
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdouglassimonsen%2Fpbi_core.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdouglassimonsen%2Fpbi_core?ref=badge_large)
