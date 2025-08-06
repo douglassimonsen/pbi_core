@@ -3,13 +3,52 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. |check| raw:: html
+
+    <input checked="" disabled="" type="checkbox">
+
+.. |uncheck| raw:: html
+
+    <input disabled="" type="checkbox">
+
 Pbyx documentation
 ==================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+Goals of this package:
 
+- |uncheck| Data/Visual Lineage Tool
+   - |check| Low-level SSAS interface for updating PBIX Data Models
+   - |check| Low-level interface for updating Static PBIX elements
+   - |uncheck| Inter-SSAS lineage
+   - |uncheck| Inter-layout lineage
+   - |uncheck| Layout-SSAS lineage
+- |check| AST parser for DAX Queries
+- |check| AST parser for M Queries
+- |uncheck| Automated Data Extraction
+   - |check| At the Column Level
+   - |check| At the Table Level
+   - |check| At the Measure Level
+   - |uncheck| At the table Level
+- |uncheck| Automated Performance Testing
+   - |uncheck| At the Column Level
+   - |uncheck| At the Table Level
+   - |uncheck| At the Measure Level
+   - |uncheck| At the table Level
+- |uncheck| Linting Tools
+   - |uncheck| Layout stylistic Linting
+   - |uncheck| DAX Formatter
+   - |uncheck| DAX Linting
+   - |uncheck| M Query Linting
+- |uncheck| Remote PowerBI Manipulation
+   - |uncheck| Incorporating REST API lib
+   - |uncheck| Include non-REST endpoints
+   - |uncheck| Report Deployment
+   - |uncheck| Report Download
+   - |uncheck| Viewship, etc. statistics
+- |uncheck| Built-In Data Export Options
+   - |uncheck| To Postgres
+   - |uncheck| To SQLite
+   - |uncheck| To CSVs
 
 .. toctree::
    :maxdepth: 2
