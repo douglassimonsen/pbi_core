@@ -5,5 +5,6 @@ PBYX API
    :members:
    :undoc-members:
 
-.. .. automodule:: pbi_core.layout
-..     :members:
+.. automodule:: pbi_core.ssas.server._physical_local_server
+   :members:
+   :undoc-members:

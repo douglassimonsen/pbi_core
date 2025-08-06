@@ -23,6 +23,23 @@ PORT_ACCESS_TRIES = 5
 class SSASProcess:
     """
     This class handles the SSAS instance as a OS process
+
+    Args:
+        pid (Optional[int]): The process ID of the SSAS instance. If None, the class will create a new SSAS process
+        workspace_directory (StrPath): The path to the workspace corresponding to the pid. Should only be included when the pid is not provided.
+        kill_on_exit (bool): Specifies whether the SSAS instance should be terminated when the python interpreter exits (implemented via atexit lib)
+
+    Examples:
+        .. code-block:: python
+           :linenos:
+
+           SSASProcess('tmp/workspace')  # generates a new SSAS Process and generates workspace documents at 'tmp/workspace'
+           SSASProcess(4321)  # connects to an existing SSAS Process at 4321
+           SSASProcess('tmp/workspace', False)  # Generates a new SSAS Process and allows it to run beyond the lifetime of the Python script
+
+    Raises:
+        ValueError: If both or none of `pid` and `workspace_directory` are specified
+
     """
 
     _workspace_directory: pathlib.Path
