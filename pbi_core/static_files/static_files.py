@@ -77,6 +77,7 @@ class StaticFiles:
 
         layout_json = json.loads(zipfile.read("Report/Layout").decode(LAYOUT_ENCODING))
         layout = Layout.model_validate(layout_json)
+        layout._set_parents()
 
         connections_json = json.loads(zipfile.read("Connections").decode("utf-8"))
         connections = Connections.model_validate(connections_json)

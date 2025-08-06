@@ -32,7 +32,7 @@ class PrototypeQuery(LayoutNode):
     OrderBy: Optional[list[Orderby]] = None
 
     def table_mapping(self) -> dict[str, str]:
-        ret = {}
+        ret: dict[str, str] = {}
         for table in self.From:
             if table.Name is not None:
                 ret[table.Name] = table.Entity
@@ -49,7 +49,7 @@ class PrototypeQuery(LayoutNode):
             raise ValueError
 
     def dependencies(self) -> set[ColumnSource | MeasureSource]:
-        ret = set()
+        ret: set[ColumnSource | MeasureSource] = set()
         for select in self.Select:
             ret.add(self.unwrap_source(select))
         for where in self.Where or []:
