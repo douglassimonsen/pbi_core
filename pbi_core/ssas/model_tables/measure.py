@@ -34,7 +34,8 @@ class Measure(SsasRenameTable):
         return self.name
 
     def KPI(self) -> Optional["KPI"]:
-        return self.tabular_model.kpis.find({"id": self.kpi_id})
+        if self.kpi_id is not None:
+            return self.tabular_model.kpis.find({"id": self.kpi_id})
 
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})
@@ -53,6 +54,9 @@ class Measure(SsasRenameTable):
             }
             for x in ret
         ]
+
+    def __repr__(self) -> str:
+        return f"Measure({self.table().name}.{self.name})"
 
     def child_measures(self) -> list["Measure"]:
         dependent_measures = self.tabular_model.calc_dependencies.find_all({

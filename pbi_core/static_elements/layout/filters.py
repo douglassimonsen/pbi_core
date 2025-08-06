@@ -4,9 +4,7 @@ from typing import TYPE_CHECKING, Any, Optional, cast
 
 from ._base_node import LayoutNode
 from .condition import Condition
-from .sources import Entity, Source
-from .sources.aggregation import AggregationSource
-from .sources.column import ColumnSource
+from .sources import AggregationSource, ColumnSource, Entity, MeasureSource, Source
 
 if TYPE_CHECKING:
     from .bookmark import BookmarkFilters
@@ -39,22 +37,24 @@ class PrototypeQuery(LayoutNode):
             ret[table.Name] = table.Entity
         return ret
 
-    def dependencies(self) -> set[ColumnSource]:
+    @classmethod
+    def unwrap_source(cls, source: Source) -> ColumnSource | MeasureSource:
+        if isinstance(source, (ColumnSource, MeasureSource)):
+            return source
+        elif isinstance(source, AggregationSource):
+            return cls.unwrap_source(source.Aggregation.Expression)
+        else:
+            breakpoint()
+            raise ValueError
+
+    def dependencies(self) -> set[ColumnSource | MeasureSource]:
         ret = set()
         for select in self.Select:
-            if isinstance(select, ColumnSource):
-                ret.add(select)
-            elif isinstance(select, AggregationSource):
-                if isinstance(select.Aggregation.Expression, ColumnSource):
-                    ret.add(select.Aggregation.Expression)
+            ret.add(self.unwrap_source(select))
         for where in self.Where or []:
             breakpoint()
         for order_by in self.OrderBy or []:
-            if isinstance(order_by.Expression, ColumnSource):
-                ret.add(order_by.Expression)
-            elif isinstance(order_by.Expression, AggregationSource):
-                if isinstance(order_by.Expression.Aggregation.Expression, ColumnSource):
-                    ret.add(order_by.Expression.Aggregation.Expression)
+            ret.add(self.unwrap_source(order_by.Expression))
         return ret
 
 
