@@ -34,7 +34,8 @@ class PrototypeQuery(LayoutNode):
     def table_mapping(self) -> dict[str, str]:
         ret = {}
         for table in self.From:
-            ret[table.Name] = table.Entity
+            if table.Name is not None:
+                ret[table.Name] = table.Entity
         return ret
 
     @classmethod

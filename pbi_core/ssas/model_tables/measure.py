@@ -35,6 +35,7 @@ class Measure(SsasRenameTable):
     def KPI(self) -> Optional["KPI"]:
         if self.kpi_id is not None:
             return self.tabular_model.kpis.find({"id": self.kpi_id})
+        return None
 
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})
@@ -122,7 +123,7 @@ class Measure(SsasRenameTable):
             )
         else:
             parent_nodes: list[Optional[SsasTable]] = (
-                [self.KPI(), self.table()] + self.parent_measures() + self.parent_columns()
-            )  # type: ignore
+                [self.KPI(), self.table()] + self.parent_measures() + self.parent_columns()  # type: ignore
+            )
             parent_lineage = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
             return LineageNode(self, lineage_type, parent_lineage)

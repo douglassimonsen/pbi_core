@@ -67,8 +67,8 @@ class Column(SsasRenameTable):
             return LineageNode(self, lineage_type, children_lineage)
         else:
             parent_nodes: list[Optional[SsasTable]] = (
-                [self.table(), self.sort_by_column()] + self.parent_columns() + self.parent_measures()
-            )  # type: ignore
+                [self.table(), self.sort_by_column()] + self.parent_columns() + self.parent_measures()  # type: ignore
+            )
             parent_lineage = [p.get_lineage(lineage_type) for p in parent_nodes if p is not None]
             return LineageNode(self, lineage_type, parent_lineage)
 

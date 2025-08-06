@@ -3,6 +3,8 @@ from typing import TYPE_CHECKING, Any
 from pydantic import ConfigDict
 
 from ....lineage import LineageNode, LineageType
+from ....ssas.model_tables.column import Column
+from ....ssas.model_tables.measure import Measure
 from .._base_node import LayoutNode
 from ..filters import PrototypeQuery
 from ..sources.column import ColumnSource
@@ -32,20 +34,20 @@ class BaseVisual(LayoutNode):
         return self.__class__.__name__
 
     def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
-        ret = []
+        ret: list[Column | Measure] = []
         table_mapping = self.prototypeQuery.table_mapping()
         children = self.prototypeQuery.dependencies()
         for child in children:
             if isinstance(child, ColumnSource):
-                col_candidates = tabular_model.columns.find_all({"explicit_name": child.Column.column()})
-                for candidate in col_candidates:
-                    if candidate.table().name == table_mapping[child.Column.table()]:
-                        ret.append(candidate)
+                candidate_columns = tabular_model.columns.find_all({"explicit_name": child.Column.column()})
+                for candidate_column in candidate_columns:
+                    if candidate_column.table().name == table_mapping[child.Column.table()]:
+                        ret.append(candidate_column)
                         break
             elif isinstance(child, MeasureSource):
-                col_candidates = tabular_model.measures.find_all({"name": child.Measure.column()})
-                for candidate in col_candidates:
-                    if candidate.table().name == table_mapping[child.Measure.table()]:
-                        ret.append(candidate)
+                candidate_measures = tabular_model.measures.find_all({"name": child.Measure.column()})
+                for candidate_measure in candidate_measures:
+                    if candidate_measure.table().name == table_mapping[child.Measure.table()]:
+                        ret.append(candidate_measure)
                         break
         return LineageNode(self, lineage_type, relatives=[child.get_lineage(lineage_type) for child in ret])

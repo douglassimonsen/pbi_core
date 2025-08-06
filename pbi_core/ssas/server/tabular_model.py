@@ -211,7 +211,7 @@ class SsasTable(pydantic.BaseModel):
         """Returns the value of the name field of the record (not type). Uses the _repr_name_field to determine the field to use.
 
         Defaults to self.name"""
-        return getattr(self, self._repr_name_field)
+        return str(getattr(self, self._repr_name_field))
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.id}: {self.pbi_core_name()})"
