@@ -34,6 +34,7 @@ class LinePropertiesHelper(LayoutNode):
     lineColor: Expression | None = None
     transparency: Expression | None = None
     weight: Expression | None = None
+    roundEdge: Expression | None = None
 
 
 class LineProperties(LayoutNode):

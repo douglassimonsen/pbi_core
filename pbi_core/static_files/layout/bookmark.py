@@ -9,6 +9,7 @@ from .condition import ConditionType
 from .filters import BookmarkFilter, Orderby
 from .sources import Source
 from .visuals.base import PropertyDef
+from .visuals.properties.base import Expression
 
 if TYPE_CHECKING:
     from .layout import Layout
@@ -72,6 +73,22 @@ class BookmarkSection(LayoutNode):
     visualContainerGroups: int | None = None
 
 
+class OutspacePaneProperties(LayoutNode):
+    expanded: Expression | None = None
+
+
+class OutspacePane(LayoutNode):
+    properties: OutspacePaneProperties
+
+
+class MergeProperties(LayoutNode):
+    outspacePane: list[OutspacePane]
+
+
+class ExplorationStateProperties(LayoutNode):
+    merge: MergeProperties | None = None
+
+
 class ExplorationState(LayoutNode):
     _parent: "Bookmark"  # pyright: ignore reportIncompatibleVariableOverride=false
 
@@ -79,7 +96,7 @@ class ExplorationState(LayoutNode):
     sections: dict[str, BookmarkSection]
     activeSection: str  # matches the section name?
     filters: BookmarkFilters | None = None
-    objects: int | None = None
+    objects: ExplorationStateProperties | None = None
 
 
 class BookmarkOptions(LayoutNode):

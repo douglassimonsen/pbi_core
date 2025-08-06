@@ -179,6 +179,14 @@ class TopNPerLevelDataReduction(LayoutNode):
     TopNPerLevel: TopNPerLevelDataReductionHelper
 
 
+class BinnedLineSampleHelper(LayoutNode):
+    PrimaryScalarKey: int
+
+
+class BinnedLineSample(LayoutNode):
+    BinnedLineSample: BinnedLineSampleHelper
+
+
 def get_reduction(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "Sample" in v:
@@ -193,6 +201,8 @@ def get_reduction(v: object | dict[str, Any]) -> str:
             return "BottomDataReduction"
         if "OverlappingPointsSample" in v:
             return "OverlappingPointReduction"
+        if "BinnedLineSample" in v:
+            return "BinnedLineSample"
         msg = f"Unknown Filter: {v.keys()}"
         raise ValueError(msg)
     return v.__class__.__name__
@@ -204,24 +214,17 @@ PrimaryDataReduction = Annotated[
     | Annotated[TopDataReduction, Tag("TopDataReduction")]
     | Annotated[BottomDataReduction, Tag("BottomDataReduction")]
     | Annotated[OverlappingPointReduction, Tag("OverlappingPointReduction")]
-    | Annotated[TopNPerLevelDataReduction, Tag("TopNPerLevelDataReduction")],
+    | Annotated[TopNPerLevelDataReduction, Tag("TopNPerLevelDataReduction")]
+    | Annotated[BinnedLineSample, Tag("BinnedLineSample")],
     Discriminator(get_reduction),
 ]
-
-
-class BinnedLineSample(LayoutNode):
-    PrimaryScalarKey: int
-
-
-class IntersectionType(LayoutNode):
-    BinnedLineSample: BinnedLineSample
 
 
 class DataReductionType(LayoutNode):
     DataVolume: DataVolume
     Primary: PrimaryDataReduction | None = None
     Secondary: PrimaryDataReduction | None = None
-    Intersection: IntersectionType | None = None
+    Intersection: PrimaryDataReduction | None = None
 
 
 class AggregateSourceScope(LayoutNode):
@@ -338,7 +341,7 @@ class DataTransformSelectType(LayoutNode):
 
 
 class DataTransformSelect(LayoutNode):
-    displayName: str
+    displayName: str | None = None
     format: str | None = None
     queryName: str
     roles: dict[str, bool] | None = None

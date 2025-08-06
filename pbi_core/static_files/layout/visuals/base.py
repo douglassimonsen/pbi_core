@@ -12,6 +12,7 @@ from pbi_core.static_files.layout.sources.measure import MeasureSource
 from pbi_core.static_files.layout.visuals.properties import Expression
 
 from ..selector import Selector
+from ..sources.paragraphs import Paragraph
 from .properties.vc_properties import VCProperties
 
 if TYPE_CHECKING:
@@ -56,13 +57,16 @@ def get_property_expression(v: object | dict[str, Any]) -> str:
         if "filter" in v:
             return "Filter"
         return "Expression"
+    if isinstance(v, list):
+        return "Paragraph"
     return v.__class__.__name__
 
 
 PropertyExpression = Annotated[
     Annotated[Expression, Tag("Expression")]
     | Annotated[Filter, Tag("Filter")]
-    | Annotated[ColorRule1, Tag("ColorRule1")],
+    | Annotated[ColorRule1, Tag("ColorRule1")]
+    | Annotated[list[Paragraph], Tag("Paragraph")],
     Discriminator(get_property_expression),
 ]
 

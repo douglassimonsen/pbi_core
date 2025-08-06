@@ -77,8 +77,17 @@ class OutspacePane(LayoutNode):
     properties: OutspacePaneProperties
 
 
+class ConfigSectionProperties(LayoutNode):
+    verticalAlignment: Expression | None = None
+
+
+class ConfigSection(LayoutNode):
+    properties: ConfigSectionProperties
+
+
 class LayoutProperties(LayoutNode):
     outspacePane: list[OutspacePane] | None = None
+    section: list[ConfigSection] | None = None
 
 
 class LayoutConfig(LayoutNode):

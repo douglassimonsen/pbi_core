@@ -1,14 +1,5 @@
-from enum import StrEnum
-
 from ._base_node import LayoutNode
 from .condition import ComparisonCondition
-
-
-class PropertyDefSelectorId(StrEnum):
-    default = "default"
-    hover = "hover"
-    id = "id"
-    selected = "selected"
 
 
 class DataViewWildcard(LayoutNode):
@@ -24,6 +15,7 @@ class SelectorData(LayoutNode):
 
 # TODO: possibly replace with a union?
 class Selector(LayoutNode):
-    id: PropertyDefSelectorId | None = None
+    id: str | None = None
+    # Weird values, pretty confident this is not an enum
     metadata: str | None = None
     data: list[SelectorData] | None = None

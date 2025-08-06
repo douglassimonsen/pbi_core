@@ -54,6 +54,7 @@ class TermDefinition(BaseValidation):
     Source: TermSource | None = None
     Weight: float | None = None
     Type: TermDefinitionType | None = None
+    LastModified: datetime.datetime | None = None
 
 
 class LinguisticMetadataState(StrEnum):
@@ -144,12 +145,13 @@ class SemanticSlot(BaseValidation):
 
 class ConditionOperator(StrEnum):
     Equals = "Equals"
+    GreaterThan = "GreaterThan"
 
 
 class Condition(BaseValidation):
     Target: PhrasingAttributeRole
     Operator: ConditionOperator
-    Value: dict[str, list[bool]]  # {'Boolean': [True]}
+    Value: dict[str, list[int | str]]
 
 
 class LinguisticMetadataRelationship(BaseValidation):

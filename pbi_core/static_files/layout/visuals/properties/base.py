@@ -6,7 +6,7 @@ from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.sources import LiteralSource, MeasureSource, Source
 
 from ...condition import ConditionType
-from ...sources.aggregation import AggregationSource
+from ...sources.aggregation import AggregationSource, SelectRef
 
 
 class LiteralExpression(LayoutNode):
@@ -187,6 +187,11 @@ class ImageExpression(LayoutNode):
     value: ConditionalExpression
 
 
+# TODO: centralize the expr: Source classes
+class SelectRefExpression(LayoutNode):
+    expr: SelectRef
+
+
 def get_expression(v: object | dict[str, Any]) -> str:
     if isinstance(v, dict):
         if "solid" in v:
@@ -208,6 +213,8 @@ def get_expression(v: object | dict[str, Any]) -> str:
                 return "AggregationExpression"
             if "ResourcePackageItem" in v["expr"]:
                 return "ResourcePackageAccess"
+            if "SelectRef" in v["expr"]:
+                return "SelectRefExpression"
 
         msg = f"Unknown class: {v.keys()}"
         breakpoint()
@@ -223,6 +230,7 @@ Expression = Annotated[
     | Annotated[LinearGradient2Expression, Tag("LinearGradient2Expression")]
     | Annotated[LinearGradient3Expression, Tag("LinearGradient3Expression")]
     | Annotated[ResourcePackageAccess, Tag("ResourcePackageAccess")]
-    | Annotated[ImageExpression, Tag("ImageExpression")],
+    | Annotated[ImageExpression, Tag("ImageExpression")]
+    | Annotated[SelectRefExpression, Tag("SelectRefExpression")],
     Discriminator(get_expression),
 ]

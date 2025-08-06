@@ -15,6 +15,7 @@ class Background(LayoutNode):
 
 class GeneralProperties(LayoutNode):
     altText: Expression | None = None
+    keepLayerOrder: Expression | None = None
 
 
 class General(LayoutNode):
@@ -121,9 +122,26 @@ class VisualHeaderTooltip(LayoutNode):
     properties: VisualHeaderTooltipProperties
 
 
+class DropShadowProperties(LayoutNode):
+    show: Expression | None = None
+    transparency: Expression | None = None
+    shadowBlur: Expression | None = None
+    shadowDistance: Expression | None = None
+    angle: Expression | None = None
+    preset: Expression | None = None
+    color: Expression | None = None
+    position: Expression | None = None
+    shadowSpread: Expression | None = None
+
+
+class DropShadow(LayoutNode):
+    properties: DropShadowProperties
+
+
 class VCProperties(LayoutNode):
     background: list[Background] | None = None
     border: list[Border] | None = None
+    dropShadow: list[DropShadow] | None = None
     general: list[General] | None = None
     stylePreset: list[StylePreset] | None = None
     title: list[Title] | None = None
