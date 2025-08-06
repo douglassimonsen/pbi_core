@@ -17,7 +17,7 @@ BASE_ALTER_TEMPLATE = jinja2.Template(
 # note that Transaction = true. I think it's necessary, not very tested tbqh
 BASE_REFRESH_TEMPLATE = jinja2.Template(
     """
-<Batch Transaction="true" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
   <Refresh xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
 	<DatabaseID>{{db_name}}</DatabaseID>
     {{entity_def}}
@@ -60,7 +60,7 @@ base_commands = {
 
 @dataclasses.dataclass
 class Command:
-    template: jinja2.Template
+    entity_template: jinja2.Template
     base_template: jinja2.Template
     field_order: list[str]
 
@@ -72,7 +72,7 @@ class NoCommands:
     def __init__(self, **kwargs: str) -> None:
         for field_name, template_text in kwargs.items():
             v = Command(
-                template=jinja2.Template(template_text),
+                entity_template=jinja2.Template(template_text),
                 base_template=base_commands[field_name],
                 field_order=self.get_field_order(template_text),
             )
@@ -93,19 +93,31 @@ class BaseCommands(NoCommands):
     create: Command
     delete: Command
 
+    def __repr__(self) -> str:
+        return "BaseCommands(alter, create, delete)"
+
 
 class RenameCommands(BaseCommands):
     rename: Command
 
+    def __repr__(self) -> str:
+        return "RenameCommands(alter, create, delete, rename)"
+
 
 class RefreshCommands(RenameCommands):
     refresh: Command
+
+    def __repr__(self) -> str:
+        return "RefreshCommands(alter, create, delete, rename, refresh)"
 
 
 class ModelCommands(NoCommands):
     alter: Command
     refresh: Command
     rename: Command
+
+    def __repr__(self) -> str:
+        return "ModelCommands(alter, refresh, rename)"
 
 
 Commands = BaseCommands | RenameCommands | RefreshCommands | ModelCommands

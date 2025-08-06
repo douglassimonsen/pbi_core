@@ -60,3 +60,6 @@ class Table(SsasRefreshTable):
             )
         else:
             return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])
+
+    def refresh(self) -> None:
+        return super().refresh()

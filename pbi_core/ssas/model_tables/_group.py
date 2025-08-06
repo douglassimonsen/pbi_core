@@ -14,6 +14,12 @@ class RowNotFoundError(Exception):
 
 class Group(list[T]):
     def find(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> T:
+        """
+        Finds a matching SSAS record from the group using the following rules:
+        1. If match_val is an int, it finds a record with a matching `id`
+        2. If match_val is a dictionary, it uses the keys as field names and values as field values. It returns the first record to match all items
+        3. If match_val is a function, it returns the first record to return true when passed to the function
+        """
         if isinstance(match_val, int):
             for val in self:
                 if val.id == match_val:

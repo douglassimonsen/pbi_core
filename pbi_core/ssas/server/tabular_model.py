@@ -1,5 +1,6 @@
 import pathlib
 import shutil
+from enum import IntEnum
 from typing import TYPE_CHECKING, Any, ClassVar, Optional, Type, cast
 
 import pydantic
@@ -199,7 +200,7 @@ class SsasTable(pydantic.BaseModel):
         return getattr(self, self._repr_name_field)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.pbi_core_name()})"
+        return f"{self.__class__.__name__}({self.id}: {self.pbi_core_name()})"
 
     @pydantic.model_validator(mode="before")
     def to_snake_case(cls: "SsasTable", raw_values: dict[str, Any]) -> dict[str, Any]:
@@ -246,7 +247,7 @@ class SsasTable(pydantic.BaseModel):
             fields.append((field_name, python_to_xml(field_value)))
         fields = command.sort(fields)
         xml_row = ROW_TEMPLATE.render(fields=fields)
-        xml_entity_definition = command.template.render(rows=xml_row)
+        xml_entity_definition = command.entity_template.render(rows=xml_row)
         return command.base_template.render(db_name=db_name, entity_def=xml_entity_definition)
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
@@ -300,10 +301,10 @@ class SsasCreate(SsasTable):
 
 
 class SsasDelete(SsasTable):
-    _db_id_field: str = "ID"
+    _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
 
     def delete(self) -> None:
-        data = {k: v for k, v in self.model_dump().items() if k == self._db_id_field}
+        data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
         xml_command = self.render_xml_command(
             data,
             self._commands.delete,
@@ -313,9 +314,31 @@ class SsasDelete(SsasTable):
         self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
+class RefreshType(IntEnum):
+    """From https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet"""
+
+    Full = 1  # For all partitions in the specified partition, table, or database, refresh data and recalculate all dependents. For a calculation partition, recalculate the partition and all its dependents.
+    ClearValues = 2  # Clear values in this object and all its dependents.
+    Calculate = 3  # Recalculate this object and all its dependents, but only if needed. This value does not force recalculation, except for volatile formulas.
+    DataOnly = 4  # Refresh data in this object and clear all dependents.
+    Automatic = 5  # If the object needs to be refreshed and recalculated, refresh and recalculate the object and all its dependents. Applies if the partition is in a state other than Ready.
+    Add = 7  # Append data to this partition and recalculate all dependents. This command is valid only for regular partitions and not for calculation partitions.
+    Defragment = 8  # Defragment the data in the specified table. As data is added to or removed from a table, the dictionaries of each column can become polluted with values that no longer exist in the actual column values. The defragment option will clean up the values in the dictionaries that are no longer used.
+
+
 class SsasRefresh(SsasTable):
+    _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
+
     def refresh(self) -> None:
-        pass
+        data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
+        data["RefreshType"] = RefreshType.DataOnly
+        xml_command = self.render_xml_command(
+            data,
+            self._commands.refresh,
+            self.tabular_model.db_name,
+        )
+        logger.info("Syncing Refresh Changes to SSAS", obj=self)
+        self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
 class SsasReadonlyTable(SsasTable):

@@ -24,6 +24,9 @@ Goals of this package:
    - |check| Layout-SSAS lineage
 - |check| AST parser for DAX Queries
 - |check| AST parser for M Queries
+- |uncheck| Automatic Data Refresh
+   - |uncheck| with Desktop PBIX SSAS
+   - |uncheck| with self-created SSAS
 - |check| Automated Data Extraction
    - |check| At the Column Level
    - |check| At the Table Level
