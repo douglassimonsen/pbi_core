@@ -326,6 +326,15 @@ class Query(LayoutNode):
                 ret.update(command.SemanticQueryDataShapeCommand.Query.get_ssas_elements())
         return ret
 
+    def get_prototype_queries(self) -> list[PrototypeQuery]:
+        ret: list[PrototypeQuery] = []
+        for command in self.Commands:
+            if isinstance(command, QueryCommand1):
+                ret.append(command.Query)
+            elif isinstance(command, QueryCommand2):
+                ret.append(command.SemanticQueryDataShapeCommand.Query)
+        return ret
+
 
 class Split(LayoutNode):
     # TODO: these strings are all stringy ints
