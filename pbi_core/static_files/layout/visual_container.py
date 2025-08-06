@@ -190,6 +190,12 @@ class VisualContainer(LayoutNode):
         return query.get_data(model)
 
     def get_performance(self, model: "LocalTabularModel") -> Performance:
+        """Calculates various metrics on the speed of the visual.
+
+        Current Metrics:
+            Total Seconds to Query
+            Total Rows Retrieved
+        """
         start = time.time()
         data = self.get_data(model)
         rows_retrieved = len(data.data) if data is not None else 0

@@ -19,6 +19,13 @@ logger = get_logger()
 
 
 class Column(SsasRenameRecord):
+    """A column of an SSAS table.
+
+    PowerBI spec: https://learn.microsoft.com/en-us/analysis-services/tabular-models/column-properties-ssas-tabular?view=asallproducts-allversions
+
+    SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b
+    """
+
     _field_mapping: ClassVar[dict[str, str]] = {
         "description": "Description",
     }
