@@ -27,7 +27,10 @@ def clean(*, plan: bool) -> None:
 
 @pbi_core_commands.command()
 def setup() -> None:
-    """Interactive setup for package dependencies."""
+    """Interactive setup for package dependencies.
+
+    Note: msmdsrv.ini auto-find requires PowerBI Desktop to be running.
+    """
     interactive_setup()
 
 
