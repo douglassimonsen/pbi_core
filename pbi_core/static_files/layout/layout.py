@@ -41,6 +41,13 @@ class Settings(LayoutNode):
     useEnhancedTooltips: bool = True
     useNewFilterPaneExperience: bool = True
     useStylableVisualContainerHeader: bool = True
+    useCrossReportDrillthrough: bool = False
+    defaultFilterActionIsDataFilter: bool = False
+    disableFilterPaneSearch: bool = False
+    allowInlineExploration: bool = True
+    optOutNewFilterPaneExperience: bool = False
+    enableDeveloperMode: bool = False
+    filterPaneHiddenInEditMode: bool = False
 
 
 class LayoutConfig(LayoutNode):

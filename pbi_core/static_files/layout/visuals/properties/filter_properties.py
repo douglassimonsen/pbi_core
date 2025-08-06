@@ -3,8 +3,10 @@ from pbi_core.static_files.layout._base_node import LayoutNode
 from .base import Expression
 
 
+# TODO: subclass filters so that the properties have fewer None defaults
 class FilterProperties(LayoutNode):
-    isInvertedSelectionMode: Expression  # noqa: N815
+    isInvertedSelectionMode: Expression | None = None  # noqa: N815
+    requireSingleSelect: Expression | None = None  # noqa: N815
 
 
 class FilterPropertiesContainer(LayoutNode):

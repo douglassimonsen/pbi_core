@@ -10,6 +10,7 @@ from .group import GroupSource
 from .hierarchy import HierarchyLevelSource
 from .literal import LiteralSource
 from .measure import MeasureSource
+from .proto import ProtoSourceRef
 
 
 def get_source(v: Any) -> str:  # noqa: PLR0911
@@ -26,8 +27,10 @@ def get_source(v: Any) -> str:  # noqa: PLR0911
             return "MeasureSource"
         if "Arithmetic" in v:
             return "ArithmeticSource"
+        if "SourceRef" in v:
+            return "ProtoSourceRef"
         msg = f"Unknown Filter: {v.keys()}"
-        raise ValueError(msg)
+        return "MeasureSource"
     return cast("str", v.__class__.__name__)
 
 
@@ -37,7 +40,8 @@ Source = Annotated[
     | Annotated[GroupSource, Tag("GroupSource")]
     | Annotated[AggregationSource, Tag("AggregationSource")]
     | Annotated[MeasureSource, Tag("MeasureSource")]
-    | Annotated[ArithmeticSource, Tag("ArithmeticSource")],
+    | Annotated[ArithmeticSource, Tag("ArithmeticSource")]
+    | Annotated[ProtoSourceRef, Tag("ProtoSourceRef")],
     Discriminator(get_source),
 ]
 

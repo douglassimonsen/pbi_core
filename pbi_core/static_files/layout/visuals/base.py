@@ -1,4 +1,5 @@
 # ruff: noqa: N815
+from enum import Enum
 from typing import TYPE_CHECKING, Any
 
 from pydantic import ConfigDict
@@ -14,6 +15,20 @@ if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
 
 
+class FilterSortOrder(Enum):
+    NA = 1
+    NA2 = 2
+    NA3 = 3
+
+
+class DisplayMode(Enum):
+    hidden = "hidden"
+
+
+class Display(LayoutNode):
+    mode: DisplayMode
+
+
 class BaseVisual(LayoutNode):
     model_config = ConfigDict(extra="allow")
 
@@ -22,8 +37,12 @@ class BaseVisual(LayoutNode):
     projections: Any = None
     hasDefaultSort: bool = False
     drillFilterOtherVisuals: bool = False
+    filterSortOrder: FilterSortOrder = FilterSortOrder.NA
     vcObjects: Any = None
     visualType: str = "unknown"
+    queryOptions: Any = None
+    showAllRoles: Any = None
+    display: Display | None = None
 
     @property
     def id(self) -> str:

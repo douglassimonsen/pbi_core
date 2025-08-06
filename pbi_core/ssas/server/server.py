@@ -104,7 +104,7 @@ class BaseServer:
     @staticmethod
     def sanitize_xml(xml_text: str) -> str:
         """Method to XML-encode characters like "&" so that the Adomd connection doesn't mangle the XMLA commands."""
-        return xml_text.replace("&", "&amp")
+        return xml_text.replace("&", "&amp;")
 
     @staticmethod
     def remove_invalid_db_name_chars(orig_db_name: str) -> str:

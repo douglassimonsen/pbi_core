@@ -16,15 +16,34 @@ class MeasureExpression(LayoutNode):
 
 class ThemeDataColor(LayoutNode):
     ColorId: int
-    Percent: int
+    Percent: float
 
 
 class ThemeExpression(LayoutNode):
     ThemeDataColor: ThemeDataColor
 
 
+def get_subexpr_type(v: Any) -> str:
+    if isinstance(v, dict):
+        if "ThemeDataColor" in v:
+            return "ThemeExpression"
+        if "Literal" in v:
+            return "LiteralSource"
+        if "Measure" in v:
+            return "MeasureSource"
+    return cast("str", v.__class__.__name__)
+
+
+ColorSubExpression = Annotated[
+    Annotated[ThemeExpression, Tag("ThemeExpression")]
+    | Annotated[LiteralSource, Tag("LiteralSource")]
+    | Annotated[MeasureSource, Tag("MeasureSource")],
+    Discriminator(get_subexpr_type),
+]
+
+
 class ColorExpression(LayoutNode):
-    expr: ThemeExpression | LiteralSource
+    expr: ColorSubExpression
 
 
 class SolidExpression(LayoutNode):

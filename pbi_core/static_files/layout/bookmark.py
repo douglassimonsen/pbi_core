@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Annotated, Any, cast
 from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
-from .condition import BasicConditions
+from .condition import ConditionType
 from .filters import BookmarkFilter
 from .sources import Source
 
@@ -22,7 +22,7 @@ class BookmarkFilters(LayoutNode):
 
 
 class HighlightScope(LayoutNode):
-    scopeId: BasicConditions
+    scopeId: ConditionType
 
 
 class HighlightSelection(LayoutNode):

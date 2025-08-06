@@ -17,10 +17,23 @@ class TitleProperties(LayoutNode):
     fontSize: Expression | None = None
     alignment: Expression | None = None
     show: Expression | None = None
+    titleWrap: Expression | None = None
+    background: Expression | None = None
 
 
 class TitlePropertiesGroup(LayoutNode):
     properties: TitleProperties
+
+
+class BorderProperties(LayoutNode):
+    show: Expression | None = None
+    background: Expression | None = None
+    color: Expression | None = None
+    radius: Expression | None = None
+
+
+class BorderPropertiesGroup(LayoutNode):
+    properties: BorderProperties
 
 
 class VisualHeaderProperties(LayoutNode):
@@ -36,6 +49,14 @@ class VisualHeaderProperties(LayoutNode):
     showDrillRoleSelector: Expression | None = None
     showFocusModeButton: Expression | None = None
     showOptionsMenu: Expression | None = None
+    showVisualErrorButton: Expression | None = None
+    showDrillUpButton: Expression | None = None
+    showDrillToggleButton: Expression | None = None
+    showDrillDownLevelButton: Expression | None = None
+    showDrillDownExpandButton: Expression | None = None
+    showSeeDataLayoutToggleButton: Expression | None = None
+    showFilterRestatementButton: Expression | None = None
+    showPinButton: Expression | None = None
 
 
 class VisualHeadersPropertiesGroup(LayoutNode):
@@ -45,9 +66,11 @@ class VisualHeadersPropertiesGroup(LayoutNode):
 class BarChartVCObjects(LayoutNode):
     background: Any = None
     general: Any = None
-    title: list[TitlePropertiesGroup]
+    title: list[TitlePropertiesGroup] = []
     visualHeader: list[VisualHeadersPropertiesGroup] | None = None
     visualTooltip: Any = None
+    border: list[BorderPropertiesGroup] | None = None
+    visualHeaderTooltip: Any = None
 
 
 class BarChart(BaseVisual):

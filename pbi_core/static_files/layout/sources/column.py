@@ -1,10 +1,12 @@
+from typing import Any
+
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .base import SourceExpression
 
 
 class ColumnSource(LayoutNode):
-    Column: SourceExpression
+    Column: SourceExpression | Any
     Name: str | None = None  # only seen on a couple TopN filters
     NativeReferenceName: str | None = None  # only for Layout.Visual.Query
 

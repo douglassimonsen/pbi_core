@@ -59,7 +59,7 @@ class DiagramV110(BaseFileModel):
     scrollPosition: Position
     nodes: list[Node110]
     name: str
-    zoomValue: int
+    zoomValue: float
     pinKeyFieldsToTop: bool
     showExtraHeaderInfo: bool
     hideKeyFieldsWhenCollapsed: bool

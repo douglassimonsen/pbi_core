@@ -25,6 +25,7 @@ class LinguisticMetadataContent(pydantic.BaseModel):
     DynamicImprovement: str | None = None
     Relationships: Any = None
     Entities: Any = None
+    Examples: list[dict[str, dict]] | None = None
 
 
 class LinguisticMetadata(SsasBaseTable):

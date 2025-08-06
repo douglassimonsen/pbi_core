@@ -55,11 +55,14 @@ class PrimaryProjections(LayoutNode):
     Projections: list[int]
     SuppressedProjections: list[int] | None = None
     Subtotal: int | None = None
+    Aggregates: Any | None = None
+    ShowItemsWithNoData: list[int] | None = None
 
 
 class BindingPrimary(LayoutNode):
     Groupings: list[PrimaryProjections]
     Expansion: Any | None = None
+    Synchronization: Any | None = None
 
 
 class DataVolume(IntEnum):
@@ -83,6 +86,7 @@ class QueryBinding(LayoutNode):
     DataReduction: Any = None
     Aggregates: Any = None
     SuppressedJoinPredicates: Any = None
+    Highlights: Any = None
     Version: int
 
 

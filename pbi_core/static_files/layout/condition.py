@@ -134,11 +134,8 @@ class ComparisonCondition(LayoutNode):
     Comparison: ComparisonConditionHelper
 
 
-BasicConditions = ContainsCondition | InCondition | ComparisonCondition
-
-
 class NotConditionHelper(LayoutNode):
-    Expression: BasicConditions
+    Expression: "ConditionType"
 
 
 class NotCondition(LayoutNode):
@@ -148,12 +145,17 @@ class NotCondition(LayoutNode):
         return f"Not({self.Not.Expression.__repr__()})"
 
 
-NonCompositeConditions = BasicConditions | NotCondition
+class ExistsConditionHelper(LayoutNode):
+    Expression: Source
+
+
+class ExistsCondition(LayoutNode):
+    Exists: ExistsConditionHelper
 
 
 class CompositeConditionHelper(LayoutNode):
-    Left: NonCompositeConditions
-    Right: NonCompositeConditions
+    Left: "ConditionType"
+    Right: "ConditionType"
 
 
 class AndCondition(LayoutNode):
@@ -180,18 +182,20 @@ def get_type(v: Any) -> str:  # noqa: PLR0911
             return "ContainsCondition"
         if "Comparison" in v:
             return "ComparisonCondition"
+        if "Exists" in v:
+            return "ExistsCondition"
         raise ValueError
     return cast("str", v.__class__.__name__)
 
 
 ConditionType = Annotated[
-    Annotated[NonCompositeConditions, Tag("NonCompositeConditions")]
-    | Annotated[AndCondition, Tag("AndCondition")]
+    Annotated[AndCondition, Tag("AndCondition")]
     | Annotated[OrCondition, Tag("OrCondition")]
     | Annotated[InCondition, Tag("InCondition")]
     | Annotated[NotCondition, Tag("NotCondition")]
     | Annotated[ContainsCondition, Tag("ContainsCondition")]
-    | Annotated[ComparisonCondition, Tag("ComparisonCondition")],
+    | Annotated[ComparisonCondition, Tag("ComparisonCondition")]
+    | Annotated[ExistsCondition, Tag("ExistsCondition")],
     Discriminator(get_type),
 ]
 

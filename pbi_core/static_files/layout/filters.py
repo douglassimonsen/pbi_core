@@ -5,6 +5,8 @@ from typing import TYPE_CHECKING, Annotated, Any, cast
 import pbi_translation
 from pydantic import BaseModel, Discriminator, Tag
 
+from pbi_core.static_files.layout.sources.literal import LiteralSource
+
 from ._base_node import LayoutNode
 from .condition import Condition
 from .sources import AggregationSource, ColumnSource, Entity, MeasureSource, Source
@@ -24,8 +26,6 @@ class Direction(IntEnum):
 
 
 class Orderby(LayoutNode):
-    _parent: "TopNFilterMeta"  # pyright: ignore reportIncompatibleVariableOverride=false
-
     Direction: Direction
     Expression: Source
 
@@ -36,12 +36,44 @@ class PrototypeQueryResult(BaseModel):
     column_mapping: dict[str, str]
 
 
+class InputParameter(LiteralSource):
+    Name: str
+
+
+class InputTableColumn(BaseModel):
+    Expression: Source
+    Role: str | None = None
+
+
+class InputTable(BaseModel):
+    Name: str
+    Columns: list[InputTableColumn]
+
+
+class TransformInput(BaseModel):
+    Parameters: list[InputParameter]
+    Table: InputTable
+
+
+class TransformOutput(BaseModel):
+    pass
+
+
+class TransformMeta(BaseModel):
+    Name: str
+    Algorithm: str
+    Input: TransformInput
+    Output: TransformOutput
+
+
 class PrototypeQuery(LayoutNode):
     Version: int
     From: list["From"]
     Select: list[Source]
     Where: list[Condition] | None = None
     OrderBy: list[Orderby] | None = None
+    Transform: list[TransformMeta] | None = None
+    Top: int | None = None
 
     def table_mapping(self) -> dict[str, str]:
         ret: dict[str, str] = {}
@@ -91,15 +123,10 @@ class PrototypeQuery(LayoutNode):
         )
 
 
-class TopNFilterMeta(PrototypeQuery):
-    _parent: "_SubqueryHelper2"  # pyright: ignore reportIncompatibleVariableOverride=false
-    Top: int
-
-
 class _SubqueryHelper2(LayoutNode):
     _parent: "_SubqueryHelper"  # pyright: ignore reportIncompatibleVariableOverride=false
 
-    Query: TopNFilterMeta
+    Query: PrototypeQuery
 
 
 class _SubqueryHelper(LayoutNode):
@@ -152,11 +179,12 @@ class HowCreated(IntEnum):
     NA2 = 5
 
 
+# TODO: make type an enum
 class Filter(LayoutNode):
     name: str | None = None
-    type: str
+    type: str = "Categorical"
     howCreated: HowCreated
-    expression: Source
+    expression: Source | None = None
     isLockedInViewMode: bool = False
     isHiddenInViewMode: bool = False
     objects: FilterObjects | None = None
