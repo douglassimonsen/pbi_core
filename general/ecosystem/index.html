@@ -1577,6 +1577,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Power BI Libraries Overview
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1588,6 +1601,34 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#populating-data-in-power-bi-visuals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Populating Data in Power BI Visuals
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2101,6 +2142,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#populating-data-in-power-bi-visuals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Populating Data in Power BI Visuals
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -2141,12 +2199,10 @@
     pbi_ruff -- Uses to retrieve data from reports --&gt; pbi_core
     pbi_core -- Used to connect with SSAS backend --&gt; pyadomd
     pbi_core -- Uses to translate Prototype Query to DAX Query --&gt; pbi_translation
-    pbi_ruff -- Uses to introspect DAX and M Queries --&gt; pbi_parsers
-    ```
-## Populating Data in Power BI Visuals
-
-```mermaid
-sequenceDiagram
+    pbi_ruff -- Uses to introspect DAX and M Queries --&gt; pbi_parsers</code></pre>
+<h2 id="populating-data-in-power-bi-visuals">Populating Data in Power BI Visuals</h2>
+<p>Given this library's focus on Power BI and its data model, it is important to understand how data is populated in Power BI visuals. The following sequence diagram illustrates the process:</p>
+<pre class="mermaid"><code>sequenceDiagram
     PowerBI Libs-&gt;&gt; Front End: Initializes Frontend from Layout JSON
     PowerBI Libs-&gt;&gt; SSAS Backend: Initializes Backend from Datamodel blob
     SSAS Backend-&gt;&gt; Front End: Returns reference to Data Model
