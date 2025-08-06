@@ -1,8 +1,8 @@
 import datetime
 from enum import IntEnum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.enums import DataState
 
 from .base import SsasRenameRecord
@@ -97,7 +97,7 @@ class Relationship(SsasRenameRecord):
     def variations(self) -> set["Variation"]:
         return self.tabular_model.variations.find_all({"relationship_id": self.id})
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(
                 self,

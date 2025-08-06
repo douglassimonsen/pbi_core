@@ -1,10 +1,10 @@
 # ruff: noqa: N815
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from pydantic import Json
 
-from pbi_core.lineage.main import LineageNode, LineageType
+from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 from ._base_node import LayoutNode
@@ -137,7 +137,11 @@ class Layout(LayoutNode):
                 ret.update(s.get_ssas_elements())
         return ret
 
-    def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
+    def get_lineage(
+        self,
+        lineage_type: Literal["children", "parents"],
+        tabular_model: "BaseTabularModel",
+    ) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
 

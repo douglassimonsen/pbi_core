@@ -1,6 +1,6 @@
 import datetime
 from enum import IntEnum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
 from .base import SsasRenameRecord, SsasTable
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from .column import Column
     from .model import Model
     from .query_group import QueryGroup
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 
 
 class Kind(IntEnum):
@@ -46,7 +46,7 @@ class Expression(SsasRenameRecord):
     def query_group(self) -> "QueryGroup | None":
         return self.tabular_model.query_groups.find({"id": self.query_group_id})
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
         parent_nodes: list[SsasTable | None] = [self.model(), self.query_group()]

@@ -1,8 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 
 from .base import SsasRenameRecord
 
@@ -36,7 +36,7 @@ class Level(SsasRenameRecord):
     def hierarchy(self) -> "Hierarchy":
         return self.tabular_model.hierarchies.find({"id": self.hierarchy_id})
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
         return LineageNode(

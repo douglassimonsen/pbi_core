@@ -1,11 +1,11 @@
 import datetime
 from enum import IntEnum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from bs4 import BeautifulSoup
 from pbi_parsers import dax, pq
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables.enums import DataState
 
@@ -87,11 +87,13 @@ class Partition(SsasRefreshRecord):
         if self.type == PartitionType.Calculated:
             ret = pq.to_ast(self.query_definition)
             if ret is None:
-                raise ValueError("Failed to parse DAX expression from partition query definition")
+                msg = "Failed to parse DAX expression from partition query definition"
+                raise ValueError(msg)
         elif self.type == PartitionType.M:
             ret = dax.to_ast(self.query_definition)
             if ret is None:
-                raise ValueError("Failed to parse M expression from partition query definition")
+                msg = "Failed to parse M expression from partition query definition"
+                raise ValueError(msg)
         else:
             logger.warning("Attempted to get AST of non-M/DAX partition", partition=self.name, type=self.type)
             return None
@@ -116,7 +118,7 @@ class Partition(SsasRefreshRecord):
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
         parent_nodes: list[SsasTable | None] = [self.table(), self.query_group()]

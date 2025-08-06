@@ -1,10 +1,10 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
 from pbi_parsers import dax
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.enums import DataState, DataType
 
 from .base import SsasRenameRecord, SsasTable
@@ -62,7 +62,8 @@ class Measure(SsasRenameRecord):
             return None
         ret = dax.to_ast(self.expression)
         if ret is None:
-            raise ValueError("Failed to parse DAX expression from measure")
+            msg = "Failed to parse DAX expression from measure"
+            raise ValueError(msg)
         return ret
 
     def detail_rows_definition(self) -> "DetailRowDefinition | None":
@@ -215,7 +216,7 @@ class Measure(SsasRenameRecord):
             return recursive_dependencies
         return full_dependencies
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(
                 self,

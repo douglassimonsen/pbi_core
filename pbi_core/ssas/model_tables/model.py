@@ -1,10 +1,10 @@
 import datetime
 from enum import IntEnum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from pydantic import Json
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.pydantic.main import BaseValidation
 
 from .base import RefreshType, SsasModelRecord
@@ -53,6 +53,7 @@ class Model(SsasModelRecord):
     force_unique_names: bool
     m_attributes: str | None = None
     max_parallelism_per_refresh: int | None = None
+    max_parallelism_per_query: int | None = None
     name: str
     source_query_culture: str = "en-US"
     storage_location: str | None = None
@@ -79,7 +80,7 @@ class Model(SsasModelRecord):
     def _db_command_obj_name(cls) -> str:
         return "Model"
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(
                 self,

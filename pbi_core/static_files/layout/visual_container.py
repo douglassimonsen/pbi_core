@@ -1,10 +1,10 @@
 # ruff: noqa: N815
 from enum import Enum, IntEnum
-from typing import TYPE_CHECKING, Annotated, Any
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from pydantic import Discriminator, Json, Tag
 
-from pbi_core.lineage.main import LineageNode, LineageType
+from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 from ._base_node import LayoutNode
@@ -268,7 +268,8 @@ class QueryBindingAggregates(LayoutNode):
 
 
 class Highlight(LayoutNode):
-    # TODO: merge with VisualFilterExpression. For some reason, pydantic thinks From should be None when using the visal filter expression
+    # TODO: merge with VisualFilterExpression. For some reason, 
+    # pydantic thinks From should be None when using the visal filter expression
     Version: int | None = None
     From: list[FromType] | None = None
     Where: list[Condition]
@@ -465,7 +466,8 @@ class VisualContainer(LayoutNode):
             return str(self.id)
         if self.config.name is not None:
             return self.config.name
-        raise ValueError("VisualContainer must have an id or a name in config")
+        msg = "VisualContainer must have an id or a name in config"
+        raise ValueError(msg)
 
     def pbi_core_name(self) -> str:
         viz = self.config.singleVisual
@@ -532,7 +534,11 @@ class VisualContainer(LayoutNode):
         return ret
 
     # TODO: replace ._parent with a get_parent method
-    def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
+    def get_lineage(
+        self,
+        lineage_type: Literal["children", "parents"],
+        tabular_model: "BaseTabularModel",
+    ) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
 

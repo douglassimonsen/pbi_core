@@ -1,10 +1,10 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
 from bs4 import BeautifulSoup
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.enums import DataCategory
 
 from .base import RefreshType, SsasRefreshRecord
@@ -147,7 +147,7 @@ class Table(SsasRefreshRecord):
     def model(self) -> "Model":
         return self.tabular_model.model
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(
                 self,

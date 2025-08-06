@@ -1,6 +1,7 @@
 import datetime
+from typing import Literal
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 
 from .base import SsasRenameRecord, SsasTable
 from .enums import ObjectType
@@ -58,7 +59,7 @@ class Annotation(SsasRenameRecord):
             raise TypeError(msg)
         return mapper[self.object_type](self.object_id)
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
         return LineageNode(self, lineage_type, [self.object().get_lineage(lineage_type)])

@@ -1,7 +1,7 @@
 import typing
 
 if typing.TYPE_CHECKING:
-    from pbi_core.ssas.server.tabular_model import SsasTable
+    from pbi_core.ssas.model_tables.base import SsasTable
 
 from ._group import Group, RowNotFoundError
 from .alternate_of import AlternateOf

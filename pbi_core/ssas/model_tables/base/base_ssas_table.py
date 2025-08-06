@@ -1,10 +1,10 @@
-from typing import Any, ClassVar, Final
+from typing import Any, ClassVar, Final, Literal
 
 import pydantic
 from bs4 import BeautifulSoup
 from structlog import get_logger
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.pydantic.main import BaseValidation
 from pbi_core.ssas.server._commands import Command
 from pbi_core.ssas.server.tabular_model import BaseTabularModel
@@ -113,7 +113,7 @@ class SsasTable(BaseValidation):
         xml_entity_definition = command.entity_template.render(rows=xml_row)
         return command.base_template.render(db_name=db_name, entity_def=xml_entity_definition)
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         """Creates a lineage node tracking the data parents/children of a record."""
         return LineageNode(self, lineage_type)
 

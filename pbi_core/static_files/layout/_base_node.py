@@ -1,8 +1,8 @@
 from collections.abc import Callable
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Self, TypeVar
+from typing import TYPE_CHECKING, Any, Literal, Self, TypeVar
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.pydantic.main import BaseValidation
 
 if TYPE_CHECKING:
@@ -119,7 +119,11 @@ class LayoutNode(BaseValidation):
             return f"{self.__class__.__name__}({name})"
         return super().__str__()
 
-    def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
+    def get_lineage(
+        self,
+        lineage_type: Literal["children", "parents"],
+        tabular_model: "BaseTabularModel",
+    ) -> LineageNode:
         raise NotImplementedError
 
     def find_xpath(self, xpath: list[str | int]) -> "LayoutNode":

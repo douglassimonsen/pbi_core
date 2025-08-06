@@ -1,25 +1,29 @@
 # NUMPTY PATH for colormath
-import numpy
+import numpy as np
 from colorblind import colorblind
 from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie2000
 from colormath.color_objects import LabColor, sRGBColor
 
-from ....static_files.file_classes.theme import Theme
-from ...base_rule import BaseRule, RuleResult
+from pbi_core.ruff.base_rule import BaseRule, RuleResult
+from pbi_core.static_files.file_classes.theme import Theme
 
 
 def patch_asscalar(a):
     return a.item()
 
 
-numpy.asscalar = patch_asscalar
+np.asscalar = patch_asscalar
 
 
 def hex_to_rbg(hex_color: str) -> tuple[int, int, int]:
     """Convert a hex color string to an RGB tuple."""
     hex_color = hex_color.lstrip("#")
-    return tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
+    return (
+        int(hex_color[0:2], 16),
+        int(hex_color[2:4], 16),
+        int(hex_color[4:6], 16),
+    )
 
 
 class ThemeColors(BaseRule):

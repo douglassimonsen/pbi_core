@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 
 from .base import SsasEditableRecord
 
@@ -35,7 +35,7 @@ class KPI(SsasEditableRecord):
     def measure(self) -> "Measure":
         return self.tabular_model.measures.find({"id": self.measure_id})
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
         return LineageNode(self, lineage_type, [self.measure().get_lineage(lineage_type)])

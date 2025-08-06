@@ -1,11 +1,11 @@
 import datetime
 from enum import IntEnum, StrEnum
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 import pydantic
 from pydantic_extra_types.semantic_version import SemanticVersion
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.pydantic import BaseValidation
 
 from .base import SsasEditableRecord
@@ -198,7 +198,7 @@ class LinguisticMetadata(SsasEditableRecord):
     def _db_command_obj_name(cls) -> str:
         return "LinguisticMetadata"
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
         return LineageNode(self, lineage_type, [self.culture().get_lineage(lineage_type)])

@@ -3,9 +3,6 @@ from typing import Any, Literal, Protocol
 from mermaid import Link, MermaidDiagram, Node
 from mermaid.node import NodeShape
 
-LineageType = Literal["children", "parents"]
-"""Literal["children", "parents"]"""
-
 """
 #ffffcc, #ffcc99, #ffcccc,
 #ff99cc, #ffccff, #cc99ff,
@@ -44,9 +41,14 @@ class LineageNode:
 
     value: Any
     relatives: list["LineageNode"]
-    lineage_type: LineageType
+    lineage_type: Literal["children", "parents"]
 
-    def __init__(self, value: Any, lineage_type: LineageType, relatives: list["LineageNode"] | None = None) -> None:
+    def __init__(
+        self,
+        value: Any,
+        lineage_type: Literal["children", "parents"],
+        relatives: list["LineageNode"] | None = None,
+    ) -> None:
         """Initialize."""
         self.value = value
         self.relatives = relatives or []

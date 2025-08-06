@@ -5,11 +5,11 @@ from uuid import UUID, uuid4
 from bs4 import BeautifulSoup
 from pbi_parsers import dax
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.logging import get_logger
+from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import DataState, DataType
 
-from ..base import SsasRenameRecord, SsasTable
 from .enums import Alignment, ColumnType, EncodingHint, SummarizedBy
 
 if TYPE_CHECKING:
@@ -85,7 +85,7 @@ class Column(SsasRenameRecord):  # noqa: PLR0904
     def is_from_calculated_table(self) -> bool:
         return bool(self.system_flags % 2)
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             children_nodes: list[Column | Measure | AttributeHierarchy] = [
                 self.attribute_hierarchy(),

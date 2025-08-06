@@ -1,18 +1,18 @@
 # ruff: noqa: N815
 from enum import Enum
-from typing import TYPE_CHECKING, Annotated, Any
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from pydantic import ConfigDict, Discriminator, Tag
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.filters import Filter, PrototypeQuery
+from pbi_core.static_files.layout.selector import Selector
 from pbi_core.static_files.layout.sources.column import ColumnSource
 from pbi_core.static_files.layout.sources.measure import MeasureSource
+from pbi_core.static_files.layout.sources.paragraphs import Paragraph
 from pbi_core.static_files.layout.visuals.properties import Expression
 
-from ..selector import Selector
-from ..sources.paragraphs import Paragraph
 from .properties.vc_properties import VCProperties
 
 if TYPE_CHECKING:
@@ -111,7 +111,11 @@ class BaseVisual(LayoutNode):
             return set()
         return self.prototypeQuery.get_ssas_elements()
 
-    def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
+    def get_lineage(
+        self,
+        lineage_type: Literal["children", "parents"],
+        tabular_model: "BaseTabularModel",
+    ) -> LineageNode:
         ret: list[Column | Measure] = []
         if self.prototypeQuery is None:
             return LineageNode(self, lineage_type, [])

@@ -1,9 +1,9 @@
 import datetime
 from enum import IntEnum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.enums import DataState
 
 from .base import SsasRenameRecord
@@ -56,7 +56,7 @@ class Hierarchy(SsasRenameRecord):
     def _db_command_obj_name(cls) -> str:
         return "Hierarchies"
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(
                 self,

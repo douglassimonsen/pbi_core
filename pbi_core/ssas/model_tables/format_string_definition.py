@@ -4,10 +4,10 @@ from pbi_parsers import dax
 
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
 
-from .base import SsasRenameRecord, SsasTable
+from .base import SsasEditableRecord, SsasTable
 
 
-class FormatStringDefinition(SsasRenameRecord):
+class FormatStringDefinition(SsasEditableRecord):
     """TBD.
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/b756b0c1-c912-4218-80dc-7ff09d0968ff)
@@ -15,7 +15,7 @@ class FormatStringDefinition(SsasRenameRecord):
 
     object_type: ObjectType
     object_id: int
-    error_message: str
+    error_message: str | None = None
     """When no issue exists, this field is blank"""
     expression: str
     """The DAX expression defining the """

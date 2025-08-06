@@ -106,7 +106,8 @@ class LocalReport(BaseReport):
         4. Removes any measure/column that is:
             1. Not in results of 1-3
             2. Not part of a system table
-        5. Removes any table that has no column/measure used in the report and no active relationship with a reporting table
+        5. Removes any table that has no column/measure used in the report and no active relationship with a reporting
+            table
         """
         report_references = self.static_files.layout.get_ssas_elements()
         model_values = (

@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
-from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.lineage import LineageNode
 
 from .base import SsasRenameRecord
 
@@ -29,7 +29,7 @@ class Culture(SsasRenameRecord):
     def model(self) -> "Model":
         return self.tabular_model.model
 
-    def get_lineage(self, lineage_type: LineageType) -> LineageNode:
+    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
             return LineageNode(self, lineage_type, [self.linguistic_metdata().get_lineage(lineage_type)])
         return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])

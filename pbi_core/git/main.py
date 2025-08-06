@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
 
     from pbi_core.main import LocalReport
-    from pbi_core.ssas.server.tabular_model import SsasTable
+    from pbi_core.ssas.model_tables.base import SsasTable
     from pbi_core.static_files.layout.layout import Layout
 
 
