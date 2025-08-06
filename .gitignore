@@ -5,7 +5,7 @@ workspaces
 docs/build
 *.env
 dist
-test
+test*
 *.xlsx
 *.7z
 *.VSCodeCounter
