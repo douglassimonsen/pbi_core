@@ -51,32 +51,32 @@ class Table(SsasRefreshTable):
             db_name=self.tabular_model.db_name,
         )
 
-    def partitions(self) -> list[Partition]:
+    def partitions(self) -> set[Partition]:
         """Get associated dependent partitions.
 
         Returns
         -------
-            (list[Partition]): A list of the partitions containing data for this table
+            (set[Partition]): A list of the partitions containing data for this table
 
         """
         return self.tabular_model.partitions.find_all({"table_id": self.id})
 
-    def columns(self) -> list[Column]:
+    def columns(self) -> set[Column]:
         """Get associated dependent partitions.
 
         Returns
         -------
-            (list[Column]): A list of the columns in this table
+            (set[Column]): A list of the columns in this table
 
         """
         return self.tabular_model.columns.find_all({"table_id": self.id})
 
-    def table_measures(self) -> list[Measure]:
+    def table_measures(self) -> set[Measure]:
         """Get measures saved to this table.
 
         Returns:
         -------
-            (list[Measure]): A list of measures saved to this table
+            (set[Measure]): A list of measures saved to this table
 
         Note:
         ----
@@ -86,7 +86,7 @@ class Table(SsasRefreshTable):
         """
         return self.tabular_model.measures.find_all({"table_id": self.id})
 
-    def measures(self) -> list[Measure]:  # noqa: PLR6301
+    def measures(self) -> set[Measure]:
         """Get measures that logically depend on this table.
 
         Examples:
@@ -100,14 +100,14 @@ class Table(SsasRefreshTable):
 
         Returns:
         -------
-            (list[Measure]): A list of measures that logically depend this table
+            (set[Measure]): A list of measures that logically depend this table
 
         Note:
         ----
             These measures are not necessarily saved physically to this table. For that use `table.table_measures()`
 
         """
-        return []
+        raise NotImplementedError
 
     def model(self) -> "Model":
         return self.tabular_model.model

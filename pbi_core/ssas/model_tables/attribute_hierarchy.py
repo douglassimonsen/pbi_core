@@ -24,7 +24,7 @@ class AttributeHierarchy(SsasReadonlyTable):
     def column(self) -> "Column":
         return self.tabular_model.columns.find({"id": self.column_id})
 
-    def levels(self) -> list["Level"]:
+    def levels(self) -> set["Level"]:
         return self.tabular_model.levels.find_all({"hierarchy_id": self.id})
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:

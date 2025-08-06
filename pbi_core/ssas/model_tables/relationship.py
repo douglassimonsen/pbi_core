@@ -68,7 +68,7 @@ class Relationship(SsasRenameTable):
         """The DB model this entity exists in."""
         return self.tabular_model.model
 
-    def variations(self) -> list["Variation"]:
+    def variations(self) -> set["Variation"]:
         return self.tabular_model.variations.find_all({"relationship_id": self.id})
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:

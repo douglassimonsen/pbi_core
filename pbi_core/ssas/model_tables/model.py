@@ -33,13 +33,13 @@ class Model(SsasModelTable):
 
     modified_time: datetime.datetime
 
-    def cultures(self) -> list["Culture"]:
+    def cultures(self) -> set["Culture"]:
         return self.tabular_model.cultures.find_all({"model_id": self.id})
 
-    def tables(self) -> list["Table"]:
+    def tables(self) -> set["Table"]:
         return self.tabular_model.tables.find_all({"model_id": self.id})
 
-    def query_groups(self) -> list["QueryGroup"]:
+    def query_groups(self) -> set["QueryGroup"]:
         return self.tabular_model.query_groups.find_all({"model_id": self.id})
 
     @classmethod

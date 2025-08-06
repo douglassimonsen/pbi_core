@@ -15,10 +15,10 @@ class QueryGroup(SsasBaseTable):
     model_id: int
     _repr_name_field = "folder"
 
-    def expressions(self) -> list["Expression"]:
+    def expressions(self) -> set["Expression"]:
         return self.tabular_model.expressions.find_all({"query_group_id": self.id})
 
-    def partitions(self) -> list["Partition"]:
+    def partitions(self) -> set["Partition"]:
         return self.tabular_model.partitions.find_all({"query_group_id": self.id})
 
     def model(self) -> "Model":

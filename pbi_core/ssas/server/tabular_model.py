@@ -1,7 +1,7 @@
 import pathlib
 import shutil
 from enum import IntEnum
-from typing import TYPE_CHECKING, Any, ClassVar, Final, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Final, Protocol, cast
 
 import bs4
 import pydantic
@@ -9,7 +9,7 @@ from structlog import get_logger
 
 from pbi_core.lineage import LineageNode, LineageType
 
-from ._commands import BaseCommands, Command, ModelCommands, NoCommands, RefreshCommands, RenameCommands
+from ._commands import BaseCommands, Command, Commands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from .utils import (
     COMMAND_TEMPLATES,
     OBJECT_COMMAND_TEMPLATES,
@@ -249,7 +249,7 @@ class SsasTable(pydantic.BaseModel):
     model_config = SsasConfig
     tabular_model: "BaseTabularModel"
     _read_only_fields: ClassVar[tuple[str, ...]] = ()
-    _commands: Any
+    _commands: Commands
     id: Final[int] = pydantic.Field(frozen=True)
     _db_field_names: ClassVar[dict[str, str]] = {}
     _repr_name_field: str = "name"
@@ -349,18 +349,42 @@ class SsasTable(pydantic.BaseModel):
         """Creates a lineage node tracking the data parents/children of a record."""
         return LineageNode(self, lineage_type)
 
-    def __eq__(self, other: "SsasTable") -> bool:
-        return self.id == other.id
-
     def __hash__(self) -> int:
         return hash(self.id)
 
 
-class SsasAlter(SsasTable):
+class SsasTableProtocol(Protocol):
+    """Specifies fields necessary to implement SSAS commands.
+
+    This class needs to be a Protocol to allow type checking to validate
+    that there's only a single __hash__ method defined, removing superfluous
+    "Not Hashable" errors.
+
+    """
+
+    _read_only_fields: ClassVar[tuple[str, ...]] = ()
+    _db_field_names: dict[str, str]
+    _commands: Commands
+    tabular_model: "BaseTabularModel"
+
+    @classmethod
+    def _db_type_name(cls) -> str: ...
+
+    @staticmethod
+    def render_xml_command(values: dict[str, Any], command: Command, db_name: str) -> str: ...
+
+    def query_xml(self, query: str, db_name: str | None = None) -> None: ...
+
+    def model_dump(self) -> dict[str, Any]: ...
+
+
+class SsasAlter(SsasTableProtocol):
     """Class for SSAS records that implement alter functionality.
 
     The `alter <https://learn.microsoft.com/en-us/analysis-services/tmsl/alter-command-tmsl?view=asallproducts-allversions>`_ spec
     """  # noqa: E501
+
+    _commands: BaseCommands
 
     def alter(self) -> None:
         """Updates a non-name field of an object."""
@@ -376,13 +400,14 @@ class SsasAlter(SsasTable):
         self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
-class SsasRename(SsasTable):
+class SsasRename(SsasTableProtocol):
     """Class for SSAS records that implement rename functionality.
 
     The `rename <https://learn.microsoft.com/en-us/analysis-services/tmsl/rename-command-tmsl?view=asallproducts-allversions>`_ spec
     """  # noqa: E501
 
     _db_name_field: str = "not_defined"
+    _commands: RenameCommands
 
     def rename(self) -> None:
         """Updates a name field of an object."""
@@ -398,7 +423,7 @@ class SsasRename(SsasTable):
         self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
-class SsasCreate(SsasTable):
+class SsasCreate(SsasTableProtocol):
     """Class for SSAS records that implement create functionality.
 
     The `create <https://learn.microsoft.com/en-us/analysis-services/tmsl/create-command-tmsl?view=asallproducts-allversions>`_ spec
@@ -419,13 +444,14 @@ class SsasCreate(SsasTable):
         pass
 
 
-class SsasDelete(SsasTable):
+class SsasDelete(SsasTableProtocol):
     """Class for SSAS records that implement delete functionality.
 
     The `delete <https://learn.microsoft.com/en-us/analysis-services/tmsl/delete-command-tmsl?view=asallproducts-allversions>`_ spec
     """  # noqa: E501
 
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
+    _commands: BaseCommands
 
     def delete(self) -> None:
         data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
@@ -477,7 +503,7 @@ class RefreshType(IntEnum):
     Defragment = 8
 
 
-class SsasRefresh(SsasTable):
+class SsasRefresh(SsasTableProtocol):
     """Class for SSAS records that implement refresh functionality.
 
     The `refresh <https://learn.microsoft.com/en-us/analysis-services/tmsl/refresh-command-tmsl?view=asallproducts-allversions>`_ spec
@@ -485,6 +511,7 @@ class SsasRefresh(SsasTable):
 
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
     _refresh_type: RefreshType
+    _commands: RefreshCommands
 
     def refresh(self) -> None:
         data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
@@ -504,7 +531,7 @@ class SsasReadonlyTable(SsasTable):
     _commands: NoCommands
 
 
-class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
+class SsasBaseTable(SsasTable, SsasCreate, SsasAlter, SsasDelete):
     _commands: BaseCommands
 
     def model_post_init(self, __context: Any, /) -> None:
@@ -516,7 +543,7 @@ class SsasBaseTable(SsasCreate, SsasAlter, SsasDelete):
         )
 
 
-class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
+class SsasRenameTable(SsasTable, SsasCreate, SsasAlter, SsasDelete, SsasRename):
     _commands: RenameCommands
 
     def model_post_init(self, __context: Any, /) -> None:
@@ -531,7 +558,7 @@ class SsasRenameTable(SsasCreate, SsasAlter, SsasDelete, SsasRename):
         )
 
 
-class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefresh):
+class SsasRefreshTable(SsasTable, SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefresh):
     _commands: RefreshCommands
 
     def model_post_init(self, __context: Any, /) -> None:
@@ -546,7 +573,7 @@ class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefres
         )
 
 
-class SsasModelTable(SsasAlter, SsasRefresh, SsasRename):
+class SsasModelTable(SsasTable, SsasAlter, SsasRefresh, SsasRename):
     """Solely used for the single Model record."""
 
     _commands: ModelCommands

@@ -63,7 +63,7 @@ class Measure(SsasRenameTable):
     def __repr__(self) -> str:
         return f"Measure({self.table().name}.{self.name})"
 
-    def child_measures(self, *, recursive: bool = False) -> list["Measure"]:
+    def child_measures(self, *, recursive: bool = False) -> set["Measure"]:
         dependent_measures = self.tabular_model.calc_dependencies.find_all({
             "referenced_object_type": "MEASURE",
             "referenced_table": self.table().name,
@@ -74,18 +74,18 @@ class Measure(SsasRenameTable):
         full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in child_keys]
 
         if recursive:
-            recursive_dependencies: list[Measure] = []
+            recursive_dependencies: set[Measure] = set()
             for dep in full_dependencies:
                 if f"[{self.name}]" in str(dep.expression):
-                    recursive_dependencies.append(dep)
-                    recursive_dependencies.extend(dep.child_measures(recursive=True))
+                    recursive_dependencies.add(dep)
+                    recursive_dependencies.update(dep.child_measures(recursive=True))
             return recursive_dependencies
 
-        return [x for x in full_dependencies if f"[{self.name}]" in str(x.expression)]
+        return {x for x in full_dependencies if f"[{self.name}]" in str(x.expression)}
 
-    def parent_measures(self, *, recursive: bool = False) -> list["Measure"]:
+    def parent_measures(self, *, recursive: bool = False) -> set["Measure"]:
         """Calculated columns can use Measures too :(."""
-        dependent_measures: list[CalcDependency] = self.tabular_model.calc_dependencies.find_all({
+        dependent_measures: set[CalcDependency] = self.tabular_model.calc_dependencies.find_all({
             "object_type": "MEASURE",
             "table": self.table().name,
             "object": self.name,
@@ -95,16 +95,16 @@ class Measure(SsasRenameTable):
         full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in parent_keys]
 
         if recursive:
-            recursive_dependencies: list[Measure] = []
+            recursive_dependencies: set[Measure] = set()
             for dep in full_dependencies:
                 if f"[{dep.name}]" in str(self.expression):
-                    recursive_dependencies.append(dep)
-                    recursive_dependencies.extend(dep.parent_measures(recursive=True))
+                    recursive_dependencies.add(dep)
+                    recursive_dependencies.update(dep.parent_measures(recursive=True))
             return recursive_dependencies
 
-        return [x for x in full_dependencies if f"[{x.name}]" in str(self.expression)]
+        return {x for x in full_dependencies if f"[{x.name}]" in str(self.expression)}
 
-    def child_columns(self, *, recursive: bool = False) -> list["Column"]:
+    def child_columns(self, *, recursive: bool = False) -> set["Column"]:
         """Only occurs when the dependent column is calculated (expression is not None)."""
         dependent_measures = self.tabular_model.calc_dependencies.find_all({
             "referenced_object_type": "MEASURE",
@@ -115,16 +115,16 @@ class Measure(SsasRenameTable):
         full_dependencies = [m for m in self.tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
 
         if recursive:
-            recursive_dependencies: list[Column] = []
+            recursive_dependencies: set[Column] = set()
             for dep in full_dependencies:
                 if f"[{self.name}]" in str(dep.expression):
-                    recursive_dependencies.append(dep)
-                    recursive_dependencies.extend(dep.child_columns(recursive=True))
+                    recursive_dependencies.add(dep)
+                    recursive_dependencies.update(dep.child_columns(recursive=True))
             return recursive_dependencies
 
-        return [x for x in full_dependencies if f"[{self.name}]" in str(x.expression)]
+        return {x for x in full_dependencies if f"[{self.name}]" in str(x.expression)}
 
-    def parent_columns(self, *, recursive: bool = False) -> list["Column"]:
+    def parent_columns(self, *, recursive: bool = False) -> set["Column"]:
         """Only occurs when column is calculated."""
         dependent_measures = self.tabular_model.calc_dependencies.find_all({
             "object_type": "MEASURE",
@@ -139,35 +139,35 @@ class Measure(SsasRenameTable):
         full_dependencies = [c for c in self.tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
 
         if recursive:
-            recursive_dependencies: list[Column] = []
+            recursive_dependencies: set[Column] = set()
             for dep in full_dependencies:
                 if f"[{dep.explicit_name}]" in str(self.expression):
-                    recursive_dependencies.append(dep)
-                    recursive_dependencies.extend(dep.parent_columns(recursive=True))
+                    recursive_dependencies.add(dep)
+                    recursive_dependencies.update(dep.parent_columns(recursive=True))
             return recursive_dependencies
 
-        return [x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)]
+        return {x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)}
 
-    def parents(self, *, recursive: bool = False) -> "list[Column | Measure]":
+    def parents(self, *, recursive: bool = False) -> "set[Column | Measure]":
         """Returns all columns and measures this Measure is dependent on."""
-        full_dependencies = self.parent_columns() + self.parent_measures()
+        full_dependencies = self.parent_columns() | self.parent_measures()
         if recursive:
-            recursive_dependencies: list[Column | Measure] = []
+            recursive_dependencies: set[Column | Measure] = set()
             for dep in full_dependencies:
-                recursive_dependencies.append(dep)
-                recursive_dependencies.extend(dep.parents(recursive=True))
+                recursive_dependencies.add(dep)
+                recursive_dependencies.update(dep.parents(recursive=True))
             return recursive_dependencies
 
         return full_dependencies
 
-    def children(self, *, recursive: bool = False) -> "list[Column | Measure]":
+    def children(self, *, recursive: bool = False) -> "set[Column | Measure]":
         """Returns all columns and measures dependent on this Measure."""
-        full_dependencies = self.child_columns() + self.child_measures()
+        full_dependencies = self.child_columns() | self.child_measures()
         if recursive:
-            recursive_dependencies: list[Column | Measure] = []
+            recursive_dependencies: set[Column | Measure] = set()
             for dep in full_dependencies:
-                recursive_dependencies.append(dep)
-                recursive_dependencies.extend(dep.children(recursive=True))
+                recursive_dependencies.add(dep)
+                recursive_dependencies.update(dep.children(recursive=True))
             return recursive_dependencies
         return full_dependencies
 
@@ -176,7 +176,7 @@ class Measure(SsasRenameTable):
             return LineageNode(
                 self,
                 lineage_type,
-                [c.get_lineage(lineage_type) for c in self.child_measures() + self.child_columns()],
+                [c.get_lineage(lineage_type) for c in self.child_measures() | self.child_columns()],
             )
         parent_nodes: list[SsasTable | None] = [
             self.KPI(),

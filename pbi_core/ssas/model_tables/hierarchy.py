@@ -27,10 +27,10 @@ class Hierarchy(SsasRenameTable):
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})
 
-    def levels(self) -> list["Level"]:
+    def levels(self) -> set["Level"]:
         return self.tabular_model.levels.find_all({"hierarchy_id": self.id})
 
-    def variations(self) -> list["Variation"]:
+    def variations(self) -> set["Variation"]:
         return self.tabular_model.variations.find_all({"default_hierarchy_id": self.id})
 
     @classmethod

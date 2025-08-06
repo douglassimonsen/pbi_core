@@ -108,7 +108,7 @@ class Column(SsasRenameTable):
     def attribute_hierarchy(self) -> "AttributeHierarchy":
         return self.tabular_model.attribute_hierarchies.find({"id": self.attribute_hierarchy_id})
 
-    def levels(self) -> list["Level"]:
+    def levels(self) -> set["Level"]:
         return self.tabular_model.levels.find_all({"column_id": self.id})
 
     def _column_type(self) -> Literal["COLUMN", "CALC_COLUMN"]:
@@ -116,7 +116,7 @@ class Column(SsasRenameTable):
             return "COLUMN"
         return "CALC_COLUMN"
 
-    def child_measures(self, *, recursive: bool = False) -> list["Measure"]:
+    def child_measures(self, *, recursive: bool = False) -> set["Measure"]:
         """Returns measures dependent on this Column."""
         object_type = self._column_type()
         dependent_measures = self.tabular_model.calc_dependencies.find_all({
@@ -129,16 +129,16 @@ class Column(SsasRenameTable):
         full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in child_keys]
 
         if recursive:
-            recursive_dependencies: list[Measure] = []
+            recursive_dependencies: set[Measure] = set()
             for dep in full_dependencies:
                 if f"[{self.explicit_name}]" in str(dep.expression):
-                    recursive_dependencies.append(dep)
-                    recursive_dependencies.extend(dep.child_measures(recursive=True))
+                    recursive_dependencies.add(dep)
+                    recursive_dependencies.update(dep.child_measures(recursive=True))
             return recursive_dependencies
 
-        return [x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)]
+        return {x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)}
 
-    def parent_measures(self, *, recursive: bool = False) -> list["Measure"]:
+    def parent_measures(self, *, recursive: bool = False) -> set["Measure"]:
         """Returns measures this column is dependent on.
 
         Note:
@@ -157,16 +157,16 @@ class Column(SsasRenameTable):
         full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in parent_keys]
 
         if recursive:
-            recursive_dependencies: list[Measure] = []
+            recursive_dependencies: set[Measure] = set()
             for dep in full_dependencies:
                 if f"[{dep.name}]" in str(self.expression):
-                    recursive_dependencies.append(dep)
-                    recursive_dependencies.extend(dep.parent_measures(recursive=True))
+                    recursive_dependencies.add(dep)
+                    recursive_dependencies.update(dep.parent_measures(recursive=True))
             return recursive_dependencies
 
-        return [x for x in full_dependencies if f"[{x.name}]" in str(self.expression)]
+        return {x for x in full_dependencies if f"[{x.name}]" in str(self.expression)}
 
-    def child_columns(self, *, recursive: bool = False) -> list["Column"]:
+    def child_columns(self, *, recursive: bool = False) -> set["Column"]:
         """Returns columns dependent on this Column.
 
         Note:
@@ -187,16 +187,16 @@ class Column(SsasRenameTable):
         full_dependencies = [m for m in self.tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
 
         if recursive:
-            recursive_dependencies: list[Column] = []
+            recursive_dependencies: set[Column] = set()
             for dep in full_dependencies:
                 if f"[{self.explicit_name}]" in str(dep.expression):
-                    recursive_dependencies.append(dep)
-                    recursive_dependencies.extend(dep.child_columns(recursive=True))
+                    recursive_dependencies.add(dep)
+                    recursive_dependencies.update(dep.child_columns(recursive=True))
             return recursive_dependencies
 
-        return [x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)]
+        return {x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)}
 
-    def parent_columns(self, *, recursive: bool = False) -> list["Column"]:
+    def parent_columns(self, *, recursive: bool = False) -> set["Column"]:
         """Returns Columns this Column is dependent on.
 
         Note:
@@ -206,7 +206,7 @@ class Column(SsasRenameTable):
         """
         object_type = self._column_type()
         if object_type == "COLUMN":
-            return []
+            return set()
         dependent_measures = self.tabular_model.calc_dependencies.find_all({
             "object_type": object_type,
             "table": self.table().name,
@@ -220,35 +220,35 @@ class Column(SsasRenameTable):
         full_dependencies = [c for c in self.tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
 
         if recursive:
-            recursive_dependencies: list[Column] = []
+            recursive_dependencies: set[Column] = set()
             for dep in full_dependencies:
                 if f"[{dep.explicit_name}]" in str(self.expression):
-                    recursive_dependencies.append(dep)
-                    recursive_dependencies.extend(dep.parent_columns(recursive=True))
+                    recursive_dependencies.add(dep)
+                    recursive_dependencies.update(dep.parent_columns(recursive=True))
             return recursive_dependencies
 
-        return [x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)]
+        return {x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)}
 
-    def parents(self, *, recursive: bool = False) -> "list[Column | Measure]":
+    def parents(self, *, recursive: bool = False) -> "set[Column | Measure]":
         """Returns all columns and measures this Column is dependent on."""
-        full_dependencies = self.parent_columns() + self.parent_measures()
+        full_dependencies = self.parent_columns() | self.parent_measures()
         if recursive:
-            recursive_dependencies: list[Column | Measure] = []
+            recursive_dependencies: set[Column | Measure] = set()
             for dep in full_dependencies:
-                recursive_dependencies.append(dep)
-                recursive_dependencies.extend(dep.parents(recursive=True))
+                recursive_dependencies.add(dep)
+                recursive_dependencies.update(dep.parents(recursive=True))
             return recursive_dependencies
 
         return full_dependencies
 
-    def children(self, *, recursive: bool = False) -> "list[Column | Measure]":
+    def children(self, *, recursive: bool = False) -> "set[Column | Measure]":
         """Returns all columns and measures dependent on this Column."""
-        full_dependencies = self.child_columns() + self.child_measures()
+        full_dependencies = self.child_columns() | self.child_measures()
         if recursive:
-            recursive_dependencies: list[Column | Measure] = []
+            recursive_dependencies: set[Column | Measure] = set()
             for dep in full_dependencies:
-                recursive_dependencies.append(dep)
-                recursive_dependencies.extend(dep.children(recursive=True))
+                recursive_dependencies.add(dep)
+                recursive_dependencies.update(dep.children(recursive=True))
             return recursive_dependencies
         return full_dependencies
 
@@ -257,15 +257,15 @@ class Column(SsasRenameTable):
             return None
         return self.tabular_model.columns.find({"id": self.sort_by_column_id})
 
-    def sorting_columns(self) -> list["Column"]:
+    def sorting_columns(self) -> set["Column"]:
         """Provides the inverse information of sort_by_column."""
         return self.tabular_model.columns.find_all({"sort_by_column_id": self.id})
 
-    def from_relationships(self) -> list["Relationship"]:
+    def from_relationships(self) -> set["Relationship"]:
         return self.tabular_model.relationships.find_all({"from_column_id": self.id})
 
-    def to_relationships(self) -> list["Relationship"]:
+    def to_relationships(self) -> set["Relationship"]:
         return self.tabular_model.relationships.find_all({"to_column_id": self.id})
 
-    def relationships(self) -> list["Relationship"]:
-        return self.from_relationships() + self.to_relationships()
+    def relationships(self) -> set["Relationship"]:
+        return self.from_relationships() | self.to_relationships()

@@ -1,9 +1,9 @@
 from collections.abc import Callable
-from typing import Any, Protocol, TypeVar
+from typing import Any, Final, Protocol, TypeVar
 
 
 class IdProtocol(Protocol):
-    id: int
+    id: Final[int]
 
 
 T = TypeVar("T", bound=IdProtocol)
@@ -43,18 +43,18 @@ class Group(list[T]):
                     return val
         raise RowNotFoundError
 
-    def find_all(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> list[T]:
-        ret: list[T] = []
+    def find_all(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> set[T]:
+        ret: set[T] = set()
         if isinstance(match_val, int):
-            ret.extend(val for val in self if val.id == match_val)
+            ret.update(val for val in self if val.id == match_val)
         elif isinstance(match_val, dict):
-            ret.extend(
+            ret.update(
                 val
                 for val in self
                 if all(getattr(val, field_name) == field_value for field_name, field_value in match_val.items())
             )
         else:
-            ret.extend(val for val in self if match_val(val) is True)
+            ret.update(val for val in self if match_val(val) is True)
         return ret
 
     def sync_to_server(self) -> None:
