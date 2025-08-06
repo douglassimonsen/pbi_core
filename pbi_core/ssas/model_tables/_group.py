@@ -37,7 +37,7 @@ class Group(list[T]):
                     ret.append(val)
         elif isinstance(match_val, dict):
             for val in self:
-                if all(getattr(self, field_name) == field_value for field_name, field_value in match_val.items()):
+                if all(getattr(val, field_name) == field_value for field_name, field_value in match_val.items()):
                     ret.append(val)
 
         else:

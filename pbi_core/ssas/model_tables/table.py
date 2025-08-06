@@ -18,7 +18,7 @@ class Table(SsasRefreshTable):
     is_hidden: bool
     is_private: bool
     lineage_tag: UUID
-    model_id: str
+    model_id: int
     name: str
     show_as_variations_only: bool
     system_flags: int
