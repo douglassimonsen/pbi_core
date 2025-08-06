@@ -105,9 +105,17 @@ class SSASProcess:
 
     @property
     def certificate_directory(self) -> str:
+        """
+        The certificate directory needs to be identified for intiializing the SSAS instance.
+        Since this string is being passed to a config used by microsoft products, we follow Windows
+        "\\" convention for directories
+        """
         return rf"C:\Users\{os.getlogin()}\AppData\Local\Microsoft\Power BI Desktop\CertifiedExtensions"
 
     def create_workspace(self) -> None:
+        """
+        Creates the workspace directory and populates the initial config file for the new SSAS instance
+        """
         logger.debug("initializing SSAS Workspace", directory=self.workspace_directory())
         self.workspace_directory().mkdir(parents=True, exist_ok=True)
         (self.workspace_directory() / "msmdsrv.ini").write_text(

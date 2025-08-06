@@ -58,11 +58,10 @@ if TYPE_CHECKING:
         Role,
         RoleMembership,
         Set,
+        SsasTable,
         Table,
         TablePermission,
         Variation,
-
-        SsasTable
     )
     from .server import BaseServer
 
@@ -77,6 +76,7 @@ class BaseTabularModel:
 
     attribute_hierarchies: "Group[AttributeHierarchy]"
     calc_dependencies: "Group[CalcDependency]"
+    """Returns all (multi=generational) ancestors of a calculation element"""
     calculation_groups: "Group[CalculationGroup]"
     calculation_items: "Group[CalculationItem]"
     columns: "Group[Column]"
@@ -132,6 +132,10 @@ class BaseTabularModel:
         return LocalTabularModel(self.db_name, self.server, pbix_path)
 
     def sync_from(self) -> None:
+        """
+        Pulls data from the SSAS instance to the Python instance. Pairs with the functions `sync_to` that update records in the
+        SSAS instance with data from Python
+        """
         from ..model_tables import FIELD_TYPES
         from ..model_tables._group import Group
 
@@ -154,23 +158,49 @@ class BaseTabularModel:
     def TABULAR_FIELDS(self) -> tuple[str]:
         """
         Returns a list of all the field names for the SSAS tables in the tabular model
-        
+
         No calc_dependencies, it's not a real table but a view
         No model, since it's not a "real" table
         """
         return (
-            'alternate_of', 'annotations', 'attribute_hierarchies',
-            'calculation_groups', 'calculation_items', 'column_permissions', 
-            'columns', 'cultures', 'data_sources', 'detail_row_definitions', 
-            'expressions', 'extended_properties', 'format_string_definitions', 
-            'group_by_columns', 'hierarchies', 'kpis', 'levels', 'linguistic_metadata', 
-            'measures', 'object_translations', 'partitions', 'perspective', 
-            'perspective_columns', 'perspective_hierarchies', 'perspective_measure', 
-            'perspective_sets', 'perspective_table', 'query_groups', 'refresh_policy', 
-            'related_column_details', 'relationships', 'role_membership', 'roles', 
-            'sets', 'table_permissions', 'tables', 'variations',
+            "alternate_of",
+            "annotations",
+            "attribute_hierarchies",
+            "calculation_groups",
+            "calculation_items",
+            "column_permissions",
+            "columns",
+            "cultures",
+            "data_sources",
+            "detail_row_definitions",
+            "expressions",
+            "extended_properties",
+            "format_string_definitions",
+            "group_by_columns",
+            "hierarchies",
+            "kpis",
+            "levels",
+            "linguistic_metadata",
+            "measures",
+            "object_translations",
+            "partitions",
+            "perspective",
+            "perspective_columns",
+            "perspective_hierarchies",
+            "perspective_measure",
+            "perspective_sets",
+            "perspective_table",
+            "query_groups",
+            "refresh_policy",
+            "related_column_details",
+            "relationships",
+            "role_membership",
+            "roles",
+            "sets",
+            "table_permissions",
+            "tables",
+            "variations",
         )  # type: ignore
-
 
 
 class LocalTabularModel(BaseTabularModel):
@@ -186,6 +216,9 @@ class LocalTabularModel(BaseTabularModel):
 
 
 def discover_xml_to_dict(xml: BeautifulSoup) -> dict[str, list[dict[Any, Any]]]:
+    """
+    Converts the results of the Discover XML to a dictionary to make downstream transformations more convenient
+    """
     assert xml.results is not None
     results: list[Tag] = list(xml.results)  # type: ignore
     results[-1]["name"] = "CalcDependency"
@@ -241,6 +274,14 @@ class SsasTable(pydantic.BaseModel):
 
     @pydantic.model_validator(mode="before")
     def to_snake_case(cls: "SsasTable", raw_values: dict[str, Any]) -> dict[str, Any]:
+        """
+        Converts SnakeCase to snake_case.
+
+        If a "special_cases" example appears, that transformation is applied.
+        If the first character is capitalized, it is lower cased
+        If any other character is capitalized, it is lower cased and prefixed with a "_"
+        """
+
         def update_char(char: str, prev_char: str) -> str:
             if char.isupper() and prev_char.islower() and prev_char != "_":
                 return f"_{char.lower()}"
@@ -248,10 +289,10 @@ class SsasTable(pydantic.BaseModel):
                 return char.lower()
 
         def case_helper(field_name: str) -> str:
-            special_cases = {
+            SPECIAL_CASES = {
                 "owerBI": "owerbi",
             }
-            for old_segment, new_segment in special_cases.items():
+            for old_segment, new_segment in SPECIAL_CASES.items():
                 field_name = field_name.replace(old_segment, new_segment)
             field_name = "".join(
                 update_char(curr, prev) for prev, curr in zip(" " + field_name[:-1], field_name)
@@ -268,9 +309,11 @@ class SsasTable(pydantic.BaseModel):
         return ret
 
     def query_dax(self, query: str, db_name: Optional[str] = None) -> None:
+        """Helper function to remove the ``.tabular_model.server`` required to run a DAX query from an SSAS element"""
         self.tabular_model.server.query_dax(query, db_name)
 
     def query_xml(self, query: str, db_name: Optional[str] = None) -> None:
+        """Helper function to remove the ``.tabular_model.server`` required to run an XML query from an SSAS element"""
         self.tabular_model.server.query_xml(query, db_name)
 
     @staticmethod
@@ -305,6 +348,8 @@ class SsasTable(pydantic.BaseModel):
 
 
 class SsasAlter(SsasTable):
+    """Class for SSAS records that implement the `alter <https://learn.microsoft.com/en-us/analysis-services/tmsl/alter-command-tmsl?view=asallproducts-allversions>`_ feature"""
+
     def alter(self) -> None:
         """
         Updates a non-name field of an object
@@ -322,6 +367,8 @@ class SsasAlter(SsasTable):
 
 
 class SsasRename(SsasTable):
+    """Class for SSAS records that implement the `rename <https://learn.microsoft.com/en-us/analysis-services/tmsl/rename-command-tmsl?view=asallproducts-allversions>`_ feature"""
+
     _db_name_field: str = "not_defined"
 
     def rename(self) -> None:
@@ -339,6 +386,8 @@ class SsasRename(SsasTable):
 
 
 class SsasCreate(SsasTable):
+    """Class for SSAS records that implement the `create <https://learn.microsoft.com/en-us/analysis-services/tmsl/create-command-tmsl?view=asallproducts-allversions>`_ feature"""
+
     @classmethod
     def create(cls: Type["SsasCreate"], tabular_model: "BaseTabularModel", **kwargs: dict[str, Any]) -> None:
         # data = {
@@ -355,6 +404,8 @@ class SsasCreate(SsasTable):
 
 
 class SsasDelete(SsasTable):
+    """Class for SSAS records that implement the `delete <https://learn.microsoft.com/en-us/analysis-services/tmsl/delete-command-tmsl?view=asallproducts-allversions>`_ feature"""
+
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
 
     def delete(self) -> None:
@@ -369,7 +420,7 @@ class SsasDelete(SsasTable):
 
 
 class RefreshType(IntEnum):
-    """From https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet"""
+    """From `[`Microsoft doc pages <https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet>_"""
 
     Full = 1  # For all partitions in the specified partition, table, or database, refresh data and recalculate all dependents. For a calculation partition, recalculate the partition and all its dependents.
     ClearValues = 2  # Clear values in this object and all its dependents.
@@ -381,6 +432,8 @@ class RefreshType(IntEnum):
 
 
 class SsasRefresh(SsasTable):
+    """Class for SSAS records that implement the `refresh <https://learn.microsoft.com/en-us/analysis-services/tmsl/refresh-command-tmsl?view=asallproducts-allversions>`_ feature"""
+
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
     _refresh_type: RefreshType
 
@@ -397,6 +450,8 @@ class SsasRefresh(SsasTable):
 
 
 class SsasReadonlyTable(SsasTable):
+    "Class for SSAS records that implement no commands"
+
     _commands: NoCommands
 
 
@@ -444,6 +499,8 @@ class SsasRefreshTable(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefres
 
 
 class SsasModelTable(SsasAlter, SsasRefresh, SsasRename):
+    """This class is solely used for the single Model record"""
+
     _commands: ModelCommands
 
     def model_post_init(self, __context: Any) -> None:

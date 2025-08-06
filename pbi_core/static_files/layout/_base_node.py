@@ -88,15 +88,22 @@ class LayoutNode(pydantic.BaseModel):
         return ret
 
     def __str__(self) -> str:
-        if self._name_field is None:
-            return super().__str__()
-        return f"{self.__class__.__name__}({getattr(self, self._name_field)})"
+        if self._name_field is not None:
+            name = getattr(self, self._name_field)
+            return f"{self.__class__.__name__}({name})"
+        return super().__str__()
 
     def get_lineage(self, lineage_type: LineageType, tabular_model: "BaseTabularModel") -> LineageNode:
         raise NotImplementedError
 
     def find_xpath(self, xpath: list[str | int]) -> "LayoutNode":
         return _find_xpath(self, xpath)
+
+    def pprint(self, indent: int = 4) -> None:
+        ret = self.model_dump_json(indent=indent)
+        ret = ret.replace('"', "").replace(":", "=").replace("{", "(").replace("}", ")")
+        ret = self.__class__.__name__ + ret
+        print(ret)
 
 
 def _find_xpath(val: LayoutNode | list[LayoutNode] | dict[str, LayoutNode] | str, xpath: list[str | int]) -> LayoutNode:

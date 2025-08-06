@@ -1,10 +1,13 @@
 from enum import IntEnum
-from typing import Annotated, Any, Optional, Union, cast
+from typing import TYPE_CHECKING, Annotated, Any, Optional, Union, cast
 
 from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
 from .sources import AggregationSource, DataSource, LiteralSource, Source, SourceRef
+
+if TYPE_CHECKING:
+    from .filters import From
 
 
 class ExpressionVersion(IntEnum):
@@ -20,12 +23,32 @@ class AnyValue(LayoutNode):
     AnyValue: _AnyValueHelper
 
 
+class QueryConditionType(IntEnum):
+    """Names defined by myself, but based on query outputs from the query tester"""
+
+    STANDARD = 0
+    SLOW = 1  # Currently, just the search options
+    TOP_N = 2
+    MEASURE = 3
+
+
 class ComparisonKind(IntEnum):
     IS_BLANK = 0
     IS_GREATER_THAN = 1
     IS_GREATER_THAN_OR_EQUAL_TO = 2
     IS_LESS_THAN = 3
     IS_LESS_THAN_OR_EQUAL_TO = 4
+
+    def get_operator(self) -> str:
+        OPERATOR_MAPPING = {
+            ComparisonKind.IS_GREATER_THAN: ">",
+            ComparisonKind.IS_GREATER_THAN_OR_EQUAL_TO: ">=",
+            ComparisonKind.IS_LESS_THAN: "<",
+            ComparisonKind.IS_LESS_THAN_OR_EQUAL_TO: "<=",
+        }
+        if self not in OPERATOR_MAPPING:
+            raise ValueError(f"No operator is defined for: {self}")
+        return OPERATOR_MAPPING[self]
 
 
 class ComparisonHelper(LayoutNode):
@@ -36,27 +59,56 @@ class ComparisonHelper(LayoutNode):
 class ContainsCondition(LayoutNode):
     Contains: ComparisonHelper
 
+    def get_prototype_query_type(self) -> QueryConditionType:
+        return QueryConditionType.SLOW
+
+    def to_query_text(self, tables: dict[str, "From"]) -> str:
+        breakpoint()
+
 
 class InExpressionHelper(LayoutNode):
     Expressions: list[DataSource]
     Values: list[list[LiteralSource]]
 
+    def vals(self) -> list[str]:
+        return [str(y.value()) for x in self.Values for y in x]
+
     def __repr__(self) -> str:
-        vals = [str(y.value) for x in self.Values for y in x]
         source = self.Expressions[0].__repr__()
-        return f"In({source}, {', '.join(vals)})"
+        return f"In({source}, {', '.join(self.vals())})"
+
+    def to_query_text(self, tables: dict[str, "From"]) -> str:
+        table_name: str = tables[self.Expressions[0].Column.table()].Entity  # type: ignore
+        column_name: str = self.Expressions[0].Column.column()  # type: ignore
+        vals = ", ".join(self.vals())
+        return f"'{table_name}'[{column_name}] IN {{{vals}}}"
 
 
 class InTopNExpressionHelper(LayoutNode):
+    """Internal representation of the Top N option"""
+
     Expressions: list[DataSource]
     Table: SourceRef
 
+    def to_query_text(self, tables: dict[str, "From"]) -> str:
+        breakpoint()
+
 
 class InCondition(LayoutNode):
+    """In is how "is" and "is not" are internally represented"""
+
     In: InExpressionHelper | InTopNExpressionHelper
 
     def __repr__(self) -> str:
         return self.In.__repr__()
+
+    def get_prototype_query_type(self) -> QueryConditionType:
+        if isinstance(self.In, InTopNExpressionHelper):
+            return QueryConditionType.TOP_N
+        return QueryConditionType.STANDARD
+
+    def to_query_text(self, tables: dict[str, "From"]) -> str:
+        return self.In.to_query_text(tables)
 
 
 class TimeUnit(IntEnum):
@@ -92,6 +144,23 @@ class ComparisonConditionHelper(LayoutNode):
 class ComparisonCondition(LayoutNode):
     Comparison: ComparisonConditionHelper
 
+    def get_prototype_query_type(self) -> QueryConditionType:
+        if isinstance(self.Comparison.Left, AggregationSource):
+            return QueryConditionType.MEASURE
+        return QueryConditionType.STANDARD
+
+    def to_query_text(self, tables: dict[str, "From"]) -> str:
+        if isinstance(self.Comparison.Left, AggregationSource):
+            raise ValueError
+        else:
+            table_name: str = tables[self.Comparison.Left.Column.table()].Entity  # type: ignore
+            column_name: str = self.Comparison.Left.Column.column()  # type: ignore
+            if self.Comparison.ComparisonKind == ComparisonKind.IS_BLANK:
+                return f"ISBLANK('{table_name}'[{column_name}])"
+            assert isinstance(self.Comparison.Right, LiteralSource)
+            value = self.Comparison.Right.value()
+            return f"'{table_name}'[{column_name}] {self.Comparison.ComparisonKind.get_operator()} {value}"
+
 
 BasicConditions = ContainsCondition | InCondition | ComparisonCondition
 
@@ -106,6 +175,12 @@ class NotCondition(LayoutNode):
     def __repr__(self) -> str:
         return f"Not({self.Not.Expression.__repr__()})"
 
+    def get_prototype_query_type(self) -> QueryConditionType:
+        return self.Not.Expression.get_prototype_query_type()
+
+    def to_query_text(self, tables: dict[str, "From"]) -> str:
+        return f"NOT({self.Not.Expression.to_query_text(tables)})"
+
 
 NonCompositeConditions = BasicConditions | NotCondition
 
@@ -114,13 +189,36 @@ class CompositeConditionHelper(LayoutNode):
     Left: NonCompositeConditions
     Right: NonCompositeConditions
 
+    def get_prototype_query_type(self) -> QueryConditionType:
+        types = tuple(sorted({self.Left.get_prototype_query_type(), self.Right.get_prototype_query_type()}))
+        if len(types) == 1:
+            return types[0]
+        if types == (QueryConditionType.STANDARD, QueryConditionType.SLOW):
+            return QueryConditionType.SLOW
+        raise ValueError(types)
+
+    def to_query_text(self, tables: dict[str, "From"]) -> str:
+        return f"{self.Left.to_query_text(tables)}, {self.Right.to_query_text(tables)}"
+
 
 class AndCondition(LayoutNode):
     And: CompositeConditionHelper
 
+    def get_prototype_query_type(self) -> QueryConditionType:
+        return self.And.get_prototype_query_type()
+
+    def to_query_text(self, tables: dict[str, "From"]) -> str:
+        return f"AND({self.And.to_query_text(tables)})"
+
 
 class OrCondition(LayoutNode):
     Or: CompositeConditionHelper
+
+    def get_prototype_query_type(self) -> QueryConditionType:
+        return self.Or.get_prototype_query_type()
+
+    def to_query_text(self, tables: dict[str, "From"]) -> str:
+        return f"OR({self.Or.to_query_text(tables)})"
 
 
 def get_type(v: Any) -> str:
@@ -164,3 +262,9 @@ class Condition(LayoutNode):
 
     def __repr__(self) -> str:
         return f"Condition({self.Condition.__repr__()})"
+
+    def get_prototype_query_type(self) -> QueryConditionType:
+        return self.Condition.get_prototype_query_type()
+
+    def to_query_text(self, tables: dict[str, "From"]) -> str:
+        return self.Condition.to_query_text(tables)

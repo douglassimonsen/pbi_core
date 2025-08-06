@@ -31,12 +31,12 @@ Goals of this package:
    - |check| At the Column Level
    - |check| At the Table Level
    - |check| At the Measure Level
-   - |check| At the table Level
+   - |check| At the Visual Level
 - |uncheck| Automated Performance Testing
    - |uncheck| At the Column Level
    - |uncheck| At the Table Level
    - |uncheck| At the Measure Level
-   - |uncheck| At the table Level
+   - |uncheck| At the Visual Level
 - |uncheck| Linting Tools
    - |uncheck| Layout stylistic Linting
    - |uncheck| DAX Formatter

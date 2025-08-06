@@ -187,6 +187,12 @@ class LocalServer(BaseServer):
 
 
 def list_local_servers() -> list[LocalServer]:
+    """
+    Returns all active SSAS instances on a computer accessible from the python instance.
+
+    Note:
+        The main thing that would block a SSAS instance from being verified by a python instance is insufficient permissions
+    """
     ret: list[LocalServer] = []
     for process in psutil.process_iter():
         if get_msmdsrv_info(process) is not None:
@@ -209,5 +215,8 @@ def get_or_create_local_server(kill_on_exit: bool = True) -> LocalServer:
 
 
 def terminate_all_local_servers() -> None:
+    """
+    Attempts to terminate all SSAS instances on a computer. Useful for cleaning up the environment and avoiding memory leaks
+    """
     for server in list_local_servers():
         server.physical_process.terminate()
