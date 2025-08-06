@@ -1,5 +1,5 @@
 import datetime
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
 from types import TracebackType
@@ -7,8 +7,7 @@ from typing import Any
 
 import jinja2
 
-from pbi_core.ssas.server.server import BaseServer
-from pbi_core.ssas.server.tabular_model.tabular_model import LocalTabularModel
+from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel, LocalTabularModel
 from pbi_core.ssas.server.trace.trace_enums import TraceEvents
 
 TRACE_DIR = Path(__file__).parent / "templates"
@@ -27,42 +26,40 @@ class Performance:
 
 
 class PerformanceTrace:
+    # TODO: create a subthread that runs the subscribe on a separate thread, collecting the records (+n second delay?), saving to a thread-safe list. Once the commands have been run, run the delete trace on main thread + close conn on secondary thread. Return all trace records
     def __init__(
         self,
-        server: BaseServer,
+        db: BaseTabularModel,
         events: Iterable[TraceEvents] = (TraceEvents.COMMAND_END, TraceEvents.QUERY_END),
     ) -> None:
         self.events = events
-        self.server = server
+        self.db: BaseTabularModel = db
+        self.conn = self.db.server.conn(db_name=self.db.db_name).open()
         next_day = (datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
         trace_name = f"pbi_core_{next_day.replace(':', '_')}"
         subscription_name = f"pbi_core_subscription_{next_day.replace(':', '_')}"
-        self.trace_command = TRACE_TEMPLATES["trace.xml"].render(
-            name=trace_name,
+        self.trace_create_command = TRACE_TEMPLATES["trace_create.xml"].render(
+            trace_name=trace_name,
             stop_time=next_day,
             events=self.events,
         )
-        self.subscribe_command = TRACE_TEMPLATES["subscribe.xml"].render(
+        self.subscription_create_command = TRACE_TEMPLATES["subscription_create.xml"].render(
             trace_name=trace_name,
             subscription_name=subscription_name,
         )
-        self.trace_delete_command = TRACE_TEMPLATES["trace.xml"].render(
-            name=trace_name,
+        self.trace_delete_command = TRACE_TEMPLATES["trace_delete.xml"].render(
+            trace_name=trace_name,
         )
 
     def __enter__(self) -> "PerformanceTrace":
-        self.server.query_xml(self.trace_command)
-        with self.server.conn(db_name="951f69ce-bafb-4963-a52e-861674c51728") as conn:
-            cursor = conn.cursor()
-            cursor.execute_dax(self.subscribe_command, query_name="trace")
-            breakpoint()
-            for i in range(0):
-                print(next(cursor.fetchone()))
-            print("done")
-            cursor._cmd.Cancel()
-            breakpoint()
-            cursor._reader.Close()
-            return self
+        self.db.server.query_xml(self.trace_create_command)
+        self.cursor = self.conn.cursor()
+        self.cursor.execute_dax(self.subscription_create_command)
+        return self
+
+    def get_performance(self) -> Iterator[tuple[Any, ...]]:
+        while True:
+            yield next(self.cursor.fetchone())
 
     def __exit__(
         self,
@@ -70,7 +67,8 @@ class PerformanceTrace:
         exc_val: BaseException | None,
         exc_tb: TracebackType | None,
     ) -> bool | None:
-        with self.server.conn(db_name="951f69ce-bafb-4963-a52e-861674c51728") as conn:
+        print("Exiting")
+        with self.db.server.conn(db_name=self.db.db_name) as conn:
             cursor = conn.cursor()
             cursor.execute_xml(self.trace_delete_command)
 
@@ -90,6 +88,8 @@ def get_performance(model: LocalTabularModel, func: Callable[[LocalTabularModel]
 
 
     """
-    with PerformanceTrace(model.server):
+    with PerformanceTrace(model) as perf_trace:
         func(model)
+        perf = perf_trace.get_performance()
+    print(next(perf))
     return Performance(0, 0)

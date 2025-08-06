@@ -13,8 +13,8 @@
             xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400"
             xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500"
             xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500">
-            <ID>{{name}}</ID>
-            <Name>{{name}}</Name>
+            <ID>{{trace_name}}</ID>
+            <Name>{{trace_name}}</Name>
             <StopTime>{{stop_time}}</StopTime>
             <Events>
                 {% for event in events -%}
