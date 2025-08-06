@@ -1,8 +1,10 @@
 import datetime
+from enum import IntEnum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server.tabular_model import SsasRenameRecord
 
 if TYPE_CHECKING:
@@ -11,19 +13,28 @@ if TYPE_CHECKING:
     from .variation import Variation
 
 
+class HideMembers(IntEnum):
+    Default = 0
+    HideBlankMembers = 1
+
+
 class Hierarchy(SsasRenameRecord):
     """TBD.
 
     SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/4eff6661-1458-4c5a-9875-07218f1458e5
     """
 
-    hide_members: int
+    description: str | None = None
+    display_folder: str | None = None
+    hide_members: HideMembers
     hierarchy_storage_id: int
     is_hidden: bool
-    lineage_tag: UUID = uuid4()
     name: str
-    state: int
+    state: DataState
     table_id: int
+
+    lineage_tag: UUID = uuid4()
+    source_lineage_tag: UUID = uuid4()
 
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime

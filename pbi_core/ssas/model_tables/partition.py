@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.logging import get_logger
+from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server.tabular_model import RefreshType, SsasRefreshRecord, SsasTable
 
 from ._group import RowNotFoundError
@@ -14,6 +15,7 @@ from .column import Column
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from .expression import Expression
     from .query_group import QueryGroup
     from .table import Table
 
@@ -26,15 +28,25 @@ class PartitionMode(IntEnum):
 
     Import = 0
     DirectQuery = 1  # not verified
-    default = 2  # not verified
+    Default = 2  # not verified
+    Push = 3
 
 
 class PartitionType(IntEnum):
     """Source: https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions."""
 
-    NA = 1  # not verified
-    Calculated = 2  # not verified
-    Query = 4  # not verified
+    Query = 1
+    Calculated = 2
+    _None = 3
+    M = 4
+    Entity = 5
+    CalculationGroup = 7
+
+
+class DataView(IntEnum):
+    Full = 0
+    Sample = 1
+    Default = 3
 
 
 class Partition(SsasRefreshRecord):
@@ -47,8 +59,12 @@ class Partition(SsasRefreshRecord):
 
     _default_refresh_typ = RefreshType.Full
 
-    data_view: int
+    data_view: DataView
     data_source_id: int | None = None
+    description: str | None = None
+    error_message: str | None = None
+    expression_source_id: int | None = None
+    m_attributes: str | None = None
     mode: PartitionMode
     name: str
     partition_storage_id: int
@@ -56,13 +72,24 @@ class Partition(SsasRefreshRecord):
     query_group_id: int | None = None
     range_granularity: int
     retain_data_till_force_calculate: bool
-    state: int
+    state: DataState
     system_flags: int
     table_id: int
     type: PartitionType
 
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
+
+    def expression_source(self) -> "Expression | None":
+        if self.expression_source_id is None:
+            return None
+        return self.tabular_model.expressions.find(self.expression_source_id)
+
+    def is_system_table(self) -> bool:
+        return bool(self.system_flags >> 1 % 2)
+
+    def is_from_calculated_table(self) -> bool:
+        return bool(self.system_flags % 2)
 
     def query_group(self) -> "QueryGroup | None":
         try:

@@ -3,12 +3,15 @@ from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.model_tables.enums import DataCategory, DataState, DataType
 from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
 from .column import Column
 
 if TYPE_CHECKING:
     from .calc_dependency import CalcDependency
+    from .detail_row_definition import DetailRowDefinition
+    from .format_string_definition import FormatStringDefinition
     from .kpi import KPI
     from .table import Table
 
@@ -19,23 +22,37 @@ class Measure(SsasRenameRecord):
     SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ab331e04-78f7-49f0-861f-3f155b8b4c5b
     """
 
-    data_category: str | None = None
-    data_type: int
+    data_category: DataCategory | None = None
+    data_type: DataType
     description: str | None = None
+    detail_rows_definition_id: int | None = None
     display_folder: str | None = None
     error_message: str | None = None
     expression: str | int | float | None = None
     format_string: str | int | None = None
+    format_string_definition_id: int | None = None
     is_hidden: bool
     is_simple_measure: bool
     kpi_id: int | None = None
-    lineage_tag: UUID = uuid4()
     name: str
-    state: int
+    state: DataState
     table_id: int
+
+    lineage_tag: UUID = uuid4()
+    source_lineage_tag: UUID = uuid4()
 
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
+
+    def detail_rows_definition(self) -> "DetailRowDefinition | None":
+        if self.detail_rows_definition_id is None:
+            return None
+        return self.tabular_model.detail_row_definitions.find(self.detail_rows_definition_id)
+
+    def format_string_definition(self) -> "FormatStringDefinition | None":
+        if self.format_string_definition_id is None:
+            return None
+        return self.tabular_model.format_string_definitions.find(self.format_string_definition_id)
 
     def KPI(self) -> "KPI | None":  # noqa: N802
         if self.kpi_id is not None:

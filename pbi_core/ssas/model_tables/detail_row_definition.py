@@ -1,4 +1,12 @@
+import datetime
+from typing import TYPE_CHECKING
+
+from pbi_core.ssas.model_tables.enums import DataState, ObjectType
 from pbi_core.ssas.server.tabular_model import SsasEditableRecord
+
+if TYPE_CHECKING:
+    from .measure import Measure
+    from .table import Table
 
 
 class DetailRowDefinition(SsasEditableRecord):
@@ -7,6 +15,24 @@ class DetailRowDefinition(SsasEditableRecord):
     SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7eb1e044-4eed-467d-b10f-ce208798ddb0
     """
 
+    error_message: str
+    expression: str
+    object_id: int
+    object_type: ObjectType
+    state: DataState
+
+    modified_time: datetime.datetime
+
     @classmethod
     def _db_type_name(cls) -> str:
         return "DetailRowsDefinition"
+
+    def object(self) -> "Table | Measure":
+        match self.object_type:
+            case ObjectType.MEASURE:
+                return self.tabular_model.measures.find(self.object_id)
+            case ObjectType.TABLE:
+                return self.tabular_model.tables.find(self.object_id)
+            case _:
+                msg = f"No logic for object type: {self.object_type}"
+                raise TypeError(msg)

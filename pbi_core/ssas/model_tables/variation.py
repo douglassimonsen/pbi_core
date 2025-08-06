@@ -15,22 +15,29 @@ class Variation(SsasRenameRecord):
     SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/b9dfeb51-cbb6-4eab-91bd-fa2b23f51ca3
     """
 
-    column: int | None = None
+    column: int | None = None  # TODO: pbi says this shouldn't exist
     column_id: int
+    default_column_id: int | None = None
     default_hierarchy_id: int
+    description: str | None = None
     is_default: bool
     name: str
     relationship_id: int
 
-    def get_column(self) -> "Column | None":
+    def get_column(self) -> "Column":
         """Name is bad to not shadow the column field in this entity :(."""
-        return self.tabular_model.columns.find({"id": self.column_id})
+        return self.tabular_model.columns.find(self.column_id)
+
+    def default_column(self) -> "Column | None":
+        if self.default_column_id is None:
+            return None
+        return self.tabular_model.columns.find(self.default_column_id)
 
     def default_hierarchy(self) -> "Hierarchy":
-        return self.tabular_model.hierarchies.find({"id": self.default_hierarchy_id})
+        return self.tabular_model.hierarchies.find(self.default_hierarchy_id)
 
     def relationship(self) -> "Relationship":
-        return self.tabular_model.relationships.find({"id": self.relationship_id})
+        return self.tabular_model.relationships.find(self.relationship_id)
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:
         if lineage_type == "children":

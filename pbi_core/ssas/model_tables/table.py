@@ -5,6 +5,7 @@ from uuid import UUID, uuid4
 from bs4 import BeautifulSoup
 
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.model_tables.enums import DataCategory
 from pbi_core.ssas.server.tabular_model import RefreshType, SsasRefreshRecord
 
 from .column import Column
@@ -12,7 +13,10 @@ from .measure import Measure
 from .partition import Partition
 
 if TYPE_CHECKING:
+    from .calculation_group import CalculationGroup
+    from .detail_row_definition import DetailRowDefinition
     from .model import Model
+    from .refresh_policy import RefreshPolicy
 
 
 class Table(SsasRefreshRecord):
@@ -24,21 +28,43 @@ class Table(SsasRefreshRecord):
     _refresh_type = RefreshType.DataOnly
 
     alternate_source_precedence: int
-    data_category: str | None = None
+    calculation_group_id: int | None = None
+    data_category: DataCategory | None = None
+    default_detail_rows_defintion_id: int | None = None
     description: str | None = None
+    exclude_from_automatic_aggregations: bool = False
     exclude_from_model_refresh: bool
     is_hidden: bool
     is_private: bool
-    lineage_tag: UUID = uuid4()
     model_id: int
     name: str
+    refresh_policy_id: int | None = None
     show_as_variations_only: bool
     system_flags: int
     system_managed: bool | None = None
     table_storage_id: int | None = None
 
+    lineage_tag: UUID = uuid4()
+    source_lineage_tag: UUID = uuid4()
+
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
+
+    def calculation_group(self) -> "CalculationGroup | None":
+        if self.calculation_group_id is None:
+            return None
+        return self.tabular_model.calculation_groups.find(self.calculation_group_id)
+
+    def refresh_policy(self) -> "RefreshPolicy | None":
+        if self.refresh_policy_id is None:
+            return None
+        return self.tabular_model.refresh_policies.find(self.refresh_policy_id)
+
+    def is_system_table(self) -> bool:
+        return bool(self.system_flags >> 1 % 2)
+
+    def is_from_calculated_table(self) -> bool:
+        return bool(self.system_flags % 2)
 
     def data(self, head: int = 100) -> list[dict[str, int | float | str]]:
         """Extracts records from the table in SSAS.
@@ -77,6 +103,11 @@ class Table(SsasRefreshRecord):
 
         """
         return self.tabular_model.columns.find_all({"table_id": self.id})
+
+    def default_row_definition(self) -> "DetailRowDefinition | None":
+        if self.default_detail_rows_defintion_id is None:
+            return None
+        return self.tabular_model.detail_row_definitions.find(self.default_detail_rows_defintion_id)
 
     def table_measures(self) -> set[Measure]:
         """Get measures saved to this table.

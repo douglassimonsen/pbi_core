@@ -1,15 +1,30 @@
 import datetime
-from typing import TYPE_CHECKING, Any
+from enum import IntEnum
+from typing import TYPE_CHECKING
 
 from pydantic import Json
 
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.pydantic.main import BaseValidation
 from pbi_core.ssas.server.tabular_model import RefreshType, SsasModelRecord
 
 if TYPE_CHECKING:
     from .culture import Culture
+    from .measure import Measure
     from .query_group import QueryGroup
     from .table import Table
+
+
+class DefaultDataView(IntEnum):
+    Full = 0
+    Sample = 1
+    Default = 3
+
+
+class DataAccessOptions(BaseValidation):
+    fastCombine: bool = True
+    legacyRedirects: bool = False
+    returnErrorValuesAsNull: bool = False
 
 
 class Model(SsasModelRecord):
@@ -20,23 +35,35 @@ class Model(SsasModelRecord):
 
     _default_refresh_type = RefreshType.Calculate
 
+    automatic_aggregation_options: str | None = None
+    collation: str | None = None
     culture: str
-    data_access_options: Json[dict[str, Any]] = {}
+    data_access_options: Json[DataAccessOptions] = DataAccessOptions()
     data_source_default_max_connections: int
     data_source_variables_override_behavior: int
-    default_data_view: int
+    default_data_view: DefaultDataView
+    default_measure_id: int | None = None
     default_mode: int
     default_powerbi_data_source_version: int
-    discourage_composite_models: bool | None = None
+    description: str | None = None
+    discourage_composite_models: bool = True
     discourage_implicit_measures: bool
     disable_auto_exists: int | None = None
     force_unique_names: bool
+    m_attributes: str | None = None
+    max_parallelism_per_refresh: int | None = None
     name: str
     source_query_culture: str = "en-US"
-    structure_modified_time: datetime.datetime
+    storage_location: str | None = None
     version: int
 
     modified_time: datetime.datetime
+    structure_modified_time: datetime.datetime
+
+    def default_measure(self) -> "Measure | None":
+        if self.default_measure_id is None:
+            return None
+        return self.tabular_model.measures.find(self.default_measure_id)
 
     def cultures(self) -> set["Culture"]:
         return self.tabular_model.cultures.find_all({"model_id": self.id})

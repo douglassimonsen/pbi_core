@@ -1,13 +1,19 @@
 import datetime
+from enum import IntEnum
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
 if TYPE_CHECKING:
+    from .column import Column
     from .model import Model
     from .query_group import QueryGroup
 from pbi_core.lineage import LineageNode, LineageType
+
+
+class Kind(IntEnum):
+    M = 0
 
 
 class Expression(SsasRenameRecord):
@@ -18,16 +24,24 @@ class Expression(SsasRenameRecord):
 
     description: str | None = None
     expression: str
-    kind: int
-    lineage_tag: UUID = uuid4()
+    kind: Kind
     model_id: int
     name: str
+    parameter_values_column_id: int | None = None
     query_group_id: int | None = None
+
+    lineage_tag: UUID = uuid4()
+    source_lineage_tag: UUID = uuid4()
 
     modified_time: datetime.datetime
 
     def model(self) -> "Model":
         return self.tabular_model.model
+
+    def parameter_values_column(self) -> "Column | None":
+        if self.parameter_values_column_id is None:
+            return None
+        return self.tabular_model.columns.find(self.parameter_values_column_id)
 
     def query_group(self) -> "QueryGroup | None":
         return self.tabular_model.query_groups.find({"id": self.query_group_id})

@@ -1,7 +1,9 @@
 import datetime
+from enum import IntEnum
 from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server.tabular_model import SsasRenameRecord
 
 if TYPE_CHECKING:
@@ -11,35 +13,54 @@ if TYPE_CHECKING:
     from .variation import Variation
 
 
+class RelationshipType(IntEnum):
+    SingleColumn = 1
+
+
+class CrossFilteringBehavior(IntEnum):
+    OneDirection = 1
+    BothDirection = 2
+    Automatic = 3
+
+
+class JoinOnDateBehavior(IntEnum):
+    DateAndTime = 1
+    DatePartOnly = 2
+
+
+class SecurityFilteringBehavior(IntEnum):
+    OneDirection = 1
+    BothDirections = 2
+    _None = 3
+
+
 class Relationship(SsasRenameRecord):
     """TBD.
 
     SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/35bb4a68-b97e-409b-a5dd-14695fd99139
     """
 
-    cross_filtering_behavior: int
+    cross_filtering_behavior: CrossFilteringBehavior
     from_column_id: int
     from_cardinality: int
     from_table_id: int
     is_active: bool
-    join_on_date_behavior: int
+    join_on_date_behavior: JoinOnDateBehavior
     model_id: int
     name: str
     relationship_storage_id: int | None = None
-
     relationship_storage2_id: int | None = None
-    relationship_storage2id: int | None = None
-
-    refreshed_time: datetime.datetime
+    relationship_storage2id: int | None = None  # TODO: check which one is wrong
     rely_on_referential_integrity: bool
-    security_filtering_behavior: int
-    state: int
+    security_filtering_behavior: SecurityFilteringBehavior
+    state: DataState
     to_cardinality: int
     to_column_id: int
     to_table_id: int
-    type: int
+    type: RelationshipType
 
     modified_time: datetime.datetime
+    refreshed_time: datetime.datetime
 
     def from_table(self) -> "Table":
         """Returns the table the relationship is using as a filter.

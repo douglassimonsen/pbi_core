@@ -14,11 +14,16 @@ class KPI(SsasEditableRecord):
     SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/1289ceca-8113-4019-8f90-8132a91117cf
     """
 
+    description: str | None = None
     measure_id: int
+    status_description: str | None = None
     status_expression: str
     status_graphic: str
+    target_description: str | None = None
     target_expression: str
     target_format_string: str
+    trend_description: str | None = None
+    trend_expression: str | None = None
 
     modified_time: datetime.datetime
 

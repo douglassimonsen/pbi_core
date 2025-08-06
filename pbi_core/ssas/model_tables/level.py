@@ -17,10 +17,13 @@ class Level(SsasRenameRecord):
     """
 
     column_id: int
+    description: str | None = None
     hierarchy_id: int
-    lineage_tag: UUID = uuid4()
     name: str
     ordinal: int
+
+    lineage_tag: UUID = uuid4()
+    source_lineage_tag: UUID = uuid4()
 
     modified_time: datetime.datetime
 

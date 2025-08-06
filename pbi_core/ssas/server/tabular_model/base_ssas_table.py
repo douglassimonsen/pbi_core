@@ -17,7 +17,9 @@ logger = get_logger()
 class SsasTable(BaseValidation):
     tabular_model: "BaseTabularModel"
     _read_only_fields: ClassVar[tuple[str, ...]] = ()
+
     id: Final[int] = pydantic.Field(frozen=True)
+
     _db_field_names: ClassVar[dict[str, str]] = {}
     _repr_name_field: str = "name"
 

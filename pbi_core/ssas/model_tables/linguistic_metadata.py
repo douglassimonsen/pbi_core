@@ -1,4 +1,5 @@
 import datetime
+from enum import IntEnum
 from typing import TYPE_CHECKING, Any
 
 import pydantic
@@ -10,6 +11,11 @@ from pbi_core.ssas.server.tabular_model import SsasEditableRecord
 
 if TYPE_CHECKING:
     from .culture import Culture
+
+
+class ContentType(IntEnum):
+    Xml = 0
+    Json = 1
 
 
 class EntityDefinitionBinding(BaseValidation):
@@ -118,7 +124,7 @@ class LinguisticMetadata(SsasEditableRecord):
     """
 
     content: pydantic.Json[LinguisticMetadataContent]
-    content_type: int
+    content_type: ContentType
     culture_id: int
 
     modified_time: datetime.datetime

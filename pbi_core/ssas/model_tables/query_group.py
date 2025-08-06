@@ -15,10 +15,11 @@ class QueryGroup(SsasEditableRecord):
     SSAS spec: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/40b3830b-25ee-41a6-87d2-49616028dd13
     """
 
+    _repr_name_field = "folder"
+
     description: str | None = None
     folder: str
     model_id: int
-    _repr_name_field = "folder"
 
     def expressions(self) -> set["Expression"]:
         return self.tabular_model.expressions.find_all({"query_group_id": self.id})

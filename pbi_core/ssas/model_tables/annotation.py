@@ -1,40 +1,11 @@
 import datetime
-from enum import IntEnum
 
 from pbi_core.lineage import LineageNode, LineageType
 from pbi_core.ssas.server.tabular_model import SsasRenameRecord, SsasTable
 
-
-class ObjectType(IntEnum):
-    MODEL = 1
-    DATASOURCE = 2
-    TABLE = 3
-    COLUMN = 4
-    ATTRIBUTE_HIERARCHY = 5
-    PARTITION = 6
-    RELATIONSHIP = 7
-    MEASURE = 8
-    HIERARCHY = 9
-    LEVEL = 10
-    KPI = 12
-    CULTURE = 13
-    LINGUISTIC_METADATA = 15
-    PERSPECTIVE = 29
-    PERSPECTIVE_TABLE = 30
-    PERSPECTIVE_COLUMN = 31
-    PERSPECTIVE_HIERARCHY = 32
-    PERSPECTIVE_MEASURE = 33
-    ROLE = 34
-    ROLE_MEMBERSHIP = 35
-    TABLE_PERMISSION = 36
-    VARIATION = 37
-    EXPRESSION = 41
-    COLUMN_PERMISSION = 42
-    CALCULATION_GROUP = 46
-    QUERY_GROUP = 51
+from .enums import ObjectType
 
 
-# TODO: remove Any
 class Annotation(SsasRenameRecord):
     """TBD.
 
@@ -48,7 +19,7 @@ class Annotation(SsasRenameRecord):
 
     modified_time: datetime.datetime
 
-    def parent(self) -> "SsasTable":  # noqa: PLR0911
+    def object(self) -> SsasTable:  # noqa: PLR0911
         """Returns the object the annotation is describing.
 
         Raises
@@ -59,20 +30,56 @@ class Annotation(SsasRenameRecord):
         match self.object_type:
             case ObjectType.MODEL:
                 return self.tabular_model.model
+            case ObjectType.DATASOURCE:
+                return self.tabular_model.data_sources.find(self.object_id)
             case ObjectType.TABLE:
-                return self.tabular_model.tables.find({"id": self.object_id})
+                return self.tabular_model.tables.find(self.object_id)
             case ObjectType.COLUMN:
-                return self.tabular_model.columns.find({"id": self.object_id})
+                return self.tabular_model.columns.find(self.object_id)
+            case ObjectType.ATTRIBUTE_HIERARCHY:
+                return self.tabular_model.attribute_hierarchies.find(self.object_id)
+            case ObjectType.PARTITION:
+                return self.tabular_model.partitions.find(self.object_id)
+            case ObjectType.RELATIONSHIP:
+                return self.tabular_model.relationships.find(self.object_id)
             case ObjectType.MEASURE:
-                return self.tabular_model.measures.find({"id": self.object_id})
+                return self.tabular_model.measures.find(self.object_id)
             case ObjectType.HIERARCHY:
-                return self.tabular_model.hierarchies.find({"id": self.object_id})
+                return self.tabular_model.hierarchies.find(self.object_id)
+            case ObjectType.LEVEL:
+                return self.tabular_model.levels.find(self.object_id)
+            case ObjectType.KPI:
+                return self.tabular_model.kpis.find(self.object_id)
+            case ObjectType.CULTURE:
+                return self.tabular_model.cultures.find(self.object_id)
+            case ObjectType.LINGUISTIC_METADATA:
+                return self.tabular_model.linguistic_metadata.find(self.object_id)
+            case ObjectType.PERSPECTIVE:
+                return self.tabular_model.perspectives.find(self.object_id)
+            case ObjectType.PERSPECTIVE_TABLE:
+                return self.tabular_model.perspective_tables.find(self.object_id)
+            case ObjectType.PERSPECTIVE_HIERARCHY:
+                return self.tabular_model.perspective_hierarchies.find(self.object_id)
+            case ObjectType.PERSPECTIVE_MEASURE:
+                return self.tabular_model.perspective_measures.find(self.object_id)
+            case ObjectType.ROLE:
+                return self.tabular_model.roles.find(self.object_id)
+            case ObjectType.ROLE_MEMBERSHIP:
+                return self.tabular_model.role_memberships.find(self.object_id)
+            case ObjectType.TABLE_PERMISSION:
+                return self.tabular_model.table_permissions.find(self.object_id)
+            case ObjectType.VARIATION:
+                return self.tabular_model.variations.find(self.object_id)
             case ObjectType.EXPRESSION:
-                return self.tabular_model.expressions.find({"id": self.object_id})
+                return self.tabular_model.expressions.find(self.object_id)
+            case ObjectType.COLUMN_PERMISSION:
+                return self.tabular_model.column_permissions.find(self.object_id)
+            case ObjectType.CALCULATION_GROUP:
+                return self.tabular_model.calculation_groups.find(self.object_id)
             case ObjectType.QUERY_GROUP:
-                return self.tabular_model.query_groups.find({"id": self.object_id})
+                return self.tabular_model.query_groups.find(self.object_id)
             case _:
-                msg = "No Matching Object ID"
+                msg = f"No logic implemented for type {self.object_type}"
                 raise TypeError(msg)
 
     def get_lineage(self, lineage_type: LineageType) -> LineageNode:

@@ -2,6 +2,7 @@ import datetime
 from typing import TYPE_CHECKING
 
 from pbi_core.lineage import LineageNode, LineageType
+from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server.tabular_model import SsasReadonlyRecord
 
 if TYPE_CHECKING:
@@ -17,7 +18,7 @@ class AttributeHierarchy(SsasReadonlyRecord):
 
     attribute_hierarchy_storage_id: int
     column_id: int
-    state: int
+    state: DataState
 
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
