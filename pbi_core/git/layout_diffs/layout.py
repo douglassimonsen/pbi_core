@@ -13,35 +13,33 @@ def get_section_changes(
     parent: "Layout",
     child: "Layout",
 ) -> list[SectionChange]:
-    section_changes: list[SectionChange] = []
-
     parent_sections = {x.name: x for x in parent.sections}
     child_sections = {x.name: x for x in child.sections}
-    for section_name in set(parent_sections.keys()) - set(child_sections.keys()):
-        section_changes = [
-            SectionChange(
-                id=section_name,
-                change_type=ChangeType.DELETED,
-                entity=parent_sections[section_name],
-                visuals=[
-                    VisualChange(visual.pbi_core_id(), ChangeType.DELETED, visual)
-                    for visual in parent_sections[section_name].visualContainers
-                ],
-            ),
-        ]
+    section_changes: list[SectionChange] = [
+        SectionChange(
+            id=section_name,
+            change_type=ChangeType.DELETED,
+            entity=parent_sections[section_name],
+            visuals=[
+                VisualChange(visual.pbi_core_id(), ChangeType.DELETED, visual)
+                for visual in parent_sections[section_name].visualContainers
+            ],
+        )
+        for section_name in set(parent_sections.keys()) - set(child_sections.keys())
+    ]
 
-    for section_name in set(child_sections.keys()) - set(parent_sections.keys()):
-        section_changes = [
-            SectionChange(
-                id=section_name,
-                change_type=ChangeType.ADDED,
-                entity=child_sections[section_name],
-                visuals=[
-                    VisualChange(visual.pbi_core_id(), ChangeType.ADDED, visual)
-                    for visual in child_sections[section_name].visualContainers
-                ],
-            ),
-        ]
+    section_changes.extend(
+        SectionChange(
+            id=section_name,
+            change_type=ChangeType.ADDED,
+            entity=child_sections[section_name],
+            visuals=[
+                VisualChange(visual.pbi_core_id(), ChangeType.ADDED, visual)
+                for visual in child_sections[section_name].visualContainers
+            ],
+        )
+        for section_name in set(child_sections.keys()) - set(parent_sections.keys())
+    )
 
     for section_name in set(parent_sections.keys()) & set(child_sections.keys()):
         parent_section = parent_sections[section_name]

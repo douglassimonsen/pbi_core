@@ -92,12 +92,18 @@ class InExpressionHelper(LayoutNode):
         source = self.Expressions[0].__repr__()
         return f"In({source}, {', '.join(self.vals())})"
 
+    def get_sources(self) -> list[DataSource]:
+        return self.Expressions
+
 
 class InTopNExpressionHelper(LayoutNode):
     """Internal representation of the Top N option."""
 
     Expressions: list[DataSource]
     Table: SourceRef
+
+    def get_sources(self) -> list[DataSource]:
+        return self.Expressions
 
 
 def get_in_union_type(v: object | dict[str, Any]) -> str:
@@ -139,6 +145,9 @@ class InCondition(LayoutNode):
             table = natural_language_source(self.In.Table)
             return f"{expr} IN TOP N {table}"
         return f"{expr} IN ({', '.join(str(x[0].value()) for x in self.In.Values)})"
+
+    def get_sources(self) -> list[DataSource]:
+        return self.In.get_sources()
 
 
 class TimeUnit(IntEnum):
@@ -234,6 +243,11 @@ class ComparisonCondition(LayoutNode):
         operator = self.Comparison.ComparisonKind.get_operator()
         return f"{left} {operator} {right}"
 
+    def get_sources(self) -> list[DataSource]:
+        return [
+            self.Comparison.Left,
+        ]
+
 
 class NotConditionHelper(LayoutNode):
     Expression: "ConditionType"
@@ -249,9 +263,12 @@ class NotCondition(LayoutNode):
         """Returns a natural language representation of the condition."""
         return f"NOT {self.Not.Expression.natural_language()}"
 
+    def get_sources(self) -> list[DataSource]:
+        return self.Not.Expression.get_sources()
+
 
 class ExistsConditionHelper(LayoutNode):
-    Expression: Source
+    Expression: DataSource
 
 
 class ExistsCondition(LayoutNode):
@@ -260,6 +277,11 @@ class ExistsCondition(LayoutNode):
     def natural_language(self) -> str:
         """Returns a natural language representation of the condition."""
         return f"Exists({natural_language_source(self.Exists.Expression)})"
+
+    def get_sources(self) -> list[DataSource]:
+        return [
+            self.Exists.Expression,
+        ]
 
 
 class CompositeConditionHelper(LayoutNode):
@@ -274,6 +296,9 @@ class AndCondition(LayoutNode):
         """Returns a natural language representation of the condition."""
         return f"({self.And.Left.natural_language()} AND {self.And.Right.natural_language()})"
 
+    def get_sources(self) -> list[DataSource]:
+        return [*self.Or.Left.get_sources(), *self.Or.Right.get_sources()]
+
 
 class OrCondition(LayoutNode):
     Or: CompositeConditionHelper
@@ -281,6 +306,12 @@ class OrCondition(LayoutNode):
     def natural_language(self) -> str:
         """Returns a natural language representation of the condition."""
         return f"({self.Or.Left.natural_language()} OR {self.Or.Right.natural_language()})"
+
+    def get_sources(self) -> list[DataSource]:
+        return [
+            *self.Or.Left.get_sources(),
+            *self.Or.Right.get_sources(),
+        ]
 
 
 def get_type(v: object | dict[str, Any]) -> str:  # noqa: PLR0911
@@ -327,3 +358,12 @@ class Condition(LayoutNode):
     def natural_language(self) -> str:
         """Returns a natural language representation of the condition."""
         return self.Condition.natural_language()
+
+    def get_sources(self) -> list[DataSource]:
+        """Returns the sources used in the condition.
+
+        Note: The left source must come first, since the
+            order is used by PowerBI and this library
+            to identify the default display name of filters
+        """
+        return self.Condition.get_sources()

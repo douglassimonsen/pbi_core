@@ -301,6 +301,19 @@ class Filter(LayoutNode):
     def __str__(self) -> str:
         return super().__str__()
 
+    def get_display_name(self) -> str:
+        if self.displayName is not None:
+            return self.displayName
+        if self.filter is None:
+            msg = "Unknown default display name"
+            raise ValueError(msg)
+        default_name_source = self.filter.Where[0].get_sources()[0]
+        if isinstance(default_name_source, ColumnSource):
+            return default_name_source.Column.Property
+        elif isinstance(default_name_source, MeasureSource):
+            return default_name_source.Measure.Property
+        return "--"
+
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
         """Returns the SSAS elements (columns and measures) this filter is directly dependent on."""
         if self.filter is None:

@@ -18,7 +18,7 @@
    | Field | From | To  |
    | ----- | ---- | --- |
   {% for field, (old_value, new_value) in change.field_changes.items() -%}
-   | {{ name_formatter(field) }} | <code>{{ old_value or "No Value*" }}</code> | <code>{{ new_value or "*No Value*" }}</code> |
+   | {{ name_formatter(field) }} | <code>{{ old_value or "*No Value*" }}</code> | <code>{{ new_value or "*No Value*" }}</code> |
   {% endfor %}
   {% endif %}
 {% endfor %}

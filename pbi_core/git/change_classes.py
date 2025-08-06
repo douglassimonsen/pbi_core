@@ -1,6 +1,42 @@
+import textwrap
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
+
+import jinja2
+
+
+def get_enum_name(val: Any) -> str | None:
+    """Get the name of an enum value."""
+    if isinstance(val, Enum):
+        return val.name
+    if isinstance(val, float):
+        return str(round(val, 3))
+    if val is not None:
+        return str(val)
+    return None
+
+
+def name_formatter(name: str) -> str:
+    """Format names for display in markdown."""
+    return name.replace("_", " ").title()
+
+
+FIELD_CHANGES_TABLE = jinja2.Template("""
+| Field | From | To |
+| ----- | ---- | -- |
+{% for field, (from_val, to_val) in changes.items() -%}
+| {{name_formatter(field)}} | <code>{{ from_val or "*No Value*" }}</code> | <code>{{ to_val or "*No Value*" }}</code> |
+{% endfor %}                                                                     
+""")
+
+
+def get_field_changes_table(changes: dict[str, tuple[Any, Any]]) -> str:
+    parsed_data = {k: [get_enum_name(a), get_enum_name(b)] for k, (a, b) in changes.items()}
+    return FIELD_CHANGES_TABLE.render(
+        changes=parsed_data,
+        name_formatter=name_formatter,
+    )
 
 
 class ChangeType(Enum):
@@ -14,34 +50,58 @@ class ChangeType(Enum):
 class Change:
     id: str
     change_type: ChangeType
+    entity: Any  # The entity itself, e.g., a table or measure object
+    field_changes: dict[str, tuple[Any, Any]] = field(default_factory=dict)  # field name to [old_value, new_value]
 
 
 @dataclass
 class FilterChange(Change):
-    entity: Any
-    field_changes: dict[str, tuple[Any, Any]] = field(default_factory=dict)  # field name to [old_value, new_value]
+    def to_markdown(self) -> str:
+        if self.change_type == ChangeType.NO_CHANGE:
+            return ""
+        if self.change_type in (ChangeType.ADDED, ChangeType.DELETED):
+            return f"""
+Filter: {self.entity.get_display_name()}
+
+**Filter {self.change_type.value.title()}**
+"""
+
+        filter_change_table = get_field_changes_table(self.field_changes)
+        return f"""
+
+Filter: {self.entity.get_display_name()}
+
+{filter_change_table}
+"""
 
 
 @dataclass
 class VisualChange(Change):
-    entity: Any
     filters: list[FilterChange] = field(default_factory=list)
-    field_changes: dict[str, tuple[Any, Any]] = field(default_factory=dict)  # field name to [old_value, new_value]
 
     def to_markdown(self) -> str:
         """Convert the visual change to a markdown string."""
         if self.change_type == ChangeType.NO_CHANGE:
             return ""
         if self.change_type in (ChangeType.ADDED, ChangeType.DELETED):
-            return ""
-        return ""
+            return f"**Visual {self.change_type.value.title()}**"
+
+        ret = ""
+        if self.field_changes:
+            ret += get_field_changes_table(self.field_changes)
+
+        if self.filters:
+            filter_section = "#### *Updated Filters*\n"
+
+            for f in self.filters:
+                filter_section += f.to_markdown()
+            ret += textwrap.indent(filter_section, "> ", predicate=lambda line: True)
+        return ret
 
 
 @dataclass
 class SectionChange(Change):
-    entity: Any
     filters: list[FilterChange] = field(default_factory=list)
-    field_changes: dict[str, tuple[Any, Any]] = field(default_factory=dict)  # field name to [old_value, new_value]
     visuals: list[VisualChange] = field(default_factory=list)
 
     def to_markdown(self) -> str:
@@ -49,33 +109,47 @@ class SectionChange(Change):
         if self.change_type == ChangeType.NO_CHANGE:
             return ""
         if self.change_type in (ChangeType.ADDED, ChangeType.DELETED):
-            return ""
-        return ""
+            return f"**Section {self.change_type.value.title()}**"
+
+        ret = ""
+        if self.field_changes:
+            ret += get_field_changes_table(self.field_changes)
+
+        if self.filters:
+            filter_section = "#### *Updated Filters*\n"
+
+            for f in self.filters:
+                filter_section += f.to_markdown()
+            ret += textwrap.indent(filter_section, "> ", predicate=lambda line: True)
+
+        return ret
 
 
 @dataclass
 class LayoutChange(Change):
-    entity: Any
     filters: list[FilterChange] = field(default_factory=list)
-    field_changes: dict[str, tuple[Any, Any]] = field(default_factory=dict)  # field name to [old_value, new_value]
     sections: list[SectionChange] = field(default_factory=list)
 
     def to_markdown(self) -> str:
         """Convert the layout change to a markdown string."""
         if self.change_type == ChangeType.NO_CHANGE:
-            return ""
-        if self.change_type in (ChangeType.ADDED, ChangeType.DELETED):
-            return ""
-        return """
+            return "No changes in report layout."
 
-"""
+        ret = ""
+
+        if self.filters:
+            filter_section = "#### *Updated Filters*\n"
+
+            for f in self.filters:
+                filter_section += f.to_markdown()
+            ret += textwrap.indent(filter_section, "> ", predicate=lambda line: True)
+
+        return ret
 
 
 @dataclass
 class SsasChange(Change):
-    entity_type: str  # e.g., "table", "measure", "column"
-    entity: Any  # The entity itself, e.g., a table or measure object
-    field_changes: dict[str, tuple[Any, Any]] = field(default_factory=dict)  # field name to [old_value, new_value]
+    entity_type: str = "--undefined--"  # e.g., "table", "measure", "column"
 
 
 @dataclass
