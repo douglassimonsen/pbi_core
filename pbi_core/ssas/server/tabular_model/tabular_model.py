@@ -180,7 +180,7 @@ class BaseTabularModel:
                 if obj.id not in self._remote_state[field_name]:
                     field_updates["added"].append(obj)
                 if obj.modification_hash() != self._remote_state[field_name][obj.id]:
-                    field_updates["updated"].append(obj)
+                    field_updates["updated"].append(obj)  # pyright: ignore[reportArgumentType]
             if field_updates["added"] or field_updates["updated"] or field_updates["deleted"]:
                 updated_objects[field_name] = field_updates
 

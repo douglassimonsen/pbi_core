@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 import jinja2
 
-from ...server._commands import BASE_ALTER_TEMPLATE
+from pbi_core.ssas.server._commands import BASE_ALTER_TEMPLATE
 
 if TYPE_CHECKING:
     from .ssas_tables import SsasAlter
@@ -25,7 +25,7 @@ class AlterCommand:
 
     def render_xml(self) -> str:
         entity_commands: list[str] = []
-        for object_type, entities in self.object_types.items():
+        for entities in self.object_types.values():
             entity_rows = [
                 table._get_row_xml(
                     table.xml_fields(),
