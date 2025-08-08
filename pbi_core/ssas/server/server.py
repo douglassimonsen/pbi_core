@@ -50,6 +50,7 @@ class BaseServer:
 
     def conn(self, db_name: str | None = None) -> pbi_pyadomd.Connection:
         """Returns a pbi_pyadomd connection."""
+        pbi_pyadomd.Reader
         return pbi_pyadomd.connect(self.conn_str(db_name))
 
     def __repr__(self) -> str:

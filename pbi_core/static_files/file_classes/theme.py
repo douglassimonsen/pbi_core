@@ -1,4 +1,3 @@
-# ruff: noqa: N815
 
 from pydantic_extra_types.color import Color
 

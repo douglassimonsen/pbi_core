@@ -1,10 +1,10 @@
-# ruff: noqa: N815
 from typing import TYPE_CHECKING, Any
+
+from pydantic import ConfigDict
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 from pbi_core.static_files.layout.sources.paragraphs import Paragraph
-from pydantic import ConfigDict
 
 from .base import BaseVisual
 from .properties.base import Expression

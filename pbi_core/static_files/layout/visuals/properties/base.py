@@ -1,11 +1,12 @@
 from typing import Annotated, Any, Literal
 
+from pydantic import Discriminator, Tag
+
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.condition import ConditionType
 from pbi_core.static_files.layout.sources import LiteralSource, MeasureSource, Source
 from pbi_core.static_files.layout.sources.aggregation import AggregationSource, SelectRef
 from pbi_core.static_files.layout.sources.column import ColumnSource
-from pydantic import Discriminator, Tag
 
 
 class LiteralExpression(LayoutNode):

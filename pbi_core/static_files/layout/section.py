@@ -1,11 +1,11 @@
-# ruff: noqa: N815
 from enum import IntEnum
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID
 
+from pydantic import ConfigDict, Json
+
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
-from pydantic import ConfigDict, Json
 
 from ._base_node import LayoutNode
 from .filters import PageFilter

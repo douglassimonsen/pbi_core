@@ -1,4 +1,3 @@
-# ruff: noqa: N815
 from enum import IntEnum
 from typing import TYPE_CHECKING
 from uuid import UUID

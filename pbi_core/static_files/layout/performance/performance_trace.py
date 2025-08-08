@@ -11,10 +11,11 @@ from pathlib import Path
 from typing import Any
 
 import jinja2
+from pbi_pyadomd import Connection
+
 from pbi_core.logging import get_logger
 from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 from pbi_core.ssas.server.trace.trace_enums import TraceEvents
-from pbi_pyadomd import Connection
 
 logger = get_logger()
 TRACE_DIR = Path(__file__).parent / "templates"
@@ -231,8 +232,7 @@ class PerformanceTrace:
         if clear_cache:
             logger.info("Clearing cache before performance testing")
             with self.db.server.conn(db_name=self.db.db_name) as conn:
-                cursor = conn.cursor()
-                cursor.execute_xml(self.clear_cache_command)
+                conn.execute_xml(self.clear_cache_command)
 
         with ThreadPoolExecutor() as dax_executor:
             logger.info("Running DAX commands")

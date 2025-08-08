@@ -53,7 +53,7 @@ def validator_potential(_: dict, inp: str) -> bool:
 
 
 def create_ini_template(raw_path: Path) -> None:
-    ini_contents = bs4.BeautifulSoup(raw_path.open(), "xml")
+    ini_contents = bs4.BeautifulSoup(raw_path.open(encoding="utf-8"), "xml")
     for tag in ["DataDir", "TempDir", "LogDir", "BackupDir", "CrashReportsFolder", "AllowedBrowsingFolders"]:
         ini_contents.find(tag).string = "{{data_directory}}"  # pyright: ignore reportAttributeAccessIssue
     ini_contents.find("CertifiedExtensions").Directories.string = "{{certificate_directory}}"  # pyright: ignore reportAttributeAccessIssue

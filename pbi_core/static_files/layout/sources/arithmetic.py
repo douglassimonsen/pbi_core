@@ -1,8 +1,9 @@
 from enum import IntEnum
 from typing import Annotated, Any
 
-from pbi_core.static_files.layout._base_node import LayoutNode
 from pydantic import Discriminator, Tag
+
+from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .aggregation import AggregationSource, DataSource
 

@@ -3,9 +3,10 @@ from enum import IntEnum, StrEnum
 from typing import TYPE_CHECKING, Any, Literal
 
 import pydantic
+from pydantic_extra_types.semantic_version import SemanticVersion
+
 from pbi_core.lineage import LineageNode
 from pbi_core.pydantic import BaseValidation
-from pydantic_extra_types.semantic_version import SemanticVersion
 
 from .base import SsasEditableRecord
 

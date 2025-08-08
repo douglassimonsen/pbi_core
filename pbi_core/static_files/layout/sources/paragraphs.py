@@ -1,10 +1,10 @@
-# ruff: noqa: N815
 from typing import Annotated, Any
+
+from pydantic import Discriminator, Tag
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 from pbi_core.static_files.layout.sources import Source
-from pydantic import Discriminator, Tag
 
 
 class TextStyle(LayoutNode):

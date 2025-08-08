@@ -1,4 +1,3 @@
-# ruff: noqa: N815
 
 
 from .base import BaseVisual

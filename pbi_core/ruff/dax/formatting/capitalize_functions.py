@@ -1,6 +1,7 @@
+from pbi_parsers import dax
+
 from pbi_core.ruff.base_rule import BaseRule, RuleResult
 from pbi_core.ssas.model_tables.measure import Measure
-from pbi_parsers import dax
 
 
 class CapitalizeFunctionNames(BaseRule):

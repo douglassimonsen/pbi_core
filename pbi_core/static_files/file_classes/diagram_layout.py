@@ -1,4 +1,3 @@
-# ruff: noqa: N815
 from typing import Any, Literal
 from uuid import UUID
 

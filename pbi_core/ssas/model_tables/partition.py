@@ -3,10 +3,11 @@ from enum import IntEnum
 from typing import TYPE_CHECKING, Literal
 
 from bs4 import BeautifulSoup
+from pbi_parsers import dax, pq
+
 from pbi_core.lineage import LineageNode
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables.enums import DataState
-from pbi_parsers import dax, pq
 
 from ._group import RowNotFoundError
 from .base import RefreshType, SsasRefreshRecord, SsasTable

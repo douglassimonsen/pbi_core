@@ -1,4 +1,3 @@
-# ruff: noqa: N815
 from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 

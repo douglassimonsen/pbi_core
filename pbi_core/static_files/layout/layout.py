@@ -1,10 +1,10 @@
-# ruff: noqa: N815
 from enum import Enum
 from typing import TYPE_CHECKING, Literal
 
+from pydantic import Json
+
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
-from pydantic import Json
 
 from ._base_node import LayoutNode
 from .bookmark import LayoutBookmarkChild

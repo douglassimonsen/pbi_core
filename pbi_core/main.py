@@ -11,6 +11,7 @@ logger = get_logger()
 
 if TYPE_CHECKING:
     from _typeshed import StrPath
+
     from pbi_core.ssas.model_tables.table import Table
 
 

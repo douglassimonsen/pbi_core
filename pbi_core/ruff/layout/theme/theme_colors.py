@@ -6,6 +6,7 @@ from colorblind import colorblind
 from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie2000
 from colormath.color_objects import LabColor, sRGBColor
+
 from pbi_core.ruff.base_rule import BaseRule, RuleResult
 from pbi_core.static_files.file_classes.theme import Theme
 

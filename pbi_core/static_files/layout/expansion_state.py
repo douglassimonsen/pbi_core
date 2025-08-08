@@ -1,4 +1,3 @@
-# ruff: noqa: N815
 
 from ._base_node import LayoutNode
 from .sources import Source

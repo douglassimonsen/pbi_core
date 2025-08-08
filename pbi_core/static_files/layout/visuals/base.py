@@ -1,6 +1,7 @@
-# ruff: noqa: N815
 from enum import Enum
 from typing import TYPE_CHECKING, Annotated, Any, Literal
+
+from pydantic import ConfigDict, Discriminator, Tag
 
 from pbi_core.lineage import LineageNode
 from pbi_core.static_files.layout._base_node import LayoutNode
@@ -10,7 +11,6 @@ from pbi_core.static_files.layout.sources.column import ColumnSource
 from pbi_core.static_files.layout.sources.measure import MeasureSource
 from pbi_core.static_files.layout.sources.paragraphs import Paragraph
 from pbi_core.static_files.layout.visuals.properties import Expression
-from pydantic import ConfigDict, Discriminator, Tag
 
 from .properties.vc_properties import VCProperties
 
