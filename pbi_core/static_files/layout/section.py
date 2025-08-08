@@ -90,6 +90,10 @@ class Section(LayoutNode):
         Current Metrics:
             Total Seconds to Query
             Total Rows Retrieved
+
+        Raises:
+            ValueError: If the page does not have any querying visuals.
+
         """
         commands: list[str] = []
         for viz in self.visualContainers:
@@ -99,5 +103,5 @@ class Section(LayoutNode):
                     commands.append(command.get_dax(model).dax)
         if not commands:
             msg = "Cannot get performance for a page without any querying visuals"
-            raise NotImplementedError(msg)
+            raise ValueError(msg)
         return get_performance(model, commands, clear_cache=clear_cache)

@@ -1,13 +1,10 @@
-from typing import TYPE_CHECKING, Annotated, Any
+from typing import Annotated, Any
 
 from pydantic import Discriminator, Tag
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .base import SourceExpression, SourceRef
-
-if TYPE_CHECKING:
-    from pbi_core.static_files.layout.filters import From
 
 
 class PropertyVariationSource(LayoutNode):
@@ -78,6 +75,3 @@ class HierarchyLevelSource(LayoutNode):
             column = self.HierarchyLevel.Expression.Hierarchy.Expression.column()
         level = self.HierarchyLevel.Level
         return f"HierarchyLevelSource({table}.{column}.{level})"
-
-    def to_query_text(self, target_tables: dict[str, "From"]) -> str:
-        raise NotImplementedError

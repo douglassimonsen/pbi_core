@@ -274,8 +274,14 @@ class SummarizedBy(IntEnum):
 
 class ColumnType(IntEnum):
     Data = 1
+    """A standard column"""
+
     Calculated = 2
+    """A DAX-calculated column"""
+
     RowNumber = 3
+    """Hidden row number column on each table"""
+
     CalculatedTableColumn = 4
 
 

@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Literal, Self, TypeVar
+from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
 from pbi_core.lineage import LineageNode
 from pbi_core.pydantic.main import BaseValidation
@@ -90,12 +90,6 @@ class LayoutNode(BaseValidation):
 
     def model_dump_json(self, **kwargs: Any) -> str:
         return super().model_dump_json(round_trip=True, exclude_unset=True, **kwargs)
-
-    def next_sibling(self) -> Self:
-        raise NotImplementedError
-
-    def prev_sibling(self) -> Self:
-        raise NotImplementedError
 
     def _children(self) -> list["LayoutNode"]:
         ret: list[LayoutNode] = []

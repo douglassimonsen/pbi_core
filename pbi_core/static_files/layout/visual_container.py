@@ -513,11 +513,15 @@ class VisualContainer(LayoutNode):
         Current Metrics:
             Total Seconds to Query
             Total Rows Retrieved
+
+        Raises:
+            TypeError: If the visual does not have a query command.
+
         """
         command = self._get_data_command()
         if command is None:
             msg = "Cannot get performance for a visual without a query command"
-            raise NotImplementedError(msg)
+            raise TypeError(msg)
         return get_performance(model, [command.get_dax(model).dax])[0]
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:

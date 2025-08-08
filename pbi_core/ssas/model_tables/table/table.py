@@ -129,7 +129,7 @@ class Table(SsasRefreshRecord):
         """
         return self.tabular_model.measures.find_all({"table_id": self.id})
 
-    def measures(self) -> set[Measure]:
+    def measures(self, *, recursive: bool = False) -> set[Measure]:
         """Get measures that logically depend on this table.
 
         Examples:
@@ -140,6 +140,8 @@ class Table(SsasRefreshRecord):
             Table(name=example).measures()
             # [..., Measure(name='measure'), ...]
             ```
+        Args:
+            recursive (bool): Whether to include measures that depend on other measures.
 
         Returns:
             (set[Measure]): A list of measures that logically depend this table
@@ -148,7 +150,10 @@ class Table(SsasRefreshRecord):
             These measures are not necessarily saved physically to this table. For that use `table.table_measures()`
 
         """
-        raise NotImplementedError
+        ret = set()
+        for col in self.columns():
+            ret.update(col.child_measures(recursive=recursive))
+        return ret
 
     def model(self) -> "Model":
         return self.tabular_model.model
