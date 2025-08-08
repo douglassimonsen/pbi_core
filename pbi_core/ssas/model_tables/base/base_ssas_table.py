@@ -86,6 +86,18 @@ class SsasTable(BaseValidation, IdBase):
         return self.tabular_model.server.query_xml(query, db_name)
 
     @staticmethod
+    def _get_row_xml(values: dict[str, Any], command: Command) -> str:
+        fields: list[tuple[str, str]] = []
+        for field_name, field_value in values.items():
+            if field_name not in command.field_order:
+                continue
+            if field_value is None:
+                continue
+            fields.append((field_name, python_to_xml(field_value)))
+        fields = command.sort(fields)
+        return ROW_TEMPLATE.render(fields=fields)
+
+    @staticmethod
     def render_xml_command(values: dict[str, Any], command: Command, db_name: str) -> str:
         """XMLA commands: create/alter/delete/rename/refresh.
 
@@ -100,15 +112,7 @@ class SsasTable(BaseValidation, IdBase):
 
         Entity schemas can be found at `pbi_core/ssas/server/command_templates/schema`
         """
-        fields: list[tuple[str, str]] = []
-        for field_name, field_value in values.items():
-            if field_name not in command.field_order:
-                continue
-            if field_value is None:
-                continue
-            fields.append((field_name, python_to_xml(field_value)))
-        fields = command.sort(fields)
-        xml_row = ROW_TEMPLATE.render(fields=fields)
+        xml_row = SsasTable._get_row_xml(values, command)
         xml_entity_definition = command.entity_template.render(rows=xml_row)
         return command.base_template.render(db_name=db_name, entity_def=xml_entity_definition)
 
@@ -118,3 +122,16 @@ class SsasTable(BaseValidation, IdBase):
 
     def __hash__(self) -> int:
         return hash(self.id)
+
+    def xml_fields(self) -> dict[str, Any]:
+        return {
+            self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
+        }
+
+    def modification_hash(self) -> int:
+        """Returns a hash representing the current state of the object.
+
+        Used to identify when the object has changed from it's state in the SSAS instance.
+        By default, uses the id field, which means that no fields are tracked for changes.
+        """
+        return self.id

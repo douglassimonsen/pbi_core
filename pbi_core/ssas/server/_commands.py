@@ -11,7 +11,7 @@ BASE_ALTER_TEMPLATE = jinja2.Template(
     {{entity_def}}
   </Alter>
 </Batch>
-""",
+""".strip(),
 )
 
 # note that Transaction = true. I think it's necessary, not very tested tbqh
@@ -23,7 +23,7 @@ BASE_REFRESH_TEMPLATE = jinja2.Template(
     {{entity_def}}
   </Refresh>
 </Batch>
-""",
+""".strip(),
 )
 BASE_RENAME_TEMPLATE = jinja2.Template(
     """
@@ -36,7 +36,7 @@ BASE_RENAME_TEMPLATE = jinja2.Template(
     {{entity_def}}
   </Rename>
 </Batch>
-    """,
+    """.strip(),
 )
 BASE_DELETE_TEMPLATE = jinja2.Template(
     """
@@ -46,7 +46,7 @@ BASE_DELETE_TEMPLATE = jinja2.Template(
     {{entity_def}}
   </Delete>
 </Batch>
-    """,
+    """.strip(),
 )
 BASE_CREATE_TEMPLATE = jinja2.Template("")
 base_commands = {

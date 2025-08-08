@@ -266,6 +266,7 @@ def get_or_create_local_server(*, kill_on_exit: bool = True) -> LocalServer:
     """
     candidates: list[LocalServer] = list_local_servers()
     if candidates:
+        logger.info("Re-using existing local SSAS instance", port=candidates[0].port)
         return candidates[0]
     return LocalServer(kill_on_exit=kill_on_exit)
 

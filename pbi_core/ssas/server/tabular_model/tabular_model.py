@@ -1,10 +1,11 @@
 import pathlib
 import shutil
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, TypedDict, cast
 
 import bs4
 from structlog import get_logger
 
+from pbi_core.ssas.model_tables.base.batch import AlterCommand, Batch
 from pbi_core.ssas.server.utils import COMMAND_TEMPLATES
 
 logger = get_logger()
@@ -53,7 +54,15 @@ if TYPE_CHECKING:
         TablePermission,
         Variation,
     )
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
+    from pbi_core.ssas.model_tables.base.ssas_tables import SsasAlter
     from pbi_core.ssas.server.server import BaseServer, LocalServer
+
+
+class Update(TypedDict):
+    added: list["SsasTable"]
+    updated: list["SsasAlter"]
+    deleted: list[int]
 
 
 class BaseTabularModel:
@@ -108,9 +117,14 @@ class BaseTabularModel:
     table_permissions: "Group[TablePermission]"
     variations: "Group[Variation]"
 
+    # need to include changes to the model object itself
+    # For each table of entities, maps the entity ID to it's remote "modified hash" value
+    _remote_state: dict[str, dict[int, int]]
+
     def __init__(self, db_name: str, server: "BaseServer") -> None:
         self.db_name = db_name
         self.server = server
+        self._remote_state = {}
 
     def save_pbix(self, path: "StrPath") -> None:
         raise NotImplementedError
@@ -146,6 +160,38 @@ class BaseTabularModel:
                     for row in schema[type_instance._db_type_name()]
                 ])
                 setattr(self, field_name, objects)
+
+                self._remote_state.setdefault(field_name, {})
+                for obj in objects:
+                    self._remote_state[field_name][obj.id] = obj.modification_hash()
+
+    def sync_to(self) -> None:
+        # like {"tables": {"updated": [UpdatedObj1]}}
+        updated_objects: dict[str, Update] = {}
+        for field_name, remote_objects in self._remote_state.items():
+            field_updates: Update = {
+                "updated": [],
+                "deleted": [],
+                "added": [],
+            }
+            current_objects: Group[SsasTable] = getattr(self, field_name)
+            field_updates["deleted"] = [obj.id for obj in current_objects if obj.id not in remote_objects]
+            for obj in current_objects:
+                if obj.id not in self._remote_state[field_name]:
+                    field_updates["added"].append(obj)
+                if obj.modification_hash() != self._remote_state[field_name][obj.id]:
+                    field_updates["updated"].append(obj)
+            if field_updates["added"] or field_updates["updated"] or field_updates["deleted"]:
+                updated_objects[field_name] = field_updates
+
+        commands = [
+            AlterCommand(
+                self.db_name,
+                {field_name: updates["updated"] for field_name, updates in updated_objects.items()},
+            ),
+        ]
+        command_str = Batch(commands).render_xml()
+        self.server.query_xml(command_str, db_name=self.db_name)
 
     @staticmethod
     def TABULAR_FIELDS() -> tuple[str, ...]:  # noqa: N802

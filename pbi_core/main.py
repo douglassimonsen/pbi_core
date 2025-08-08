@@ -77,7 +77,7 @@ class LocalReport(BaseReport):
         static_files = StaticFiles.load_pbix(path)
         return LocalReport(ssas=ssas, static_files=static_files)
 
-    def save_pbix(self, path: "StrPath") -> None:
+    def save_pbix(self, path: "StrPath", *, sync_ssas_changes=True) -> None:
         """Creates a new PBIX with the information in this class to the given path.
 
         Examples:
@@ -90,9 +90,12 @@ class LocalReport(BaseReport):
                report.save_pbix("example_out.pbix")
 
         Args:
-                path (StrPath): the path (relative or absolute) to save the PBIX to
+            path (StrPath): the path (relative or absolute) to save the PBIX to
+            sync_ssas_changes (bool, optional): whether to sync changes made in the SSAS model back to the PBIX file
 
         """
+        if sync_ssas_changes:
+            self.ssas.sync_to()
         self.ssas.save_pbix(path)
         self.static_files.save_pbix(path)
 

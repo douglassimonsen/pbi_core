@@ -318,3 +318,11 @@ class Column(SsasRenameRecord):  # noqa: PLR0904
             rets.extend(partition.remove_columns([name]) for partition in self.table().partitions())
         rets.append(super().delete())
         return rets
+
+    def modification_hash(self) -> int:
+        return hash((
+            self.alignment,
+            self.explicit_name,
+            self.sort_by_column_id,
+            self.table_id,
+        ))

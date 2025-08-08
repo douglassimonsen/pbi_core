@@ -39,11 +39,8 @@ class SsasAlter(SsasTable):
 
     def alter(self) -> BeautifulSoup:
         """Updates a non-name field of an object."""
-        data = {
-            self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
-        }
         xml_command = self.render_xml_command(
-            data,
+            self.xml_fields(),
             self._commands.alter,
             self.tabular_model.db_name,
         )
@@ -62,11 +59,8 @@ class SsasRename(SsasTable):
 
     def rename(self) -> BeautifulSoup:
         """Updates a name field of an object."""
-        data = {
-            self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
-        }
         xml_command = self.render_xml_command(
-            data,
+            self.xml_fields(),
             self._commands.rename,
             self.tabular_model.db_name,
         )
@@ -82,11 +76,8 @@ class SsasCreate(SsasTable):
 
     @classmethod
     def create(cls: type["SsasCreate"], tabular_model: "BaseTabularModel", **kwargs: dict[str, Any]) -> BeautifulSoup:
-        # data = {
-        #     cls._db_field_names.get(k, k): v for k, v in kwargs.items() if k not in cls._read_only_fields
-        # }
         # xml_command = cls.render_xml_command(
-        #     data,
+        #     self.xml_fields(),
         #     cls._commands.rename,
         #     tabular_model.db_name,
         # )
@@ -105,7 +96,9 @@ class SsasDelete(SsasTable):
     _commands: BaseCommands  # pyright: ignore reportIncompatibleVariableOverride
 
     def delete(self) -> BeautifulSoup:
-        data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
+        data = {
+            self._db_id_field: getattr(self, self._db_id_field),
+        }
         xml_command = self.render_xml_command(
             data,
             self._commands.delete,
@@ -126,10 +119,8 @@ class SsasRefresh(SsasTable):
     _commands: RefreshCommands  # pyright: ignore reportIncompatibleVariableOverride
 
     def refresh(self, refresh_type: RefreshType | None = None) -> BeautifulSoup:
-        data = {self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k == self._db_id_field}
-        data["RefreshType"] = refresh_type or self._default_refresh_type
         xml_command = self.render_xml_command(
-            data,
+            self.xml_fields(),
             self._commands.refresh,
             self.tabular_model.db_name,
         )

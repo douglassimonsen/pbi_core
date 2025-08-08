@@ -55,6 +55,13 @@ class Table(SsasRefreshRecord):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.name,
+            self.description,
+            self.is_hidden,
+        ))
+
     def calculation_group(self) -> "CalculationGroup | None":
         if self.calculation_group_id is None:
             return None

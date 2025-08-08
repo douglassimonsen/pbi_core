@@ -57,6 +57,29 @@ class Measure(SsasRenameRecord):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.data_category,
+            self.data_type,
+            self.description,
+            self.detail_rows_definition_id,
+            self.display_folder,
+            self.error_message,
+            self.expression,
+            self.format_string,
+            self.format_string_definition_id,
+            self.is_hidden,
+            self.is_simple_measure,
+            self.kpi_id,
+            self.name,
+            self.state,
+            self.table_id,
+            self.lineage_tag,
+            self.source_lineage_tag,
+            self.modified_time,
+            self.structure_modified_time,
+        ))
+
     def expression_ast(self) -> dax.Expression | None:
         if not isinstance(self.expression, str):
             return None
