@@ -5,10 +5,12 @@ from typing import Annotated, Any
 from pydantic import Discriminator, Tag
 
 from ._base_node import LayoutNode
-from .sources import DataSource, LiteralSource, Source, SourceRef
-from .sources.aggregation import ScopedEvalExpression
-from .sources.arithmetic import ScopedEval
+from .sources import DataSource, LiteralSource, Source, SourceRef, TransformOutputRoleRef
+from .sources.aggregation import AggregationSource, ScopedEvalExpression, SelectRef
+from .sources.arithmetic import ArithmeticSource, ScopedEval
 from .sources.column import ColumnSource
+from .sources.group import GroupSource
+from .sources.proto import ProtoSourceRef
 
 
 class ExpressionVersion(IntEnum):
@@ -250,9 +252,12 @@ class ComparisonCondition(LayoutNode):
         return f"{left} {operator} {right}"
 
     def get_sources(self) -> list[DataSource]:
-        return [
-            self.Comparison.Left,
-        ]
+        left = self.Comparison.Left
+        if isinstance(left, AggregationSource):
+            return left.get_sources()
+        if isinstance(left, SelectRef):
+            return []
+        return [left]
 
 
 class NotConditionHelper(LayoutNode):
@@ -285,8 +290,13 @@ class ExistsCondition(LayoutNode):
         return f"Exists({natural_language_source(self.Exists.Expression)})"
 
     def get_sources(self) -> list[DataSource]:
+        expr = self.Exists.Expression
+        if isinstance(expr, (AggregationSource, ArithmeticSource, GroupSource)):
+            return expr.get_sources()
+        if isinstance(expr, (ProtoSourceRef, SelectRef, LiteralSource, TransformOutputRoleRef)):
+            return []
         return [
-            self.Exists.Expression,
+            expr,
         ]
 
 

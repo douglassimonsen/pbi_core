@@ -50,7 +50,6 @@ class BaseServer:
 
     def conn(self, db_name: str | None = None) -> pbi_pyadomd.Connection:
         """Returns a pbi_pyadomd connection."""
-        pbi_pyadomd.Reader
         return pbi_pyadomd.connect(self.conn_str(db_name))
 
     def __repr__(self) -> str:
@@ -68,9 +67,8 @@ class BaseServer:
         elif db_name is False:
             db_name = None
         with self.conn(db_name) as conn:
-            cursor = conn.cursor()
-            cursor.execute_dax(query)
-            return cursor.fetch_all()
+            reader = conn.execute_dax(query)
+            return reader.fetch_all()
 
     def query_xml(self, query: str, db_name: str | None = None) -> BeautifulSoup:
         """Submits an XMLA query to the SSAS instance and returns the result as a BeautifulSoup object.

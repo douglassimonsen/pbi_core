@@ -15,7 +15,7 @@ from .sources.aggregation import ScopedEval
 from .visuals.properties.filter_properties import FilterObjects
 
 if TYPE_CHECKING:
-    from pbi_prototype_query_translation.main import TranslationResult
+    from pbi_prototype_query_translation import TranslationResult
 
     from pbi_core.ssas.server import LocalTabularModel
 

@@ -50,3 +50,9 @@ class _ArithmeticSourceHelper(LayoutNode):
 class ArithmeticSource(LayoutNode):
     Arithmetic: _ArithmeticSourceHelper
     Name: str | None = None
+
+    def get_sources(self) -> list[DataSource]:
+        left = self.Arithmetic.Left
+        if isinstance(left, AggregationSource):
+            return left.get_sources()
+        return [left]

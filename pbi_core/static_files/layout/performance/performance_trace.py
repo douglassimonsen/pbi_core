@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 import jinja2
-from pbi_pyadomd import Connection
+from pbi_pyadomd import Connection, Reader
 
 from pbi_core.logging import get_logger
 from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
@@ -133,10 +133,10 @@ class Performance:
 
 class Subscriber:
     trace_records: dict[str, list[dict[str, Any]]]
+    reader: Reader
 
     def __init__(self, subscription_create_command: str, conn: Connection, events: Iterable[TraceEvents]) -> None:
-        self.cursor = conn.cursor()
-        self.cursor.execute_dax(
+        self.reader = conn.execute_dax(
             subscription_create_command,
         )  # occasionally seems to hang, but might actually be bad queries??
         self.events = events
@@ -147,7 +147,7 @@ class Subscriber:
 
     def poll_cursor(self) -> None:
         event_mapping = {e.value: e.name for e in self.events}
-        for record in self.cursor.fetch_stream():
+        for record in self.reader.fetch_stream():
             if "EventClass" in record:
                 record["EventClass"] = event_mapping[record["EventClass"]]
             self.trace_records.setdefault(record["RequestID"], []).append(record)
@@ -163,6 +163,14 @@ class Subscriber:
 
 
 class PerformanceTrace:
+    events: Iterable[TraceEvents]
+    db: BaseTabularModel
+    commands: list[str]
+    trace_create_command: str
+    subscription_create_command: str
+    trace_delete_command: str
+    clear_cache_command: str
+
     def __init__(
         self,
         db: BaseTabularModel,
@@ -203,8 +211,7 @@ class PerformanceTrace:
     def terminate_tracing(self) -> None:
         logger.info("Terminating trace")
         with self.db.server.conn(db_name=self.db.db_name) as conn:
-            cursor = conn.cursor()
-            cursor.execute_xml(self.trace_delete_command)
+            conn.execute_xml(self.trace_delete_command)
 
     def get_performance(self, *, clear_cache: bool = False) -> list[Performance]:
         def thread_func(command: str) -> ThreadResult:

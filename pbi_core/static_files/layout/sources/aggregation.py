@@ -88,6 +88,9 @@ class AggregationSource(LayoutNode):
     Name: str | None = None
     NativeReferenceName: str | None = None  # only for Layout.Visual.Query
 
+    def get_sources(self) -> list[DataSource]:
+        return [self.Aggregation.Expression]
+
 
 ScopedEvalExpression = Annotated[
     Annotated[DataSource, Tag("DataSource")]

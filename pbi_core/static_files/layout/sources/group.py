@@ -1,5 +1,8 @@
+from typing import cast
+
 from pbi_core.static_files.layout._base_node import LayoutNode
 
+from .aggregation import DataSource
 from .base import SourceRef
 from .column import ColumnSource
 
@@ -23,3 +26,6 @@ class GroupSource(LayoutNode):
 
     def filter_name(self) -> str:
         return self.GroupRef.Property
+
+    def get_sources(self) -> list[DataSource]:
+        return cast("list[DataSource]", self.GroupRef.GroupedColumns)
