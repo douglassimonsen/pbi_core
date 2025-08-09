@@ -63,7 +63,6 @@ class SSASProcess:
             ValueError: when either both or neither of the pid and workspace_directory are specified
 
         """
-        self.startup_config = startup_config or get_startup_config()
         self.kill_on_exit = kill_on_exit
         atexit.register(self._on_exit)
 
@@ -71,17 +70,19 @@ class SSASProcess:
             if workspace_directory is None:
                 msg = "If the pid is not specified, you must specify a workspace directory"
                 raise ValueError(msg)
+            self.startup_config = startup_config or get_startup_config()
             self._workspace_directory = pathlib.Path(workspace_directory)
             logger.info(
                 "No pid provided. Initializing new SSAS Instance",
-                workspace_dir=self.workspace_directory(),
+                workspace_dir=self._workspace_directory,
                 msmdsrv_exe=self.startup_config.msmdsrv_exe,
             )
-            self.pid = self.initialize_server()
+            self.pid = self._initialize_server()
         else:
             if workspace_directory is not None:
                 msg = "If the pid is specified, you must not specify a workspace directory"
                 raise ValueError(msg)
+            self.startup_config = None
             self.pid = pid
             self._workspace_directory = self._get_workspace_directory()
 
@@ -100,24 +101,21 @@ class SSASProcess:
         if proc_info is None:
             msg = "This PID doesn't correspond to a valid SSAS instance"
             raise ValueError(msg)
-        return proc_info.workspace_directory
+        return proc_info.workspace_directory.absolute()
 
-    def workspace_directory(self) -> pathlib.Path:
-        return pathlib.Path(self._workspace_directory).absolute()
-
-    def create_workspace(self) -> None:
+    def _create_workspace(self) -> None:
         """Creates the workspace directory and populates the initial config file for the new SSAS instance."""
         assert self.startup_config is not None, "Startup config must be set before creating a workspace"
-        logger.debug("initializing SSAS Workspace", directory=self.workspace_directory())
-        self.workspace_directory().mkdir(parents=True, exist_ok=True)
-        (self.workspace_directory() / "msmdsrv.ini").write_text(
+        logger.debug("initializing SSAS Workspace", directory=self._workspace_directory)
+        self._workspace_directory.mkdir(parents=True, exist_ok=True)
+        (self._workspace_directory / "msmdsrv.ini").write_text(
             self.startup_config.msmdsrv_ini_template().render(
-                data_directory=self.workspace_directory().absolute().as_posix().replace("/", "\\"),
+                data_directory=self._workspace_directory.as_posix().replace("/", "\\"),
                 certificate_directory=self.startup_config.cert_dir.absolute().as_posix().replace("/", "\\"),
             ),
         )
 
-    def run_msmdsrv(self) -> int:
+    def _run_msmdsrv(self) -> int:
         """Runs the commands to create the DB.
 
         Commands are explained here: https://stackoverflow.com/q/36458981
@@ -137,7 +135,7 @@ class SSASProcess:
             "-n",
             "pbi_core_master",
             "-s",
-            self.workspace_directory().as_posix(),
+            self._workspace_directory.as_posix(),
         ]
         flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
         return subprocess.Popen(  # noqa: S603
@@ -149,7 +147,7 @@ class SSASProcess:
 
     @cached_property
     @backoff.on_exception(backoff.expo, FileNotFoundError, max_time=5)
-    def port(self) -> int:
+    def _port(self) -> int:
         """Gets the port of the DB.
 
         We include exponential backoff in this function since it occasionally takes 1-3 seconds for msmdsrv.exe
@@ -160,14 +158,14 @@ class SSASProcess:
 
         """
         try:
-            return int((self.workspace_directory() / "msmdsrv.port.txt").read_text(encoding="utf-16-le"))
+            return int((self._workspace_directory / "msmdsrv.port.txt").read_text(encoding="utf-16-le"))
         except FileNotFoundError as e:
-            msg = f"Could not find msmdsrv.port.txt file in directory {self.workspace_directory()}. This is needed to get the port of the SSAS instance"  # noqa: E501
+            msg = f"Could not find msmdsrv.port.txt file in directory {self._workspace_directory}. This is needed to get the port of the SSAS instance"  # noqa: E501
             raise FileNotFoundError(msg) from e
 
-    def initialize_server(self) -> int:
-        self.create_workspace()
-        return self.run_msmdsrv()
+    def _initialize_server(self) -> int:
+        self._create_workspace()
+        return self._run_msmdsrv()
 
     def _on_exit(self) -> None:
         if self.kill_on_exit:
@@ -176,7 +174,7 @@ class SSASProcess:
 
     @staticmethod
     @backoff.on_exception(backoff.expo, ValueError, max_time=10)
-    def wait_until_terminated(process: psutil.Process) -> None:
+    def _wait_until_terminated(process: psutil.Process) -> None:
         """Takes a process class and checks if the process is still running.
 
         Raises:
@@ -210,8 +208,8 @@ class SSASProcess:
         if not get_msmdsrv_info(p):  # indicates another process has already taken this PID
             return
         p.terminate()
-        self.wait_until_terminated(p)
+        self._wait_until_terminated(p)
         logger.info("Terminated SSAS Proc", pid=self.pid)
 
-        shutil.rmtree(self.workspace_directory(), ignore_errors=True)
-        logger.info("Workspace Removed", directory=self.workspace_directory().as_posix())
+        shutil.rmtree(self._workspace_directory, ignore_errors=True)
+        logger.info("Workspace Removed", directory=self._workspace_directory.as_posix())

@@ -68,7 +68,7 @@ class BaseServer:
             db_name = None
         with self.conn(db_name) as conn:
             reader = conn.execute_dax(query)
-            return reader.fetch_all()
+            return reader.fetch_many()
 
     def query_xml(self, query: str, db_name: str | None = None) -> BeautifulSoup:
         """Submits an XMLA query to the SSAS instance and returns the result as a BeautifulSoup object.
@@ -184,7 +184,7 @@ class LocalServer(BaseServer):
                 kill_on_exit=kill_on_exit,
                 startup_config=startup_config,
             )
-        super().__init__(host, self.physical_process.port)
+        super().__init__(host, self.physical_process._port)
 
     def load_pbix(self, path: "StrPath", *, db_name: str | None = None) -> LocalTabularModel:
         """Takes a Path to a PBIX report and loads the PBIX Datamodel to the SSAS instance in the SSASProcess.

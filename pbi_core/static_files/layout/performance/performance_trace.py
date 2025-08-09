@@ -218,7 +218,7 @@ class PerformanceTrace:
             try:
                 with self.get_conn() as conn:
                     reader = conn.execute_dax(command)
-                    rows_returned = len(reader.fetch_all(limit=500))
+                    rows_returned = len(reader.fetch_many(limit=500))
 
                     # See note in Reader.fetch_stream() documentation for why we do this
                     reader.close()
