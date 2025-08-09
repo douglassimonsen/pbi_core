@@ -2,9 +2,12 @@ import datetime
 from typing import TYPE_CHECKING
 
 from pbi_parsers import dax
+from pydantic import PrivateAttr
 
 from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
+from pbi_core.ssas.server._commands import BaseCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables._group import Group
@@ -25,6 +28,8 @@ class FormatStringDefinition(SsasEditableRecord):
     state: DataState
 
     modified_time: datetime.datetime
+
+    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.format_string_definition)
 
     def pbi_core_name(self) -> str:
         return str(self.object_id)

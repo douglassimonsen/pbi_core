@@ -4,11 +4,14 @@ from uuid import UUID, uuid4
 
 from bs4 import BeautifulSoup
 from pbi_parsers import dax
+from pydantic import PrivateAttr
 
 from pbi_core.lineage import LineageNode
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import DataState, DataType
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import Alignment, ColumnType, EncodingHint, SummarizedBy
 
@@ -73,6 +76,8 @@ class Column(SsasRenameRecord):  # noqa: PLR0904
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
+
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.column)
 
     def expression_ast(self) -> dax.Expression | None:
         if not isinstance(self.expression, str):

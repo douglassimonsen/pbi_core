@@ -1,7 +1,11 @@
 import datetime
 from typing import TYPE_CHECKING
 
+from pydantic import PrivateAttr
+
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.model import Model
@@ -18,6 +22,8 @@ class Perspective(SsasRenameRecord):
     name: str
 
     modified_time: datetime.datetime
+
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.perspective)
 
     def model(self) -> "Model":
         return self.tabular_model.model

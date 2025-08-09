@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
 from bs4 import BeautifulSoup
+from pydantic import PrivateAttr
 
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord
@@ -10,6 +11,8 @@ from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.enums import DataCategory
 from pbi_core.ssas.model_tables.measure import Measure
 from pbi_core.ssas.model_tables.partition import Partition
+from pbi_core.ssas.server._commands import RefreshCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
@@ -53,6 +56,8 @@ class Table(SsasRefreshRecord):
 
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
+
+    _commands: RefreshCommands = PrivateAttr(default_factory=lambda: SsasCommands.table)
 
     def modification_hash(self) -> int:
         return hash((

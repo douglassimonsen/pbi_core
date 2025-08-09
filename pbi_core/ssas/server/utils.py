@@ -7,16 +7,55 @@ from xml.sax.saxutils import escape  # nosec
 import jinja2
 import psutil
 
+from ._commands import BaseCommands, ModelCommands, RefreshCommands, RenameCommands
+
 COMMAND_DIR: pathlib.Path = pathlib.Path(__file__).parent / "command_templates"
 
 COMMAND_TEMPLATES: dict[str, jinja2.Template] = {
     f.name: jinja2.Template(f.read_text()) for f in COMMAND_DIR.iterdir() if f.is_file()
 }
-OBJECT_COMMAND_TEMPLATES: dict[str, dict[str, str]] = {
+commands: dict[str, dict[str, str]] = {
     folder.name: {f.name: f.read_text() for f in folder.iterdir() if f.is_file()}
     for folder in (COMMAND_DIR / "schema").iterdir()
     if folder.is_dir()
 }
+
+
+class SsasCommands:
+    annotation = RenameCommands.new(commands["Annotations"])
+    calculation_group = BaseCommands.new(commands["CalculationGroup"])
+    calculation_item = RenameCommands.new(commands["CalculationItems"])
+    column = RenameCommands.new(commands["Columns"])
+    column_permission = BaseCommands.new(commands["ColumnPermissions"])
+    culture = RenameCommands.new(commands["Cultures"])
+    data_source = RenameCommands.new(commands["DataSources"])
+    detail_row_defintion = BaseCommands.new(commands["DetailRowsDefinition"])
+    expression = RenameCommands.new(commands["Expressions"])
+    extended_property = RenameCommands.new(commands["ExtendedProperties"])
+    format_string_definition = BaseCommands.new(commands["FormatStringDefinitions"])
+    hierarchy = RenameCommands.new(commands["Hierarchies"])
+    kpi = BaseCommands.new(commands["Kpis"])
+    level = RenameCommands.new(commands["Levels"])
+    linguistic_metadata = BaseCommands.new(commands["LinguisticMetadata"])
+    measure = RenameCommands.new(commands["Measures"])
+    model = ModelCommands.new(commands["Model"])
+    object_translation = BaseCommands.new(commands["ObjectTranslations"])
+    partition = RefreshCommands.new(commands["Partitions"])
+    perspective_column = BaseCommands.new(commands["PerspectiveColumns"])
+    perspective_hierarchy = BaseCommands.new(commands["PerspectiveHierarchies"])
+    perspective_measure = BaseCommands.new(commands["PerspectiveMeasures"])
+    perspective = RenameCommands.new(commands["Perspectives"])
+    perspective_table = BaseCommands.new(commands["PerspectiveTables"])
+    query_group = BaseCommands.new(commands["QueryGroups"])
+    refresh_policy = BaseCommands.new(commands["RefreshPolicy"])
+    relationship = RenameCommands.new(commands["Relationships"])
+    role_membership = BaseCommands.new(commands["RoleMemberships"])
+    role = RenameCommands.new(commands["Roles"])
+    table_permission = BaseCommands.new(commands["TablePermissions"])
+    table = RefreshCommands.new(commands["Tables"])
+    variation = RenameCommands.new(commands["Variations"])
+
+
 ROOT_FOLDER = pathlib.Path(__file__).parents[2]
 SKU_ERROR = "ImageLoad/ImageSave commands supports loading/saving data for Excel, Power BI Desktop or Zip files. File extension can be only .XLS?, .PBIX or .ZIP."  # noqa: E501
 

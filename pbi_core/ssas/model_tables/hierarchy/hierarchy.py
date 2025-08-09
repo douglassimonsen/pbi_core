@@ -2,9 +2,13 @@ import datetime
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
+from pydantic import PrivateAttr
+
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import HideMembers
 
@@ -37,6 +41,8 @@ class Hierarchy(SsasRenameRecord):
     refreshed_time: datetime.datetime
     """The last time the sources for this hierarchy were refreshed"""
     structure_modified_time: datetime.datetime
+
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.hierarchy)
 
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})

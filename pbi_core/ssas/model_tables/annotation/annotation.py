@@ -1,9 +1,13 @@
 import datetime
 from typing import Literal
 
+from pydantic import PrivateAttr
+
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import ObjectType
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 
 class Annotation(SsasRenameRecord):
@@ -18,6 +22,7 @@ class Annotation(SsasRenameRecord):
     value: str | None = None
 
     modified_time: datetime.datetime
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.annotation)
 
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.

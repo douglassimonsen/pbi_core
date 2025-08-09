@@ -1,8 +1,12 @@
 import datetime
 from typing import TYPE_CHECKING
 
+from pydantic import PrivateAttr
+
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
+from pbi_core.ssas.server._commands import BaseCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.measure import Measure
@@ -26,6 +30,8 @@ class DetailRowDefinition(SsasEditableRecord):
     state: DataState
 
     modified_time: datetime.datetime
+
+    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.detail_row_defintion)
 
     @classmethod
     def _db_type_name(cls) -> str:

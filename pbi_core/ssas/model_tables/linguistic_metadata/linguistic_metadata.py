@@ -8,6 +8,8 @@ from pydantic_extra_types.semantic_version import SemanticVersion
 from pbi_core.lineage import LineageNode
 from pbi_core.pydantic import BaseValidation
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.server._commands import BaseCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.culture import Culture
@@ -185,6 +187,8 @@ class LinguisticMetadata(SsasEditableRecord):
     culture_id: int
 
     modified_time: datetime.datetime
+
+    _commands: BaseCommands = pydantic.PrivateAttr(default_factory=lambda: SsasCommands.linguistic_metadata)
 
     def culture(self) -> "Culture":
         return self.tabular_model.cultures.find({"id": self.culture_id})

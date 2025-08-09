@@ -1,7 +1,11 @@
 import datetime
 from typing import TYPE_CHECKING
 
+from pydantic import PrivateAttr
+
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import DataSourceType, ImpersonationMode, Isolation
 
@@ -32,6 +36,8 @@ class DataSource(SsasRenameRecord):
     type: DataSourceType
 
     modified_time: datetime.datetime
+
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.data_source)
 
     def model(self) -> "Model":
         return self.tabular_model.model

@@ -3,11 +3,14 @@ from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
 from pbi_parsers import dax
+from pydantic import PrivateAttr
 
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.enums import DataState, DataType
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.calc_dependency import CalcDependency
@@ -15,6 +18,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.format_string_definition import FormatStringDefinition
     from pbi_core.ssas.model_tables.kpi import KPI
     from pbi_core.ssas.model_tables.table import Table
+    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 
 
 class Measure(SsasRenameRecord):
@@ -55,6 +59,8 @@ class Measure(SsasRenameRecord):
 
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
+
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.measure)
 
     def modification_hash(self) -> int:
         return hash((
@@ -236,6 +242,7 @@ class Measure(SsasRenameRecord):
                 recursive_dependencies.add(dep)
                 recursive_dependencies.update(dep.children(recursive=True))
             return recursive_dependencies
+
         return full_dependencies
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
@@ -253,3 +260,25 @@ class Measure(SsasRenameRecord):
         ]
         parent_lineage = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
         return LineageNode(self, lineage_type, parent_lineage)
+
+    @staticmethod
+    def new(
+        name: str,
+        expression: str,
+        table: "int | Table",
+        ssas: "BaseTabularModel",
+    ) -> "Measure":
+        table_id = table if isinstance(table, int) else table.id
+
+        return Measure(
+            name=name,
+            data_type=DataType.Unknown,
+            is_simple_measure=True,
+            state=DataState.Ready,
+            modified_time=datetime.datetime.now(tz=datetime.UTC),
+            structure_modified_time=datetime.datetime.now(tz=datetime.UTC),
+            expression=expression,
+            table_id=table_id,
+            tabular_model=ssas,
+            id=-1,
+        )

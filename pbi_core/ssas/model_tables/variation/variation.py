@@ -1,7 +1,11 @@
 from typing import TYPE_CHECKING, Literal
 
+from pydantic import PrivateAttr
+
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.column import Column
@@ -23,6 +27,8 @@ class Variation(SsasRenameRecord):
     is_default: bool
     name: str
     relationship_id: int
+
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.variation)
 
     def get_column(self) -> "Column":
         """Name is bad to not consistent with other methods because the column field in this entity :(."""

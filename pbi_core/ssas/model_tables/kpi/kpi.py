@@ -1,8 +1,12 @@
 import datetime
 from typing import TYPE_CHECKING, Literal
 
+from pydantic import PrivateAttr
+
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.server._commands import BaseCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.measure import Measure
@@ -26,6 +30,8 @@ class KPI(SsasEditableRecord):
     trend_expression: str | None = None
 
     modified_time: datetime.datetime
+
+    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.kpi)
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""

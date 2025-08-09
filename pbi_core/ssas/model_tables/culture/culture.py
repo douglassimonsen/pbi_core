@@ -1,8 +1,12 @@
 import datetime
 from typing import TYPE_CHECKING, Literal
 
+from pydantic import PrivateAttr
+
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.linguistic_metadata import LinguisticMetadata
@@ -21,6 +25,8 @@ class Culture(SsasRenameRecord):
 
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
+
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.culture)
 
     def linguistic_metdata(self) -> "LinguisticMetadata":
         return self.tabular_model.linguistic_metadata.find({"id": self.linguistic_metadata_id})

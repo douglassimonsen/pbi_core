@@ -1,7 +1,7 @@
-from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
 
 
-class GroupByColumn(SsasRenameRecord):
+class GroupByColumn(SsasTable):
     """TBD.
 
     SSAS spec:

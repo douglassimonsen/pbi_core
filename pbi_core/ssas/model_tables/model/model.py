@@ -1,11 +1,13 @@
 import datetime
 from typing import TYPE_CHECKING, Literal
 
-from pydantic import Json
+from pydantic import Json, PrivateAttr
 
 from pbi_core.lineage import LineageNode
 from pbi_core.pydantic.main import BaseValidation
 from pbi_core.ssas.model_tables.base import RefreshType, SsasModelRecord
+from pbi_core.ssas.server._commands import ModelCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import DefaultDataView
 
@@ -55,6 +57,8 @@ class Model(SsasModelRecord):
 
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
+
+    _commands: ModelCommands = PrivateAttr(default_factory=lambda: SsasCommands.model)
 
     def default_measure(self) -> "Measure | None":
         if self.default_measure_id is None:

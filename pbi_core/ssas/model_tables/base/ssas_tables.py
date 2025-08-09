@@ -1,17 +1,11 @@
-from typing import TYPE_CHECKING, Any
-
 import pydantic
 from bs4 import BeautifulSoup
 from structlog import get_logger
 
 from pbi_core.ssas.server._commands import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
-from pbi_core.ssas.server.utils import OBJECT_COMMAND_TEMPLATES
 
 from .base_ssas_table import SsasTable
 from .enums import RefreshType
-
-if TYPE_CHECKING:
-    from pbi_core.ssas.server.tabular_model import BaseTabularModel
 
 logger = get_logger()
 
@@ -35,7 +29,7 @@ class SsasAlter(SsasTable):
     The `alter <https://learn.microsoft.com/en-us/analysis-services/tmsl/alter-command-tmsl?view=asallproducts-allversions>`_ spec
     """  # noqa: E501
 
-    _commands: BaseCommands  # pyright: ignore reportIncompatibleVariableOverride
+    _commands: BaseCommands
 
     def alter(self) -> BeautifulSoup:
         """Updates a non-name field of an object."""
@@ -55,7 +49,7 @@ class SsasRename(SsasTable):
     """  # noqa: E501
 
     _db_name_field: str = "not_defined"
-    _commands: RenameCommands  # pyright: ignore reportIncompatibleVariableOverride
+    _commands: RenameCommands
 
     def rename(self) -> BeautifulSoup:
         """Updates a name field of an object."""
@@ -74,16 +68,17 @@ class SsasCreate(SsasTable):
     The `create <https://learn.microsoft.com/en-us/analysis-services/tmsl/create-command-tmsl?view=asallproducts-allversions>`_ spec
     """  # noqa: E501
 
-    @classmethod
-    def create(cls: type["SsasCreate"], tabular_model: "BaseTabularModel", **kwargs: dict[str, Any]) -> BeautifulSoup:
-        # xml_command = cls.render_xml_command(
-        #     self.xml_fields(),
-        #     cls._commands.rename,
-        #     tabular_model.db_name,
-        # )
-        # logger.info("Syncing Rename Changes to SSAS", obj=cls._db_type_name())
-        # tabular_model.server.query_xml(xml_command, db_name=tabular_model.db_name)
-        raise NotImplementedError
+    _commands: BaseCommands
+
+    def create(self) -> BeautifulSoup:
+        """Creates a new SSAS object based on the python object."""
+        xml_command = self.render_xml_command(
+            self.xml_fields(),
+            self._commands.create,
+            self.tabular_model.db_name,
+        )
+        logger.info("Syncing Create Changes to SSAS", obj=self._db_type_name())
+        return self.tabular_model.server.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
 class SsasDelete(SsasTable):
@@ -93,7 +88,7 @@ class SsasDelete(SsasTable):
     """  # noqa: E501
 
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
-    _commands: BaseCommands  # pyright: ignore reportIncompatibleVariableOverride
+    _commands: BaseCommands
 
     def delete(self) -> BeautifulSoup:
         data = {
@@ -116,7 +111,7 @@ class SsasRefresh(SsasTable):
 
     _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
     _default_refresh_type: RefreshType
-    _commands: RefreshCommands  # pyright: ignore reportIncompatibleVariableOverride
+    _commands: RefreshCommands
 
     def refresh(self, refresh_type: RefreshType | None = None) -> BeautifulSoup:
         xml_command = self.render_xml_command(
@@ -131,61 +126,22 @@ class SsasRefresh(SsasTable):
 class SsasReadonlyRecord(SsasTable):
     """Class for SSAS records that implement no command."""
 
-    _commands: NoCommands  # pyright: ignore reportIncompatibleVariableOverride
+    _commands: NoCommands
 
 
 class SsasEditableRecord(SsasCreate, SsasAlter, SsasDelete):
     _commands: BaseCommands
 
-    def model_post_init(self, __context: Any, /) -> None:
-        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
-        self._commands = BaseCommands(  # pyright: ignore reportIncompatibleVariableOverride
-            alter=templates["alter.xml"],
-            create=templates["create.xml"],
-            delete=templates["delete.xml"],
-        )
-
 
 class SsasRenameRecord(SsasCreate, SsasAlter, SsasDelete, SsasRename):
-    _commands: RenameCommands
-
-    def model_post_init(self, __context: Any, /) -> None:
-        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
-        if self._db_command_obj_name() == "ExtendedPropertys":
-            breakpoint()
-        self._commands = RenameCommands(  # pyright: ignore reportIncompatibleVariableOverride
-            alter=templates["alter.xml"],
-            create=templates["create.xml"],
-            delete=templates["delete.xml"],
-            rename=templates["rename.xml"],
-        )
+    _commands: RenameCommands  # pyright: ignore reportIncompatibleVariableOverride
 
 
 class SsasRefreshRecord(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefresh):
-    _commands: RefreshCommands
-
-    def model_post_init(self, __context: Any, /) -> None:
-        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
-
-        self._commands = RefreshCommands(  # pyright: ignore reportIncompatibleVariableOverride
-            alter=templates["alter.xml"],
-            create=templates["create.xml"],
-            delete=templates["delete.xml"],
-            rename=templates["rename.xml"],
-            refresh=templates["refresh.xml"],
-        )
+    _commands: RefreshCommands  # pyright: ignore reportIncompatibleVariableOverride
 
 
 class SsasModelRecord(SsasAlter, SsasRefresh, SsasRename):
     """Solely used for the single Model record."""
 
-    _commands: ModelCommands  # type: ignore[assignment]
-
-    def model_post_init(self, __context: Any, /) -> None:
-        templates = OBJECT_COMMAND_TEMPLATES.get(self._db_command_obj_name(), {})
-
-        self._commands = ModelCommands(  # pyright: ignore reportIncompatibleVariableOverride
-            alter=templates["alter.xml"],
-            refresh=templates["refresh.xml"],
-            rename=templates["rename.xml"],
-        )
+    _commands: ModelCommands  # pyright: ignore reportIncompatibleVariableOverride

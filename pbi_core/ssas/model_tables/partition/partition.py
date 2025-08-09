@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Literal
 
 from bs4 import BeautifulSoup
 from pbi_parsers import dax, pq
+from pydantic import PrivateAttr
 
 from pbi_core.lineage import LineageNode
 from pbi_core.logging import get_logger
@@ -10,6 +11,8 @@ from pbi_core.ssas.model_tables._group import RowNotFoundError
 from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord, SsasTable
 from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.enums import DataState
+from pbi_core.ssas.server._commands import RefreshCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import DataView, PartitionMode, PartitionType
 
@@ -56,6 +59,8 @@ class Partition(SsasRefreshRecord):
 
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
+
+    _commands: RefreshCommands = PrivateAttr(default_factory=lambda: SsasCommands.partition)
 
     def expression_ast(self) -> dax.Expression | pq.Expression | None:
         if self.type == PartitionType.Calculated:

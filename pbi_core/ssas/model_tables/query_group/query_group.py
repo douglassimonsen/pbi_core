@@ -1,7 +1,11 @@
 from typing import TYPE_CHECKING, Literal
 
+from pydantic import PrivateAttr
+
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.server._commands import BaseCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.expression import Expression
@@ -21,6 +25,8 @@ class QueryGroup(SsasEditableRecord):
     description: str | None = None
     folder: str
     model_id: int
+
+    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.query_group)
 
     def expressions(self) -> set["Expression"]:
         return self.tabular_model.expressions.find_all({"query_group_id": self.id})

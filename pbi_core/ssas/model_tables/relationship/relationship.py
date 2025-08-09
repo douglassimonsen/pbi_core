@@ -1,9 +1,13 @@
 import datetime
 from typing import TYPE_CHECKING, Literal
 
+from pydantic import PrivateAttr
+
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import CrossFilteringBehavior, JoinOnDateBehavior, RelationshipType, SecurityFilteringBehavior
 
@@ -42,6 +46,8 @@ class Relationship(SsasRenameRecord):
 
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
+
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.relationship)
 
     def from_table(self) -> "Table":
         """Returns the table the relationship is using as a filter.

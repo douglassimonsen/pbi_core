@@ -3,7 +3,11 @@ from enum import IntEnum
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
+from pydantic import PrivateAttr
+
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.column import Column
@@ -34,6 +38,8 @@ class Expression(SsasRenameRecord):
     source_lineage_tag: UUID = uuid4()
 
     modified_time: datetime.datetime
+
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.expression)
 
     def model(self) -> "Model":
         return self.tabular_model.model

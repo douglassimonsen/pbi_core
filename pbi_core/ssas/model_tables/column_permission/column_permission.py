@@ -1,8 +1,12 @@
 import datetime
 from typing import TYPE_CHECKING
 
+from pydantic import PrivateAttr
+
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.model_tables.table_permission import MetadataPermission, TablePermission
+from pbi_core.ssas.server._commands import BaseCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.column import Column
@@ -19,6 +23,8 @@ class ColumnPermission(SsasEditableRecord):
     table_permission_id: int
 
     modified_time: datetime.datetime
+
+    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.column_permission)
 
     def table_permission(self) -> TablePermission:
         return self.tabular_model.table_permissions.find(self.table_permission_id)

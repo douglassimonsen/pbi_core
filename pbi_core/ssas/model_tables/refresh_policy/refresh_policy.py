@@ -1,4 +1,8 @@
+from pydantic import PrivateAttr
+
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.server._commands import BaseCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import Granularity, PolicyType, RefreshMode
 
@@ -20,3 +24,5 @@ class RefreshPolicy(SsasEditableRecord):
     rolling_window_periods: int
     source_expression: str
     table_id: int
+
+    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.refresh_policy)

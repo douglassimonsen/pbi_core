@@ -1,11 +1,13 @@
 import datetime
 
 from git import TYPE_CHECKING
-from pydantic import Json
+from pydantic import Json, PrivateAttr
 
 from pbi_core.pydantic import BaseValidation
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import ObjectType
+from pbi_core.ssas.server._commands import RenameCommands
+from pbi_core.ssas.server.utils import SsasCommands
 from pbi_core.static_files.layout.sources.column import ColumnSource
 
 if TYPE_CHECKING:
@@ -41,6 +43,8 @@ class ExtendedProperty(SsasRenameRecord):
     value: Json[ExtendedPropertyValue]
 
     modified_time: datetime.datetime
+
+    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.extended_property)
 
     def object(self) -> "SsasTable":
         """Returns the object the property is describing."""

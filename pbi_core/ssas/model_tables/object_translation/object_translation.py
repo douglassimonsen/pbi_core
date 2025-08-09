@@ -1,7 +1,11 @@
 import datetime
 
+from pydantic import PrivateAttr
+
 from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import ObjectType
+from pbi_core.ssas.server._commands import BaseCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import Property
 
@@ -20,6 +24,8 @@ class ObjectTranslation(SsasEditableRecord):
     value: str
 
     modified_time: datetime.datetime
+
+    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.object_translation)
 
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.

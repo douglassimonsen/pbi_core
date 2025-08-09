@@ -36,7 +36,7 @@ BASE_RENAME_TEMPLATE = jinja2.Template(
     {{entity_def}}
   </Rename>
 </Batch>
-    """.strip(),
+""".strip(),
 )
 BASE_DELETE_TEMPLATE = jinja2.Template(
     """
@@ -46,9 +46,18 @@ BASE_DELETE_TEMPLATE = jinja2.Template(
     {{entity_def}}
   </Delete>
 </Batch>
-    """.strip(),
+""".strip(),
 )
-BASE_CREATE_TEMPLATE = jinja2.Template("")
+BASE_CREATE_TEMPLATE = jinja2.Template(
+    """
+<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Create xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+    <DatabaseID>{{db_name}}</DatabaseID>
+    {{entity_def}}
+  </Create>
+</Batch>
+""".strip(),
+)
 base_commands = {
     "alter": BASE_ALTER_TEMPLATE,
     "create": BASE_CREATE_TEMPLATE,
@@ -101,6 +110,14 @@ class BaseCommands(NoCommands):
     def __repr__(self) -> str:
         return "BaseCommands(alter, create, delete)"
 
+    @staticmethod
+    def new(data: dict[str, str]) -> "BaseCommands":
+        return BaseCommands(
+            alter=data["alter.xml"],
+            create=data["create.xml"],
+            delete=data["delete.xml"],
+        )
+
 
 class RenameCommands(BaseCommands):
     rename: Command
@@ -108,12 +125,31 @@ class RenameCommands(BaseCommands):
     def __repr__(self) -> str:
         return "RenameCommands(alter, create, delete, rename)"
 
+    @staticmethod
+    def new(data: dict[str, str]) -> "RenameCommands":
+        return RenameCommands(
+            alter=data["alter.xml"],
+            create=data["create.xml"],
+            delete=data["delete.xml"],
+            rename=data["rename.xml"],
+        )
+
 
 class RefreshCommands(RenameCommands):
     refresh: Command
 
     def __repr__(self) -> str:
         return "RefreshCommands(alter, create, delete, rename, refresh)"
+
+    @staticmethod
+    def new(data: dict[str, str]) -> "RefreshCommands":
+        return RefreshCommands(
+            alter=data["alter.xml"],
+            create=data["create.xml"],
+            delete=data["delete.xml"],
+            rename=data["rename.xml"],
+            refresh=data["refresh.xml"],
+        )
 
 
 class ModelCommands(NoCommands):
@@ -123,6 +159,14 @@ class ModelCommands(NoCommands):
 
     def __repr__(self) -> str:
         return "ModelCommands(alter, refresh, rename)"
+
+    @staticmethod
+    def new(data: dict[str, str]) -> "ModelCommands":
+        return ModelCommands(
+            alter=data["alter.xml"],
+            refresh=data["refresh.xml"],
+            rename=data["rename.xml"],
+        )
 
 
 Commands = BaseCommands | RenameCommands | RefreshCommands | ModelCommands

@@ -1,7 +1,11 @@
 import datetime
 from typing import TYPE_CHECKING
 
+from pydantic import PrivateAttr
+
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.server._commands import BaseCommands
+from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import MemberType
 
@@ -22,6 +26,8 @@ class RoleMembership(SsasEditableRecord):
     role_id: int
 
     modified_time: datetime.datetime
+
+    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.role_membership)
 
     def role(self) -> "Role":
         return self.tabular_model.roles.find(self.role_id)
