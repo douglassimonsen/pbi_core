@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 class DependencyMixin(HelpersMixin):
     explicit_name: str | None
-    expression: str | int | None = None
+    expression: str | int | None
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
