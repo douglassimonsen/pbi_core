@@ -30,7 +30,12 @@ class HelpersMixin(RelationshipMixin):
         return self.type == ColumnType.CALCULATED
 
     def is_normal(self) -> bool:
-        return self.type != ColumnType.ROW_NUMBER
+        """Returns True if the column is not a row number column or attached to a system/private table."""
+        if self.type == ColumnType.ROW_NUMBER:
+            return False
+        if self.table().is_private:
+            return False
+        return not self.is_system_table()
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""
@@ -54,7 +59,12 @@ class HelpersMixin(RelationshipMixin):
         ))
 
     def full_name(self) -> str:
-        """Returns the fully qualified name for DAX queries."""
+        """Returns the fully qualified name for DAX queries.
+
+        Examples:
+            'TableName'[ColumnName]
+
+        """
         table_name = self.table().name
         return f"'{table_name}'[{self.explicit_name}]"
 
