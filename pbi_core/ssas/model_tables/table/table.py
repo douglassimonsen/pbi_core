@@ -27,7 +27,7 @@ class Table(SsasRefreshRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/6360ac84-0717-4170-bce0-284cbef419ca)
     """
 
-    _refresh_type = RefreshType.DataOnly
+    _refresh_type = RefreshType.DATA_ONLY
 
     alternate_source_precedence: int
     calculation_group_id: int | None = None

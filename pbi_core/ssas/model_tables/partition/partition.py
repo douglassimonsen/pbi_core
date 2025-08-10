@@ -37,7 +37,7 @@ class Partition(SsasRefreshRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/81badb81-31a8-482b-ae16-5fc9d8291d9e)
     """
 
-    _default_refresh_typ = RefreshType.Full
+    _default_refresh_type = RefreshType.FULL
 
     data_view: DataView
     data_source_id: int | None = None
@@ -63,7 +63,7 @@ class Partition(SsasRefreshRecord):
     _commands: RefreshCommands = PrivateAttr(default_factory=lambda: SsasCommands.partition)
 
     def expression_ast(self) -> dax.Expression | pq.Expression | None:
-        if self.type == PartitionType.Calculated:
+        if self.type == PartitionType.CALCULATED:
             ret = pq.to_ast(self.query_definition)
             if ret is None:
                 msg = "Failed to parse DAX expression from partition query definition"

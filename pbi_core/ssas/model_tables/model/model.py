@@ -30,7 +30,7 @@ class Model(SsasModelRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/60094cd5-1c7e-4353-9299-251bfa838cc6)
     """
 
-    _default_refresh_type = RefreshType.Calculate
+    _default_refresh_type = RefreshType.CALCULATE
 
     automatic_aggregation_options: str | None = None
     collation: str | None = None

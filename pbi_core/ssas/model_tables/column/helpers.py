@@ -26,6 +26,12 @@ class HelpersMixin(RelationshipMixin):
     def is_from_calculated_table(self) -> bool:
         return bool(self.system_flags % 2)
 
+    def is_calculated_column(self) -> bool:
+        return self.type == ColumnType.CALCULATED
+
+    def is_normal(self) -> bool:
+        return self.type != ColumnType.ROW_NUMBER
+
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""
         if self.explicit_name is not None:
@@ -35,7 +41,7 @@ class HelpersMixin(RelationshipMixin):
         return str(self.id)
 
     def _column_type(self) -> Literal["COLUMN", "CALC_COLUMN"]:
-        if self.type == ColumnType.Data:
+        if self.type == ColumnType.DATA:
             return "COLUMN"
         return "CALC_COLUMN"
 

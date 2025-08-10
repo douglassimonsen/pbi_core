@@ -2,6 +2,6 @@ from enum import IntEnum
 
 
 class DefaultDataView(IntEnum):
-    Full = 0
-    Sample = 1
-    Default = 3
+    FULL = 0
+    SAMPLE = 1
+    DEFAULT = 3

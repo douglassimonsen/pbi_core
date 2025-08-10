@@ -2,7 +2,7 @@ from enum import IntEnum
 
 
 class Property(IntEnum):
-    Invalid = -1
-    Caption = 1
-    Description = 2
-    DisplayFolder = 3
+    INVALID = -1
+    CAPTION = 1
+    DESCRIPTION = 2
+    DISPLAY_FOLDER = 3

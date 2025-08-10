@@ -2,6 +2,6 @@ from enum import IntEnum
 
 
 class MemberType(IntEnum):
-    Auto = 1
-    User = 2
-    Group = 3
+    AUTO = 1
+    USER = 2
+    GROUP = 3

@@ -4,14 +4,14 @@ from enum import Enum, IntEnum
 class DataState(IntEnum):
     """Source: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/93d1844f-a6c7-4dda-879b-2e26ed5cd297)."""
 
-    Ready = 1
-    NoData = 3
-    CalculationNeeded = 4
-    SemanticError = 5
-    EvaluationError = 6
-    DependencyError = 7
-    Incomplete = 8
-    SyntaxError = 9
+    READY = 1
+    NO_DATA = 3
+    CALCULATION_NEEDED = 4
+    SEMANTIC_ERROR = 5
+    EVALUATION_ERROR = 6
+    DEPENDENCY_ERROR = 7
+    INCOMPLETE = 8
+    SYNTAX_ERROR = 9
 
 
 class ObjectType(IntEnum):
@@ -49,16 +49,16 @@ class ObjectType(IntEnum):
 class DataType(IntEnum):
     """Source: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b)."""
 
-    Automatic = 1
-    String = 2
-    Int64 = 6
-    Double = 8
-    DateTime = 9
-    Decimal = 10
-    Boolean = 11
-    Binary = 17
-    Unknown = 19
-    Unknowner = 20
+    AUTOMATIC = 1
+    STRING = 2
+    INT64 = 6
+    DOUBLE = 8
+    DATE_TIME = 9
+    DECIMAL = 10
+    BOOLEAN = 11
+    BINARY = 17
+    UNKNOWN = 19
+    UNKNOWNER = 20
 
 
 class DataCategory(Enum):
@@ -69,20 +69,20 @@ class DataCategory(Enum):
 
     """
 
-    Unknown = 0
-    Regular = 1
-    Time = 2
-    Geography = 3
-    Organization = 4
-    BillOfMaterials = 5
-    Accounts = 6
-    Customers = 7
-    Products = 8
-    Scenario = 9
-    Quantitative = 10
-    Utility = 11
-    Currency = 12
-    Rates = 13
-    Channel = 14
-    Promotion = 15
-    TimeStr = "Time"  # TODO: I think we're accidentally merging two enums. sometimes it's a string in the pbix??
+    UNKNOWN = 0
+    REGULAR = 1
+    TIME = 2
+    GEOGRAPHY = 3
+    ORGANIZATION = 4
+    BILL_OF_MATERIALS = 5
+    ACCOUNTS = 6
+    CUSTOMERS = 7
+    PRODUCTS = 8
+    SCENARIO = 9
+    QUANTITATIVE = 10
+    UTILITY = 11
+    CURRENCY = 12
+    RATES = 13
+    CHANNEL = 14
+    PROMOTION = 15
+    TIME_STR = "Time"  # TODO: I think we're accidentally merging two enums. sometimes it's a string in the pbix??

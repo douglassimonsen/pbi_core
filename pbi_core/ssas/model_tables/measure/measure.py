@@ -272,9 +272,9 @@ class Measure(SsasRenameRecord):
 
         return Measure(
             name=name,
-            data_type=DataType.Unknown,
+            data_type=DataType.UNKNOWN,
             is_simple_measure=True,
-            state=DataState.Ready,
+            state=DataState.READY,
             modified_time=datetime.datetime.now(tz=datetime.UTC),
             structure_modified_time=datetime.datetime.now(tz=datetime.UTC),
             expression=expression,

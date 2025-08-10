@@ -2,17 +2,17 @@ from enum import IntEnum
 
 
 class PolicyType(IntEnum):
-    Basic = 0
+    BASIC = 0
 
 
 class Granularity(IntEnum):
-    Invalid = -1
-    Day = 0
-    Month = 1
-    Quarter = 2
-    Year = 3
+    INVALID = -1
+    DAY = 0
+    MONTH = 1
+    QUARTER = 2
+    YEAR = 3
 
 
 class RefreshMode(IntEnum):
-    Import = 0
-    Hybrid = 1
+    IMPORT = 0
+    HYBRID = 1

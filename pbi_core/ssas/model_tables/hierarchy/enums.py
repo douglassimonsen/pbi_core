@@ -2,5 +2,5 @@ from enum import IntEnum
 
 
 class HideMembers(IntEnum):
-    Default = 0
-    HideBlankMembers = 1
+    DEFAULT = 0
+    HIDE_BLANK_MEMBERS = 1

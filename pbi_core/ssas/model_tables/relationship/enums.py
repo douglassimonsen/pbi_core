@@ -2,21 +2,21 @@ from enum import IntEnum
 
 
 class RelationshipType(IntEnum):
-    SingleColumn = 1
+    SINGLE_COLUMN = 1
 
 
 class CrossFilteringBehavior(IntEnum):
-    OneDirection = 1
-    BothDirection = 2
-    Automatic = 3
+    ONE_DIRECTION = 1
+    BOTH_DIRECTION = 2
+    AUTOMATIC = 3
 
 
 class JoinOnDateBehavior(IntEnum):
-    DateAndTime = 1
-    DatePartOnly = 2
+    DATE_AND_TIME = 1
+    DATE_PART_ONLY = 2
 
 
 class SecurityFilteringBehavior(IntEnum):
-    OneDirection = 1
-    BothDirections = 2
-    _None = 3
+    ONE_DIRECTION = 1
+    BOTH_DIRECTIONS = 2
+    _NONE = 3

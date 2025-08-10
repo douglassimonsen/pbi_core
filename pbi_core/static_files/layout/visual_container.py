@@ -48,7 +48,7 @@ class SingleVisualGroup(LayoutNode):
 
 
 class VisualHowCreated(Enum):
-    InsertVisualButton = "InsertVisualButton"
+    INSERT_VISUAL_BUTTON = "InsertVisualButton"
 
 
 class VisualLayoutInfoPosition(LayoutNode):
@@ -85,13 +85,13 @@ class ExecutionMetricsKindEnum(IntEnum):
 
 
 class EntityType(IntEnum):
-    Table = 0
+    TABLE = 0
 
 
 class FromEntity(LayoutNode):
     Name: str
     Entity: str
-    Type: EntityType = EntityType.Table
+    Type: EntityType = EntityType.TABLE
 
 
 class PrimaryProjections(LayoutNode):

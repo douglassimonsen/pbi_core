@@ -257,12 +257,12 @@ class HowCreated(IntEnum):
 
 
 class FilterType(Enum):
-    Advanced = "Advanced"
-    Categorial = "Categorical"
-    Exclude = "Exclude"
-    Passthrough = "Passthrough"
-    RelativeDate = "RelativeDate"
-    TopN = "TopN"
+    ADVANCED = "Advanced"
+    CATEGORIAL = "Categorical"
+    EXCLUDE = "Exclude"
+    PASSTHROUGH = "Passthrough"
+    RELATIVE_DATE = "RelativeDate"
+    TOP_N = "TopN"
 
 
 class Scope(LayoutNode):
@@ -276,7 +276,7 @@ class CachedDisplayNames(LayoutNode):
 
 class Filter(LayoutNode):
     name: str | None = None
-    type: FilterType = FilterType.Categorial
+    type: FilterType = FilterType.CATEGORIAL
     howCreated: HowCreated = HowCreated.AUTOMATIC
     expression: Source | None = None
     isLockedInViewMode: bool = False

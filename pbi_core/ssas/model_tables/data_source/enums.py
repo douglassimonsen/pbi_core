@@ -2,19 +2,19 @@ from enum import IntEnum
 
 
 class ImpersonationMode(IntEnum):
-    Default = 1
-    ImpersonateAccount = 2
-    ImpersonateAnonymous = 3
-    ImpersonateCurrentUser = 4
-    ImpersonateServiceAccount = 5
-    ImpersonateUnattendedAccount = 6
+    DEFAULT = 1
+    IMPERSONATE_ACCOUNT = 2
+    IMPERSONATE_ANONYMOUS = 3
+    IMPERSONATE_CURRENT_USER = 4
+    IMPERSONATE_SERVICE_ACCOUNT = 5
+    IMPERSONATE_UNATTENDED_ACCOUNT = 6
 
 
 class DataSourceType(IntEnum):
-    Provider = 1
-    Structured = 2
+    PROVIDER = 1
+    STRUCTURED = 2
 
 
 class Isolation(IntEnum):
-    ReadCommitted = 1
-    Snapshot = 2
+    READ_COMMITTED = 1
+    SNAPSHOT = 2
