@@ -1,14 +1,9 @@
-from typing import TYPE_CHECKING
-
 from pydantic import ConfigDict
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .base import BaseVisual
 from .properties.base import Expression
-
-if TYPE_CHECKING:
-    from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 
 class FillPropertiesHelper(LayoutNode):
@@ -61,6 +56,3 @@ class BasicShape(BaseVisual):
 
     drillFilterOtherVisuals: bool = True
     objects: BasicShapeProperties | None = None
-
-    def get_ssas_elements(self) -> "set[ModelColumnReference | ModelMeasureReference]":  # noqa: PLR6301
-        return set()
