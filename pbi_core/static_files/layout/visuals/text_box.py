@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from pydantic import ConfigDict
 
@@ -8,9 +8,6 @@ from pbi_core.static_files.layout.sources.paragraphs import Paragraph
 
 from .base import BaseVisual
 from .properties.base import Expression
-
-if TYPE_CHECKING:
-    from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 
 class GeneralProperties(LayoutNode):
@@ -50,6 +47,3 @@ class TextBox(BaseVisual):
 
     drillFilterOtherVisuals: bool = True
     objects: TextBoxProperties | None = None
-
-    def get_ssas_elements(self) -> "set[ModelColumnReference | ModelMeasureReference]":  # noqa: PLR6301
-        return set()
