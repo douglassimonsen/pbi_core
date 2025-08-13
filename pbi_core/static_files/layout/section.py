@@ -1,8 +1,8 @@
 from enum import Enum, IntEnum
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import ConfigDict, Field, Json
+from pydantic import ConfigDict, Json, StringConstraints
 
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
@@ -319,7 +319,7 @@ class Section(LayoutNode):
     """Filters that apply to all the visuals on this page - on top of the filters defined for the whole report."""
     displayName: str
     """A user facing name for this page."""
-    name: str = Field(max_length=50)
+    name: Annotated[str, StringConstraints(max_length=50)]
     """A unique identifier for the page across the whole report."""
     id: int | None = None
     pageBinding: PageBinding | None = None
