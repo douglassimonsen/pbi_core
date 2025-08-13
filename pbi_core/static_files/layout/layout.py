@@ -28,10 +28,21 @@ class PublicCustomVisual(LayoutNode):
     pass  # TODO: find an example where this occurs
 
 
+class ThemeVersionInfo(LayoutNode):
+    visual: str
+    page: str
+    report: str
+
+
+class ThemeResourcePackageType(Enum):
+    REGISTERED_RESORCES = 1
+    SHARED_RESOURCES = 2
+
+
 class ThemeInfo(LayoutNode):
     name: str
-    version: float
-    type: int  # def an enum
+    version: ThemeVersionInfo | str
+    type: ThemeResourcePackageType  # def an enum
 
 
 class ThemeCollection(LayoutNode):
