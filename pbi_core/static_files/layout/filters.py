@@ -250,19 +250,35 @@ From = Annotated[
 
 
 class HowCreated(IntEnum):
-    AUTOMATIC = 0
-    MANUAL = 1
-    NA = 4
-    NA2 = 5
+    AUTO = 0
+    """Created automatically when a field is used in the visual."""
+    USER = 1
+    """Filters created from fields not used in a visual by the user."""
+    DRILL = 2
+    """Created when drilling down on a data point in a visual."""
+    INCLUDE = 3
+    """Created by including a data point in a visual."""
+    EXCLUDE = 4
+    """Created by excluding a data point from a visual."""
+    DRILLTHROUGH = 5
+    """Created by drill context that is applied to the page when using drill-through
+    action from another page."""
+    NA3 = 6
+    NA4 = 7
 
 
 class FilterType(Enum):
     ADVANCED = "Advanced"
     CATEGORIAL = "Categorical"
     EXCLUDE = "Exclude"
+    INCLUDE = "Include"
     PASSTHROUGH = "Passthrough"
+    RANGE = "Range"
     RELATIVE_DATE = "RelativeDate"
+    RELATIVE_TIME = "RelativeTime"
     TOP_N = "TopN"
+    TUPLE = "Tuple"
+    VISUAL_TOP_N = "VisualTopN"
 
 
 class Scope(LayoutNode):
@@ -277,16 +293,24 @@ class CachedDisplayNames(LayoutNode):
 class Filter(LayoutNode):
     name: str | None = None
     type: FilterType = FilterType.CATEGORIAL
-    howCreated: HowCreated = HowCreated.AUTOMATIC
+    howCreated: HowCreated = HowCreated.AUTO
     expression: Source | None = None
+    """Holds a single expression and associated metadata.
+    Name, NativeReferenceName, and Annotations may be specified for any expression.
+    Each other property represents a specific type of expression and exactly one of these other properties must be
+    specified.
+
+    Definition: https://developer.microsoft.com/json-schemas/fabric/item/report/definition/semanticQuery/1.3.0/schema.json#/definitions/QueryExpressionContainer
+    """
     isLockedInViewMode: bool = False
     isHiddenInViewMode: bool = False
     objects: FilterObjects | None = None
     filter: PrototypeQuery | None = None
+    """Defines a filter element as a partial query structure"""
     displayName: str | None = None
     ordinal: int = 0
-    cachedDisplayNames: list[CachedDisplayNames] | None = None
     isLinkedAsAggregation: bool = False
+    cachedDisplayNames: list[CachedDisplayNames] | None = None
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.displayName or self.name})"
@@ -340,15 +364,67 @@ class FilterExpressionMetadata(LayoutNode):
     cachedValueItems: list[CachedValueItems]
 
 
+class JsonFilter(LayoutNode):
+    filterType: FilterType
+    """Type of json filter."""
+
+
+class DecomposedIdentities(LayoutNode):
+    values: list[list[dict[int, Source]]]
+    """`values` have 3 levels
+    outermost level:
+      - for SelectorsByColumn[], it's the number of selectors in this array
+      - for FilterExpressionMetadata, it's the number of cachedValueItems.
+    second level:
+      - for SelectorsByColumn, it is the number of scopedIdentities in the particular SelectorsByColumn
+      - for FilterExpressionMetadata, it is the number of identities in a cachedValueItem
+    innermost level:
+      - the key is the index of the column structure of scopedIdentity in `columns` list;
+      - the the value is the expressions list in one identity"""
+    columns: list[Source]
+    """Defines the set of group-on key columns."""
+
+
+class DecomposedFilterExpressionMetadata(LayoutNode):
+    decomposedIdentities: DecomposedIdentities
+    """Defines the group-on key fields and the filters applied on them."""
+    expressions: list[Source]
+    """Original fields (which have group-on keys) used in the filter."""
+    valueMap: list[dict[int, str]] | None = None
+    """Matches the index in decomposedIdentities with the queryRef for an expression."""
+    jsonFilter: JsonFilter | None = None
+    """Json filter metadata."""
+
+
+def get_filter_expression(v: object | dict[str, Any]) -> str:
+    if isinstance(v, dict):
+        if "decomposedIdentities" in v:
+            return "DecomposedFilterExpressionMetadata"
+        if "cachedValueItems" in v:
+            return "FilterExpressionMetadata"
+        raise TypeError(v)
+    return v.__class__.__name__
+
+
+FilterExpression = Annotated[
+    Annotated[FilterExpressionMetadata, Tag("FilterExpressionMetadata")]
+    | Annotated[DecomposedFilterExpressionMetadata, Tag("DecomposedFilterExpressionMetadata")],
+    Discriminator(get_filter_expression),
+]
+
+
 class VisualFilter(Filter):
     restatement: str | None = None
-    filterExpressionMetadata: FilterExpressionMetadata | None = None
+    filterExpressionMetadata: FilterExpression | None = None
 
     def to_bookmark(self) -> "BookmarkFilter":
         return cast("BookmarkFilter", self)
 
 
 class BookmarkFilter(VisualFilter):
+    """Meaning of properties is same as Filters defined outside the bookmark."""
+
+    isTransient: bool = False
     _parent: "BookmarkFilters"  # pyright: ignore reportIncompatibleVariableOverride=false
 
 
