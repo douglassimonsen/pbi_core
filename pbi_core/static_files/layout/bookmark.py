@@ -122,12 +122,18 @@ class BookmarkOptions(LayoutNode):
 
 
 class Bookmark(LayoutNode):
+    """Based on schema/bookmark.json."""
+
     _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     options: BookmarkOptions | None
-    explorationState: ExplorationState | None
-    name: str  # acts as an ID
+    """Additional options for the bookmark."""
+    explorationState: ExplorationState
+    """Bookmark definition to use when applying this bookmark."""
+    name: str
+    """Unique identifier for the bookmark - unique across the report."""
     displayName: str
+    """Display name for the bookmark."""
 
     def match_current_filters(self) -> None:
         raise NotImplementedError
