@@ -9,8 +9,10 @@ from .properties.base import Expression
 
 
 class LabelsPropertiesHelper(LayoutNode):
+    backgroundTransparency: Expression | None = None
     color: Expression | None = None
     enableBackground: Expression | None = None
+    fontFamily: Expression | None = None
     fontSize: Expression | None = None
     labelDisplayUnits: Expression | None = None
     labelOrientation: Expression | None = None
@@ -18,6 +20,7 @@ class LabelsPropertiesHelper(LayoutNode):
     labelPosition: Expression | None = None
     labelPrecision: Expression | None = None
     show: Expression | None = None
+    showAll: Expression | None = None
 
 
 class LabelsProperties(LayoutNode):
@@ -32,6 +35,7 @@ class ValueAxisPropertiesHelper(LayoutNode):
     gridlineShow: Expression | None = None
     labelColor: Expression | None = None
     labelDisplayUnits: Expression | None = None
+    logAxisScale: Expression | None = None
     show: Expression | None = None
     showAxisTitle: Expression | None = None
     start: Expression | None = None
@@ -55,8 +59,11 @@ class DataPointProperties(LayoutNode):
 
 class CategoryAxisPropertiesHelper(LayoutNode):
     axisType: Expression | None = None
+    concatenateLabels: Expression | None = None
     fontFamily: Expression | None = None
     fontSize: Expression | None = None
+    gridlineShow: Expression | None = None
+    gridlineStyle: Expression | None = None
     innerPadding: Expression | None = None
     labelColor: Expression | None = None
     maxMarginFactor: Expression | None = None
@@ -94,16 +101,25 @@ class TrendProperties(LayoutNode):
 
 
 class PlotAreaPropertiesHelper(LayoutNode):
-    pass
+    transparency: Expression | None = None
 
 
 class PlotAreaProperties(LayoutNode):
     properties: PlotAreaPropertiesHelper
 
 
+class GeneralPropertiesHelper(LayoutNode):
+    responsive: Expression | None = None
+
+
+class GeneralProperties(LayoutNode):
+    properties: GeneralPropertiesHelper
+
+
 class ClusteredColumnChartProperties(LayoutNode):
     categoryAxis: list[CategoryAxisProperties] | None = None
     dataPoint: list[DataPointProperties] | None = None
+    general: list[GeneralProperties] | None = None
     labels: list[LabelsProperties] | None = None
     legend: list[LegendProperties] | None = None
     plotArea: list[PlotAreaProperties] | None = None

@@ -29,10 +29,14 @@ class CategoryAxisPropertiesHelper(LayoutNode):
     innerPadding: Expression | None = None
     labelColor: Expression | None = None
     maxMarginFactor: Expression | None = None
+    position: Expression | None = None
     preferredCategoryWidth: Expression | None = None
     show: Expression | None = None
     showAxisTitle: Expression | None = None
     switchAxisPosition: Expression | None = None
+    titleColor: Expression | None = None
+    titleFontFamily: Expression | None = None
+    titleFontSize: Expression | None = None
 
 
 class CategoryAxisProperties(LayoutNode):
@@ -40,9 +44,13 @@ class CategoryAxisProperties(LayoutNode):
 
 
 class ValueAxisPropertiesHelper(LayoutNode):
+    axisScale: Expression | None = None
     fontSize: Expression | None = None
+    gridlineColor: Expression | None = None
     gridlineShow: Expression | None = None
     invertAxis: Expression | None = None
+    labelColor: Expression | None = None
+    labelDisplayUnits: Expression | None = None
     show: Expression | None = None
     showAxisTitle: Expression | None = None
     titleFontFamily: Expression | None = None

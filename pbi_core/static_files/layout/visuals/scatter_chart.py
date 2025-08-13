@@ -24,15 +24,21 @@ class DataPointProperties(LayoutNode):
 class ValueAxisPropertiesHelper(LayoutNode):
     alignZeros: Expression | None = None
     axisScale: Expression | None = None
+    end: Expression | None = None
     fontSize: Expression | None = None
+    gridlineColor: Expression | None = None
     gridlineShow: Expression | None = None
+    labelColor: Expression | None = None
+    logAxisScale: Expression | None = None
     show: Expression | None = None
     showAxisTitle: Expression | None = None
+    start: Expression | None = None
     switchAxisPosition: Expression | None = None
     titleColor: Expression | None = None
     titleFontFamily: Expression | None = None
     titleFontSize: Expression | None = None
     titleText: Expression | None = None
+    treatNullsAsZero: Expression | None = None
 
 
 class ValueAxisProperties(LayoutNode):
@@ -46,6 +52,7 @@ class LegendPropertiesHelper(LayoutNode):
     show: Expression | None = None
     showGradientLegend: Expression | None = None
     showTitle: Expression | None = None
+    titleText: Expression | None = None
 
 
 class LegendProperties(LayoutNode):
@@ -71,11 +78,15 @@ class ColorBorderProperties(LayoutNode):
 
 class CategoryAxisPropertiesHelper(LayoutNode):
     axisScale: Expression | None = None
+    end: Expression | None = None
+    fontFamily: Expression | None = None
     fontSize: Expression | None = None
     gridlineColor: Expression | None = None
     gridlineShow: Expression | None = None
     gridlineStyle: Expression | None = None
     innerPadding: Expression | None = None
+    labelColor: Expression | None = None
+    logAxisScale: Expression | None = None
     maxMarginFactor: Expression | None = None
     show: Expression | None = None
     showAxisTitle: Expression | None = None
@@ -115,12 +126,31 @@ class Y1AxisReferenceLineProperties(LayoutNode):
 
 
 class CategoryLabelsPropertiesHelper(LayoutNode):
+    color: Expression | None = None
+    enableBackground: Expression | None = None
+    fontFamily: Expression | None = None
     fontSize: Expression | None = None
     show: Expression | None = None
 
 
 class CategoryLabelsProperties(LayoutNode):
     properties: CategoryLabelsPropertiesHelper
+
+
+class GeneralPropertiesHelper(LayoutNode):
+    responsive: Expression | None = None
+
+
+class GeneralProperties(LayoutNode):
+    properties: GeneralPropertiesHelper
+
+
+class PlotAreaPropertiesHelper(LayoutNode):
+    transparency: Expression | None = None
+
+
+class PlotAreaProperties(LayoutNode):
+    properties: PlotAreaPropertiesHelper
 
 
 class ScatterChartProperties(LayoutNode):
@@ -130,7 +160,9 @@ class ScatterChartProperties(LayoutNode):
     colorBorder: list[ColorBorderProperties] | None = None
     dataPoint: list[DataPointProperties] | None = None
     fillPoint: list[FillPointProperties] | None = None
+    general: list[GeneralProperties] | None = None
     legend: list[LegendProperties] | None = None
+    plotArea: list[PlotAreaProperties] | None = None
     valueAxis: list[ValueAxisProperties] | None = None
     y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] | None = None
 

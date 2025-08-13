@@ -54,6 +54,7 @@ class LabelsPropertiesHelper(LayoutNode):
     color: Expression | None = None
     fontFamily: Expression | None = None
     fontSize: Expression | None = None
+    labelDisplayUnits: Expression | None = None
     labelStyle: Expression | None = None
     overflow: Expression | None = None
     percentageLabelPrecision: Expression | None = None

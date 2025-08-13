@@ -21,6 +21,7 @@ class CategoryAxisPropertiesHelper(LayoutNode):
     showAxisTitle: Expression | None = None
     start: Expression | None = None
     titleColor: Expression | None = None
+    titleFontFamily: Expression | None = None
     titleFontSize: Expression | None = None
 
 
@@ -54,6 +55,7 @@ class LabelsPropertiesHelper(LayoutNode):
     labelDensity: Expression | None = None
     show: Expression | None = None
     showAll: Expression | None = None
+    showSeries: Expression | None = None
 
 
 class LabelsProperties(LayoutNode):
@@ -63,6 +65,7 @@ class LabelsProperties(LayoutNode):
 
 class DataPointPropertiesHelper(LayoutNode):
     fill: Expression | None = None
+    showAllDataPoints: Expression | None = None
 
 
 class DataPointProperties(LayoutNode):
@@ -140,6 +143,7 @@ class ZoomProperties(LayoutNode):
 class ForecastPropertiesHelper(LayoutNode):
     show: Expression | None = None
     displayName: Expression | None = None
+    lineColor: Expression | None = None
     transform: Expression | None = None
 
 
@@ -167,7 +171,7 @@ class TrendProperties(LayoutNode):
 
 
 class GeneralPropertiesHelper(LayoutNode):
-    pass
+    responsive: Expression | None = None
 
 
 class GeneralProperties(LayoutNode):
@@ -180,6 +184,18 @@ class Y2AxisPropertiesHelper(LayoutNode):
 
 class Y2AxisProperties(LayoutNode):
     properties: Y2AxisPropertiesHelper
+
+
+class Y1AxisReferenceLinePropertiesHelper(LayoutNode):
+    displayName: Expression | None = None
+    position: Expression | None = None
+    show: Expression | None = None
+    style: Expression | None = None
+
+
+class Y1AxisReferenceLineProperties(LayoutNode):
+    properties: Y1AxisReferenceLinePropertiesHelper
+    selector: Selector | None = None
 
 
 class LineChartProperties(LayoutNode):
@@ -195,6 +211,7 @@ class LineChartProperties(LayoutNode):
     trend: list[TrendProperties] | None = None
     valueAxis: list[ValueAxisProperties] | None = None
     zoom: list[ZoomProperties] | None = None
+    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] | None = None
     y2Axis: list[Y2AxisProperties] | None = None
 
 

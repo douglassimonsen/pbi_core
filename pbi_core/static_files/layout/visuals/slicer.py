@@ -64,6 +64,7 @@ class DataProperties(LayoutNode):
 class ItemPropertiesHelper(LayoutNode):
     background: Expression | None = None
     fontColor: Expression | None = None
+    fontFamily: Expression | None = None
     outline: Expression | None = None
     outlineColor: Expression | None = None
     textSize: Expression | None = None
@@ -75,6 +76,8 @@ class ItemProperties(LayoutNode):
 
 class DatePropertiesHelper(LayoutNode):
     background: Expression | None = None
+    fontColor: Expression | None = None
+    fontFamily: Expression | None = None
     textSize: Expression | None = None
 
 
