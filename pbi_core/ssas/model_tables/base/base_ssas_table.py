@@ -15,6 +15,8 @@ logger = get_logger()
 
 
 class SsasTable(BaseValidation, IdBase):
+    id: int = pydantic.Field(frozen=True)
+
     tabular_model: BaseTabularModel
     _read_only_fields: ClassVar[tuple[str, ...]] = ()
 

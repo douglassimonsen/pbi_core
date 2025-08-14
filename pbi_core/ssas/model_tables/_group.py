@@ -1,11 +1,9 @@
 from collections.abc import Callable
-from typing import Any, Final, TypeVar
-
-import pydantic
+from typing import Any, TypeVar
 
 
 class IdBase:
-    id: Final[int] = pydantic.Field(frozen=True)
+    id: int
 
 
 T = TypeVar("T", bound=IdBase)
