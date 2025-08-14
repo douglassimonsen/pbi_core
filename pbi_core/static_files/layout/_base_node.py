@@ -16,7 +16,6 @@ T = TypeVar("T", bound="LayoutNode")
 
 class LayoutNode(BaseValidation):
     _name_field: str | None = None  # name of the field used to populate __repr__
-    _parent: "LayoutNode"
     _xpath: list[str | int]
 
     @staticmethod
@@ -146,26 +145,3 @@ def _find_xpath(val: LayoutNode | list[LayoutNode] | dict[str, LayoutNode] | str
         return _find_xpath(getattr(val, next_pos), xpath)
     msg = f"What? xpath={xpath}, val={val}"
     raise ValueError(msg)
-
-
-def _set_parents(
-    base: list[LayoutNode] | dict[str, LayoutNode] | LayoutNode | int | str,
-    last_parent: "LayoutNode",
-    curr_xpath: list[str | int],
-) -> None:
-    if isinstance(base, list):
-        for i, val in enumerate(base):
-            _set_parents(val, last_parent, [*curr_xpath, i])
-    elif isinstance(base, dict):
-        for key, val in base.items():
-            _set_parents(val, last_parent, [*curr_xpath, key])
-    elif isinstance(base, LayoutNode):
-        base._parent = last_parent
-        base._xpath = curr_xpath
-
-        for field_name in base.model_fields:
-            if field_name.startswith("_"):
-                continue
-            field_value = getattr(base, field_name)
-            if isinstance(field_value, list | dict | LayoutNode):
-                _set_parents(field_value, base, [*curr_xpath, field_name])

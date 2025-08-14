@@ -8,7 +8,6 @@ import bs4
 
 from .file_classes import Connections, DiagramLayout, Metadata, Settings, parse_diagram_layout
 from .file_classes.theme import Theme
-from .layout._base_node import _set_parents
 from .layout.layout import Layout
 
 if TYPE_CHECKING:
@@ -81,7 +80,6 @@ class StaticFiles:
 
         layout_json = json.loads(zipfile.read("Report/Layout").decode(LAYOUT_ENCODING))
         layout = Layout.model_validate(layout_json)
-        _set_parents(layout, None, [])  # pyright: ignore reportArgumentType
 
         if "Connections" in zipfile.namelist():
             connections_json = json.loads(zipfile.read("Connections").decode("utf-8"))

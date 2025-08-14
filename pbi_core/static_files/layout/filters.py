@@ -19,10 +19,6 @@ if TYPE_CHECKING:
 
     from pbi_core.ssas.server import LocalTabularModel
 
-    from .bookmark import BookmarkFilters
-    from .layout import Layout
-    from .section import Section
-
 
 class Direction(IntEnum):
     ASCENDING = 1
@@ -206,14 +202,10 @@ class PrototypeQuery(LayoutNode):
 
 
 class _SubqueryHelper2(LayoutNode):
-    _parent: "_SubqueryHelper"  # pyright: ignore reportIncompatibleVariableOverride=false
-
     Query: PrototypeQuery
 
 
 class _SubqueryHelper(LayoutNode):
-    _parent: "Subquery"  # pyright: ignore reportIncompatibleVariableOverride=false
-
     Subquery: _SubqueryHelper2
 
 
@@ -222,8 +214,6 @@ class SubQueryType(IntEnum):
 
 
 class Subquery(LayoutNode):
-    _parent: "VisualFilterExpression"  # pyright: ignore reportIncompatibleVariableOverride=false
-
     Name: str
     Expression: _SubqueryHelper
     Type: SubQueryType
@@ -339,8 +329,6 @@ class Filter(LayoutNode):
 
 
 class VisualFilterExpression(LayoutNode):
-    _parent: "VisualFilter"  # pyright: ignore reportIncompatibleVariableOverride=false
-
     Version: int | None = None
     From: list["From"] | None = None
     Where: list[Condition]
@@ -425,12 +413,11 @@ class BookmarkFilter(VisualFilter):
     """Meaning of properties is same as Filters defined outside the bookmark."""
 
     isTransient: bool = False
-    _parent: "BookmarkFilters"  # pyright: ignore reportIncompatibleVariableOverride=false
 
 
 class PageFilter(Filter):
-    _parent: "Section"  # pyright: ignore reportIncompatibleVariableOverride=false
+    pass
 
 
 class GlobalFilter(Filter):
-    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
+    pass

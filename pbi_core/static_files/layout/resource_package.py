@@ -1,10 +1,6 @@
 from enum import IntEnum
-from typing import TYPE_CHECKING
 
 from ._base_node import LayoutNode
-
-if TYPE_CHECKING:
-    from .layout import Layout
 
 
 class ResourcePackageItemType(IntEnum):
@@ -19,7 +15,6 @@ class ResourcePackageItemType(IntEnum):
 
 
 class ResourcePackageItem(LayoutNode):
-    _parent: "ResourcePackageDetails"  # pyright: ignore reportIncompatibleVariableOverride=false
     name: str | None = None
     path: str
     type: ResourcePackageItemType
@@ -35,7 +30,6 @@ class ResourcePackageDetailsType(IntEnum):
 
 
 class ResourcePackageDetails(LayoutNode):
-    _parent: "ResourcePackage"  # pyright: ignore reportIncompatibleVariableOverride=false
     disabled: bool = False
     items: list[ResourcePackageItem] = []
     type: ResourcePackageDetailsType
@@ -45,5 +39,4 @@ class ResourcePackageDetails(LayoutNode):
 
 
 class ResourcePackage(LayoutNode):
-    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
     resourcePackage: ResourcePackageDetails

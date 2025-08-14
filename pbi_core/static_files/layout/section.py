@@ -2,7 +2,7 @@ from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import ConfigDict, Json, StringConstraints
+from pydantic import ConfigDict, Json, StringConstraints, model_validator
 
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
@@ -16,8 +16,7 @@ from .visual_container import VisualContainer
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel, LocalTabularModel
-
-    from .layout import Layout
+    from pbi_core.static_files.layout import Layout
 
 
 class DisplayOption(IntEnum):
@@ -304,7 +303,8 @@ class Annotation(LayoutNode):
 
 
 class Section(LayoutNode):
-    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
+    _layout: "Layout | None"
+    """The layout the section is associated with, if it exists"""
     height: int
     """Height of the page (in pixels) - optional only for 'DeprecatedDynamic' option, required otherwise."""
     width: int
@@ -369,7 +369,11 @@ class Section(LayoutNode):
             return LineageNode(self, lineage_type)
 
         page_filters = self.get_ssas_elements()
-        report_filters = self._parent.get_ssas_elements(include_sections=False)
+
+        report_filters = set()
+        if self._layout is not None:
+            report_filters = self._layout.get_ssas_elements(include_sections=False)
+
         entities = page_filters | report_filters
         children_nodes = [ref.to_model(tabular_model) for ref in entities]
 
@@ -397,3 +401,9 @@ class Section(LayoutNode):
             msg = "Cannot get performance for a page without any querying visuals"
             raise ValueError(msg)
         return get_performance(model, commands, clear_cache=clear_cache)
+
+    @model_validator(mode="after")
+    def update_sections(self) -> "Section":
+        for viz in self.visualContainers:
+            viz._section = self
+        return self

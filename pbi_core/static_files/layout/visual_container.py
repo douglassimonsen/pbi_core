@@ -69,7 +69,6 @@ class VisualLayoutInfo(LayoutNode):
 
 
 class VisualConfig(LayoutNode):
-    _parent: "VisualContainer"  # pyright: ignore reportIncompatibleVariableOverride=false
     _name_field = "name"
 
     layouts: list[VisualLayoutInfo] | None = None
@@ -433,7 +432,7 @@ class VisualContainer(LayoutNode):
     It's at this level that the report connects with the SSAS model to get data for each visual.
     """
 
-    _parent: "Section"  # pyright: ignore reportIncompatibleVariableOverride=false
+    _section: "Section | None"
     _name_field = "name"
 
     x: float
@@ -535,7 +534,6 @@ class VisualContainer(LayoutNode):
             ret.update(f.get_ssas_elements())
         return ret
 
-    # TODO: replace ._parent with a get_parent method
     def get_lineage(
         self,
         lineage_type: Literal["children", "parents"],
@@ -545,8 +543,12 @@ class VisualContainer(LayoutNode):
             return LineageNode(self, lineage_type)
 
         viz_entities = self.get_ssas_elements()
-        page_filters = self._parent.get_ssas_elements(include_visuals=False)
-        report_filters = self._parent._parent.get_ssas_elements(include_sections=False)
+        page_filters, report_filters = set(), set()
+        if (section := self._section) is not None:
+            page_filters = section.get_ssas_elements(include_visuals=False)
+            if (layout := section._layout) is not None:
+                report_filters = layout.get_ssas_elements(include_sections=False)
+
         entities = viz_entities | page_filters | report_filters
         children_nodes = [ref.to_model(tabular_model) for ref in entities]
 

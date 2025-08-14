@@ -12,7 +12,6 @@ from .visuals.base import PropertyDef
 from .visuals.properties.base import Expression
 
 if TYPE_CHECKING:
-    from .layout import Layout
     from .section import Section
     from .visuals.base import BaseVisual
 
@@ -143,8 +142,6 @@ class VisualContainerGroup(LayoutNode):
 
 
 class BookmarkSection(LayoutNode):
-    _parent: "ExplorationState"  # pyright: ignore reportIncompatibleVariableOverride=false
-
     visualContainers: dict[str, BookmarkVisual]
     """Flat list of visual-container-specific state.
     Does not include state of groups."""
@@ -172,8 +169,6 @@ class ExplorationStateProperties(LayoutNode):
 
 
 class ExplorationState(LayoutNode):
-    _parent: "Bookmark"  # pyright: ignore reportIncompatibleVariableOverride=false
-
     version: str
     """Version of bookmark."""
     sections: dict[str, BookmarkSection]
@@ -192,8 +187,6 @@ class ExplorationState(LayoutNode):
 
 
 class BookmarkOptions(LayoutNode):
-    _parent: "Bookmark"  # pyright: ignore reportIncompatibleVariableOverride=false
-
     applyOnlyToTargetVisuals: bool = False
     """Only applies changes to selected visuals when the bookmark was captured."""
     targetVisualNames: list[str] | None = None
@@ -211,8 +204,6 @@ class Bookmark(LayoutNode):
 
     Based on schema/bookmark.json
     """
-
-    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
 
     options: BookmarkOptions | None
     """Additional options for the bookmark."""
@@ -240,7 +231,6 @@ class Bookmark(LayoutNode):
 
 
 class BookmarkFolder(LayoutNode):
-    _parent: "Layout"  # pyright: ignore reportIncompatibleVariableOverride=false
     displayName: str
     name: str  # acts as an ID
     children: list[Bookmark]

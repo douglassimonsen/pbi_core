@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Literal
 
-from pydantic import Json
+from pydantic import Json, model_validator
 
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
@@ -160,3 +160,9 @@ class Layout(LayoutNode):
 
         children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
         return LineageNode(self, lineage_type, children_lineage)
+
+    @model_validator(mode="after")
+    def update_sections(self) -> "Layout":
+        for section in self.sections:
+            section._layout = self
+        return self

@@ -56,8 +56,6 @@ class HierarchySource(LayoutNode):
 
 
 class _HierarchyLevelSourceHelper(LayoutNode):
-    _parent: "HierarchyLevelSource"  # pyright: ignore reportIncompatibleVariableOverride=false
-
     Expression: HierarchySource
     Level: str | None = None
 
