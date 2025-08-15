@@ -1,5 +1,5 @@
 from . import ssas
-from .main import LocalReport
+from .report import LocalReport
 from .static_files import layout
 
 __all__ = ["LocalReport", "layout", "ssas"]
