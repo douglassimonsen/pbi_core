@@ -67,6 +67,18 @@ class LocalReport(LocalSsasReport, LocalStaticReport):
         load_static_files: Literal[False] = False,
     ) -> "LocalSsasReport": ...
 
+    @overload
+    @staticmethod
+    def load_pbix(
+        path: "StrPath",
+        *,
+        kill_ssas_on_exit: bool = True,
+        load_ssas: bool = True,
+        load_static_files: bool = False,
+    ) -> "LocalReport": ...
+
+    # If the above overloads are not used, this will be the default implementation, assuming both sides are loaded
+
     @staticmethod
     def load_pbix(  # pyright: ignore[reportIncompatibleMethodOverride]
         path: "StrPath",
@@ -131,6 +143,8 @@ class LocalReport(LocalSsasReport, LocalStaticReport):
             sync_ssas_changes (bool, optional): whether to sync changes made in the SSAS model back to the PBIX file
 
         """
+        # Dev note: DO NOT call save_pbix of LocalSsasReport or LocalStaticReport, as they are implemented assuming the
+        # other doesn't exist, causing changes to be overwritten by them copying the source file
         if sync_ssas_changes:
             self.ssas.sync_to()
         self.ssas.save_pbix(path)

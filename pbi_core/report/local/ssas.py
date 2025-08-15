@@ -23,11 +23,14 @@ class LocalSsasReport(BaseReport):
 
     """
 
+    _source_path: "StrPath"
+    """Since this class doesn't load the full PBIX, we need to keep track of the source path for saving later"""
     ssas: LocalTabularModel
     """An instance of a local SSAS Server"""
 
-    def __init__(self, ssas: LocalTabularModel) -> None:
+    def __init__(self, ssas: LocalTabularModel, source_path: "StrPath") -> None:
         self.ssas = ssas
+        self._source_path = source_path
 
     @staticmethod
     def load_pbix(path: "StrPath", *, kill_ssas_on_exit: bool = True) -> "LocalSsasReport":
@@ -54,7 +57,7 @@ class LocalSsasReport(BaseReport):
         logger.info("Loading PBIX SSAS", path=path)
         server = get_or_create_local_server(kill_on_exit=kill_ssas_on_exit)
         ssas = server.load_pbix(path)
-        return LocalSsasReport(ssas=ssas)
+        return LocalSsasReport(ssas=ssas, source_path=path)
 
     def save_pbix(self, path: "StrPath", *, sync_ssas_changes: bool = True) -> None:
         """Creates a new PBIX with the information in this class to the given path.

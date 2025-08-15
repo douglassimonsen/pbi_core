@@ -1,3 +1,4 @@
+import shutil
 from typing import TYPE_CHECKING
 
 from pbi_core.logging import get_logger
@@ -26,19 +27,22 @@ class LocalStaticReport(BaseReport):
 
     """
 
+    _source_path: "StrPath"
+    """Since this class doesn't load the full PBIX, we need to keep track of the source path for saving later"""
     static_files: StaticFiles
     """Classes representing the static design portions of the PBIX report"""
 
-    def __init__(self, static_files: StaticFiles) -> None:
+    def __init__(self, static_files: StaticFiles, source_path: "StrPath") -> None:
         self.static_files = static_files
+        self._source_path = source_path
 
     @staticmethod
     def load_pbix(path: "StrPath") -> "LocalStaticReport":
         logger.info("Loading PBIX Static Files", path=path)
         static_files = StaticFiles.load_pbix(path)
-        return LocalStaticReport(static_files=static_files)
+        return LocalStaticReport(static_files=static_files, source_path=path)
 
-    def save_pbix(self, path: "StrPath", *, sync_ssas_changes: bool = True) -> None:
+    def save_pbix(self, path: "StrPath") -> None:
         """Creates a new PBIX with the information in this class to the given path.
 
         Examples:
@@ -55,5 +59,5 @@ class LocalStaticReport(BaseReport):
             sync_ssas_changes (bool, optional): whether to sync changes made in the SSAS model back to the PBIX file
 
         """
-        msg = "save_pbix is not yet implemented"
-        raise NotImplementedError(msg)
+        shutil.copy(self._source_path, path)
+        self.static_files.save_pbix(path)
