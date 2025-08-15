@@ -115,6 +115,16 @@ class SolidExpression(LayoutNode):
 class SolidColorExpression(LayoutNode):
     solid: SolidExpression
 
+    @staticmethod
+    def from_hex(color: str) -> "SolidColorExpression":
+        return SolidColorExpression(
+            solid=SolidExpression(
+                color=ColorExpression(
+                    expr=LiteralSource.new(color),
+                ),
+            ),
+        )
+
 
 class StrategyExpression(LayoutNode):
     strategy: LiteralExpression | LiteralSource  # TODO: explore the cases here more

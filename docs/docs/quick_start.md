@@ -3,7 +3,7 @@
 This basic example tests that your PowerBI report can be parsed and reassembled by ``pbi_core``. 
 
 
-```python3
+```python3 linenums="1"
 
 from pbi_core import LocalReport
 
@@ -35,7 +35,7 @@ report.save_pbix("example_out.pbix")  # (1)!
 This example shows how you can add automatic descriptions to PowerBI columns (possibly from some governance tool??)
 
 
-```python3
+```python3 linenums="1"
 
 from pbi_core import LocalReport
 
@@ -47,12 +47,11 @@ for column in report.ssas.columns:
 report.save_pbix("example_out.pbix")
 ```
 
-Finding records in SSAS tables
-------------------------------
+## Finding records in SSAS tables
 
 This example shows how to find SSAS records and extract data from report columns
 
-```python3
+```python3 linenums="1"
 from pbi_core import LocalReport
 
 report = LocalReport.load_pbix("example.pbix")
@@ -72,7 +71,7 @@ print(values3)
 
 This example displays a lineage chart in HTML:
 
-```python3
+```python3 linenums="1"
 from pbi_core import LocalReport
 
 report = LocalReport.load_pbix("example.pbix", kill_ssas_on_exit=True)
@@ -84,7 +83,7 @@ col.get_lineage("parents").to_mermaid().show()
 
 This example displays the ability to easily convert PBIX reports to alternate languages:
 
-```python
+```python linenums="1"
 from pbi_core import LocalReport
 from pbi_core.misc.internationalization import get_static_elements, set_static_elements
 
@@ -104,7 +103,7 @@ One of the core tensions in PowerBI is the size of the data model. In developmen
 
 pbi_core has an automatic element culler that allows you to remove unnecessary elements after the report has been designed:
 
-```python
+```python linenums="1"
 
 from pbi_core import LocalReport
 
@@ -122,7 +121,7 @@ This example shows how to analyze the performance of a Power BI report's visual:
     In the current implementation, the performance trace occassionally hangs. If this happens, you can kill the process and restart it. This is a known issue that will be fixed in a future release.
 
 
-```python
+```python linenums="1"
 
 from pbi_core import LocalReport
 
@@ -164,5 +163,31 @@ Performance(
     Approximate Peak Consumption: 1.0 MiB
     Rows Returned: 5
 )
+
+```
+
+## Styling Layout Elements
+
+This example shows how to apply style changes to elements in a PowerBI report globally. This ensures consistent styling and protects hands from carpal tunnel.
+
+!!! note "Alternate Selection Methods"
+
+    We also included two alternate methods of finding elements on lines 8 and 9. You can pass dictionaries of attribute/value pairs or a function returning a boolean and only elements matching those will return. One downside of these methods in this case is that `Slicer` is a more specific type than `BaseVisual`. The return of the `find_all` method returns `list[<input type>]`, so the more specific type of `Slicer` will provide better autocompletion if your IDE supports it. For instance, the `Slicer` class knows there's an `objects` attribute and it's children, but the `BaseVisual` doesn't.
+
+```python linenums="1"
+from pbi_core import LocalReport
+from pbi_core.static_files.layout.visuals.properties.base import SolidColorExpression
+from pbi_core.static_files.layout.visuals.slicer import Slicer
+
+report = LocalReport.load_pbix("example_pbis/api.pbix", load_ssas=False, load_static_files=True)
+slicers = report.static_files.layout.find_all(Slicer)
+# from pbi_core.static_files.layout.visuals.base import BaseVisual
+# slicers = report.static_files.layout.find_all(BaseVisual, {"visualType": "slicer"})
+# slicers = report.static_files.layout.find_all(BaseVisual, lambda v: v.visualType == "slicer")
+for s in slicers:
+    new_color = SolidColorExpression.from_hex("#FF0000")
+    s.objects.header[0].properties.fontColor = new_color
+    s.objects.items[0].properties.fontColor = new_color
+report.save_pbix("example_out.pbix")
 
 ```

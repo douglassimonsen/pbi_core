@@ -16,7 +16,6 @@ T = TypeVar("T", bound="LayoutNode")
 
 class LayoutNode(BaseValidation):
     _name_field: str | None = None  # name of the field used to populate __repr__
-    _xpath: list[str | int]
 
     @staticmethod
     def serialize_helper(value: Any) -> Any:

@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 import openpyxl
 
 from pbi_core import LocalReport
-from pbi_core.static_files import Layout, Section
+from pbi_core.static_files import Layout
 
 if TYPE_CHECKING:
     from _typeshed import StrPath
@@ -44,14 +44,14 @@ class StaticElements:
 
 def get_static_elements(layout: Layout) -> StaticElements:
     ret = StaticElements()
-    for section in layout.find_all(Section):
-        ret.static_elements.setdefault("section", []).append(
-            StaticElement(
-                xpath=section._xpath,
-                field="displayName",
-                text=section.displayName,
-            ),
-        )
+    # for section in layout.find_all(Section):
+    #     ret.static_elements.setdefault("section", []).append(
+    #         StaticElement(
+    #             xpath=section.get_xpath(),
+    #             field="displayName",
+    #             text=section.displayName,
+    #         ),
+    #     )
     return ret
 
 

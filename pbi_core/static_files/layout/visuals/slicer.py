@@ -1,4 +1,4 @@
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.expansion_state import ExpansionState
@@ -31,7 +31,7 @@ class HeaderPropertiesHelper(LayoutNode):
 
 
 class HeaderProperties(LayoutNode):
-    properties: HeaderPropertiesHelper
+    properties: HeaderPropertiesHelper = Field(default_factory=HeaderPropertiesHelper)
 
 
 class GeneralPropertiesHelper(LayoutNode):
@@ -71,7 +71,7 @@ class ItemPropertiesHelper(LayoutNode):
 
 
 class ItemProperties(LayoutNode):
-    properties: ItemPropertiesHelper
+    properties: ItemPropertiesHelper = Field(default_factory=ItemPropertiesHelper)
 
 
 class DatePropertiesHelper(LayoutNode):
@@ -119,8 +119,8 @@ class SlicerProperties(LayoutNode):
     date: list[DateProperties] | None = None
     data: list[DataProperties] | None = None
     general: list[GeneralProperties] | None = None
-    header: list[HeaderProperties] | None = None
-    items: list[ItemProperties] | None = None
+    header: list[HeaderProperties] = Field(default_factory=lambda: [HeaderProperties()])
+    items: list[ItemProperties] = Field(default_factory=lambda: [ItemProperties()])
     numericInputStyle: list[NumericInputStyleProperties] | None = None
     selection: list[SelectionProperties] | None = None
     slider: list[SliderProperties] | None = None
@@ -133,4 +133,4 @@ class Slicer(BaseVisual):
     syncGroup: SyncGroup | None = None
     cachedFilterDisplayItems: list[CachedFilterDisplayItems] | None = None
     expansionStates: list[ExpansionState] | None = None
-    objects: SlicerProperties | None = None
+    objects: SlicerProperties = Field(default_factory=SlicerProperties)

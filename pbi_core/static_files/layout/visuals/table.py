@@ -1,5 +1,3 @@
-
-
 from pydantic import ConfigDict
 
 from pbi_core.static_files.layout._base_node import LayoutNode
@@ -56,6 +54,7 @@ class ValuesProperties(LayoutNode):
     fontFamily: Expression | None = None
     fontSize: Expression | None = None
     outline: Expression | None = None
+    underline: Expression | None = None
     urlIcon: Expression | None = None
     wordWrap: Expression | None = None
 
@@ -75,6 +74,7 @@ class ColumnHeadersProperties(LayoutNode):
     fontSize: Expression | None = None
     outline: Expression | None = None
     outlineStyle: Expression | None = None
+    underline: Expression | None = None
     wordWrap: Expression | None = None
 
 

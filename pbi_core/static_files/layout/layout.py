@@ -126,7 +126,6 @@ class Layout(LayoutNode):
     theme: str | None = None
     pods: list[Pod] = []
     publicCustomVisuals: list[PublicCustomVisual] = []
-    _xpath = []
 
     def pbi_core_name(self) -> str:  # noqa: PLR6301
         return "Layout"
