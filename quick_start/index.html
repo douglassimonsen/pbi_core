@@ -326,6 +326,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#styling-layout-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Styling Layout Elements
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2004,6 +2013,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#styling-layout-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Styling Layout Elements
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2024,11 +2042,14 @@
 
 <h2 id="basic-functionality">Basic Functionality</h2>
 <p>This basic example tests that your PowerBI report can be parsed and reassembled by <code>pbi_core</code>. </p>
-<div class="language-python3 highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>  <span class="c1"># (1)!</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;example_out.pbix&quot;</span><span class="p">)</span>  <span class="c1"># (1)!</span>
-</span></code></pre></div>
+<div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>  <span class="c1"># (1)!</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;example_out.pbix&quot;</span><span class="p">)</span>  <span class="c1"># (1)!</span>
+</span></code></pre></div></td></tr></table></div>
 <div class="admonition danger">
 <p class="admonition-title">Common Issue</p>
 <p>One of the current limitations in the <code>pbi_core</code> library is the incomplete <a href="https://docs.pydantic.dev/latest/">pydantic</a> typing of the Layout file. This generally appears as a message like: </p>
@@ -2048,50 +2069,80 @@
 </div>
 <h2 id="altering-data-model">Altering Data model</h2>
 <p>This example shows how you can add automatic descriptions to PowerBI columns (possibly from some governance tool??)</p>
-<div class="language-python3 highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">column</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;pbi_core has touched this&quot;</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">column</span><span class="o">.</span><span class="n">alter</span><span class="p">()</span>  <span class="c1"># saves the changes to the SSAS DB</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;example_out.pbix&quot;</span><span class="p">)</span>
-</span></code></pre></div>
+<div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span>
+<span class="normal"><a href="#__codelineno-2-3">3</a></span>
+<span class="normal"><a href="#__codelineno-2-4">4</a></span>
+<span class="normal"><a href="#__codelineno-2-5">5</a></span>
+<span class="normal"><a href="#__codelineno-2-6">6</a></span>
+<span class="normal"><a href="#__codelineno-2-7">7</a></span>
+<span class="normal"><a href="#__codelineno-2-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a>    <span class="n">column</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;pbi_core has touched this&quot;</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a>    <span class="n">column</span><span class="o">.</span><span class="n">alter</span><span class="p">()</span>  <span class="c1"># saves the changes to the SSAS DB</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;example_out.pbix&quot;</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
 <h2 id="finding-records-in-ssas-tables">Finding records in SSAS tables</h2>
 <p>This example shows how to find SSAS records and extract data from report columns</p>
-<div class="language-python3 highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">values</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;explicit_name&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">values2</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Table&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">values2</span><span class="p">)</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">measure</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">measures</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Measure&quot;</span><span class="p">})</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">column</span> <span class="o">=</span> <span class="n">measure</span><span class="o">.</span><span class="n">table</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>  
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1"># Note: the first column is a hidden row-count column that can&#39;t be used in measures</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="n">values3</span> <span class="o">=</span> <span class="n">measure</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">values3</span><span class="p">)</span>
-</span></code></pre></div>
+<div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="n">values</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;explicit_name&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="n">values2</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Table&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">values2</span><span class="p">)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="n">measure</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">measures</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Measure&quot;</span><span class="p">})</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="n">column</span> <span class="o">=</span> <span class="n">measure</span><span class="o">.</span><span class="n">table</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>  
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="c1"># Note: the first column is a hidden row-count column that can&#39;t be used in measures</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="n">values3</span> <span class="o">=</span> <span class="n">measure</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">values3</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
 <h2 id="pbi_core-lineage-chart">pbi_core Lineage Chart</h2>
 <p>This example displays a lineage chart in HTML:</p>
-<div class="language-python3 highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">,</span> <span class="n">kill_ssas_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">col</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;explicit_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MeasureColumn&quot;</span><span class="p">})</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">col</span><span class="o">.</span><span class="n">get_lineage</span><span class="p">(</span><span class="s2">&quot;parents&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_mermaid</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</span></code></pre></div>
+<div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span>
+<span class="normal"><a href="#__codelineno-4-4">4</a></span>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">,</span> <span class="n">kill_ssas_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="n">col</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;explicit_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MeasureColumn&quot;</span><span class="p">})</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="n">col</span><span class="o">.</span><span class="n">get_lineage</span><span class="p">(</span><span class="s2">&quot;parents&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_mermaid</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></code></pre></div></td></tr></table></div>
 <h2 id="improved-multilanguage-support">Improved Multilanguage Support</h2>
 <p>This example displays the ability to easily convert PBIX reports to alternate languages:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core.misc.internationalization</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_static_elements</span><span class="p">,</span> <span class="n">set_static_elements</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">,</span> <span class="n">kill_ssas_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">x</span> <span class="o">=</span> <span class="n">get_static_elements</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">x</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">&quot;multilang.xlsx&quot;</span><span class="p">)</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="n">set_static_elements</span><span class="p">(</span><span class="s2">&quot;multilang1.xlsx&quot;</span><span class="p">,</span> <span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>
-</span></code></pre></div>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span>
+<span class="normal"><a href="#__codelineno-5-4">4</a></span>
+<span class="normal"><a href="#__codelineno-5-5">5</a></span>
+<span class="normal"><a href="#__codelineno-5-6">6</a></span>
+<span class="normal"><a href="#__codelineno-5-7">7</a></span>
+<span class="normal"><a href="#__codelineno-5-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core.misc.internationalization</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_static_elements</span><span class="p">,</span> <span class="n">set_static_elements</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">,</span> <span class="n">kill_ssas_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="n">x</span> <span class="o">=</span> <span class="n">get_static_elements</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="n">x</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">&quot;multilang.xlsx&quot;</span><span class="p">)</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="n">set_static_elements</span><span class="p">(</span><span class="s2">&quot;multilang1.xlsx&quot;</span><span class="p">,</span> <span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
 <h2 id="automatic-data-model-cleaning">Automatic Data Model Cleaning</h2>
 <p>One of the core tensions in PowerBI is the size of the data model. In development, you want to have many measures, columns, and tables to simplify new visual creation. After developing the report, the additional elements create two issues:</p>
 <ol>
@@ -2099,27 +2150,38 @@
 <li>The additional columns and tables can slow down visual rendering times, negatively impacting UX</li>
 </ol>
 <p>pbi_core has an automatic element culler that allows you to remove unnecessary elements after the report has been designed:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example_pbis/api.pbix&quot;</span><span class="p">)</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">report</span><span class="o">.</span><span class="n">cleanse_ssas_model</span><span class="p">()</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;cull_out.pbix&quot;</span><span class="p">)</span>
-</span></code></pre></div>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
+<span class="normal"><a href="#__codelineno-6-2">2</a></span>
+<span class="normal"><a href="#__codelineno-6-3">3</a></span>
+<span class="normal"><a href="#__codelineno-6-4">4</a></span>
+<span class="normal"><a href="#__codelineno-6-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example_pbis/api.pbix&quot;</span><span class="p">)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="n">report</span><span class="o">.</span><span class="n">cleanse_ssas_model</span><span class="p">()</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;cull_out.pbix&quot;</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
 <h2 id="performance-analysis">Performance Analysis</h2>
 <p>This example shows how to analyze the performance of a Power BI report's visual:</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>In the current implementation, the performance trace occassionally hangs. If this happens, you can kill the process and restart it. This is a known issue that will be fixed in a future release.</p>
 </div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example_pbis/example_section_visibility.pbix&quot;</span><span class="p">)</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># x = report.static_files.layout.sections[0].visualContainers[0].get_performance(report.ssas)</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">x</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_performance</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="p">)</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=================&quot;</span><span class="p">)</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pprint</span><span class="p">())</span>
-</span></code></pre></div>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
+<span class="normal"><a href="#__codelineno-7-2">2</a></span>
+<span class="normal"><a href="#__codelineno-7-3">3</a></span>
+<span class="normal"><a href="#__codelineno-7-4">4</a></span>
+<span class="normal"><a href="#__codelineno-7-5">5</a></span>
+<span class="normal"><a href="#__codelineno-7-6">6</a></span>
+<span class="normal"><a href="#__codelineno-7-7">7</a></span>
+<span class="normal"><a href="#__codelineno-7-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example_pbis/example_section_visibility.pbix&quot;</span><span class="p">)</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="c1"># x = report.static_files.layout.sections[0].visualContainers[0].get_performance(report.ssas)</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="n">x</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_performance</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="p">)</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=================&quot;</span><span class="p">)</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pprint</span><span class="p">())</span>
+</span></code></pre></div></td></tr></table></div>
 <p>Which generates the following output.</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:31<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loading<span class="w"> </span>PBIX<span class="w">                   </span><span class="nv">path</span><span class="o">=</span>example_pbis/example_section_visibility.pbix
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:33<span class="w"> </span><span class="o">[</span>warning<span class="w">  </span><span class="o">]</span><span class="w"> </span>Removing<span class="w"> </span>old<span class="w"> </span>version<span class="w"> </span>of<span class="w"> </span>PBIX<span class="w"> </span>data<span class="w"> </span>model<span class="w"> </span><span class="k">for</span><span class="w"> </span>new<span class="w"> </span>version<span class="w"> </span><span class="nv">db_name</span><span class="o">=</span>example_section_visibility
@@ -2149,6 +2211,40 @@
 </span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">    </span>Rows<span class="w"> </span>Returned:<span class="w"> </span><span class="m">5</span>
 </span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="o">)</span>
 </span></code></pre></div>
+<h2 id="styling-layout-elements">Styling Layout Elements</h2>
+<p>This example shows how to apply style changes to elements in a PowerBI report globally. This ensures consistent styling and protects hands from carpal tunnel.</p>
+<div class="admonition note">
+<p class="admonition-title">Alternate Selection Methods</p>
+<p>We also included two alternate methods of finding elements on lines 8 and 9. You can pass dictionaries of attribute/value pairs or a function returning a boolean and only elements matching those will return. One downside of these methods in this case is that <code>Slicer</code> is a more specific type than <code>BaseVisual</code>. The return of the <code>find_all</code> method returns <code>list[&lt;input type&gt;]</code>, so the more specific type of <code>Slicer</code> will provide better autocompletion if your IDE supports it. For instance, the <code>Slicer</code> class knows there's an <code>objects</code> attribute and it's children, but the <code>BaseVisual</code> doesn't.</p>
+</div>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-9-10">10</a></span>
+<span class="normal"><a href="#__codelineno-9-11">11</a></span>
+<span class="normal"><a href="#__codelineno-9-12">12</a></span>
+<span class="normal"><a href="#__codelineno-9-13">13</a></span>
+<span class="normal"><a href="#__codelineno-9-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core.static_files.layout.visuals.properties.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">SolidColorExpression</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core.static_files.layout.visuals.slicer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Slicer</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example_pbis/api.pbix&quot;</span><span class="p">,</span> <span class="n">load_ssas</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">load_static_files</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="n">slicers</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">Slicer</span><span class="p">)</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="c1"># from pbi_core.static_files.layout.visuals.base import BaseVisual</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="c1"># slicers = report.static_files.layout.find_all(BaseVisual, {&quot;visualType&quot;: &quot;slicer&quot;})</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="c1"># slicers = report.static_files.layout.find_all(BaseVisual, lambda v: v.visualType == &quot;slicer&quot;)</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">slicers</span><span class="p">:</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11"></a>    <span class="n">new_color</span> <span class="o">=</span> <span class="n">SolidColorExpression</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s2">&quot;#FF0000&quot;</span><span class="p">)</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12"></a>    <span class="n">s</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">fontColor</span> <span class="o">=</span> <span class="n">new_color</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13"></a>    <span class="n">s</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">fontColor</span> <span class="o">=</span> <span class="n">new_color</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;example_out.pbix&quot;</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
 
 
 
