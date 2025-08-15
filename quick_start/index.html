@@ -2040,7 +2040,7 @@
 
   <h1>Quick start</h1>
 
-<h2 id="basic-functionality">Basic Functionality</h2>
+<h2 id="basic-functionality">Basic Functionality<a class="headerlink" href="#basic-functionality" title="Permanent link">#</a></h2>
 <p>This basic example tests that your PowerBI report can be parsed and reassembled by <code>pbi_core</code>. </p>
 <div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
@@ -2067,7 +2067,7 @@
 <li>Add  <code>--allow-extra</code> to your python call. This will tell Pydantic to <a href="https://github.com/pydantic/pydantic/issues/6145#issuecomment-1592568675">include extra arguments</a> as standard JSON lists/dicts/strings/ints</li>
 </ol>
 </div>
-<h2 id="altering-data-model">Altering Data model</h2>
+<h2 id="altering-data-model">Altering Data model<a class="headerlink" href="#altering-data-model" title="Permanent link">#</a></h2>
 <p>This example shows how you can add automatic descriptions to PowerBI columns (possibly from some governance tool??)</p>
 <div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
 <span class="normal"><a href="#__codelineno-2-2">2</a></span>
@@ -2085,7 +2085,7 @@
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;example_out.pbix&quot;</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
-<h2 id="finding-records-in-ssas-tables">Finding records in SSAS tables</h2>
+<h2 id="finding-records-in-ssas-tables">Finding records in SSAS tables<a class="headerlink" href="#finding-records-in-ssas-tables" title="Permanent link">#</a></h2>
 <p>This example shows how to find SSAS records and extract data from report columns</p>
 <div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
@@ -2113,7 +2113,7 @@
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="n">values3</span> <span class="o">=</span> <span class="n">measure</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">values3</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
-<h2 id="pbi_core-lineage-chart">pbi_core Lineage Chart</h2>
+<h2 id="pbi_core-lineage-chart">pbi_core Lineage Chart<a class="headerlink" href="#pbi_core-lineage-chart" title="Permanent link">#</a></h2>
 <p>This example displays a lineage chart in HTML:</p>
 <div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
 <span class="normal"><a href="#__codelineno-4-2">2</a></span>
@@ -2125,7 +2125,7 @@
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="n">col</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;explicit_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MeasureColumn&quot;</span><span class="p">})</span>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="n">col</span><span class="o">.</span><span class="n">get_lineage</span><span class="p">(</span><span class="s2">&quot;parents&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_mermaid</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></code></pre></div></td></tr></table></div>
-<h2 id="improved-multilanguage-support">Improved Multilanguage Support</h2>
+<h2 id="improved-multilanguage-support">Improved Multilanguage Support<a class="headerlink" href="#improved-multilanguage-support" title="Permanent link">#</a></h2>
 <p>This example displays the ability to easily convert PBIX reports to alternate languages:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
 <span class="normal"><a href="#__codelineno-5-2">2</a></span>
@@ -2143,7 +2143,7 @@
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="n">set_static_elements</span><span class="p">(</span><span class="s2">&quot;multilang1.xlsx&quot;</span><span class="p">,</span> <span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
-<h2 id="automatic-data-model-cleaning">Automatic Data Model Cleaning</h2>
+<h2 id="automatic-data-model-cleaning">Automatic Data Model Cleaning<a class="headerlink" href="#automatic-data-model-cleaning" title="Permanent link">#</a></h2>
 <p>One of the core tensions in PowerBI is the size of the data model. In development, you want to have many measures, columns, and tables to simplify new visual creation. After developing the report, the additional elements create two issues:</p>
 <ol>
 <li>It's difficult to understand which elements are being used and how they relate to each other</li>
@@ -2160,7 +2160,7 @@
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="n">report</span><span class="o">.</span><span class="n">cleanse_ssas_model</span><span class="p">()</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;cull_out.pbix&quot;</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
-<h2 id="performance-analysis">Performance Analysis</h2>
+<h2 id="performance-analysis">Performance Analysis<a class="headerlink" href="#performance-analysis" title="Permanent link">#</a></h2>
 <p>This example shows how to analyze the performance of a Power BI report's visual:</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -2211,7 +2211,7 @@
 </span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">    </span>Rows<span class="w"> </span>Returned:<span class="w"> </span><span class="m">5</span>
 </span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="o">)</span>
 </span></code></pre></div>
-<h2 id="styling-layout-elements">Styling Layout Elements</h2>
+<h2 id="styling-layout-elements">Styling Layout Elements<a class="headerlink" href="#styling-layout-elements" title="Permanent link">#</a></h2>
 <p>This example shows how to apply style changes to elements in a PowerBI report globally. This ensures consistent styling and protects hands from carpal tunnel.</p>
 <div class="admonition note">
 <p class="admonition-title">Alternate Selection Methods</p>

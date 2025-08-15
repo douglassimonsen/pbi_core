@@ -1862,7 +1862,7 @@
 
 
 
-<h1 id="initial-setup">Initial Setup</h1>
+<h1 id="initial-setup">Initial Setup<a class="headerlink" href="#initial-setup" title="Permanent link">#</a></h1>
 <p>To ensure that the pbi_core library references the correct Power BI dependencies consistently and with minimal required permissions, it includes a script to copy files from the Power BI installation directories to the pbi_core library directory. This setup is necessary because Power BI does not provide a public API for accessing these files, and the library needs to reference them directly. Additionally, in some local installations, the Power BI installation directory may require administrative permissions to access.</p>
 <p>To setup, run the following command:</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>run<span class="w"> </span><span class="sb">`</span>python<span class="w"> </span>-m<span class="w"> </span>pbi_core<span class="w"> </span>setup<span class="sb">`</span>
