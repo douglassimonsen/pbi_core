@@ -42,7 +42,7 @@ class DataPointProperties(LayoutNode):
 
 class GeneralProperties(LayoutNode):
     class _GeneralPropertiesHelper(LayoutNode):
-        pass
+        responsive: Expression | None = None
 
     properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
 
