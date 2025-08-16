@@ -61,9 +61,12 @@ class HeaderProperties(LayoutNode):
         background: Expression | None = None
         fontColor: Expression | None = None
         fontFamily: Expression | None = None
+        outlineStyle: Expression | None = None
         show: Expression | None = None
         showRestatement: Expression | None = None
+        text: Expression | None = None
         textSize: Expression | None = None
+        underline: Expression | None = None
 
     properties: _HeaderPropertiesHelper = Field(default_factory=_HeaderPropertiesHelper)
 

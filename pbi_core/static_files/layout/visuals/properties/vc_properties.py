@@ -5,27 +5,38 @@ from pbi_core.static_files.layout._base_node import LayoutNode
 from .base import Expression
 
 
-class Background(LayoutNode):
-    class _BackgroundProperties(LayoutNode):
+class BackgroundProperties(LayoutNode):
+    class _BackgroundPropertiesHelper(LayoutNode):
         color: Expression | None = None
         show: Expression | None = None
         transparency: Expression | None = None
 
-    properties: _BackgroundProperties = Field(default_factory=_BackgroundProperties)
+    properties: _BackgroundPropertiesHelper = Field(default_factory=_BackgroundPropertiesHelper)
 
 
-class Border(LayoutNode):
-    class _BorderProperties(LayoutNode):
+class BorderProperties(LayoutNode):
+    class _BorderPropertiesHelper(LayoutNode):
         background: Expression | None = None
         color: Expression | None = None
         radius: Expression | None = None
         show: Expression | None = None
+        width: Expression | None = None
 
-    properties: _BorderProperties = Field(default_factory=_BorderProperties)
+    properties: _BorderPropertiesHelper = Field(default_factory=_BorderPropertiesHelper)
 
 
-class DropShadow(LayoutNode):
-    class _DropShadowProperties(LayoutNode):
+class DividerProperties(LayoutNode):
+    class _DividerPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        show: Expression | None = None
+        style: Expression | None = None
+        width: Expression | None = None
+
+    properties: _DividerPropertiesHelper = Field(default_factory=_DividerPropertiesHelper)
+
+
+class DropShadowProperties(LayoutNode):
+    class _DropShadowPropertiesHelper(LayoutNode):
         angle: Expression | None = None
         color: Expression | None = None
         position: Expression | None = None
@@ -36,33 +47,57 @@ class DropShadow(LayoutNode):
         show: Expression | None = None
         transparency: Expression | None = None
 
-    properties: _DropShadowProperties
+    properties: _DropShadowPropertiesHelper = Field(default_factory=_DropShadowPropertiesHelper)
 
 
-class General(LayoutNode):
-    class _GeneralProperties(LayoutNode):
+class GeneralProperties(LayoutNode):
+    class _GeneralPropertiesHelper(LayoutNode):
         altText: Expression | None = None
         keepLayerOrder: Expression | None = None
 
-    properties: _GeneralProperties = Field(default_factory=_GeneralProperties)
+    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
 
 
-class LockAspect(LayoutNode):
-    class _LockAspectProperties(LayoutNode):
+class LockAspectProperties(LayoutNode):
+    class _LockAspectPropertiesHelper(LayoutNode):
         show: Expression | None = None
 
-    properties: _LockAspectProperties
+    properties: _LockAspectPropertiesHelper = Field(default_factory=_LockAspectPropertiesHelper)
 
 
-class StylePreset(LayoutNode):
-    class _StylePresetProperties(LayoutNode):
+class SpacingProperties(LayoutNode):
+    class _SpacingPropertiesHelper(LayoutNode):
+        customizeSpacing: Expression | None = None
+        spaceBelowSubTitle: Expression | None = None
+        spaceBelowTitle: Expression | None = None
+        spaceBelowTitleArea: Expression | None = None
+
+    properties: _SpacingPropertiesHelper = Field(default_factory=_SpacingPropertiesHelper)
+
+
+class StylePresetProperties(LayoutNode):
+    class _StylePresetPropertiesHelper(LayoutNode):
         name: Expression | None = None
 
-    properties: _StylePresetProperties = Field(default_factory=_StylePresetProperties)
+    properties: _StylePresetPropertiesHelper = Field(default_factory=_StylePresetPropertiesHelper)
 
 
-class Title(LayoutNode):
-    class _TitleProperties(LayoutNode):
+class SubTitleProperties(LayoutNode):
+    class _SubTitlePropertiesHelper(LayoutNode):
+        alignment: Expression | None = None
+        bold: Expression | None = None
+        fontColor: Expression | None = None
+        fontFamily: Expression | None = None
+        heading: Expression | None = None
+        show: Expression | None = None
+        text: Expression | None = None
+        titleWrap: Expression | None = None
+
+    properties: _SubTitlePropertiesHelper = Field(default_factory=_SubTitlePropertiesHelper)
+
+
+class TitleProperties(LayoutNode):
+    class _TitlePropertiesHelper(LayoutNode):
         alignment: Expression | None = None
         background: Expression | None = None
         fontColor: Expression | None = None
@@ -72,12 +107,13 @@ class Title(LayoutNode):
         show: Expression | None = None
         text: Expression | None = None
         titleWrap: Expression | None = None
+        underline: Expression | None = None
 
-    properties: _TitleProperties = Field(default_factory=_TitleProperties)
+    properties: _TitlePropertiesHelper = Field(default_factory=_TitlePropertiesHelper)
 
 
-class VisualHeader(LayoutNode):
-    class _VisualHeaderProperties(LayoutNode):
+class VisualHeaderProperties(LayoutNode):
+    class _VisualHeaderPropertiesHelper(LayoutNode):
         background: Expression | None = None
         border: Expression | None = None
         foreground: Expression | None = None
@@ -99,12 +135,14 @@ class VisualHeader(LayoutNode):
         showVisualWarningButton: Expression | None = None
         transparency: Expression | None = None
 
-    properties: _VisualHeaderProperties = Field(default_factory=_VisualHeaderProperties)
+    properties: _VisualHeaderPropertiesHelper = Field(default_factory=_VisualHeaderPropertiesHelper)
 
 
-class VisualHeaderTooltip(LayoutNode):
-    class _VisualHeaderTooltipProperties(LayoutNode):
+class VisualHeaderTooltipProperties(LayoutNode):
+    class _VisualHeaderTooltipPropertiesHelper(LayoutNode):
         background: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
         section: Expression | None = None
         text: Expression | None = None
         themedBackground: Expression | None = None
@@ -112,12 +150,13 @@ class VisualHeaderTooltip(LayoutNode):
         titleFontColor: Expression | None = None
         transparency: Expression | None = None
         type: Expression | None = None
+        underline: Expression | None = None
 
-    properties: _VisualHeaderTooltipProperties
+    properties: _VisualHeaderTooltipPropertiesHelper = Field(default_factory=_VisualHeaderTooltipPropertiesHelper)
 
 
-class VisualLink(LayoutNode):
-    class _VisualLinkProperties(LayoutNode):
+class VisualLinkProperties(LayoutNode):
+    class _VisualLinkPropertiesHelper(LayoutNode):
         bookmark: Expression | None = None
         disabledTooltip: Expression | None = None
         drillthroughSection: Expression | None = None
@@ -128,11 +167,11 @@ class VisualLink(LayoutNode):
         type: Expression | None = None
         webUrl: Expression | None = None
 
-    properties: _VisualLinkProperties = Field(default_factory=_VisualLinkProperties)
+    properties: _VisualLinkPropertiesHelper = Field(default_factory=_VisualLinkPropertiesHelper)
 
 
-class VisualTooltip(LayoutNode):
-    class _VisualTooltipProperties(LayoutNode):
+class VisualTooltipProperties(LayoutNode):
+    class _VisualTooltipPropertiesHelper(LayoutNode):
         background: Expression | None = None
         fontFamily: Expression | None = None
         fontSize: Expression | None = None
@@ -142,18 +181,23 @@ class VisualTooltip(LayoutNode):
         type: Expression | None = None
         valueFontColor: Expression | None = None
 
-    properties: _VisualTooltipProperties = Field(default_factory=_VisualTooltipProperties)
+    properties: _VisualTooltipPropertiesHelper = Field(default_factory=_VisualTooltipPropertiesHelper)
 
 
 class VCProperties(LayoutNode):
-    background: list[Background] | None = None
-    border: list[Border] | None = None
-    dropShadow: list[DropShadow] | None = None
-    general: list[General] | None = None
-    lockAspect: list[LockAspect] | None = None
-    stylePreset: list[StylePreset] | None = None
-    title: list[Title] | None = None
-    visualHeader: list[VisualHeader] | None = None
-    visualHeaderTooltip: list[VisualHeaderTooltip] | None = None
-    visualLink: list[VisualLink] | None = None
-    visualTooltip: list[VisualTooltip] | None = None
+    background: list[BackgroundProperties] | None = Field(default_factory=lambda: [BackgroundProperties()])
+    border: list[BorderProperties] | None = Field(default_factory=lambda: [BorderProperties()])
+    divider: list[DividerProperties] | None = Field(default_factory=lambda: [DividerProperties()])
+    dropShadow: list[DropShadowProperties] | None = Field(default_factory=lambda: [DropShadowProperties()])
+    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
+    lockAspect: list[LockAspectProperties] | None = Field(default_factory=lambda: [LockAspectProperties()])
+    spacing: list[SpacingProperties] | None = Field(default_factory=lambda: [SpacingProperties()])
+    stylePreset: list[StylePresetProperties] | None = Field(default_factory=lambda: [StylePresetProperties()])
+    subTitle: list[SubTitleProperties] | None = Field(default_factory=lambda: [SubTitleProperties()])
+    title: list[TitleProperties] | None = Field(default_factory=lambda: [TitleProperties()])
+    visualHeader: list[VisualHeaderProperties] | None = Field(default_factory=lambda: [VisualHeaderProperties()])
+    visualHeaderTooltip: list[VisualHeaderTooltipProperties] | None = Field(
+        default_factory=lambda: [VisualHeaderTooltipProperties()],
+    )
+    visualLink: list[VisualLinkProperties] | None = Field(default_factory=lambda: [VisualLinkProperties()])
+    visualTooltip: list[VisualTooltipProperties] | None = Field(default_factory=lambda: [VisualTooltipProperties()])

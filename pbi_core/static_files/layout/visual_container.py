@@ -1,7 +1,7 @@
 from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
-from pydantic import Discriminator, Json, Tag
+from pydantic import Discriminator, Field, Json, Tag
 
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
@@ -160,8 +160,8 @@ class BottomDataReduction(LayoutNode):
 
 
 class OverlappingPointsSample(LayoutNode):
-    X: dict[str, int]
-    Y: dict[str, int]
+    X: dict[str, int] = Field(default_factory=dict)
+    Y: dict[str, int] = Field(default_factory=dict)
 
 
 class OverlappingPointReduction(LayoutNode):
