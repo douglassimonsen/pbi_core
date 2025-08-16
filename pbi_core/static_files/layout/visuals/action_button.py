@@ -1,4 +1,4 @@
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -15,7 +15,7 @@ class FillPropertiesHelper(LayoutNode):
 
 
 class FillProperties(LayoutNode):
-    properties: FillPropertiesHelper
+    properties: FillPropertiesHelper = Field(default_factory=FillPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -35,7 +35,7 @@ class IconPropertiesHelper(LayoutNode):
 
 
 class IconProperties(LayoutNode):
-    properties: IconPropertiesHelper
+    properties: IconPropertiesHelper = Field(default_factory=IconPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -54,7 +54,7 @@ class TextPropertiesHelper(LayoutNode):
 
 
 class TextProperties(LayoutNode):
-    properties: TextPropertiesHelper
+    properties: TextPropertiesHelper = Field(default_factory=TextPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -67,25 +67,24 @@ class OutlinePropertiesHelper(LayoutNode):
 
 
 class OutlineProperties(LayoutNode):
-    properties: OutlinePropertiesHelper
+    properties: OutlinePropertiesHelper = Field(default_factory=OutlinePropertiesHelper)
     selector: Selector | None = None
 
 
-class ShapePropertiesHelper(LayoutNode):
-    roundEdge: Expression | None = None
-
-
 class ShapeProperties(LayoutNode):
-    properties: ShapePropertiesHelper
+    class _ShapePropertiesHelper(LayoutNode):
+        roundEdge: Expression | None = None
+
+    properties: _ShapePropertiesHelper = Field(default_factory=_ShapePropertiesHelper)
     selector: Selector | None = None
 
 
 class ActionButtonProperties(LayoutNode):
-    fill: list[FillProperties] | None = None
-    icon: list[IconProperties] | None = None
-    outline: list[OutlineProperties] | None = None
-    shape: list[ShapeProperties] | None = None
-    text: list[TextProperties] | None = None
+    fill: list[FillProperties] | None = Field(default_factory=lambda: [FillProperties()])
+    icon: list[IconProperties] | None = Field(default_factory=lambda: [IconProperties()])
+    outline: list[OutlineProperties] | None = Field(default_factory=lambda: [OutlineProperties()])
+    shape: list[ShapeProperties] | None = Field(default_factory=lambda: [ShapeProperties()])
+    text: list[TextProperties] | None = Field(default_factory=lambda: [TextProperties()])
 
 
 class ActionButton(BaseVisual):

@@ -1,4 +1,4 @@
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -111,22 +111,21 @@ class Grid(LayoutNode):
     selector: Selector | None = None
 
 
-class GeneralProperties(LayoutNode):
-    pass
-
-
 class General(LayoutNode):
-    properties: GeneralProperties
+    class _GeneralProperties(LayoutNode):
+        pass
+
+    properties: _GeneralProperties = Field(default_factory=_GeneralProperties)
 
 
 class TableChartColumnProperties(LayoutNode):
-    columnFormatting: list[ColumnFormatting] | None = None
-    columnHeaders: list[ColumnHeaders] | None = None
-    columnWidth: list[ColumnWidth] | None = None
-    general: list[General] | None = None
-    grid: list[Grid] | None = None
-    total: list[Total] | None = None
-    values: list[Values] | None = None
+    columnFormatting: list[ColumnFormatting] | None = Field(default_factory=lambda: [ColumnFormatting()])
+    columnHeaders: list[ColumnHeaders] | None = Field(default_factory=lambda: [ColumnHeaders()])
+    columnWidth: list[ColumnWidth] | None = Field(default_factory=lambda: [ColumnWidth()])
+    general: list[General] | None = Field(default_factory=lambda: [General()])
+    grid: list[Grid] | None = Field(default_factory=lambda: [Grid()])
+    total: list[Total] | None = Field(default_factory=lambda: [Total()])
+    values: list[Values] | None = Field(default_factory=lambda: [Values()])
 
 
 class TableChart(BaseVisual):

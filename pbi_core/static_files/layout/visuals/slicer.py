@@ -21,98 +21,106 @@ class CachedFilterDisplayItems(LayoutNode):
     displayName: str
 
 
-class HeaderPropertiesHelper(LayoutNode):
-    background: Expression | None = None
-    fontColor: Expression | None = None
-    fontFamily: Expression | None = None
-    show: Expression | None = None
-    showRestatement: Expression | None = None
-    textSize: Expression | None = None
-
-
-class HeaderProperties(LayoutNode):
-    properties: HeaderPropertiesHelper = Field(default_factory=HeaderPropertiesHelper)
-
-
-class GeneralPropertiesHelper(LayoutNode):
-    filter: Filter | None = None
-    responsive: Expression | None = None
-    selfFilterEnabled: Expression | None = None
-    selfFilter: Filter | None = None
-    orientation: Expression | None = None
-    outlineColor: Expression | None = None
-    outlineWeight: Expression | None = None
-
-
-class GeneralProperties(LayoutNode):
-    properties: GeneralPropertiesHelper
-
-
-class DataPropertiesHelper(LayoutNode):
-    endDate: Expression | None = None
-    isInvertedSelectionMode: Expression | None = None
-    mode: Expression | None = None
-    numericEnd: Expression | None = None
-    numericStart: Expression | None = None
-    startDate: Expression | None = None
-
-
 class DataProperties(LayoutNode):
-    properties: DataPropertiesHelper
+    class _DataPropertiesHelper(LayoutNode):
+        endDate: Expression | None = None
+        isInvertedSelectionMode: Expression | None = None
+        mode: Expression | None = None
+        numericEnd: Expression | None = None
+        numericStart: Expression | None = None
+        startDate: Expression | None = None
 
-
-class ItemPropertiesHelper(LayoutNode):
-    background: Expression | None = None
-    fontColor: Expression | None = None
-    fontFamily: Expression | None = None
-    outline: Expression | None = None
-    outlineColor: Expression | None = None
-    textSize: Expression | None = None
-
-
-class ItemProperties(LayoutNode):
-    properties: ItemPropertiesHelper = Field(default_factory=ItemPropertiesHelper)
-
-
-class DatePropertiesHelper(LayoutNode):
-    background: Expression | None = None
-    fontColor: Expression | None = None
-    fontFamily: Expression | None = None
-    textSize: Expression | None = None
+    properties: _DataPropertiesHelper
 
 
 class DateProperties(LayoutNode):
-    properties: DatePropertiesHelper
+    class _DatePropertiesHelper(LayoutNode):
+        background: Expression | None = None
+        fontColor: Expression | None = None
+        fontFamily: Expression | None = None
+        textSize: Expression | None = None
+
+    properties: _DatePropertiesHelper
 
 
-class SliderPropertiesHelper(LayoutNode):
-    color: Expression | None = None
-    show: Expression | None = None
+class GeneralProperties(LayoutNode):
+    class _GeneralPropertiesHelper(LayoutNode):
+        filter: Filter | None = None
+        responsive: Expression | None = None
+        selfFilterEnabled: Expression | None = None
+        selfFilter: Filter | None = None
+        orientation: Expression | None = None
+        outlineColor: Expression | None = None
+        outlineWeight: Expression | None = None
+
+    properties: _GeneralPropertiesHelper
 
 
-class SliderProperties(LayoutNode):
-    properties: SliderPropertiesHelper
+class HeaderProperties(LayoutNode):
+    class _HeaderPropertiesHelper(LayoutNode):
+        background: Expression | None = None
+        fontColor: Expression | None = None
+        fontFamily: Expression | None = None
+        show: Expression | None = None
+        showRestatement: Expression | None = None
+        textSize: Expression | None = None
 
-
-class SelectionPropertiesHelper(LayoutNode):
-    selectAllCheckboxEnabled: Expression | None = None
-    singleSelect: Expression | None = None
-    strictSingleSelect: Expression | None = None
-
-
-class SelectionProperties(LayoutNode):
-    properties: SelectionPropertiesHelper
-
-
-class NumericInputStylePropertiesHelper(LayoutNode):
-    background: Expression | None = None
-    fontColor: Expression | None = None
-    fontFamily: Expression | None = None
-    textSize: Expression | None = None
+    properties: _HeaderPropertiesHelper = Field(default_factory=_HeaderPropertiesHelper)
 
 
 class NumericInputStyleProperties(LayoutNode):
-    properties: NumericInputStylePropertiesHelper
+    class _NumericInputStylePropertiesHelper(LayoutNode):
+        background: Expression | None = None
+        fontColor: Expression | None = None
+        fontFamily: Expression | None = None
+        textSize: Expression | None = None
+
+    properties: _NumericInputStylePropertiesHelper
+
+
+class ItemProperties(LayoutNode):
+    class _ItemPropertiesHelper(LayoutNode):
+        background: Expression | None = None
+        bold: Expression | None = None
+        expandCollapseToggleType: Expression | None = None
+        fontColor: Expression | None = None
+        fontFamily: Expression | None = None
+        outline: Expression | None = None
+        outlineColor: Expression | None = None
+        outlineStyle: Expression | None = None
+        padding: Expression | None = None
+        steppedLayoutIndentation: Expression | None = None
+        textSize: Expression | None = None
+
+    properties: _ItemPropertiesHelper = Field(default_factory=_ItemPropertiesHelper)
+
+
+class PendingChangeIconProperties(LayoutNode):
+    class _PendingChangeIconPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        size: Expression | None = None
+        tooltipLabel: Expression | None = None
+        tooltipText: Expression | None = None
+        transparency: Expression | None = None
+
+    properties: _PendingChangeIconPropertiesHelper = Field(default_factory=_PendingChangeIconPropertiesHelper)
+
+
+class SelectionProperties(LayoutNode):
+    class _SelectionPropertiesHelper(LayoutNode):
+        selectAllCheckboxEnabled: Expression | None = None
+        singleSelect: Expression | None = None
+        strictSingleSelect: Expression | None = None
+
+    properties: _SelectionPropertiesHelper
+
+
+class SliderProperties(LayoutNode):
+    class _SliderPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        show: Expression | None = None
+
+    properties: _SliderPropertiesHelper
 
 
 class SlicerProperties(LayoutNode):
@@ -122,6 +130,7 @@ class SlicerProperties(LayoutNode):
     header: list[HeaderProperties] = Field(default_factory=lambda: [HeaderProperties()])
     items: list[ItemProperties] = Field(default_factory=lambda: [ItemProperties()])
     numericInputStyle: list[NumericInputStyleProperties] | None = None
+    pendingChangesIcon: list[PendingChangeIconProperties] | None = None
     selection: list[SelectionProperties] | None = None
     slider: list[SliderProperties] | None = None
 
