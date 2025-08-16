@@ -19,15 +19,14 @@ class General(LayoutNode):
     properties: GeneralProperties
 
 
-class ValuePropertiesHelper(LayoutNode):
-    context: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
-    expr: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
-    value: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
-    propertyDefinitionKind: str | None = None
-
-
 class ValueProperties(LayoutNode):
-    expr: ValuePropertiesHelper
+    class _ValuePropertiesHelper(LayoutNode):
+        context: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
+        expr: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
+        value: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
+        propertyDefinitionKind: str | None = None
+
+    expr: _ValuePropertiesHelper
     formatString: Expression | None = None
 
 

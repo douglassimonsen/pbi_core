@@ -1,4 +1,4 @@
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 
@@ -6,48 +6,44 @@ from .base import BaseVisual
 from .properties.base import Expression
 
 
-class FillPropertiesHelper(LayoutNode):
-    fillColor: Expression | None = None
-    show: Expression | None = None
-    transparency: Expression | None = None
-
-
 class FillProperties(LayoutNode):
-    properties: FillPropertiesHelper
+    class _FillPropertiesHelper(LayoutNode):
+        fillColor: Expression | None = None
+        show: Expression | None = None
+        transparency: Expression | None = None
 
-
-class GeneralPropertiesHelper(LayoutNode):
-    shapeType: Expression | None = None
+    properties: _FillPropertiesHelper = Field(default_factory=_FillPropertiesHelper)
 
 
 class GeneralProperties(LayoutNode):
-    properties: GeneralPropertiesHelper
+    class _GeneralPropertiesHelper(LayoutNode):
+        shapeType: Expression | None = None
 
-
-class LinePropertiesHelper(LayoutNode):
-    lineColor: Expression | None = None
-    roundEdge: Expression | None = None
-    transparency: Expression | None = None
-    weight: Expression | None = None
+    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
 
 
 class LineProperties(LayoutNode):
-    properties: LinePropertiesHelper
+    class _LinePropertiesHelper(LayoutNode):
+        lineColor: Expression | None = None
+        roundEdge: Expression | None = None
+        transparency: Expression | None = None
+        weight: Expression | None = None
 
-
-class RotationPropertiesHelper(LayoutNode):
-    angle: Expression | None = None
+    properties: _LinePropertiesHelper = Field(default_factory=_LinePropertiesHelper)
 
 
 class RotationProperties(LayoutNode):
-    properties: RotationPropertiesHelper
+    class _RotationPropertiesHelper(LayoutNode):
+        angle: Expression | None = None
+
+    properties: _RotationPropertiesHelper = Field(default_factory=_RotationPropertiesHelper)
 
 
 class BasicShapeProperties(LayoutNode):
-    fill: list[FillProperties] | None = None
-    general: list[GeneralProperties] | None = None
-    line: list[LineProperties] | None = None
-    rotation: list[RotationProperties] | None = None
+    fill: list[FillProperties] | None = Field(default_factory=list[FillProperties()])
+    general: list[GeneralProperties] | None = Field(default_factory=list[GeneralProperties()])
+    line: list[LineProperties] | None = Field(default_factory=list[LineProperties()])
+    rotation: list[RotationProperties] | None = Field(default_factory=list[RotationProperties()])
 
 
 class BasicShape(BaseVisual):
@@ -55,4 +51,4 @@ class BasicShape(BaseVisual):
     model_config = ConfigDict(extra="forbid")
 
     drillFilterOtherVisuals: bool = True
-    objects: BasicShapeProperties | None = None
+    objects: BasicShapeProperties | None = Field(default_factory=BasicShapeProperties)

@@ -1,4 +1,4 @@
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -8,163 +8,154 @@ from .column_property import ColumnProperty
 from .properties.base import Expression
 
 
-class DataPointPropertiesHelper(LayoutNode):
-    fill: Expression | None = None
-    fillRule: Expression | None = None
-    legend: Expression | None = None
-    showAllDataPoints: Expression | None = None
-    valueAxis: Expression | None = None
-
-
 class DataPointProperties(LayoutNode):
-    properties: DataPointPropertiesHelper
+    class _DataPointPropertiesHelper(LayoutNode):
+        fill: Expression | None = None
+        fillRule: Expression | None = None
+        legend: Expression | None = None
+        showAllDataPoints: Expression | None = None
+        valueAxis: Expression | None = None
+
+    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
     selector: Selector | None = None
-
-
-class ValueAxisPropertiesHelper(LayoutNode):
-    alignZeros: Expression | None = None
-    axisScale: Expression | None = None
-    end: Expression | None = None
-    fontSize: Expression | None = None
-    gridlineColor: Expression | None = None
-    gridlineShow: Expression | None = None
-    labelColor: Expression | None = None
-    logAxisScale: Expression | None = None
-    show: Expression | None = None
-    showAxisTitle: Expression | None = None
-    start: Expression | None = None
-    switchAxisPosition: Expression | None = None
-    titleColor: Expression | None = None
-    titleFontFamily: Expression | None = None
-    titleFontSize: Expression | None = None
-    titleText: Expression | None = None
-    treatNullsAsZero: Expression | None = None
 
 
 class ValueAxisProperties(LayoutNode):
-    properties: ValueAxisPropertiesHelper
+    class _ValueAxisPropertiesHelper(LayoutNode):
+        alignZeros: Expression | None = None
+        axisScale: Expression | None = None
+        end: Expression | None = None
+        fontSize: Expression | None = None
+        gridlineColor: Expression | None = None
+        gridlineShow: Expression | None = None
+        labelColor: Expression | None = None
+        logAxisScale: Expression | None = None
+        show: Expression | None = None
+        showAxisTitle: Expression | None = None
+        start: Expression | None = None
+        switchAxisPosition: Expression | None = None
+        titleColor: Expression | None = None
+        titleFontFamily: Expression | None = None
+        titleFontSize: Expression | None = None
+        titleText: Expression | None = None
+        treatNullsAsZero: Expression | None = None
 
-
-class LegendPropertiesHelper(LayoutNode):
-    fontSize: Expression | None = None
-    labelColor: Expression | None = None
-    position: Expression | None = None
-    show: Expression | None = None
-    showGradientLegend: Expression | None = None
-    showTitle: Expression | None = None
-    titleText: Expression | None = None
+    properties: _ValueAxisPropertiesHelper = Field(default_factory=_ValueAxisPropertiesHelper)
 
 
 class LegendProperties(LayoutNode):
-    properties: LegendPropertiesHelper
+    class _LegendPropertiesHelper(LayoutNode):
+        fontSize: Expression | None = None
+        labelColor: Expression | None = None
+        position: Expression | None = None
+        show: Expression | None = None
+        showGradientLegend: Expression | None = None
+        showTitle: Expression | None = None
+        titleText: Expression | None = None
 
-
-class FillPointPropertiesHelper(LayoutNode):
-    show: Expression | None = None
-    style: Expression | None = None
+    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
 
 
 class FillPointProperties(LayoutNode):
-    properties: FillPointPropertiesHelper
+    class _FillPointPropertiesHelper(LayoutNode):
+        show: Expression | None = None
+        style: Expression | None = None
 
-
-class ColorBorderPropertiesHelper(LayoutNode):
-    show: Expression | None = None
+    properties: _FillPointPropertiesHelper = Field(default_factory=_FillPointPropertiesHelper)
 
 
 class ColorBorderProperties(LayoutNode):
-    properties: ColorBorderPropertiesHelper
+    class _ColorBorderPropertiesHelper(LayoutNode):
+        show: Expression | None = None
 
-
-class CategoryAxisPropertiesHelper(LayoutNode):
-    axisScale: Expression | None = None
-    end: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    gridlineColor: Expression | None = None
-    gridlineShow: Expression | None = None
-    gridlineStyle: Expression | None = None
-    innerPadding: Expression | None = None
-    labelColor: Expression | None = None
-    logAxisScale: Expression | None = None
-    maxMarginFactor: Expression | None = None
-    show: Expression | None = None
-    showAxisTitle: Expression | None = None
-    start: Expression | None = None
-    titleColor: Expression | None = None
-    titleFontFamily: Expression | None = None
-    titleFontSize: Expression | None = None
-    titleText: Expression | None = None
-    treatNullsAsZero: Expression | None = None
+    properties: _ColorBorderPropertiesHelper = Field(default_factory=_ColorBorderPropertiesHelper)
 
 
 class CategoryAxisProperties(LayoutNode):
-    properties: CategoryAxisPropertiesHelper
+    class _CategoryAxisPropertiesHelper(LayoutNode):
+        axisScale: Expression | None = None
+        end: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        gridlineColor: Expression | None = None
+        gridlineShow: Expression | None = None
+        gridlineStyle: Expression | None = None
+        innerPadding: Expression | None = None
+        labelColor: Expression | None = None
+        logAxisScale: Expression | None = None
+        maxMarginFactor: Expression | None = None
+        show: Expression | None = None
+        showAxisTitle: Expression | None = None
+        start: Expression | None = None
+        titleColor: Expression | None = None
+        titleFontFamily: Expression | None = None
+        titleFontSize: Expression | None = None
+        titleText: Expression | None = None
+        treatNullsAsZero: Expression | None = None
 
-
-class BubblesPropertiesHelper(LayoutNode):
-    bubbleSize: Expression | None = None
-    markerShape: Expression | None = None
-    showSeries: Expression | None = None
+    properties: _CategoryAxisPropertiesHelper = Field(default_factory=_CategoryAxisPropertiesHelper)
 
 
 class BubblesProperties(LayoutNode):
-    properties: BubblesPropertiesHelper
+    class _BubblesPropertiesHelper(LayoutNode):
+        bubbleSize: Expression | None = None
+        markerShape: Expression | None = None
+        showSeries: Expression | None = None
+
+    properties: _BubblesPropertiesHelper = Field(default_factory=_BubblesPropertiesHelper)
     selector: Selector | None = None
-
-
-class Y1AxisReferenceLinePropertiesHelper(LayoutNode):
-    displayName: Expression | None = None
-    lineColor: Expression | None = None
-    show: Expression | None = None
-    value: Expression | None = None
 
 
 class Y1AxisReferenceLineProperties(LayoutNode):
-    properties: Y1AxisReferenceLinePropertiesHelper
+    class _Y1AxisReferenceLinePropertiesHelper(LayoutNode):
+        displayName: Expression | None = None
+        lineColor: Expression | None = None
+        show: Expression | None = None
+        value: Expression | None = None
+
+    properties: _Y1AxisReferenceLinePropertiesHelper = Field(default_factory=_Y1AxisReferenceLinePropertiesHelper)
     selector: Selector | None = None
 
 
-class CategoryLabelsPropertiesHelper(LayoutNode):
-    color: Expression | None = None
-    enableBackground: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    show: Expression | None = None
-
-
 class CategoryLabelsProperties(LayoutNode):
-    properties: CategoryLabelsPropertiesHelper
+    class _CategoryLabelsPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        enableBackground: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        show: Expression | None = None
 
-
-class GeneralPropertiesHelper(LayoutNode):
-    responsive: Expression | None = None
+    properties: _CategoryLabelsPropertiesHelper = Field(default_factory=_CategoryLabelsPropertiesHelper)
 
 
 class GeneralProperties(LayoutNode):
-    properties: GeneralPropertiesHelper
+    class _GeneralPropertiesHelper(LayoutNode):
+        responsive: Expression | None = None
 
-
-class PlotAreaPropertiesHelper(LayoutNode):
-    transparency: Expression | None = None
+    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
 
 
 class PlotAreaProperties(LayoutNode):
-    properties: PlotAreaPropertiesHelper
+    class _PlotAreaPropertiesHelper(LayoutNode):
+        transparency: Expression | None = None
+
+    properties: _PlotAreaPropertiesHelper = Field(default_factory=_PlotAreaPropertiesHelper)
 
 
 class ScatterChartProperties(LayoutNode):
-    bubbles: list[BubblesProperties] | None = None
-    categoryAxis: list[CategoryAxisProperties] | None = None
-    categoryLabels: list[CategoryLabelsProperties] | None = None
-    colorBorder: list[ColorBorderProperties] | None = None
-    dataPoint: list[DataPointProperties] | None = None
-    fillPoint: list[FillPointProperties] | None = None
-    general: list[GeneralProperties] | None = None
-    legend: list[LegendProperties] | None = None
-    plotArea: list[PlotAreaProperties] | None = None
-    valueAxis: list[ValueAxisProperties] | None = None
-    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] | None = None
+    bubbles: list[BubblesProperties] | None = Field(default_factory=lambda: [BubblesProperties()])
+    categoryAxis: list[CategoryAxisProperties] | None = Field(default_factory=lambda: [CategoryAxisProperties()])
+    categoryLabels: list[CategoryLabelsProperties] | None = Field(default_factory=lambda: [CategoryLabelsProperties()])
+    colorBorder: list[ColorBorderProperties] | None = Field(default_factory=lambda: [ColorBorderProperties()])
+    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
+    fillPoint: list[FillPointProperties] | None = Field(default_factory=lambda: [FillPointProperties()])
+    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
+    legend: list[LegendProperties] | None = Field(default_factory=lambda: [LegendProperties()])
+    plotArea: list[PlotAreaProperties] | None = Field(default_factory=lambda: [PlotAreaProperties()])
+    valueAxis: list[ValueAxisProperties] | None = Field(default_factory=lambda: [ValueAxisProperties()])
+    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] | None = Field(
+        default_factory=lambda: [Y1AxisReferenceLineProperties()],
+    )
 
 
 class ScatterChart(BaseVisual):
@@ -173,4 +164,4 @@ class ScatterChart(BaseVisual):
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: ScatterChartProperties | None = None
+    objects: ScatterChartProperties | None = Field(default_factory=ScatterChartProperties)

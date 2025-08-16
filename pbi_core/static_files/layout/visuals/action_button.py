@@ -7,67 +7,63 @@ from .base import BaseVisual
 from .properties.base import Expression
 
 
-class FillPropertiesHelper(LayoutNode):
-    fillColor: Expression | None = None
-    image: Expression | None = None
-    show: Expression | None = None
-    transparency: Expression | None = None
-
-
 class FillProperties(LayoutNode):
-    properties: FillPropertiesHelper = Field(default_factory=FillPropertiesHelper)
+    class _FillPropertiesHelper(LayoutNode):
+        fillColor: Expression | None = None
+        image: Expression | None = None
+        show: Expression | None = None
+        transparency: Expression | None = None
+
+    properties: _FillPropertiesHelper = Field(default_factory=_FillPropertiesHelper)
     selector: Selector | None = None
-
-
-class IconPropertiesHelper(LayoutNode):
-    bottomMargin: Expression | None = None
-    horizontalAlignment: Expression | None = None
-    leftMargin: Expression | None = None
-    lineColor: Expression | None = None
-    lineTransparency: Expression | None = None
-    lineWeight: Expression | None = None
-    padding: Expression | None = None
-    rightMargin: Expression | None = None
-    shapeType: Expression | None = None
-    show: Expression | None = None
-    topMargin: Expression | None = None
-    verticalAlignment: Expression | None = None
 
 
 class IconProperties(LayoutNode):
-    properties: IconPropertiesHelper = Field(default_factory=IconPropertiesHelper)
+    class _IconPropertiesHelper(LayoutNode):
+        bottomMargin: Expression | None = None
+        horizontalAlignment: Expression | None = None
+        leftMargin: Expression | None = None
+        lineColor: Expression | None = None
+        lineTransparency: Expression | None = None
+        lineWeight: Expression | None = None
+        padding: Expression | None = None
+        rightMargin: Expression | None = None
+        shapeType: Expression | None = None
+        show: Expression | None = None
+        topMargin: Expression | None = None
+        verticalAlignment: Expression | None = None
+
+    properties: _IconPropertiesHelper = Field(default_factory=_IconPropertiesHelper)
     selector: Selector | None = None
-
-
-class TextPropertiesHelper(LayoutNode):
-    fontColor: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    horizontalAlignment: Expression | None = None
-    leftMargin: Expression | None = None
-    padding: Expression | None = None
-    rightMargin: Expression | None = None
-    show: Expression | None = None
-    text: Expression | None = None
-    topMargin: Expression | None = None
-    verticalAlignment: Expression | None = None
 
 
 class TextProperties(LayoutNode):
-    properties: TextPropertiesHelper = Field(default_factory=TextPropertiesHelper)
+    class _TextPropertiesHelper(LayoutNode):
+        fontColor: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        horizontalAlignment: Expression | None = None
+        leftMargin: Expression | None = None
+        padding: Expression | None = None
+        rightMargin: Expression | None = None
+        show: Expression | None = None
+        text: Expression | None = None
+        topMargin: Expression | None = None
+        verticalAlignment: Expression | None = None
+
+    properties: _TextPropertiesHelper = Field(default_factory=_TextPropertiesHelper)
     selector: Selector | None = None
 
 
-class OutlinePropertiesHelper(LayoutNode):
-    lineColor: Expression | None = None
-    roundEdge: Expression | None = None
-    show: Expression | None = None
-    transparency: Expression | None = None
-    weight: Expression | None = None
-
-
 class OutlineProperties(LayoutNode):
-    properties: OutlinePropertiesHelper = Field(default_factory=OutlinePropertiesHelper)
+    class _OutlinePropertiesHelper(LayoutNode):
+        lineColor: Expression | None = None
+        roundEdge: Expression | None = None
+        show: Expression | None = None
+        transparency: Expression | None = None
+        weight: Expression | None = None
+
+    properties: _OutlinePropertiesHelper = Field(default_factory=_OutlinePropertiesHelper)
     selector: Selector | None = None
 
 
@@ -92,4 +88,4 @@ class ActionButton(BaseVisual):
     model_config = ConfigDict(extra="forbid")
 
     drillFilterOtherVisuals: bool = True
-    objects: ActionButtonProperties | None = None
+    objects: ActionButtonProperties | None = Field(default_factory=ActionButtonProperties)

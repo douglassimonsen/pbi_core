@@ -8,108 +8,101 @@ from .column_property import ColumnProperty
 from .properties.base import Expression
 
 
-class LegendPropertiesHelper(LayoutNode):
-    fontSize: Expression | None = None
-    labelColor: Expression | None = None
-    position: Expression | None = None
-    show: Expression | None = None
-    showTitle: Expression | None = None
-    titleText: Expression | None = None
-
-
 class LegendProperties(LayoutNode):
-    properties: LegendPropertiesHelper
+    class _LegendPropertiesHelper(LayoutNode):
+        fontSize: Expression | None = None
+        labelColor: Expression | None = None
+        position: Expression | None = None
+        show: Expression | None = None
+        showTitle: Expression | None = None
+        titleText: Expression | None = None
 
-
-class CategoryAxisPropertiesHelper(LayoutNode):
-    axisType: Expression | None = None
-    concatenateLabels: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    innerPadding: Expression | None = None
-    labelColor: Expression | None = None
-    maxMarginFactor: Expression | None = None
-    position: Expression | None = None
-    preferredCategoryWidth: Expression | None = None
-    show: Expression | None = None
-    showAxisTitle: Expression | None = None
-    switchAxisPosition: Expression | None = None
-    titleColor: Expression | None = None
-    titleFontFamily: Expression | None = None
-    titleFontSize: Expression | None = None
+    properties: _LegendPropertiesHelper
 
 
 class CategoryAxisProperties(LayoutNode):
-    properties: CategoryAxisPropertiesHelper
+    class _CategoryAxisPropertiesHelper(LayoutNode):
+        axisType: Expression | None = None
+        concatenateLabels: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        innerPadding: Expression | None = None
+        labelColor: Expression | None = None
+        maxMarginFactor: Expression | None = None
+        position: Expression | None = None
+        preferredCategoryWidth: Expression | None = None
+        show: Expression | None = None
+        showAxisTitle: Expression | None = None
+        switchAxisPosition: Expression | None = None
+        titleColor: Expression | None = None
+        titleFontFamily: Expression | None = None
+        titleFontSize: Expression | None = None
 
-
-class ValueAxisPropertiesHelper(LayoutNode):
-    axisScale: Expression | None = None
-    fontSize: Expression | None = None
-    gridlineColor: Expression | None = None
-    gridlineShow: Expression | None = None
-    invertAxis: Expression | None = None
-    labelColor: Expression | None = None
-    labelDisplayUnits: Expression | None = None
-    show: Expression | None = None
-    showAxisTitle: Expression | None = None
-    titleFontFamily: Expression | None = None
-    titleColor: Expression | None = None
-    titleFontColor: Expression | None = None
-    titleFontSize: Expression | None = None
-    titleText: Expression | None = None
+    properties: _CategoryAxisPropertiesHelper
 
 
 class ValueAxisProperties(LayoutNode):
-    properties: ValueAxisPropertiesHelper
+    class _ValueAxisPropertiesHelper(LayoutNode):
+        axisScale: Expression | None = None
+        fontSize: Expression | None = None
+        gridlineColor: Expression | None = None
+        gridlineShow: Expression | None = None
+        invertAxis: Expression | None = None
+        labelColor: Expression | None = None
+        labelDisplayUnits: Expression | None = None
+        show: Expression | None = None
+        showAxisTitle: Expression | None = None
+        titleFontFamily: Expression | None = None
+        titleColor: Expression | None = None
+        titleFontColor: Expression | None = None
+        titleFontSize: Expression | None = None
+        titleText: Expression | None = None
 
-
-class LabelsPropertiesHelper(LayoutNode):
-    color: Expression | None = None
-    enableBackground: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    labelDisplayUnits: Expression | None = None
-    labelOverflow: Expression | None = None
-    labelPosition: Expression | None = None
-    labelPrecision: Expression | None = None
-    show: Expression | None = None
-    showAll: Expression | None = None
+    properties: _ValueAxisPropertiesHelper
 
 
 class LabelsProperties(LayoutNode):
-    properties: LabelsPropertiesHelper
+    class _LabelsPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        enableBackground: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        labelDisplayUnits: Expression | None = None
+        labelOverflow: Expression | None = None
+        labelPosition: Expression | None = None
+        labelPrecision: Expression | None = None
+        show: Expression | None = None
+        showAll: Expression | None = None
+
+    properties: _LabelsPropertiesHelper
     selector: Selector | None = None
-
-
-class DataPointPropertiesHelper(LayoutNode):
-    fill: Expression | None = None
-    fillRule: Expression | None = None
-    showAllDataPoints: Expression | None = None
 
 
 class DataPointProperties(LayoutNode):
-    properties: DataPointPropertiesHelper
+    class _DataPointPropertiesHelper(LayoutNode):
+        fill: Expression | None = None
+        fillRule: Expression | None = None
+        showAllDataPoints: Expression | None = None
+
+    properties: _DataPointPropertiesHelper
     selector: Selector | None = None
-
-
-class XAxisReferenceLinePropertiesHelper(LayoutNode):
-    displayName: Expression | None = None
-    show: Expression | None = None
-    value: Expression | None = None
 
 
 class XAxisReferenceLineProperties(LayoutNode):
-    properties: XAxisReferenceLinePropertiesHelper
+    class _XAxisReferenceLinePropertiesHelper(LayoutNode):
+        displayName: Expression | None = None
+        show: Expression | None = None
+        value: Expression | None = None
+
+    properties: _XAxisReferenceLinePropertiesHelper
     selector: Selector | None = None
 
 
-class GeneralPropertiesHelper(LayoutNode):
-    responsive: Expression | None = None
-
-
 class GeneralProperties(LayoutNode):
-    properties: GeneralPropertiesHelper
+    class _GeneralPropertiesHelper(LayoutNode):
+        responsive: Expression | None = None
+
+    properties: _GeneralPropertiesHelper
 
 
 class BarChartProperties(LayoutNode):

@@ -1,4 +1,4 @@
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 
@@ -7,25 +7,23 @@ from .column_property import ColumnProperty
 from .properties.base import Expression
 
 
-class GeneralPropertiesHelper(LayoutNode):
-    imageUrl: Expression | None = None
-
-
 class GeneralProperties(LayoutNode):
-    properties: GeneralPropertiesHelper
+    class _GeneralPropertiesHelper(LayoutNode):
+        imageUrl: Expression | None = None
 
-
-class ImageScalingPropertiesHelper(LayoutNode):
-    imageScalingType: Expression | None = None
+    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
 
 
 class ImageScalingProperties(LayoutNode):
-    properties: ImageScalingPropertiesHelper
+    class _ImageScalingPropertiesHelper(LayoutNode):
+        imageScalingType: Expression | None = None
+
+    properties: _ImageScalingPropertiesHelper = Field(default_factory=_ImageScalingPropertiesHelper)
 
 
 class ImageProperties(LayoutNode):
-    general: list[GeneralProperties] | None = None
-    imageScaling: list[ImageScalingProperties] | None = None
+    general: list[GeneralProperties] | None = Field(default_factory=list[GeneralProperties()])
+    imageScaling: list[ImageScalingProperties] | None = Field(default_factory=list[ImageScalingProperties()])
 
 
 class Image(BaseVisual):
@@ -34,4 +32,4 @@ class Image(BaseVisual):
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: ImageProperties | None = None
+    objects: ImageProperties | None = Field(default_factory=ImageProperties)

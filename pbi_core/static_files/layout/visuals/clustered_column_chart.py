@@ -8,112 +8,104 @@ from .column_property import ColumnProperty
 from .properties.base import Expression
 
 
-class LabelsPropertiesHelper(LayoutNode):
-    backgroundTransparency: Expression | None = None
-    color: Expression | None = None
-    enableBackground: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    labelDisplayUnits: Expression | None = None
-    labelOrientation: Expression | None = None
-    labelOverflow: Expression | None = None
-    labelPosition: Expression | None = None
-    labelPrecision: Expression | None = None
-    show: Expression | None = None
-    showAll: Expression | None = None
-
-
 class LabelsProperties(LayoutNode):
-    properties: LabelsPropertiesHelper
+    class _LabelsPropertiesHelper(LayoutNode):
+        backgroundTransparency: Expression | None = None
+        color: Expression | None = None
+        enableBackground: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        labelDisplayUnits: Expression | None = None
+        labelOrientation: Expression | None = None
+        labelOverflow: Expression | None = None
+        labelPosition: Expression | None = None
+        labelPrecision: Expression | None = None
+        show: Expression | None = None
+        showAll: Expression | None = None
+
+    properties: _LabelsPropertiesHelper
     selector: Selector | None = None
-
-
-class ValueAxisPropertiesHelper(LayoutNode):
-    axisScale: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    gridlineShow: Expression | None = None
-    labelColor: Expression | None = None
-    labelDisplayUnits: Expression | None = None
-    logAxisScale: Expression | None = None
-    show: Expression | None = None
-    showAxisTitle: Expression | None = None
-    start: Expression | None = None
-    titleFontFamily: Expression | None = None
 
 
 class ValueAxisProperties(LayoutNode):
-    properties: ValueAxisPropertiesHelper
+    class _ValueAxisPropertiesHelper(LayoutNode):
+        axisScale: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        gridlineShow: Expression | None = None
+        labelColor: Expression | None = None
+        labelDisplayUnits: Expression | None = None
+        logAxisScale: Expression | None = None
+        show: Expression | None = None
+        showAxisTitle: Expression | None = None
+        start: Expression | None = None
+        titleFontFamily: Expression | None = None
+
+    properties: _ValueAxisPropertiesHelper
     selector: Selector | None = None
-
-
-class DataPointPropertiesHelper(LayoutNode):
-    fill: Expression | None = None
-    showAllDataPoints: Expression | None = None
 
 
 class DataPointProperties(LayoutNode):
-    properties: DataPointPropertiesHelper
+    class _DataPointPropertiesHelper(LayoutNode):
+        fill: Expression | None = None
+        showAllDataPoints: Expression | None = None
+
+    properties: _DataPointPropertiesHelper
     selector: Selector | None = None
 
 
-class CategoryAxisPropertiesHelper(LayoutNode):
-    axisType: Expression | None = None
-    concatenateLabels: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    gridlineShow: Expression | None = None
-    gridlineStyle: Expression | None = None
-    innerPadding: Expression | None = None
-    labelColor: Expression | None = None
-    maxMarginFactor: Expression | None = None
-    preferredCategoryWidth: Expression | None = None
-    show: Expression | None = None
-    showAxisTitle: Expression | None = None
-    titleColor: Expression | None = None
-    titleFontSize: Expression | None = None
-
-
 class CategoryAxisProperties(LayoutNode):
-    properties: CategoryAxisPropertiesHelper
+    class _CategoryAxisPropertiesHelper(LayoutNode):
+        axisType: Expression | None = None
+        concatenateLabels: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        gridlineShow: Expression | None = None
+        gridlineStyle: Expression | None = None
+        innerPadding: Expression | None = None
+        labelColor: Expression | None = None
+        maxMarginFactor: Expression | None = None
+        preferredCategoryWidth: Expression | None = None
+        show: Expression | None = None
+        showAxisTitle: Expression | None = None
+        titleColor: Expression | None = None
+        titleFontSize: Expression | None = None
 
-
-class LegendPropertiesHelper(LayoutNode):
-    fontSize: Expression | None = None
-    labelColor: Expression | None = None
-    position: Expression | None = None
-    show: Expression | None = None
-    showTitle: Expression | None = None
+    properties: _CategoryAxisPropertiesHelper
 
 
 class LegendProperties(LayoutNode):
-    properties: LegendPropertiesHelper
+    class _LegendPropertiesHelper(LayoutNode):
+        fontSize: Expression | None = None
+        labelColor: Expression | None = None
+        position: Expression | None = None
+        show: Expression | None = None
+        showTitle: Expression | None = None
 
-
-class TrendPropertiesHelper(LayoutNode):
-    displayName: Expression | None = None
-    lineColor: Expression | None = None
-    show: Expression | None = None
+    properties: _LegendPropertiesHelper
 
 
 class TrendProperties(LayoutNode):
-    properties: TrendPropertiesHelper
+    class _TrendPropertiesHelper(LayoutNode):
+        displayName: Expression | None = None
+        lineColor: Expression | None = None
+        show: Expression | None = None
 
-
-class PlotAreaPropertiesHelper(LayoutNode):
-    transparency: Expression | None = None
+    properties: _TrendPropertiesHelper
 
 
 class PlotAreaProperties(LayoutNode):
-    properties: PlotAreaPropertiesHelper
+    class _PlotAreaPropertiesHelper(LayoutNode):
+        transparency: Expression | None = None
 
-
-class GeneralPropertiesHelper(LayoutNode):
-    responsive: Expression | None = None
+    properties: _PlotAreaPropertiesHelper
 
 
 class GeneralProperties(LayoutNode):
-    properties: GeneralPropertiesHelper
+    class _GeneralPropertiesHelper(LayoutNode):
+        responsive: Expression | None = None
+
+    properties: _GeneralPropertiesHelper
 
 
 class ClusteredColumnChartProperties(LayoutNode):

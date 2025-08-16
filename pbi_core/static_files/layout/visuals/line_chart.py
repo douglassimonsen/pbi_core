@@ -8,58 +8,55 @@ from .column_property import ColumnProperty
 from .properties.base import Expression
 
 
-class CategoryAxisPropertiesHelper(LayoutNode):
-    axisType: Expression | None = None
-    concatenateLabels: Expression | None = None
-    end: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    gridlineShow: Expression | None = None
-    labelColor: Expression | None = None
-    maxMarginFactor: Expression | None = None
-    show: Expression | None = None
-    showAxisTitle: Expression | None = None
-    start: Expression | None = None
-    titleColor: Expression | None = None
-    titleFontFamily: Expression | None = None
-    titleFontSize: Expression | None = None
-
-
 class CategoryAxisProperties(LayoutNode):
-    properties: CategoryAxisPropertiesHelper
+    class _CategoryAxisPropertiesHelper(LayoutNode):
+        axisType: Expression | None = None
+        concatenateLabels: Expression | None = None
+        end: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        gridlineShow: Expression | None = None
+        labelColor: Expression | None = None
+        maxMarginFactor: Expression | None = None
+        show: Expression | None = None
+        showAxisTitle: Expression | None = None
+        start: Expression | None = None
+        titleColor: Expression | None = None
+        titleFontFamily: Expression | None = None
+        titleFontSize: Expression | None = None
+
+    properties: _CategoryAxisPropertiesHelper
     selector: Selector | None = None
-
-
-class LineStylesPropertiesHelper(LayoutNode):
-    lineStyle: Expression | None = None
-    markerColor: Expression | None = None
-    markerShape: Expression | None = None
-    markerSize: Expression | None = None
-    showMarker: Expression | None = None
-    showSeries: Expression | None = None
-    stepped: Expression | None = None
-    strokeLineJoin: Expression | None = None
-    strokeWidth: Expression | None = None
 
 
 class LineStylesProperties(LayoutNode):
-    properties: LineStylesPropertiesHelper
+    class _LineStylesPropertiesHelper(LayoutNode):
+        lineStyle: Expression | None = None
+        markerColor: Expression | None = None
+        markerShape: Expression | None = None
+        markerSize: Expression | None = None
+        showMarker: Expression | None = None
+        showSeries: Expression | None = None
+        stepped: Expression | None = None
+        strokeLineJoin: Expression | None = None
+        strokeWidth: Expression | None = None
+
+    properties: _LineStylesPropertiesHelper
     selector: Selector | None = None
 
 
-class LabelsPropertiesHelper(LayoutNode):
-    color: Expression | None = None
-    labelPosition: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    labelDensity: Expression | None = None
-    show: Expression | None = None
-    showAll: Expression | None = None
-    showSeries: Expression | None = None
-
-
 class LabelsProperties(LayoutNode):
-    properties: LabelsPropertiesHelper
+    class _LabelsPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        labelPosition: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        labelDensity: Expression | None = None
+        show: Expression | None = None
+        showAll: Expression | None = None
+        showSeries: Expression | None = None
+
+    properties: _LabelsPropertiesHelper
     selector: Selector | None = None
 
 

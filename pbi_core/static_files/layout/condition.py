@@ -55,9 +55,24 @@ class ComparisonKind(IntEnum):
         return OPERATOR_MAPPING[self]
 
 
-class ComparisonHelper(LayoutNode):
-    Left: DataSource
-    Right: LiteralSource
+class ContainsCondition(LayoutNode):
+    class _ComparisonHelper(LayoutNode):
+        Left: DataSource
+        Right: LiteralSource
+
+    Contains: _ComparisonHelper
+
+    def natural_language(self) -> str:
+        """Returns a natural language representation of the condition."""
+        left = natural_language_source(self.Contains.Left)
+        right = natural_language_source(self.Contains.Right)
+        return f"{left} CONTAINS {right}"
+
+    def get_sources(self) -> list[DataSource]:
+        """Returns the sources used in the condition."""
+        if isinstance(self.Contains.Right, LiteralSource):
+            return [self.Contains.Left]
+        return [self.Contains.Left, self.Contains.Right]
 
 
 @dataclass
@@ -71,22 +86,6 @@ class Expression:
         if self.data:
             return self.template.format(**self.data)
         return self.template
-
-
-class ContainsCondition(LayoutNode):
-    Contains: ComparisonHelper
-
-    def natural_language(self) -> str:
-        """Returns a natural language representation of the condition."""
-        left = natural_language_source(self.Contains.Left)
-        right = natural_language_source(self.Contains.Right)
-        return f"{left} CONTAINS {right}"
-
-    def get_sources(self) -> list[DataSource]:
-        """Returns the sources used in the condition."""
-        if isinstance(self.Contains.Right, LiteralSource):
-            return [self.Contains.Left]
-        return [self.Contains.Left, self.Contains.Right]
 
 
 class InExpressionHelper(LayoutNode):

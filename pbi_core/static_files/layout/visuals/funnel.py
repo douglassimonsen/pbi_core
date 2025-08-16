@@ -8,44 +8,40 @@ from .column_property import ColumnProperty
 from .properties.base import Expression
 
 
-class LabelsPropertiesHelper(LayoutNode):
-    color: Expression | None = None
-    fontSize: Expression | None = None
-    funnelLabelStyle: Expression | None = None
-    labelDisplayUnits: Expression | None = None
-    percentageLabelPrecision: Expression | None = None
-    show: Expression | None = None
-
-
 class LabelsProperties(LayoutNode):
-    properties: LabelsPropertiesHelper
+    class _LabelsPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        fontSize: Expression | None = None
+        funnelLabelStyle: Expression | None = None
+        labelDisplayUnits: Expression | None = None
+        percentageLabelPrecision: Expression | None = None
+        show: Expression | None = None
 
-
-class PercentBarLabelPropertiesHelper(LayoutNode):
-    color: Expression | None = None
-    show: Expression | None = None
+    properties: _LabelsPropertiesHelper
 
 
 class PercentBarLabelProperties(LayoutNode):
-    properties: PercentBarLabelPropertiesHelper
+    class _PercentBarLabelPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        show: Expression | None = None
 
-
-class CategoryAxisPropertiesHelper(LayoutNode):
-    color: Expression | None = None
-    show: Expression | None = None
+    properties: _PercentBarLabelPropertiesHelper
 
 
 class CategoryAxisProperties(LayoutNode):
-    properties: CategoryAxisPropertiesHelper
+    class _CategoryAxisPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        show: Expression | None = None
 
-
-class DataPointPropertiesHelper(LayoutNode):
-    fill: Expression | None = None
-    showAllDataPoints: Expression | None = None
+    properties: _CategoryAxisPropertiesHelper
 
 
 class DataPointProperties(LayoutNode):
-    properties: DataPointPropertiesHelper
+    class _DataPointPropertiesHelper(LayoutNode):
+        fill: Expression | None = None
+        showAllDataPoints: Expression | None = None
+
+    properties: _DataPointPropertiesHelper
     selector: Selector | None = None
 
 

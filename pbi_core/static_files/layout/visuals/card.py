@@ -8,46 +8,42 @@ from .column_property import ColumnProperty
 from .properties.base import Expression
 
 
-class CategoryLabelsPropertiesHelper(LayoutNode):
-    color: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    show: Expression | None = None
-
-
 class CategoryLabelsProperties(LayoutNode):
-    properties: CategoryLabelsPropertiesHelper
+    class _CategoryLabelsPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        show: Expression | None = None
+
+    properties: _CategoryLabelsPropertiesHelper
     selector: Selector | None = None
-
-
-class LabelsPropertiesHelper(LayoutNode):
-    color: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    labelPrecision: Expression | None = None
-    labelDisplayUnits: Expression | None = None
-    preserveWhitespace: Expression | None = None
 
 
 class LabelsProperties(LayoutNode):
-    properties: LabelsPropertiesHelper
+    class _LabelsPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        labelPrecision: Expression | None = None
+        labelDisplayUnits: Expression | None = None
+        preserveWhitespace: Expression | None = None
+
+    properties: _LabelsPropertiesHelper
     selector: Selector | None = None
 
 
-class GeneralPropertiesHelper(LayoutNode):
-    pass
-
-
 class GeneralProperties(LayoutNode):
-    properties: GeneralPropertiesHelper
+    class _GeneralPropertiesHelper(LayoutNode):
+        pass
 
-
-class WordWrapperPropertiesHelper(LayoutNode):
-    show: Expression | None = None
+    properties: _GeneralPropertiesHelper
 
 
 class WordWrapProperties(LayoutNode):
-    properties: WordWrapperPropertiesHelper
+    class _WordWrapperPropertiesHelper(LayoutNode):
+        show: Expression | None = None
+
+    properties: _WordWrapperPropertiesHelper
 
 
 class CardProperties(LayoutNode):

@@ -9,11 +9,11 @@ from .properties.base import Expression
 
 
 class DataBarsProperties(LayoutNode):
-    axisColor: Expression
-    hideText: Expression
-    negativeColor: Expression
-    positiveColor: Expression
-    reverseDirection: Expression
+    axisColor: Expression | None = None
+    hideText: Expression | None = None
+    negativeColor: Expression | None = None
+    positiveColor: Expression | None = None
+    reverseDirection: Expression | None = None
 
 
 class ColumnFormattingProperties(LayoutNode):
@@ -28,7 +28,7 @@ class ColumnFormattingProperties(LayoutNode):
 
 
 class ColumnFormatting(LayoutNode):
-    properties: ColumnFormattingProperties
+    properties: ColumnFormattingProperties = Field(default_factory=ColumnFormattingProperties)
     selector: Selector | None = None
 
 
@@ -41,7 +41,7 @@ class TotalProperties(LayoutNode):
 
 
 class Total(LayoutNode):
-    properties: TotalProperties
+    properties: TotalProperties = Field(default_factory=TotalProperties)
     selector: Selector | None = None
 
 
@@ -60,7 +60,7 @@ class ValuesProperties(LayoutNode):
 
 
 class Values(LayoutNode):
-    properties: ValuesProperties
+    properties: ValuesProperties = Field(default_factory=ValuesProperties)
     selector: Selector | None = None
 
 
@@ -79,16 +79,16 @@ class ColumnHeadersProperties(LayoutNode):
 
 
 class ColumnHeaders(LayoutNode):
-    properties: ColumnHeadersProperties
+    properties: ColumnHeadersProperties = Field(default_factory=ColumnHeadersProperties)
     selector: Selector | None = None
 
 
 class ColumnWidthProperties(LayoutNode):
-    value: Expression
+    value: Expression | None = None
 
 
 class ColumnWidth(LayoutNode):
-    properties: ColumnWidthProperties
+    properties: ColumnWidthProperties = Field(default_factory=ColumnWidthProperties)
     selector: Selector | None = None
 
 
@@ -107,7 +107,7 @@ class GridProperties(LayoutNode):
 
 
 class Grid(LayoutNode):
-    properties: GridProperties
+    properties: GridProperties = Field(default_factory=GridProperties)
     selector: Selector | None = None
 
 
