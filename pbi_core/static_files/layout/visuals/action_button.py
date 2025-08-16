@@ -37,24 +37,6 @@ class IconProperties(LayoutNode):
     selector: Selector | None = None
 
 
-class TextProperties(LayoutNode):
-    class _TextPropertiesHelper(LayoutNode):
-        fontColor: Expression | None = None
-        fontFamily: Expression | None = None
-        fontSize: Expression | None = None
-        horizontalAlignment: Expression | None = None
-        leftMargin: Expression | None = None
-        padding: Expression | None = None
-        rightMargin: Expression | None = None
-        show: Expression | None = None
-        text: Expression | None = None
-        topMargin: Expression | None = None
-        verticalAlignment: Expression | None = None
-
-    properties: _TextPropertiesHelper = Field(default_factory=_TextPropertiesHelper)
-    selector: Selector | None = None
-
-
 class OutlineProperties(LayoutNode):
     class _OutlinePropertiesHelper(LayoutNode):
         lineColor: Expression | None = None
@@ -72,6 +54,24 @@ class ShapeProperties(LayoutNode):
         roundEdge: Expression | None = None
 
     properties: _ShapePropertiesHelper = Field(default_factory=_ShapePropertiesHelper)
+    selector: Selector | None = None
+
+
+class TextProperties(LayoutNode):
+    class _TextPropertiesHelper(LayoutNode):
+        fontColor: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        horizontalAlignment: Expression | None = None
+        leftMargin: Expression | None = None
+        padding: Expression | None = None
+        rightMargin: Expression | None = None
+        show: Expression | None = None
+        text: Expression | None = None
+        topMargin: Expression | None = None
+        verticalAlignment: Expression | None = None
+
+    properties: _TextPropertiesHelper = Field(default_factory=_TextPropertiesHelper)
     selector: Selector | None = None
 
 

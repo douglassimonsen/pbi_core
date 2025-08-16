@@ -8,128 +8,123 @@ from .column_property import ColumnProperty
 from .properties.base import Expression
 
 
-class DataBarsProperties(LayoutNode):
-    axisColor: Expression | None = None
-    hideText: Expression | None = None
-    negativeColor: Expression | None = None
-    positiveColor: Expression | None = None
-    reverseDirection: Expression | None = None
-
-
 class ColumnFormattingProperties(LayoutNode):
-    alignment: Expression | None = None
-    backColor: Expression | None = None
-    dataBars: DataBarsProperties | None = None
-    fontColor: Expression | None = None
-    labelDisplayUnits: Expression | None = None
-    labelPrecision: Expression | None = None
-    styleHeader: Expression | None = None
-    styleValues: Expression | None = None
+    class _ColumnFormattingPropertiesHelper(LayoutNode):
+        class _DataBarsProperties(LayoutNode):
+            axisColor: Expression | None = None
+            hideText: Expression | None = None
+            negativeColor: Expression | None = None
+            positiveColor: Expression | None = None
+            reverseDirection: Expression | None = None
 
+        alignment: Expression | None = None
+        backColor: Expression | None = None
+        dataBars: _DataBarsProperties | None = None
+        fontColor: Expression | None = None
+        labelDisplayUnits: Expression | None = None
+        labelPrecision: Expression | None = None
+        styleHeader: Expression | None = None
+        styleValues: Expression | None = None
 
-class ColumnFormatting(LayoutNode):
-    properties: ColumnFormattingProperties = Field(default_factory=ColumnFormattingProperties)
-    selector: Selector | None = None
-
-
-class TotalProperties(LayoutNode):
-    fontColor: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    outline: Expression | None = None
-    totals: Expression | None = None
-
-
-class Total(LayoutNode):
-    properties: TotalProperties = Field(default_factory=TotalProperties)
-    selector: Selector | None = None
-
-
-class ValuesProperties(LayoutNode):
-    backColor: Expression | None = None
-    backColorPrimary: Expression | None = None
-    backColorSecondary: Expression | None = None
-    fontColor: Expression | None = None
-    fontColorPrimary: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    outline: Expression | None = None
-    underline: Expression | None = None
-    urlIcon: Expression | None = None
-    wordWrap: Expression | None = None
-
-
-class Values(LayoutNode):
-    properties: ValuesProperties = Field(default_factory=ValuesProperties)
+    properties: _ColumnFormattingPropertiesHelper = Field(default_factory=_ColumnFormattingPropertiesHelper)
     selector: Selector | None = None
 
 
 class ColumnHeadersProperties(LayoutNode):
-    alignment: Expression | None = None
-    autoSizeColumnWidth: Expression | None = None
-    backColor: Expression | None = None
-    bold: Expression | None = None
-    fontColor: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    outline: Expression | None = None
-    outlineStyle: Expression | None = None
-    underline: Expression | None = None
-    wordWrap: Expression | None = None
+    class _ColumnHeadersPropertiesHelper(LayoutNode):
+        alignment: Expression | None = None
+        autoSizeColumnWidth: Expression | None = None
+        backColor: Expression | None = None
+        bold: Expression | None = None
+        fontColor: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        outline: Expression | None = None
+        outlineStyle: Expression | None = None
+        underline: Expression | None = None
+        wordWrap: Expression | None = None
 
-
-class ColumnHeaders(LayoutNode):
-    properties: ColumnHeadersProperties = Field(default_factory=ColumnHeadersProperties)
+    properties: _ColumnHeadersPropertiesHelper = Field(default_factory=_ColumnHeadersPropertiesHelper)
     selector: Selector | None = None
 
 
 class ColumnWidthProperties(LayoutNode):
-    value: Expression | None = None
+    class _ColumnWidthPropertiesHelper(LayoutNode):
+        value: Expression | None = None
 
-
-class ColumnWidth(LayoutNode):
-    properties: ColumnWidthProperties = Field(default_factory=ColumnWidthProperties)
+    properties: _ColumnWidthPropertiesHelper = Field(default_factory=_ColumnWidthPropertiesHelper)
     selector: Selector | None = None
+
+
+class GeneralProperties(LayoutNode):
+    class _GeneralPropertiesHelper(LayoutNode):
+        pass
+
+    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
 
 
 class GridProperties(LayoutNode):
-    gridHorizontal: Expression | None = None
-    gridHorizontalColor: Expression | None = None
-    gridHorizontalWeight: Expression | None = None
-    gridVertical: Expression | None = None
-    gridVerticalColor: Expression | None = None
-    gridVerticalWeight: Expression | None = None
-    imageHeight: Expression | None = None
-    outlineColor: Expression | None = None
-    outlineWeight: Expression | None = None
-    rowPadding: Expression | None = None
-    textSize: Expression | None = None
+    class _GridPropertiesHelper(LayoutNode):
+        gridHorizontal: Expression | None = None
+        gridHorizontalColor: Expression | None = None
+        gridHorizontalWeight: Expression | None = None
+        gridVertical: Expression | None = None
+        gridVerticalColor: Expression | None = None
+        gridVerticalWeight: Expression | None = None
+        imageHeight: Expression | None = None
+        outlineColor: Expression | None = None
+        outlineWeight: Expression | None = None
+        rowPadding: Expression | None = None
+        textSize: Expression | None = None
 
-
-class Grid(LayoutNode):
-    properties: GridProperties = Field(default_factory=GridProperties)
+    properties: _GridPropertiesHelper = Field(default_factory=_GridPropertiesHelper)
     selector: Selector | None = None
 
 
-class General(LayoutNode):
-    class _GeneralProperties(LayoutNode):
-        pass
+class TotalProperties(LayoutNode):
+    class _TotalPropertiesHelper(LayoutNode):
+        fontColor: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        outline: Expression | None = None
+        totals: Expression | None = None
 
-    properties: _GeneralProperties = Field(default_factory=_GeneralProperties)
+    properties: _TotalPropertiesHelper = Field(default_factory=_TotalPropertiesHelper)
+    selector: Selector | None = None
+
+
+class ValuesProperties(LayoutNode):
+    class _ValuesPropertiesHelper(LayoutNode):
+        backColor: Expression | None = None
+        backColorPrimary: Expression | None = None
+        backColorSecondary: Expression | None = None
+        fontColor: Expression | None = None
+        fontColorPrimary: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        outline: Expression | None = None
+        underline: Expression | None = None
+        urlIcon: Expression | None = None
+        wordWrap: Expression | None = None
+
+    properties: _ValuesPropertiesHelper = Field(default_factory=_ValuesPropertiesHelper)
+    selector: Selector | None = None
 
 
 class TableChartColumnProperties(LayoutNode):
-    columnFormatting: list[ColumnFormatting] | None = Field(default_factory=lambda: [ColumnFormatting()])
-    columnHeaders: list[ColumnHeaders] | None = Field(default_factory=lambda: [ColumnHeaders()])
-    columnWidth: list[ColumnWidth] | None = Field(default_factory=lambda: [ColumnWidth()])
-    general: list[General] | None = Field(default_factory=lambda: [General()])
-    grid: list[Grid] | None = Field(default_factory=lambda: [Grid()])
-    total: list[Total] | None = Field(default_factory=lambda: [Total()])
-    values: list[Values] | None = Field(default_factory=lambda: [Values()])
+    columnFormatting: list[ColumnFormattingProperties] | None = Field(
+        default_factory=lambda: [ColumnFormattingProperties()],
+    )
+    columnHeaders: list[ColumnHeadersProperties] | None = Field(default_factory=lambda: [ColumnHeadersProperties()])
+    columnWidth: list[ColumnWidthProperties] | None = Field(default_factory=lambda: [ColumnWidthProperties()])
+    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
+    grid: list[GridProperties] | None = Field(default_factory=lambda: [GridProperties()])
+    total: list[TotalProperties] | None = Field(default_factory=lambda: [TotalProperties()])
+    values: list[ValuesProperties] | None = Field(default_factory=lambda: [ValuesProperties()])
 
 
 class TableChart(BaseVisual):
     visualType: str = "tableEx"
-    objects: TableChartColumnProperties | None = None
+    objects: TableChartColumnProperties | None = Field(default_factory=TableChartColumnProperties)
     model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None

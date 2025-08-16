@@ -1,4 +1,4 @@
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -6,6 +6,21 @@ from pbi_core.static_files.layout.selector import Selector
 from .base import BaseVisual
 from .column_property import ColumnProperty
 from .properties.base import Expression
+
+
+class AnomalyDetectionProperties(LayoutNode):
+    class _AnomalyDetectionPropertiesHelper(LayoutNode):
+        confidenceBandColor: Expression | None = None
+        displayName: Expression | None = None
+        explainBy: Expression | None = None
+        markerColor: Expression | None = None
+        markerShape: Expression | None = None
+        show: Expression | None = None
+        transform: Expression | None = None
+        transparency: Expression | None = None
+
+    properties: _AnomalyDetectionPropertiesHelper = Field(default_factory=_AnomalyDetectionPropertiesHelper)
+    selector: Selector | None = None
 
 
 class CategoryAxisProperties(LayoutNode):
@@ -25,8 +40,64 @@ class CategoryAxisProperties(LayoutNode):
         titleFontFamily: Expression | None = None
         titleFontSize: Expression | None = None
 
-    properties: _CategoryAxisPropertiesHelper
+    properties: _CategoryAxisPropertiesHelper = Field(default_factory=_CategoryAxisPropertiesHelper)
     selector: Selector | None = None
+
+
+class DataPointProperties(LayoutNode):
+    class _DataPointPropertiesHelper(LayoutNode):
+        fill: Expression | None = None
+        showAllDataPoints: Expression | None = None
+
+    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
+    selector: Selector | None = None
+
+
+class ForecastProperties(LayoutNode):
+    class _ForecastPropertiesHelper(LayoutNode):
+        show: Expression | None = None
+        displayName: Expression | None = None
+        lineColor: Expression | None = None
+        transform: Expression | None = None
+
+    properties: _ForecastPropertiesHelper = Field(default_factory=_ForecastPropertiesHelper)
+    selector: Selector | None = None
+
+
+class GeneralProperties(LayoutNode):
+    class _GeneralPropertiesHelper(LayoutNode):
+        responsive: Expression | None = None
+
+    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
+
+
+class LabelsProperties(LayoutNode):
+    class _LabelsPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        labelPosition: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        labelDensity: Expression | None = None
+        show: Expression | None = None
+        showAll: Expression | None = None
+        showSeries: Expression | None = None
+
+    properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
+    selector: Selector | None = None
+
+
+class LegendProperties(LayoutNode):
+    class _LegendPropertiesHelper(LayoutNode):
+        defaultToCircle: Expression | None = None
+        fontSize: Expression | None = None
+        labelColor: Expression | None = None
+        legendMarkerRendering: Expression | None = None
+        position: Expression | None = None
+        show: Expression | None = None
+        showTitle: Expression | None = None
+        titleText: Expression | None = None
+
+    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
 
 
 class LineStylesProperties(LayoutNode):
@@ -41,175 +112,97 @@ class LineStylesProperties(LayoutNode):
         strokeLineJoin: Expression | None = None
         strokeWidth: Expression | None = None
 
-    properties: _LineStylesPropertiesHelper
+    properties: _LineStylesPropertiesHelper = Field(default_factory=_LineStylesPropertiesHelper)
     selector: Selector | None = None
-
-
-class LabelsProperties(LayoutNode):
-    class _LabelsPropertiesHelper(LayoutNode):
-        color: Expression | None = None
-        labelPosition: Expression | None = None
-        fontFamily: Expression | None = None
-        fontSize: Expression | None = None
-        labelDensity: Expression | None = None
-        show: Expression | None = None
-        showAll: Expression | None = None
-        showSeries: Expression | None = None
-
-    properties: _LabelsPropertiesHelper
-    selector: Selector | None = None
-
-
-class DataPointPropertiesHelper(LayoutNode):
-    fill: Expression | None = None
-    showAllDataPoints: Expression | None = None
-
-
-class DataPointProperties(LayoutNode):
-    properties: DataPointPropertiesHelper
-    selector: Selector | None = None
-
-
-class LegendPropertiesHelper(LayoutNode):
-    defaultToCircle: Expression | None = None
-    fontSize: Expression | None = None
-    labelColor: Expression | None = None
-    legendMarkerRendering: Expression | None = None
-    position: Expression | None = None
-    show: Expression | None = None
-    showTitle: Expression | None = None
-    titleText: Expression | None = None
-
-
-class LegendProperties(LayoutNode):
-    properties: LegendPropertiesHelper
-
-
-class ValueAxisPropertiesHelper(LayoutNode):
-    axisScale: Expression | None = None
-    end: Expression | None = None
-    fontFamily: Expression | None = None
-    fontSize: Expression | None = None
-    gridlineColor: Expression | None = None
-    gridlineShow: Expression | None = None
-    gridlineStyle: Expression | None = None
-    gridlineThickness: Expression | None = None
-    labelColor: Expression | None = None
-    labelDensity: Expression | None = None
-    labelDisplayUnits: Expression | None = None
-    position: Expression | None = None
-    show: Expression | None = None
-    showAxisTitle: Expression | None = None
-    start: Expression | None = None
-    titleFontFamily: Expression | None = None
-    titleText: Expression | None = None
-
-
-class ValueAxisProperties(LayoutNode):
-    properties: ValueAxisPropertiesHelper
-
-
-class AnomalyDetectionPropertiesHelper(LayoutNode):
-    confidenceBandColor: Expression | None = None
-    displayName: Expression | None = None
-    explainBy: Expression | None = None
-    markerColor: Expression | None = None
-    markerShape: Expression | None = None
-    show: Expression | None = None
-    transform: Expression | None = None
-    transparency: Expression | None = None
-
-
-class AnomalyDetectionProperties(LayoutNode):
-    properties: AnomalyDetectionPropertiesHelper
-    selector: Selector | None = None
-
-
-class ZoomPropertiesHelper(LayoutNode):
-    show: Expression | None = None
-    categoryMax: Expression | None = None
-    categoryMin: Expression | None = None
-    valueMax: Expression | None = None
-    valueMin: Expression | None = None
-
-
-class ZoomProperties(LayoutNode):
-    properties: ZoomPropertiesHelper
-
-
-class ForecastPropertiesHelper(LayoutNode):
-    show: Expression | None = None
-    displayName: Expression | None = None
-    lineColor: Expression | None = None
-    transform: Expression | None = None
-
-
-class ForecastProperties(LayoutNode):
-    properties: ForecastPropertiesHelper
-    selector: Selector | None = None
-
-
-class PlotAreaPropertiesHelper(LayoutNode):
-    transparency: Expression | None = None
 
 
 class PlotAreaProperties(LayoutNode):
-    properties: PlotAreaPropertiesHelper
+    class _PlotAreaPropertiesHelper(LayoutNode):
+        transparency: Expression | None = None
 
-
-class TrendPropertiesHelper(LayoutNode):
-    displayName: Expression | None = None
-    lineColor: Expression | None = None
-    show: Expression | None = None
+    properties: _PlotAreaPropertiesHelper = Field(default_factory=_PlotAreaPropertiesHelper)
 
 
 class TrendProperties(LayoutNode):
-    properties: TrendPropertiesHelper
+    class _TrendPropertiesHelper(LayoutNode):
+        displayName: Expression | None = None
+        lineColor: Expression | None = None
+        show: Expression | None = None
+
+    properties: _TrendPropertiesHelper = Field(default_factory=_TrendPropertiesHelper)
 
 
-class GeneralPropertiesHelper(LayoutNode):
-    responsive: Expression | None = None
+class ValueAxisProperties(LayoutNode):
+    class _ValueAxisPropertiesHelper(LayoutNode):
+        axisScale: Expression | None = None
+        end: Expression | None = None
+        fontFamily: Expression | None = None
+        fontSize: Expression | None = None
+        gridlineColor: Expression | None = None
+        gridlineShow: Expression | None = None
+        gridlineStyle: Expression | None = None
+        gridlineThickness: Expression | None = None
+        labelColor: Expression | None = None
+        labelDensity: Expression | None = None
+        labelDisplayUnits: Expression | None = None
+        position: Expression | None = None
+        show: Expression | None = None
+        showAxisTitle: Expression | None = None
+        start: Expression | None = None
+        titleFontFamily: Expression | None = None
+        titleText: Expression | None = None
 
-
-class GeneralProperties(LayoutNode):
-    properties: GeneralPropertiesHelper
-
-
-class Y2AxisPropertiesHelper(LayoutNode):
-    show: Expression | None = None
-
-
-class Y2AxisProperties(LayoutNode):
-    properties: Y2AxisPropertiesHelper
-
-
-class Y1AxisReferenceLinePropertiesHelper(LayoutNode):
-    displayName: Expression | None = None
-    position: Expression | None = None
-    show: Expression | None = None
-    style: Expression | None = None
+    properties: _ValueAxisPropertiesHelper = Field(default_factory=_ValueAxisPropertiesHelper)
 
 
 class Y1AxisReferenceLineProperties(LayoutNode):
-    properties: Y1AxisReferenceLinePropertiesHelper
+    class _Y1AxisReferenceLinePropertiesHelper(LayoutNode):
+        displayName: Expression | None = None
+        position: Expression | None = None
+        show: Expression | None = None
+        style: Expression | None = None
+
+    properties: _Y1AxisReferenceLinePropertiesHelper = Field(default_factory=_Y1AxisReferenceLinePropertiesHelper)
     selector: Selector | None = None
 
 
+class Y2AxisProperties(LayoutNode):
+    class _Y2AxisPropertiesHelper(LayoutNode):
+        show: Expression | None = None
+
+    properties: _Y2AxisPropertiesHelper = Field(default_factory=_Y2AxisPropertiesHelper)
+
+
+class ZoomProperties(LayoutNode):
+    class _ZoomPropertiesHelper(LayoutNode):
+        show: Expression | None = None
+        categoryMax: Expression | None = None
+        categoryMin: Expression | None = None
+        valueMax: Expression | None = None
+        valueMin: Expression | None = None
+
+    properties: _ZoomPropertiesHelper = Field(default_factory=_ZoomPropertiesHelper)
+
+
 class LineChartProperties(LayoutNode):
-    anomalyDetection: list[AnomalyDetectionProperties] | None = None
-    categoryAxis: list[CategoryAxisProperties] | None = None
-    dataPoint: list[DataPointProperties] | None = None
-    forecast: list[ForecastProperties] | None = None
-    general: list[GeneralProperties] | None = None
-    labels: list[LabelsProperties] | None = None
-    legend: list[LegendProperties] | None = None
-    lineStyles: list[LineStylesProperties] | None = None
-    plotArea: list[PlotAreaProperties] | None = None
-    trend: list[TrendProperties] | None = None
-    valueAxis: list[ValueAxisProperties] | None = None
-    zoom: list[ZoomProperties] | None = None
-    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] | None = None
-    y2Axis: list[Y2AxisProperties] | None = None
+    anomalyDetection: list[AnomalyDetectionProperties] | None = Field(
+        default_factory=lambda: [AnomalyDetectionProperties()],
+    )
+    categoryAxis: list[CategoryAxisProperties] | None = Field(default_factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
+    forecast: list[ForecastProperties] | None = Field(default_factory=lambda: [ForecastProperties()])
+    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] | None = Field(default_factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] | None = Field(default_factory=lambda: [LegendProperties()])
+    lineStyles: list[LineStylesProperties] | None = Field(default_factory=lambda: [LineStylesProperties()])
+    plotArea: list[PlotAreaProperties] | None = Field(default_factory=lambda: [PlotAreaProperties()])
+    trend: list[TrendProperties] | None = Field(default_factory=lambda: [TrendProperties()])
+    valueAxis: list[ValueAxisProperties] | None = Field(default_factory=lambda: [ValueAxisProperties()])
+    zoom: list[ZoomProperties] | None = Field(default_factory=lambda: [ZoomProperties()])
+    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] | None = Field(
+        default_factory=lambda: [Y1AxisReferenceLineProperties()],
+    )
+    y2Axis: list[Y2AxisProperties] | None = Field(default_factory=lambda: [Y2AxisProperties()])
 
 
 class LineChart(BaseVisual):
@@ -218,4 +211,4 @@ class LineChart(BaseVisual):
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: LineChartProperties | None = None
+    objects: LineChartProperties | None = Field(default_factory=LineChartProperties)

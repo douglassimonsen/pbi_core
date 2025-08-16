@@ -1,19 +1,11 @@
 from pydantic import ConfigDict, Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
+from pbi_core.static_files.layout.selector import Selector
 
-from ..selector import Selector
 from .base import BaseVisual
 from .column_property import ColumnProperty
 from .properties.base import Expression
-
-
-class LegendProperties(LayoutNode):
-    class _LegendPropertiesHelper(LayoutNode):
-        position: Expression | None = None
-        show: Expression | None = None
-
-    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
 
 
 class DataPointProperties(LayoutNode):
@@ -35,6 +27,14 @@ class LabelsProperties(LayoutNode):
         show: Expression | None = None
 
     properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
+
+
+class LegendProperties(LayoutNode):
+    class _LegendPropertiesHelper(LayoutNode):
+        position: Expression | None = None
+        show: Expression | None = None
+
+    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
 
 
 class PieChartProperties(LayoutNode):

@@ -40,10 +40,10 @@ class RotationProperties(LayoutNode):
 
 
 class BasicShapeProperties(LayoutNode):
-    fill: list[FillProperties] | None = Field(default_factory=list[FillProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=list[GeneralProperties()])
-    line: list[LineProperties] | None = Field(default_factory=list[LineProperties()])
-    rotation: list[RotationProperties] | None = Field(default_factory=list[RotationProperties()])
+    fill: list[FillProperties] | None = Field(default_factory=lambda: [FillProperties()])
+    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
+    line: list[LineProperties] | None = Field(default_factory=lambda: [LineProperties()])
+    rotation: list[RotationProperties] | None = Field(default_factory=lambda: [RotationProperties()])
 
 
 class BasicShape(BaseVisual):

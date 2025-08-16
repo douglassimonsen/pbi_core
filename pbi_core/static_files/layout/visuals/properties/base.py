@@ -44,12 +44,11 @@ class ConditionalCase(LayoutNode):
     Value: LiteralSource
 
 
-class ConditionalSourceHelper(LayoutNode):
-    Cases: list[ConditionalCase]
-
-
 class ConditionalSource(LayoutNode):
-    Conditional: ConditionalSourceHelper
+    class _ConditionalSourceHelper(LayoutNode):
+        Cases: list[ConditionalCase]
+
+    Conditional: _ConditionalSourceHelper
 
 
 class ConditionalExpression(LayoutNode):
@@ -200,24 +199,22 @@ class SelectRefExpression(LayoutNode):
     expr: SelectRef
 
 
-class ImageExpressionHelper(LayoutNode):
-    name: "Expression"
-    scaling: "Expression"
-    url: "Expression"
-
-
 class ImageExpression(LayoutNode):
-    image: ImageExpressionHelper
+    class _ImageExpressionHelper(LayoutNode):
+        name: "Expression"
+        scaling: "Expression"
+        url: "Expression"
 
-
-class GeoJsonExpressionHelper(LayoutNode):
-    name: "Expression"
-    content: "Expression"
-    type: "Expression"
+    image: _ImageExpressionHelper
 
 
 class GeoJsonExpression(LayoutNode):
-    geoJson: GeoJsonExpressionHelper
+    class _GeoJsonExpressionHelper(LayoutNode):
+        name: "Expression"
+        content: "Expression"
+        type: "Expression"
+
+    geoJson: _GeoJsonExpressionHelper
 
 
 class AlgorithmParameter(LiteralSource):

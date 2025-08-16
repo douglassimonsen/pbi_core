@@ -16,15 +16,12 @@ class BackgroundProperties(LayoutNode):
     properties: _BackgroundPropertiesHelper = Field(default_factory=_BackgroundPropertiesHelper)
 
 
-class TitleProperties(LayoutNode):
-    class _TitlePropertiesHelper(LayoutNode):
-        alignment: Expression | None = None
-        fontColor: Expression | None = None
-        fontSize: Expression | None = None
-        show: Expression | None = None
-        text: Expression | None = None
+class DataPointProperties(LayoutNode):
+    class _DataPointPropertiesHelper(LayoutNode):
+        fill: Expression | None = None
 
-    properties: _TitlePropertiesHelper = Field(default_factory=_TitlePropertiesHelper)
+    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
+    selector: Selector | None = None
 
 
 class GeneralProperties(LayoutNode):
@@ -32,17 +29,6 @@ class GeneralProperties(LayoutNode):
         altText: Expression | None = None
 
     properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
-
-
-class LegendProperties(LayoutNode):
-    class _LegendPropertiesHelper(LayoutNode):
-        fontSize: Expression | None = None
-        labelColor: Expression | None = None
-        position: Expression | None = None
-        show: Expression | None = None
-        showTitle: Expression | None = None
-
-    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
 
 
 class LabelsProperties(LayoutNode):
@@ -61,12 +47,15 @@ class LabelsProperties(LayoutNode):
     properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
 
 
-class DataPointProperties(LayoutNode):
-    class _DataPointPropertiesHelper(LayoutNode):
-        fill: Expression | None = None
+class LegendProperties(LayoutNode):
+    class _LegendPropertiesHelper(LayoutNode):
+        fontSize: Expression | None = None
+        labelColor: Expression | None = None
+        position: Expression | None = None
+        show: Expression | None = None
+        showTitle: Expression | None = None
 
-    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
-    selector: Selector | None = None
+    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
 
 
 class SlicesProperties(LayoutNode):
@@ -74,6 +63,17 @@ class SlicesProperties(LayoutNode):
         innerRadiusRatio: Expression | None = None
 
     properties: _SlicesPropertiesHelper = Field(default_factory=_SlicesPropertiesHelper)
+
+
+class TitleProperties(LayoutNode):
+    class _TitlePropertiesHelper(LayoutNode):
+        alignment: Expression | None = None
+        fontColor: Expression | None = None
+        fontSize: Expression | None = None
+        show: Expression | None = None
+        text: Expression | None = None
+
+    properties: _TitlePropertiesHelper = Field(default_factory=_TitlePropertiesHelper)
 
 
 class DonutChartProperties(LayoutNode):

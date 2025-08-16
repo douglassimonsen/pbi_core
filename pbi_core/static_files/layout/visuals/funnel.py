@@ -1,4 +1,4 @@
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -6,6 +6,23 @@ from pbi_core.static_files.layout.selector import Selector
 from .base import BaseVisual
 from .column_property import ColumnProperty
 from .properties.base import Expression
+
+
+class CategoryAxisProperties(LayoutNode):
+    class _CategoryAxisPropertiesHelper(LayoutNode):
+        color: Expression | None = None
+        show: Expression | None = None
+
+    properties: _CategoryAxisPropertiesHelper = Field(default_factory=_CategoryAxisPropertiesHelper)
+
+
+class DataPointProperties(LayoutNode):
+    class _DataPointPropertiesHelper(LayoutNode):
+        fill: Expression | None = None
+        showAllDataPoints: Expression | None = None
+
+    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
+    selector: Selector | None = None
 
 
 class LabelsProperties(LayoutNode):
@@ -17,7 +34,7 @@ class LabelsProperties(LayoutNode):
         percentageLabelPrecision: Expression | None = None
         show: Expression | None = None
 
-    properties: _LabelsPropertiesHelper
+    properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
 
 
 class PercentBarLabelProperties(LayoutNode):
@@ -25,31 +42,16 @@ class PercentBarLabelProperties(LayoutNode):
         color: Expression | None = None
         show: Expression | None = None
 
-    properties: _PercentBarLabelPropertiesHelper
-
-
-class CategoryAxisProperties(LayoutNode):
-    class _CategoryAxisPropertiesHelper(LayoutNode):
-        color: Expression | None = None
-        show: Expression | None = None
-
-    properties: _CategoryAxisPropertiesHelper
-
-
-class DataPointProperties(LayoutNode):
-    class _DataPointPropertiesHelper(LayoutNode):
-        fill: Expression | None = None
-        showAllDataPoints: Expression | None = None
-
-    properties: _DataPointPropertiesHelper
-    selector: Selector | None = None
+    properties: _PercentBarLabelPropertiesHelper = Field(default_factory=_PercentBarLabelPropertiesHelper)
 
 
 class FunnelProperties(LayoutNode):
-    categoryAxis: list[CategoryAxisProperties] | None = None
-    dataPoint: list[DataPointProperties] | None = None
-    labels: list[LabelsProperties] | None = None
-    percentBarLabel: list[PercentBarLabelProperties] | None = None
+    categoryAxis: list[CategoryAxisProperties] | None = Field(default_factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
+    labels: list[LabelsProperties] | None = Field(default_factory=lambda: [LabelsProperties()])
+    percentBarLabel: list[PercentBarLabelProperties] | None = Field(
+        default_factory=lambda: [PercentBarLabelProperties()],
+    )
 
 
 class Funnel(BaseVisual):
@@ -57,4 +59,4 @@ class Funnel(BaseVisual):
     model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: FunnelProperties | None = None
+    objects: FunnelProperties | None = Field(default_factory=FunnelProperties)

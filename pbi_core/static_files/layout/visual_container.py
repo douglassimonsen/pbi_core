@@ -177,23 +177,21 @@ class WindowExpansionType(LayoutNode):
         return f"WindowExpansionType(From={self.From}, Levels={self.Levels}, WindowInstances={self.WindowInstances})"
 
 
-class TopNPerLevelDataReductionHelper(LayoutNode):
-    Count: int
-    WindowExpansion: WindowExpansionType
-
-
 class TopNPerLevelDataReduction(LayoutNode):
-    TopNPerLevel: TopNPerLevelDataReductionHelper
+    class _TopNPerLevelDataReductionHelper(LayoutNode):
+        Count: int
+        WindowExpansion: WindowExpansionType
 
-
-class BinnedLineSampleHelper(LayoutNode):
-    PrimaryScalarKey: int | None = None
-    Count: int | None = None
-    WarningCount: int | None = None
+    TopNPerLevel: _TopNPerLevelDataReductionHelper
 
 
 class BinnedLineSample(LayoutNode):
-    BinnedLineSample: BinnedLineSampleHelper
+    class _BinnedLineSampleHelper(LayoutNode):
+        PrimaryScalarKey: int | None = None
+        Count: int | None = None
+        WarningCount: int | None = None
+
+    BinnedLineSample: _BinnedLineSampleHelper
 
 
 def get_reduction(v: object | dict[str, Any]) -> str:
