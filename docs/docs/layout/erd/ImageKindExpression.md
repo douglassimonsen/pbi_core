@@ -3,11 +3,13 @@
 title: ImageKindExpression
 ---
 graph 
-2721641868608["ConditionalExpression"]
-2721641862752["ConditionalSource"]
-2721641835424["LiteralExpression"]
-2721641878368["ImageKindExpression"]
-2721641878368 ---> 2721641835424
-2721641868608 ---> 2721641862752
-2721641878368 ---> 2721641868608
+2430071903648["ConditionalSource"]
+style 2430071903648 stroke:#ff0000,stroke-width:1px
+2430071926096["ImageKindExpression"]
+2430071887056["LiteralExpression"]
+style 2430071887056 stroke:#ff0000,stroke-width:1px
+2430071908528["ConditionalExpression"]
+2430071926096 --->|value| 2430071908528
+2430071926096 ---> 2430071887056
+2430071908528 ---> 2430071903648
 ```

@@ -3,7 +3,7 @@
 title: OrCondition
 ---
 graph 
-2721641842256["CompositeConditionHelper"]
-2721641844208["OrCondition"]
-2721641844208 ---> 2721641842256
+2430071871440["CompositeConditionHelper"]
+2430071879248["OrCondition"]
+2430071879248 --->|Or| 2430071871440
 ```

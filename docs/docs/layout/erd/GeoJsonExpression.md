@@ -3,7 +3,7 @@
 title: GeoJsonExpression
 ---
 graph 
-2721641888128["_GeoJsonExpressionHelper"]
-2721641889104["GeoJsonExpression"]
-2721641889104 ---> 2721641888128
+2430071913408["_GeoJsonExpressionHelper"]
+2430071918288["GeoJsonExpression"]
+2430071918288 --->|geoJson| 2430071913408
 ```

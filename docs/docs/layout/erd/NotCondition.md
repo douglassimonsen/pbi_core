@@ -3,7 +3,7 @@
 title: NotCondition
 ---
 graph 
-2721642085280["NotConditionHelper"]
-2721642084304["NotCondition"]
-2721642084304 ---> 2721642085280
+2430071880224["NotCondition"]
+2430071877296["NotConditionHelper"]
+2430071880224 --->|Not| 2430071877296
 ```

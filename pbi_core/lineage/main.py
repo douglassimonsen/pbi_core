@@ -12,19 +12,19 @@ from pbi_mermaid.node import NodeShape
 
 CLASS_STYLES = {
     # SSAS Stuff
-    "AttributeHierarchy": "fill:#ffffcc,stroke:#333,stroke-width:1px",
-    "Column": "fill:#ffcc99,stroke:#333,stroke-width:1px",
-    "Culture": "fill:#ffcccc,stroke:#333,stroke-width:1px",
-    "LinguisticMetadata": "fill:#ff99cc,stroke:#333,stroke-width:1px",
-    "Measure": "fill:#ffccff,stroke:#333,stroke-width:1px",
-    "Table": "fill:#cc99ff,stroke:#333,stroke-width:1px",
-    "Partition": "fill:#ccccff,stroke:#333,stroke-width:1px",
-    "Model": "fill:#99ccff,stroke:#333,stroke-width:1px",
+    "AttributeHierarchy": {"fill": "#ffffcc", "stroke": "#333", "stroke-width": "1px"},
+    "Column": {"fill": "#ffcc99", "stroke": "#333", "stroke-width": "1px"},
+    "Culture": {"fill": "#ffcccc", "stroke": "#333", "stroke-width": "1px"},
+    "LinguisticMetadata": {"fill": "#ff99cc", "stroke": "#333", "stroke-width": "1px"},
+    "Measure": {"fill": "#ffccff", "stroke": "#333", "stroke-width": "1px"},
+    "Table": {"fill": "#cc99ff", "stroke": "#333", "stroke-width": "1px"},
+    "Partition": {"fill": "#ccccff", "stroke": "#333", "stroke-width": "1px"},
+    "Model": {"fill": "#99ccff", "stroke": "#333", "stroke-width": "1px"},
     # Visuals
-    "BarChart": "fill:#ccffff,stroke:#333,stroke-width:1px",
-    "VisualContainer": "fill:#99ffcc,stroke:#333,stroke-width:1px",
-    "Section": "fill:#ccffcc,stroke:#333,stroke-width:1px",
-    "Layout": "fill:#ccff99,stroke:#333,stroke-width:1px",
+    "BarChart": {"fill": "#ccffff", "stroke": "#333", "stroke-width": "1px"},
+    "VisualContainer": {"fill": "#99ffcc", "stroke": "#333", "stroke-width": "1px"},
+    "Section": {"fill": "#ccffcc", "stroke": "#333", "stroke-width": "1px"},
+    "Layout": {"fill": "#ccff99", "stroke": "#333", "stroke-width": "1px"},
 }
 
 

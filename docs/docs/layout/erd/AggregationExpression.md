@@ -3,7 +3,8 @@
 title: AggregationExpression
 ---
 graph 
-2721642003296["AggregationSource"]
-2721641839328["AggregationExpression"]
-2721641839328 ---> 2721642003296
+2430071358016["AggregationSource"]
+style 2430071358016 stroke:#ff0000,stroke-width:1px
+2430071889008["AggregationExpression"]
+2430071889008 ---> 2430071358016
 ```

@@ -3,7 +3,8 @@
 title: LiteralExpression
 ---
 graph 
-2721641835424["LiteralExpression"]
-2721642022816["LiteralSource"]
-2721641835424 ---> 2721642022816
+2430071887056["LiteralExpression"]
+2430071816784["LiteralSource"]
+style 2430071816784 stroke:#ff0000,stroke-width:1px
+2430071887056 ---> 2430071816784
 ```

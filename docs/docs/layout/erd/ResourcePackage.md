@@ -3,9 +3,9 @@
 title: ResourcePackage
 ---
 graph 
-2722113652720["ResourcePackageItem"]
-2722113638080["ResourcePackageDetails"]
-2722113661504["ResourcePackage"]
-2722113638080 ---> 2722113652720
-2722113661504 ---> 2722113638080
+2430514902592["ResourcePackageDetails"]
+2430514892832["ResourcePackage"]
+2430514886000["ResourcePackageItem"]
+2430514892832 --->|resourcePackage| 2430514902592
+2430514902592 --->|items| 2430514886000
 ```

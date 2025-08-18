@@ -3,7 +3,8 @@
 title: SolidColorExpression
 ---
 graph 
-2721641857872["SolidExpression"]
-2721641874464["SolidColorExpression"]
-2721641874464 ---> 2721641857872
+2430071896816["SolidExpression"]
+style 2430071896816 stroke:#ff0000,stroke-width:1px
+2430071907552["SolidColorExpression"]
+2430071907552 ---> 2430071896816
 ```

@@ -3,7 +3,7 @@
 title: LiteralSource
 ---
 graph 
-2721642022816["LiteralSource"]
-2721642038432["_LiteralSourceHelper"]
-2721642022816 ---> 2721642038432
+2430071816784["LiteralSource"]
+2430071807024["_LiteralSourceHelper"]
+2430071816784 --->|Literal| 2430071807024
 ```

@@ -3,7 +3,7 @@
 title: AndCondition
 ---
 graph 
-2721641843232["AndCondition"]
-2721641842256["CompositeConditionHelper"]
-2721641843232 ---> 2721641842256
+2430071871440["CompositeConditionHelper"]
+2430071876320["AndCondition"]
+2430071876320 --->|And| 2430071871440
 ```

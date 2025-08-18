@@ -27,7 +27,7 @@ class ERD:
             return head, nodes, links
         self.visited_nodes.add(head)
 
-        for _attr_name, attr_type in m.__pydantic_fields__.items():
+        for attr_name, attr_type in m.__pydantic_fields__.items():
             if attr_type.annotation is None:
                 continue
             for child in unwrap(attr_type.annotation):
@@ -35,7 +35,7 @@ class ERD:
                     sub_head, sub_nodes, sub_links = self.helper(child)
                     nodes.update(sub_nodes)
                     links.update(sub_links)
-                    links.add(Link(head, sub_head))
+                    links.add(Link(head, sub_head, link_text=attr_name))
 
         return head, nodes, links
 
