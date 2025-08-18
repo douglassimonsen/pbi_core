@@ -73,7 +73,8 @@ class BookmarkPartialVisualObject(LayoutNode):
     remove: list[Remove] | None = None
 
 
-class ExpansionState(LayoutNode):
+# TODO: merge with ExpansionState in expansion_state
+class BookmarkExpansionState(LayoutNode):
     roles: list[str]
     levels: list[ExpansionStateLevel]
     root: ExpansionStateRoot
@@ -108,7 +109,7 @@ class BookmarkPartialVisual(LayoutNode):
     """Updated projections that are used by the visual."""
     display: Display | None = None
     """Optional changes to how the visual is displayed."""
-    expansionStates: list[ExpansionState] | None = None
+    expansionStates: list[BookmarkExpansionState] | None = None
     """Changes to expansion state."""
     targetType: str | None = None
     """Change visual to this type - if different from the original state. Used by personalize this visual on the web."""

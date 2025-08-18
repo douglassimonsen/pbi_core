@@ -29,6 +29,7 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
         "description": "Description",
     }
     _db_name_field: str = "ExplicitName"
+    _repr_name_field: str = "explicit_name"
     _read_only_fields = ("table_id",)
 
     alignment: Alignment

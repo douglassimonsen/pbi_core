@@ -11,7 +11,7 @@ from pbi_core.static_files.model_references import ModelColumnReference, ModelMe
 from ._base_node import LayoutNode
 from .condition import AndCondition, ComparisonCondition, Condition, ConditionType, InCondition, NotCondition
 from .sources import AggregationSource, ColumnSource, Entity, MeasureSource, Source
-from .sources.aggregation import ScopedEval
+from .sources.aggregation import ScopedEvalAgg
 from .visuals.properties.filter_properties import FilterObjects
 
 if TYPE_CHECKING:
@@ -105,7 +105,7 @@ class PrototypeQuery(LayoutNode):
         return ret
 
     @classmethod
-    def unwrap_source(cls, source: Source | ConditionType | ScopedEval) -> list[ColumnSource | MeasureSource]:
+    def unwrap_source(cls, source: Source | ConditionType | ScopedEvalAgg) -> list[ColumnSource | MeasureSource]:
         """Identifies the root sources (measures and columns) used in this filter.
 
         Raises:

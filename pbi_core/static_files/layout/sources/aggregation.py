@@ -39,7 +39,8 @@ class ScopedEval2(LayoutNode):
     Scope: list[AllRolesRef]
 
 
-class ScopedEval(LayoutNode):  # copied from arithmetic.py to avoid circular dependencies
+# TODO: merge with ScopedEvalArith
+class ScopedEvalAgg(LayoutNode):  # copied from arithmetic.py to avoid circular dependencies
     ScopedEval: ScopedEval2
 
 
@@ -52,7 +53,7 @@ def get_data_source_type(v: object | dict[str, Any]) -> str:
         if "HierarchyLevel" in v:
             return "HierarchyLevelSource"
         if "ScopedEval" in v:  # Consider subclassing? This only happens for color gradient properties IME
-            return "ScopedEval"
+            return "ScopedEvalAgg"
         raise TypeError(v)
     return v.__class__.__name__
 
@@ -61,7 +62,7 @@ DataSource = Annotated[
     Annotated[ColumnSource, Tag("ColumnSource")]
     | Annotated[MeasureSource, Tag("MeasureSource")]
     | Annotated[HierarchyLevelSource, Tag("HierarchyLevelSource")]
-    | Annotated[ScopedEval, Tag("ScopedEval")],
+    | Annotated[ScopedEvalAgg, Tag("ScopedEvalAgg")],
     Discriminator(get_data_source_type),
 ]
 

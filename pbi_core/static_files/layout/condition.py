@@ -7,7 +7,7 @@ from pydantic import Discriminator, Tag
 from ._base_node import LayoutNode
 from .sources import DataSource, LiteralSource, Source, SourceRef, TransformOutputRoleRef
 from .sources.aggregation import AggregationSource, ScopedEvalExpression, SelectRef
-from .sources.arithmetic import ArithmeticSource, ScopedEval
+from .sources.arithmetic import ArithmeticSource, ScopedEvalArith
 from .sources.column import ColumnSource
 from .sources.group import GroupSource
 from .sources.proto import ProtoSourceRef
@@ -198,8 +198,8 @@ class DateSpan(LayoutNode):
 
 
 class RangePercentHelper(LayoutNode):
-    Min: ScopedEval
-    Max: ScopedEval
+    Min: ScopedEvalArith
+    Max: ScopedEvalArith
     Percent: float
 
 

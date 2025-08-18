@@ -227,7 +227,7 @@ PrimaryDataReduction = Annotated[
 ]
 
 
-class Scope(LayoutNode):
+class VisualScope(LayoutNode):
     Algorithm: PrimaryDataReduction
     Scope: dict[str, list[int]]
 
@@ -237,7 +237,7 @@ class DataReductionType(LayoutNode):
     Primary: PrimaryDataReduction | None = None
     Secondary: PrimaryDataReduction | None = None
     Intersection: PrimaryDataReduction | None = None
-    Scoped: list[Scope] | None = None
+    Scoped: list[VisualScope] | None = None
 
 
 class AggregateSourceScope(LayoutNode):

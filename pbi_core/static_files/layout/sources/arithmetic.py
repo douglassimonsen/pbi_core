@@ -33,7 +33,8 @@ class ScopedEval2(LayoutNode):
     Scope: list[AllRolesRef]
 
 
-class ScopedEval(LayoutNode):
+# TODO: merge with ScopedEvalAgg
+class ScopedEvalArith(LayoutNode):
     ScopedEval: ScopedEval2
 
 
@@ -43,7 +44,7 @@ class ArithmeticOperator(IntEnum):
 
 class _ArithmeticSourceHelper(LayoutNode):
     Left: Expression
-    Right: ScopedEval
+    Right: ScopedEvalArith
     Operator: ArithmeticOperator
 
 
