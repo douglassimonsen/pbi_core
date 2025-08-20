@@ -64,44 +64,49 @@ class StaticFiles:
 
     @staticmethod
     def load_pbix(path: "StrPath") -> "StaticFiles":  # noqa: PLR0914
-        zipfile = ZipFile(path, mode="r")
+        """Load static report information from a PBIX file."""
+        with ZipFile(path, mode="r") as zip_file:
+            themes: dict[str, Theme] = {}
+            theme_paths = [
+                x.split("/")[-1]
+                for x in zip_file.namelist()
+                if x.startswith("Report/StaticResources/SharedResources/BaseThemes")
+            ]
+            for theme_path in theme_paths:
+                theme_json = json.loads(
+                    zip_file.read(
+                        f"Report/StaticResources/SharedResources/BaseThemes/{theme_path}"
+                    ).decode("utf-8"),
+                )
+                themes[theme_path] = Theme.model_validate(theme_json)
 
-        themes: dict[str, Theme] = {}
-        theme_paths = [
-            x.split("/")[-1]
-            for x in zipfile.namelist()
-            if x.startswith("Report/StaticResources/SharedResources/BaseThemes")
-        ]
-        for theme_path in theme_paths:
-            theme_json = json.loads(
-                zipfile.read(f"Report/StaticResources/SharedResources/BaseThemes/{theme_path}").decode("utf-8"),
+            layout_json = json.loads(zip_file.read("Report/Layout").decode(LAYOUT_ENCODING))
+            layout = Layout.model_validate(layout_json)
+
+            if "Connections" in zip_file.namelist():
+                connections_json = json.loads(zip_file.read("Connections").decode("utf-8"))
+                connections = Connections.model_validate(connections_json)
+            else:
+                connections = None
+
+            major, minor = zip_file.read("Version").decode(LAYOUT_ENCODING).split(".")
+            version = Version(int(major), int(minor))
+
+            security_bindings = zip_file.read("SecurityBindings")
+
+            content_types = bs4.BeautifulSoup(
+                zip_file.read("[Content_Types].xml").decode("utf-8"), "xml"
             )
-            themes[theme_path] = Theme.model_validate(theme_json)
 
-        layout_json = json.loads(zipfile.read("Report/Layout").decode(LAYOUT_ENCODING))
-        layout = Layout.model_validate(layout_json)
+            metadata_json = json.loads(zip_file.read("Metadata").decode(LAYOUT_ENCODING))
+            metadata = Metadata.model_validate(metadata_json)
 
-        if "Connections" in zipfile.namelist():
-            connections_json = json.loads(zipfile.read("Connections").decode("utf-8"))
-            connections = Connections.model_validate(connections_json)
-        else:
-            connections = None
+            diagram_json = json.loads(zip_file.read("DiagramLayout").decode(LAYOUT_ENCODING))
+            diagram_layout = parse_diagram_layout(diagram_json)
 
-        major, minor = zipfile.read("Version").decode(LAYOUT_ENCODING).split(".")
-        version = Version(int(major), int(minor))
+            settings_json = json.loads(zip_file.read("Settings").decode(LAYOUT_ENCODING))
+            settings = Settings.model_validate(settings_json)
 
-        security_bindings = zipfile.read("SecurityBindings")
-
-        content_types = bs4.BeautifulSoup(zipfile.read("[Content_Types].xml").decode("utf-8"), "xml")
-
-        metadata_json = json.loads(zipfile.read("Metadata").decode(LAYOUT_ENCODING))
-        metadata = Metadata.model_validate(metadata_json)
-
-        diagram_json = json.loads(zipfile.read("DiagramLayout").decode(LAYOUT_ENCODING))
-        diagram_layout = parse_diagram_layout(diagram_json)
-
-        settings_json = json.loads(zipfile.read("Settings").decode(LAYOUT_ENCODING))
-        settings = Settings.model_validate(settings_json)
         return StaticFiles(
             content_types,
             connections,
