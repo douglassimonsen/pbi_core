@@ -34,10 +34,15 @@ class PbiCoreStartupConfig(BaseValidation):
 
 
 def get_startup_config() -> PbiCoreStartupConfig:
+    config_path = PACKAGE_DIR / "local" / "settings.json"
     try:
-        with (PACKAGE_DIR / "local" / "settings.json").open("r") as f:
-            return PbiCoreStartupConfig.model_validate_json(f.read())
+        logger.info("Loading startup configuration", path=config_path)
+        with config_path.open("r") as f:
+            cfg = PbiCoreStartupConfig.model_validate_json(f.read())
+            logger.info("Loaded startup configuration", path=config_path)
+            return cfg
     except FileNotFoundError as e:
+        logger.error("Startup configuration not found", path=config_path)
         msg = textwrap.dedent("""
 
         When loading a pbix file with pbi_core, the package needs one of the following:

@@ -142,6 +142,7 @@ class BaseTabularModel:
         Pairs with the functions `sync_to` that update records in the
         SSAS instance with data from Python
         """
+        logger.info("Syncing from SSAS", db_name=self.db_name)
         from pbi_core.ssas.model_tables import FIELD_TYPES  # noqa: PLC0415
         from pbi_core.ssas.model_tables._group import Group  # noqa: PLC0415
 
@@ -164,9 +165,10 @@ class BaseTabularModel:
                 self._remote_state.setdefault(field_name, {})
                 for obj in objects:
                     self._remote_state[field_name][obj.id] = obj.modification_hash()
+        logger.info("Completed sync from SSAS", fields=len(self._remote_state))
 
     def sync_to(self) -> None:
-        # like {"tables": {"updated": [UpdatedObj1]}}
+        logger.info("Syncing to SSAS", db_name=self.db_name)
         updated_objects: dict[str, Update] = {}
         for field_name, remote_objects in self._remote_state.items():
             field_updates: Update = {
@@ -192,6 +194,12 @@ class BaseTabularModel:
         ]
         command_str = Batch(commands).render_xml()
         self.server.query_xml(command_str, db_name=self.db_name)
+        logger.info(
+            "Completed sync to SSAS",
+            added=sum(len(v["added"]) for v in updated_objects.values()),
+            updated=sum(len(v["updated"]) for v in updated_objects.values()),
+            deleted=sum(len(v["deleted"]) for v in updated_objects.values()),
+        )
 
     @staticmethod
     def TABULAR_FIELDS() -> tuple[str, ...]:  # noqa: N802
