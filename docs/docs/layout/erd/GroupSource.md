@@ -3,16 +3,16 @@
 title: GroupSource
 ---
 graph 
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071808976["GroupSource"]
-2430071355088["SourceRef"]
-2430071344352["Source"]
-2430071808000["_GroupSourceHelper"]
-2430071353136["Entity"]
-2430071808000 ---> 2430071365824
-2430071808000 --->|Expression| 2430071355088
-2430071355088 --->|SourceRef| 2430071344352
-2430071355088 --->|SourceRef| 2430071353136
-2430071808976 --->|GroupRef| 2430071808000
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+Entity[Entity]
+GroupSource[<a href='/layout/erd/GroupSource'>GroupSource</a>]
+Source[Source]
+SourceRef[SourceRef]
+_GroupSourceHelper[_GroupSourceHelper]
+SourceRef --->|SourceRef| Source
+GroupSource --->|GroupRef| _GroupSourceHelper
+_GroupSourceHelper ---> ColumnSource
+_GroupSourceHelper --->|Expression| SourceRef
+SourceRef --->|SourceRef| Entity
 ```

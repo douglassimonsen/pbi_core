@@ -3,8 +3,8 @@
 title: AggregationExpression
 ---
 graph 
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071889008["AggregationExpression"]
-2430071889008 ---> 2430071358016
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+AggregationExpression ---> AggregationSource
 ```

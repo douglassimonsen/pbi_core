@@ -3,26 +3,26 @@
 title: Scope
 ---
 graph 
-2430071874368["ComparisonCondition"]
-style 2430071874368 stroke:#ff0000,stroke-width:1px
-2430071846064["ContainsCondition"]
-style 2430071846064 stroke:#ff0000,stroke-width:1px
-2430071879248["OrCondition"]
-style 2430071879248 stroke:#ff0000,stroke-width:1px
-2430071880224["NotCondition"]
-style 2430071880224 stroke:#ff0000,stroke-width:1px
-2430071960256["Scope"]
-2430071878272["ExistsCondition"]
-style 2430071878272 stroke:#ff0000,stroke-width:1px
-2430071854848["InCondition"]
-style 2430071854848 stroke:#ff0000,stroke-width:1px
-2430071876320["AndCondition"]
-style 2430071876320 stroke:#ff0000,stroke-width:1px
-2430071960256 ---> 2430071880224
-2430071960256 ---> 2430071874368
-2430071960256 ---> 2430071876320
-2430071960256 ---> 2430071846064
-2430071960256 ---> 2430071878272
-2430071960256 ---> 2430071879248
-2430071960256 ---> 2430071854848
+AndCondition[<a href='/layout/erd/AndCondition'>AndCondition</a>]
+style AndCondition stroke:#ff0000,stroke-width:1px
+ComparisonCondition[<a href='/layout/erd/ComparisonCondition'>ComparisonCondition</a>]
+style ComparisonCondition stroke:#ff0000,stroke-width:1px
+ContainsCondition[<a href='/layout/erd/ContainsCondition'>ContainsCondition</a>]
+style ContainsCondition stroke:#ff0000,stroke-width:1px
+ExistsCondition[<a href='/layout/erd/ExistsCondition'>ExistsCondition</a>]
+style ExistsCondition stroke:#ff0000,stroke-width:1px
+InCondition[<a href='/layout/erd/InCondition'>InCondition</a>]
+style InCondition stroke:#ff0000,stroke-width:1px
+NotCondition[<a href='/layout/erd/NotCondition'>NotCondition</a>]
+style NotCondition stroke:#ff0000,stroke-width:1px
+OrCondition[<a href='/layout/erd/OrCondition'>OrCondition</a>]
+style OrCondition stroke:#ff0000,stroke-width:1px
+Scope[<a href='/layout/erd/Scope'>Scope</a>]
+Scope ---> OrCondition
+Scope ---> ComparisonCondition
+Scope ---> ContainsCondition
+Scope ---> ExistsCondition
+Scope ---> InCondition
+Scope ---> NotCondition
+Scope ---> AndCondition
 ```

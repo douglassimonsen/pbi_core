@@ -3,32 +3,32 @@
 title: SolidExpression
 ---
 graph 
-2430071903648["ConditionalSource"]
-style 2430071903648 stroke:#ff0000,stroke-width:1px
-2430071898768["ColorExpression"]
-2430071896816["SolidExpression"]
-2430071895840["FillRule"]
-style 2430071895840 stroke:#ff0000,stroke-width:1px
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071892912["ThemeExpression"]
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071897792["ThemeDataColor"]
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430071890960["FillRuleExpression"]
-2430071898768 ---> 2430071903648
-2430071898768 ---> 2430071358016
-2430071898768 ---> 2430071359968
-2430071892912 --->|ThemeDataColor| 2430071897792
-2430071896816 ---> 2430071816784
-2430071898768 --->|expr| 2430071892912
-2430071896816 --->|color| 2430071898768
-2430071890960 ---> 2430071895840
-2430071898768 --->|expr| 2430071890960
-2430071898768 ---> 2430071816784
-2430071896816 ---> 2430071887056
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+ColorExpression[ColorExpression]
+ConditionalSource[<a href='/layout/erd/ConditionalSource'>ConditionalSource</a>]
+style ConditionalSource stroke:#ff0000,stroke-width:1px
+FillRule[<a href='/layout/erd/FillRule'>FillRule</a>]
+style FillRule stroke:#ff0000,stroke-width:1px
+FillRuleExpression[FillRuleExpression]
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureSource[<a href='/layout/erd/MeasureSource'>MeasureSource</a>]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+SolidExpression[<a href='/layout/erd/SolidExpression'>SolidExpression</a>]
+ThemeDataColor[ThemeDataColor]
+ThemeExpression[ThemeExpression]
+FillRuleExpression ---> FillRule
+ColorExpression ---> MeasureSource
+SolidExpression --->|color| ColorExpression
+ColorExpression --->|expr| FillRuleExpression
+ColorExpression ---> AggregationSource
+ColorExpression ---> ConditionalSource
+SolidExpression ---> LiteralSource
+ColorExpression --->|expr| ThemeExpression
+ThemeExpression --->|ThemeDataColor| ThemeDataColor
+SolidExpression ---> LiteralExpression
+ColorExpression ---> LiteralSource
 ```

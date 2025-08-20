@@ -3,252 +3,253 @@
 title: ScatterChart
 ---
 graph 
-2430626135088["_PlotAreaPropertiesHelper"]
-2430626138016["LegendProperties"]
-2430626098976["DataPointProperties"]
-2430626131184["PlotAreaProperties"]
-2430071951472["PrototypeQuery"]
-style 2430071951472 stroke:#ff0000,stroke-width:1px
-2430626157536["Y1AxisReferenceLineProperties"]
-2430071907552["SolidColorExpression"]
-style 2430071907552 stroke:#ff0000,stroke-width:1px
-2430626116544["FillPointProperties"]
-2430071930000["AlgorithmExpression"]
-style 2430071930000 stroke:#ff0000,stroke-width:1px
-2430626159488["ScatterChartProperties"]
-2430626095072["CategoryAxisProperties"]
-2430626105808["GeneralProperties"]
-2430626119472["_GeneralPropertiesHelper"]
-2430071921216["ResourcePackageAccess"]
-style 2430071921216 stroke:#ff0000,stroke-width:1px
-2430071926096["ImageKindExpression"]
-style 2430071926096 stroke:#ff0000,stroke-width:1px
-2430626167296["ScatterChart"]
-2430626145824["_ValueAxisPropertiesHelper"]
-2430552678256["ColumnProperty"]
-style 2430552678256 stroke:#ff0000,stroke-width:1px
-2430514799136["ProjectionConfig"]
-2430626079456["_CategoryAxisPropertiesHelper"]
-2430071925120["ColumnExpression"]
-style 2430071925120 stroke:#ff0000,stroke-width:1px
-2430626075552["_BubblesPropertiesHelper"]
-2430071920240["LinearGradient2Expression"]
-style 2430071920240 stroke:#ff0000,stroke-width:1px
-2430071930976["ExpressionList"]
-2430626128256["_LegendPropertiesHelper"]
-2430071910480["LinearGradient3Expression"]
-style 2430071910480 stroke:#ff0000,stroke-width:1px
-2430514817680["QueryOptions"]
-2430626155584["_Y1AxisReferenceLinePropertiesHelper"]
-2430071888032["MeasureExpression"]
-style 2430071888032 stroke:#ff0000,stroke-width:1px
-2430071923168["SelectRefExpression"]
-style 2430071923168 stroke:#ff0000,stroke-width:1px
-2430626108736["_DataPointPropertiesHelper"]
-2430071919264["ImageExpression"]
-style 2430071919264 stroke:#ff0000,stroke-width:1px
-2430071745536["Selector"]
-style 2430071745536 stroke:#ff0000,stroke-width:1px
-2430626060912["BubblesProperties"]
-2430626150704["ValueAxisProperties"]
-2430071889008["AggregationExpression"]
-style 2430071889008 stroke:#ff0000,stroke-width:1px
-2430626088240["CategoryLabelsProperties"]
-2430071918288["GeoJsonExpression"]
-style 2430071918288 stroke:#ff0000,stroke-width:1px
-2430626114592["_FillPointPropertiesHelper"]
-2430514805968["VCProperties"]
-style 2430514805968 stroke:#ff0000,stroke-width:1px
-2430626110688["ColorBorderProperties"]
-2430626086288["_ColorBorderPropertiesHelper"]
-2430514810848["Display"]
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430626080432["_CategoryLabelsPropertiesHelper"]
-2430626075552 ---> 2430071923168
-2430626080432 ---> 2430071910480
-2430626135088 ---> 2430071918288
-2430626145824 ---> 2430071930000
-2430626086288 ---> 2430071919264
-2430626108736 ---> 2430071888032
-2430626080432 ---> 2430071921216
-2430626155584 ---> 2430071888032
-2430626108736 ---> 2430071918288
-2430626155584 ---> 2430071921216
-2430626128256 ---> 2430071888032
-2430626114592 ---> 2430071907552
-2430626145824 ---> 2430071889008
-2430626075552 ---> 2430071919264
-2430626155584 ---> 2430071930000
-2430626159488 --->|dataPoint| 2430626098976
-2430626155584 --->|displayName| 2430071930976
-2430626119472 ---> 2430071921216
-2430626116544 --->|properties| 2430626114592
-2430626075552 ---> 2430071925120
-2430626080432 ---> 2430071907552
-2430626119472 ---> 2430071888032
-2430626114592 ---> 2430071925120
-2430626114592 ---> 2430071910480
-2430626075552 ---> 2430071910480
-2430626075552 ---> 2430071918288
-2430626114592 ---> 2430071919264
-2430626167296 --->|queryOptions| 2430514817680
-2430626145824 ---> 2430071907552
-2430626119472 ---> 2430071887056
-2430626135088 ---> 2430071889008
-2430626075552 ---> 2430071907552
-2430626135088 ---> 2430071910480
-2430626108736 ---> 2430071907552
-2430626086288 ---> 2430071923168
-2430626167296 --->|objects| 2430626159488
-2430626155584 ---> 2430071907552
-2430626135088 --->|transparency| 2430071930976
-2430626128256 ---> 2430071889008
-2430626131184 --->|properties| 2430626135088
-2430626114592 ---> 2430071888032
-2430626157536 --->|properties| 2430626155584
-2430626079456 ---> 2430071907552
-2430626086288 ---> 2430071889008
-2430626114592 ---> 2430071923168
-2430626108736 ---> 2430071923168
-2430626079456 ---> 2430071888032
-2430626135088 ---> 2430071925120
-2430626108736 ---> 2430071887056
-2430626119472 ---> 2430071930000
-2430626159488 --->|valueAxis| 2430626150704
-2430626079456 ---> 2430071918288
-2430626075552 ---> 2430071930000
-2430626119472 --->|responsive| 2430071930976
-2430626138016 --->|properties| 2430626128256
-2430626159488 --->|legend| 2430626138016
-2430626145824 ---> 2430071923168
-2430626167296 ---> 2430514805968
-2430626079456 ---> 2430071925120
-2430626079456 ---> 2430071921216
-2430626135088 ---> 2430071923168
-2430626114592 ---> 2430071926096
-2430626108736 ---> 2430071930000
-2430626128256 ---> 2430071921216
-2430626128256 ---> 2430071910480
-2430626108736 ---> 2430071926096
-2430626108736 ---> 2430071919264
-2430626114592 ---> 2430071920240
-2430626060912 ---> 2430071745536
-2430626075552 ---> 2430071920240
-2430626079456 ---> 2430071919264
-2430626159488 --->|y1AxisReferenceLine| 2430626157536
-2430626119472 ---> 2430071919264
-2430626145824 ---> 2430071926096
-2430626108736 ---> 2430071910480
-2430626079456 --->|axisScale| 2430071930976
-2430626080432 ---> 2430071923168
-2430626088240 --->|properties| 2430626080432
-2430626080432 ---> 2430071918288
-2430626119472 ---> 2430071925120
-2430626075552 ---> 2430071888032
-2430626145824 ---> 2430071910480
-2430626098976 ---> 2430071745536
-2430626155584 ---> 2430071920240
-2430626145824 ---> 2430071920240
-2430626155584 ---> 2430071925120
-2430626086288 ---> 2430071907552
-2430626080432 ---> 2430071888032
-2430626119472 ---> 2430071910480
-2430626080432 ---> 2430071920240
-2430626080432 ---> 2430071919264
-2430626135088 ---> 2430071887056
-2430626119472 ---> 2430071918288
-2430626159488 --->|bubbles| 2430626060912
-2430626128256 --->|fontSize| 2430071930976
-2430626086288 ---> 2430071930000
-2430626079456 ---> 2430071920240
-2430626080432 ---> 2430071930000
-2430626128256 ---> 2430071930000
-2430626080432 ---> 2430071926096
-2430626108736 ---> 2430071921216
-2430626095072 --->|properties| 2430626079456
-2430626105808 --->|properties| 2430626119472
-2430626086288 ---> 2430071920240
-2430626080432 ---> 2430071887056
-2430626135088 ---> 2430071921216
-2430626075552 ---> 2430071926096
-2430626159488 --->|general| 2430626105808
-2430626075552 ---> 2430071921216
-2430626108736 ---> 2430071925120
-2430626098976 --->|properties| 2430626108736
-2430626086288 ---> 2430071887056
-2430626080432 ---> 2430071925120
-2430626086288 ---> 2430071926096
-2430626128256 ---> 2430071887056
-2430626128256 ---> 2430071926096
-2430626167296 ---> 2430552678256
-2430626159488 --->|plotArea| 2430626131184
-2430626128256 ---> 2430071923168
-2430626150704 --->|properties| 2430626145824
-2430626114592 ---> 2430071930000
-2430626119472 ---> 2430071907552
-2430626086288 --->|show| 2430071930976
-2430626075552 ---> 2430071889008
-2430626128256 ---> 2430071907552
-2430626128256 ---> 2430071918288
-2430626135088 ---> 2430071920240
-2430626114592 --->|show| 2430071930976
-2430626167296 --->|display| 2430514810848
-2430626145824 ---> 2430071921216
-2430626079456 ---> 2430071889008
-2430626119472 ---> 2430071889008
-2430626157536 ---> 2430071745536
-2430626135088 ---> 2430071930000
-2430626145824 ---> 2430071925120
-2430626114592 ---> 2430071918288
-2430626155584 ---> 2430071887056
-2430626119472 ---> 2430071923168
-2430626075552 --->|bubbleSize| 2430071930976
-2430626119472 ---> 2430071926096
-2430626108736 ---> 2430071920240
-2430626119472 ---> 2430071920240
-2430626155584 ---> 2430071923168
-2430626079456 ---> 2430071910480
-2430626075552 ---> 2430071887056
-2430626135088 ---> 2430071888032
-2430626086288 ---> 2430071925120
-2430626080432 ---> 2430071889008
-2430626086288 ---> 2430071888032
-2430626079456 ---> 2430071930000
-2430626167296 ---> 2430071951472
-2430626080432 --->|color| 2430071930976
-2430626114592 ---> 2430071887056
-2430626079456 ---> 2430071926096
-2430626145824 ---> 2430071888032
-2430626114592 ---> 2430071889008
-2430626135088 ---> 2430071919264
-2430626167296 --->|projections| 2430514799136
-2430626155584 ---> 2430071889008
-2430626128256 ---> 2430071920240
-2430626145824 ---> 2430071887056
-2430626079456 ---> 2430071923168
-2430626145824 ---> 2430071919264
-2430626155584 ---> 2430071926096
-2430626114592 ---> 2430071921216
-2430626159488 --->|categoryLabels| 2430626088240
-2430626159488 --->|categoryAxis| 2430626095072
-2430626128256 ---> 2430071919264
-2430626086288 ---> 2430071918288
-2430626145824 --->|alignZeros| 2430071930976
-2430626155584 ---> 2430071910480
-2430626108736 --->|fill| 2430071930976
-2430626086288 ---> 2430071921216
-2430626145824 ---> 2430071918288
-2430626155584 ---> 2430071918288
-2430626060912 --->|properties| 2430626075552
-2430626159488 --->|colorBorder| 2430626110688
-2430626155584 ---> 2430071919264
-2430626135088 ---> 2430071926096
-2430626110688 --->|properties| 2430626086288
-2430626079456 ---> 2430071887056
-2430626108736 ---> 2430071889008
-2430626128256 ---> 2430071925120
-2430626159488 --->|fillPoint| 2430626116544
-2430626135088 ---> 2430071907552
-2430626086288 ---> 2430071910480
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+style AggregationExpression stroke:#ff0000,stroke-width:1px
+AlgorithmExpression[<a href='/layout/erd/AlgorithmExpression'>AlgorithmExpression</a>]
+style AlgorithmExpression stroke:#ff0000,stroke-width:1px
+BubblesProperties[BubblesProperties]
+CategoryAxisProperties[CategoryAxisProperties]
+CategoryLabelsProperties[CategoryLabelsProperties]
+ColorBorderProperties[ColorBorderProperties]
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+style ColumnExpression stroke:#ff0000,stroke-width:1px
+ColumnProperty[<a href='/layout/erd/ColumnProperty'>ColumnProperty</a>]
+style ColumnProperty stroke:#ff0000,stroke-width:1px
+DataPointProperties[DataPointProperties]
+Display[Display]
+ExpressionList[ExpressionList]
+FillPointProperties[FillPointProperties]
+GeneralProperties[GeneralProperties]
+GeoJsonExpression[<a href='/layout/erd/GeoJsonExpression'>GeoJsonExpression</a>]
+style GeoJsonExpression stroke:#ff0000,stroke-width:1px
+ImageExpression[<a href='/layout/erd/ImageExpression'>ImageExpression</a>]
+style ImageExpression stroke:#ff0000,stroke-width:1px
+ImageKindExpression[<a href='/layout/erd/ImageKindExpression'>ImageKindExpression</a>]
+style ImageKindExpression stroke:#ff0000,stroke-width:1px
+LegendProperties[LegendProperties]
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
+LinearGradient3Expression[<a href='/layout/erd/LinearGradient3Expression'>LinearGradient3Expression</a>]
+style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+MeasureExpression[<a href='/layout/erd/MeasureExpression'>MeasureExpression</a>]
+style MeasureExpression stroke:#ff0000,stroke-width:1px
+PlotAreaProperties[PlotAreaProperties]
+ProjectionConfig[ProjectionConfig]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+style PrototypeQuery stroke:#ff0000,stroke-width:1px
+QueryOptions[QueryOptions]
+ResourcePackageAccess[<a href='/layout/erd/ResourcePackageAccess'>ResourcePackageAccess</a>]
+style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
+ScatterChart[<a href='/layout/erd/ScatterChart'>ScatterChart</a>]
+ScatterChartProperties[ScatterChartProperties]
+SelectRefExpression[<a href='/layout/erd/SelectRefExpression'>SelectRefExpression</a>]
+style SelectRefExpression stroke:#ff0000,stroke-width:1px
+Selector[<a href='/layout/erd/Selector'>Selector</a>]
+style Selector stroke:#ff0000,stroke-width:1px
+SolidColorExpression[<a href='/layout/erd/SolidColorExpression'>SolidColorExpression</a>]
+style SolidColorExpression stroke:#ff0000,stroke-width:1px
+VCProperties[<a href='/layout/erd/VCProperties'>VCProperties</a>]
+style VCProperties stroke:#ff0000,stroke-width:1px
+ValueAxisProperties[ValueAxisProperties]
+Y1AxisReferenceLineProperties[Y1AxisReferenceLineProperties]
+_BubblesPropertiesHelper[_BubblesPropertiesHelper]
+_CategoryAxisPropertiesHelper[_CategoryAxisPropertiesHelper]
+_CategoryLabelsPropertiesHelper[_CategoryLabelsPropertiesHelper]
+_ColorBorderPropertiesHelper[_ColorBorderPropertiesHelper]
+_DataPointPropertiesHelper[_DataPointPropertiesHelper]
+_FillPointPropertiesHelper[_FillPointPropertiesHelper]
+_GeneralPropertiesHelper[_GeneralPropertiesHelper]
+_LegendPropertiesHelper[_LegendPropertiesHelper]
+_PlotAreaPropertiesHelper[_PlotAreaPropertiesHelper]
+_ValueAxisPropertiesHelper[_ValueAxisPropertiesHelper]
+_Y1AxisReferenceLinePropertiesHelper[_Y1AxisReferenceLinePropertiesHelper]
+_CategoryLabelsPropertiesHelper ---> ResourcePackageAccess
+ScatterChartProperties --->|categoryAxis| CategoryAxisProperties
+_ColorBorderPropertiesHelper ---> LiteralExpression
+_Y1AxisReferenceLinePropertiesHelper ---> ColumnExpression
+_LegendPropertiesHelper ---> ColumnExpression
+_DataPointPropertiesHelper ---> ImageKindExpression
+ScatterChartProperties --->|dataPoint| DataPointProperties
+_Y1AxisReferenceLinePropertiesHelper ---> ImageExpression
+ValueAxisProperties --->|properties| _ValueAxisPropertiesHelper
+Y1AxisReferenceLineProperties --->|properties| _Y1AxisReferenceLinePropertiesHelper
+ScatterChartProperties --->|legend| LegendProperties
+LegendProperties --->|properties| _LegendPropertiesHelper
+_CategoryLabelsPropertiesHelper ---> AlgorithmExpression
+_ValueAxisPropertiesHelper ---> LinearGradient3Expression
+_LegendPropertiesHelper ---> SolidColorExpression
+_Y1AxisReferenceLinePropertiesHelper ---> AggregationExpression
+_FillPointPropertiesHelper ---> SelectRefExpression
+_BubblesPropertiesHelper --->|bubbleSize| ExpressionList
+_FillPointPropertiesHelper --->|show| ExpressionList
+_CategoryAxisPropertiesHelper ---> SolidColorExpression
+ScatterChart --->|queryOptions| QueryOptions
+_LegendPropertiesHelper ---> ResourcePackageAccess
+_CategoryAxisPropertiesHelper ---> ColumnExpression
+ScatterChart ---> PrototypeQuery
+_CategoryAxisPropertiesHelper --->|axisStyle| ExpressionList
+_FillPointPropertiesHelper ---> AlgorithmExpression
+_GeneralPropertiesHelper ---> SolidColorExpression
+_CategoryAxisPropertiesHelper ---> AggregationExpression
+_GeneralPropertiesHelper ---> LinearGradient3Expression
+_Y1AxisReferenceLinePropertiesHelper ---> ImageKindExpression
+_CategoryLabelsPropertiesHelper ---> LiteralExpression
+_GeneralPropertiesHelper ---> MeasureExpression
+_CategoryAxisPropertiesHelper ---> MeasureExpression
+_PlotAreaPropertiesHelper ---> AlgorithmExpression
+_FillPointPropertiesHelper ---> LinearGradient3Expression
+_Y1AxisReferenceLinePropertiesHelper ---> LinearGradient2Expression
+Y1AxisReferenceLineProperties ---> Selector
+_ValueAxisPropertiesHelper ---> SelectRefExpression
+ColorBorderProperties --->|properties| _ColorBorderPropertiesHelper
+_ValueAxisPropertiesHelper ---> ImageKindExpression
+_CategoryLabelsPropertiesHelper ---> GeoJsonExpression
+_PlotAreaPropertiesHelper ---> ResourcePackageAccess
+_BubblesPropertiesHelper ---> ColumnExpression
+_CategoryLabelsPropertiesHelper --->|color| ExpressionList
+_BubblesPropertiesHelper ---> LiteralExpression
+_PlotAreaPropertiesHelper ---> ColumnExpression
+_FillPointPropertiesHelper ---> GeoJsonExpression
+_FillPointPropertiesHelper ---> ResourcePackageAccess
+_Y1AxisReferenceLinePropertiesHelper --->|displayName| ExpressionList
+CategoryLabelsProperties ---> Selector
+_ColorBorderPropertiesHelper --->|show| ExpressionList
+_CategoryAxisPropertiesHelper ---> SelectRefExpression
+_FillPointPropertiesHelper ---> ImageExpression
+ScatterChartProperties --->|fillPoint| FillPointProperties
+DataPointProperties ---> Selector
+_CategoryAxisPropertiesHelper ---> AlgorithmExpression
+_GeneralPropertiesHelper ---> LiteralExpression
+_LegendPropertiesHelper ---> ImageExpression
+ScatterChartProperties --->|plotArea| PlotAreaProperties
+ScatterChart --->|projections| ProjectionConfig
+FillPointProperties --->|properties| _FillPointPropertiesHelper
+_GeneralPropertiesHelper ---> ImageExpression
+_Y1AxisReferenceLinePropertiesHelper ---> LinearGradient3Expression
+_ValueAxisPropertiesHelper ---> LinearGradient2Expression
+BubblesProperties --->|properties| _BubblesPropertiesHelper
+_GeneralPropertiesHelper ---> AlgorithmExpression
+_CategoryLabelsPropertiesHelper ---> AggregationExpression
+_Y1AxisReferenceLinePropertiesHelper ---> SelectRefExpression
+_DataPointPropertiesHelper ---> ColumnExpression
+_BubblesPropertiesHelper ---> LinearGradient2Expression
+_CategoryLabelsPropertiesHelper ---> ImageExpression
+_LegendPropertiesHelper ---> ImageKindExpression
+_CategoryLabelsPropertiesHelper ---> ImageKindExpression
+_BubblesPropertiesHelper ---> SelectRefExpression
+_Y1AxisReferenceLinePropertiesHelper ---> ResourcePackageAccess
+_ValueAxisPropertiesHelper --->|axisScale| ExpressionList
+_ValueAxisPropertiesHelper ---> AggregationExpression
+_CategoryLabelsPropertiesHelper ---> LinearGradient2Expression
+_GeneralPropertiesHelper ---> SelectRefExpression
+ScatterChartProperties --->|bubbles| BubblesProperties
+_PlotAreaPropertiesHelper ---> LinearGradient2Expression
+_LegendPropertiesHelper ---> LiteralExpression
+_DataPointPropertiesHelper ---> LinearGradient3Expression
+ScatterChartProperties --->|colorBorder| ColorBorderProperties
+_DataPointPropertiesHelper ---> ResourcePackageAccess
+_CategoryLabelsPropertiesHelper ---> SolidColorExpression
+_Y1AxisReferenceLinePropertiesHelper ---> GeoJsonExpression
+_LegendPropertiesHelper --->|fontSize| ExpressionList
+_CategoryAxisPropertiesHelper ---> ResourcePackageAccess
+_LegendPropertiesHelper ---> GeoJsonExpression
+_CategoryAxisPropertiesHelper ---> ImageKindExpression
+_GeneralPropertiesHelper ---> AggregationExpression
+_GeneralPropertiesHelper ---> ImageKindExpression
+_PlotAreaPropertiesHelper ---> ImageKindExpression
+_ColorBorderPropertiesHelper ---> ResourcePackageAccess
+_GeneralPropertiesHelper ---> GeoJsonExpression
+_PlotAreaPropertiesHelper ---> SelectRefExpression
+_PlotAreaPropertiesHelper --->|transparency| ExpressionList
+_FillPointPropertiesHelper ---> ImageKindExpression
+_PlotAreaPropertiesHelper ---> LinearGradient3Expression
+_ColorBorderPropertiesHelper ---> AggregationExpression
+_CategoryAxisPropertiesHelper ---> LiteralExpression
+ScatterChart --->|objects| ScatterChartProperties
+_FillPointPropertiesHelper ---> MeasureExpression
+_LegendPropertiesHelper ---> MeasureExpression
+_DataPointPropertiesHelper ---> LinearGradient2Expression
+_DataPointPropertiesHelper ---> AggregationExpression
+_BubblesPropertiesHelper ---> LinearGradient3Expression
+_FillPointPropertiesHelper ---> ColumnExpression
+_ColorBorderPropertiesHelper ---> LinearGradient2Expression
+_ColorBorderPropertiesHelper ---> ColumnExpression
+_ValueAxisPropertiesHelper ---> MeasureExpression
+_BubblesPropertiesHelper ---> GeoJsonExpression
+_BubblesPropertiesHelper ---> ImageExpression
+_GeneralPropertiesHelper ---> LinearGradient2Expression
+_FillPointPropertiesHelper ---> LinearGradient2Expression
+_PlotAreaPropertiesHelper ---> SolidColorExpression
+_DataPointPropertiesHelper --->|borderColorMatchFill| ExpressionList
+CategoryAxisProperties --->|properties| _CategoryAxisPropertiesHelper
+_BubblesPropertiesHelper ---> ResourcePackageAccess
+_CategoryAxisPropertiesHelper ---> ImageExpression
+_ValueAxisPropertiesHelper ---> LiteralExpression
+_BubblesPropertiesHelper ---> MeasureExpression
+_PlotAreaPropertiesHelper ---> ImageExpression
+_DataPointPropertiesHelper ---> LiteralExpression
+_ColorBorderPropertiesHelper ---> AlgorithmExpression
+_FillPointPropertiesHelper ---> AggregationExpression
+_CategoryAxisPropertiesHelper ---> LinearGradient2Expression
+_ValueAxisPropertiesHelper ---> SolidColorExpression
+_ColorBorderPropertiesHelper ---> ImageExpression
+_GeneralPropertiesHelper --->|altText| ExpressionList
+_DataPointPropertiesHelper ---> GeoJsonExpression
+_Y1AxisReferenceLinePropertiesHelper ---> LiteralExpression
+ScatterChart ---> VCProperties
+PlotAreaProperties --->|properties| _PlotAreaPropertiesHelper
+_CategoryLabelsPropertiesHelper ---> MeasureExpression
+_LegendPropertiesHelper ---> SelectRefExpression
+_FillPointPropertiesHelper ---> LiteralExpression
+_FillPointPropertiesHelper ---> SolidColorExpression
+_PlotAreaPropertiesHelper ---> MeasureExpression
+_DataPointPropertiesHelper ---> ImageExpression
+_LegendPropertiesHelper ---> LinearGradient3Expression
+_PlotAreaPropertiesHelper ---> LiteralExpression
+_LegendPropertiesHelper ---> AlgorithmExpression
+_DataPointPropertiesHelper ---> MeasureExpression
+_LegendPropertiesHelper ---> LinearGradient2Expression
+_GeneralPropertiesHelper ---> ColumnExpression
+_ValueAxisPropertiesHelper ---> GeoJsonExpression
+_DataPointPropertiesHelper ---> AlgorithmExpression
+_ColorBorderPropertiesHelper ---> ImageKindExpression
+ScatterChart --->|display| Display
+_Y1AxisReferenceLinePropertiesHelper ---> AlgorithmExpression
+ScatterChartProperties --->|valueAxis| ValueAxisProperties
+_ColorBorderPropertiesHelper ---> SolidColorExpression
+_BubblesPropertiesHelper ---> SolidColorExpression
+_ColorBorderPropertiesHelper ---> GeoJsonExpression
+ScatterChart ---> ColumnProperty
+ScatterChartProperties --->|categoryLabels| CategoryLabelsProperties
+_CategoryAxisPropertiesHelper ---> LinearGradient3Expression
+_ValueAxisPropertiesHelper ---> ColumnExpression
+_CategoryLabelsPropertiesHelper ---> SelectRefExpression
+ScatterChartProperties --->|y1AxisReferenceLine| Y1AxisReferenceLineProperties
+_GeneralPropertiesHelper ---> ResourcePackageAccess
+_CategoryAxisPropertiesHelper ---> GeoJsonExpression
+_CategoryLabelsPropertiesHelper ---> ColumnExpression
+_ColorBorderPropertiesHelper ---> MeasureExpression
+_ValueAxisPropertiesHelper ---> AlgorithmExpression
+_ValueAxisPropertiesHelper ---> ImageExpression
+_ColorBorderPropertiesHelper ---> LinearGradient3Expression
+_DataPointPropertiesHelper ---> SelectRefExpression
+CategoryLabelsProperties --->|properties| _CategoryLabelsPropertiesHelper
+_LegendPropertiesHelper ---> AggregationExpression
+_BubblesPropertiesHelper ---> AlgorithmExpression
+DataPointProperties --->|properties| _DataPointPropertiesHelper
+GeneralProperties --->|properties| _GeneralPropertiesHelper
+_PlotAreaPropertiesHelper ---> GeoJsonExpression
+_DataPointPropertiesHelper ---> SolidColorExpression
+BubblesProperties ---> Selector
+_Y1AxisReferenceLinePropertiesHelper ---> MeasureExpression
+_Y1AxisReferenceLinePropertiesHelper ---> SolidColorExpression
+_BubblesPropertiesHelper ---> AggregationExpression
+_PlotAreaPropertiesHelper ---> AggregationExpression
+_ValueAxisPropertiesHelper ---> ResourcePackageAccess
+_CategoryLabelsPropertiesHelper ---> LinearGradient3Expression
+_ColorBorderPropertiesHelper ---> SelectRefExpression
+ScatterChartProperties --->|general| GeneralProperties
+_BubblesPropertiesHelper ---> ImageKindExpression
 ```

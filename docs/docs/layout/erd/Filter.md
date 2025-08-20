@@ -3,53 +3,53 @@
 title: Filter
 ---
 graph 
-2430071820688["RoleRef"]
-2430071951472["PrototypeQuery"]
-style 2430071951472 stroke:#ff0000,stroke-width:1px
-2430071814832["TransformOutputRoleRef"]
-2430071366800["ExpressionName"]
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071356064["SelectRef"]
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430071944640["FilterObjects"]
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071960256["Scope"]
-style 2430071960256 stroke:#ff0000,stroke-width:1px
-2430071989536["Filter"]
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071933904["FilterPropertiesContainer"]
-2430071825568["ProtoSourceRef"]
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071808976["GroupSource"]
-style 2430071808976 stroke:#ff0000,stroke-width:1px
-2430071819712["ProtoSource"]
-2430071973920["CachedDisplayNames"]
-2430071915360["FilterProperties"]
-style 2430071915360 stroke:#ff0000,stroke-width:1px
-2430071382416["ArithmeticSource"]
-style 2430071382416 stroke:#ff0000,stroke-width:1px
-2430071989536 ---> 2430071951472
-2430071989536 ---> 2430071816784
-2430071933904 ---> 2430071915360
-2430071989536 --->|expression| 2430071356064
-2430071989536 ---> 2430071358016
-2430071825568 --->|SourceRef| 2430071819712
-2430071989536 --->|expression| 2430071814832
-2430071989536 ---> 2430071359968
-2430071989536 --->|expression| 2430071825568
-2430071989536 --->|cachedDisplayNames| 2430071973920
-2430071989536 ---> 2430071382416
-2430071814832 --->|TransformOutputRoleRef| 2430071820688
-2430071944640 --->|general| 2430071933904
-2430071989536 ---> 2430071363872
-2430071973920 ---> 2430071960256
-2430071356064 --->|SelectRef| 2430071366800
-2430071989536 ---> 2430071365824
-2430071989536 --->|objects| 2430071944640
-2430071989536 ---> 2430071808976
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+ArithmeticSource[<a href='/layout/erd/ArithmeticSource'>ArithmeticSource</a>]
+style ArithmeticSource stroke:#ff0000,stroke-width:1px
+CachedDisplayNames[CachedDisplayNames]
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+ExpressionName[ExpressionName]
+Filter[<a href='/layout/erd/Filter'>Filter</a>]
+FilterObjects[FilterObjects]
+FilterProperties[<a href='/layout/erd/FilterProperties'>FilterProperties</a>]
+style FilterProperties stroke:#ff0000,stroke-width:1px
+FilterPropertiesContainer[FilterPropertiesContainer]
+GroupSource[<a href='/layout/erd/GroupSource'>GroupSource</a>]
+style GroupSource stroke:#ff0000,stroke-width:1px
+HierarchyLevelSource[<a href='/layout/erd/HierarchyLevelSource'>HierarchyLevelSource</a>]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureSource[<a href='/layout/erd/MeasureSource'>MeasureSource</a>]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+ProtoSource[ProtoSource]
+ProtoSourceRef[ProtoSourceRef]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+style PrototypeQuery stroke:#ff0000,stroke-width:1px
+RoleRef[RoleRef]
+Scope[<a href='/layout/erd/Scope'>Scope</a>]
+style Scope stroke:#ff0000,stroke-width:1px
+SelectRef[SelectRef]
+TransformOutputRoleRef[TransformOutputRoleRef]
+Filter ---> ColumnSource
+FilterPropertiesContainer ---> FilterProperties
+Filter ---> MeasureSource
+Filter --->|expression| ProtoSourceRef
+Filter ---> HierarchyLevelSource
+ProtoSourceRef --->|SourceRef| ProtoSource
+CachedDisplayNames ---> Scope
+Filter ---> AggregationSource
+Filter --->|objects| FilterObjects
+Filter ---> GroupSource
+TransformOutputRoleRef --->|TransformOutputRoleRef| RoleRef
+Filter ---> ArithmeticSource
+Filter ---> LiteralSource
+Filter --->|expression| TransformOutputRoleRef
+Filter --->|cachedDisplayNames| CachedDisplayNames
+SelectRef --->|SelectRef| ExpressionName
+Filter --->|expression| SelectRef
+FilterObjects --->|general| FilterPropertiesContainer
+Filter ---> PrototypeQuery
 ```

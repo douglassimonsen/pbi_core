@@ -3,161 +3,133 @@
 title: BookmarkVisual
 ---
 graph 
-2430071978800["HighlightScope"]
-2430071814832["TransformOutputRoleRef"]
-2430071366800["ExpressionName"]
-2430071878272["ExistsCondition"]
-style 2430071878272 stroke:#ff0000,stroke-width:1px
-2430514836224["Highlight"]
-2430514863552["Parameter"]
-2430071876320["AndCondition"]
-style 2430071876320 stroke:#ff0000,stroke-width:1px
-2430514834272["BookmarkFilters"]
-2430071997344["BookmarkFilter"]
-style 2430071997344 stroke:#ff0000,stroke-width:1px
-2430071879248["OrCondition"]
-style 2430071879248 stroke:#ff0000,stroke-width:1px
-2430514842080["BookmarkPartialVisualObject"]
-2430514852816["BookmarkVisual"]
-2430071825568["ProtoSourceRef"]
-2430071846064["ContainsCondition"]
-style 2430071846064 stroke:#ff0000,stroke-width:1px
-2430071808976["GroupSource"]
-style 2430071808976 stroke:#ff0000,stroke-width:1px
-2430071813856["ExpansionStateChild"]
-2430071973920["CachedDisplayNames"]
-2430071382416["ArithmeticSource"]
-style 2430071382416 stroke:#ff0000,stroke-width:1px
-2430071874368["ComparisonCondition"]
-style 2430071874368 stroke:#ff0000,stroke-width:1px
-2430071820688["RoleRef"]
-2430514824512["Remove"]
-2430071943664["Orderby"]
-2430071823616["ExpansionStateRoot"]
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071817760["Information"]
-2430071356064["SelectRef"]
-2430514850864["BookmarkPartialVisual"]
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430071980752["CachedValueItems"]
-2430071854848["InCondition"]
-style 2430071854848 stroke:#ff0000,stroke-width:1px
-2430071976848["FilterExpressionMetadata"]
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071960256["Scope"]
-style 2430071960256 stroke:#ff0000,stroke-width:1px
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071745536["Selector"]
-style 2430071745536 stroke:#ff0000,stroke-width:1px
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071819712["ProtoSource"]
-2430071809952["ExpansionStateLevel"]
-2430514844032["BookmarkExpansionState"]
-2430071880224["NotCondition"]
-style 2430071880224 stroke:#ff0000,stroke-width:1px
-2430514839152["MaximizedOptions"]
-2430514815728["PropertyDef"]
-style 2430514815728 stroke:#ff0000,stroke-width:1px
-2430514819632["HighlightSelection"]
-2430514840128["Display"]
-2430514850864 --->|display| 2430514840128
-2430071813856 --->|children| 2430071813856
-2430071980752 --->|identities| 2430071978800
-2430071823616 --->|children| 2430071813856
-2430514819632 --->|dataMap| 2430071978800
-2430514850864 --->|objects| 2430514842080
-2430071943664 ---> 2430071365824
-2430071809952 --->|AIInformation| 2430071817760
-2430514840128 --->|maximizedOptions| 2430514839152
-2430071943664 --->|Expression| 2430071825568
-2430071976848 --->|cachedValueItems| 2430071980752
-2430071813856 --->|identityValues| 2430071356064
-2430071943664 ---> 2430071382416
-2430514842080 --->|remove| 2430514824512
-2430514836224 --->|filterExpressionMetadata| 2430071976848
-2430071813856 --->|identityValues| 2430071814832
-2430071809952 ---> 2430071365824
-2430071976848 --->|expressions| 2430071814832
-2430071976848 ---> 2430071382416
-2430071943664 ---> 2430071363872
-2430071978800 ---> 2430071879248
-2430514850864 ---> 2430071358016
-2430071976848 ---> 2430071365824
-2430514850864 ---> 2430071363872
-2430071943664 --->|Expression| 2430071814832
-2430514850864 ---> 2430071816784
-2430514850864 --->|activeProjections| 2430071356064
-2430071978800 ---> 2430071880224
-2430071973920 ---> 2430071960256
-2430071976848 ---> 2430071808976
-2430071976848 ---> 2430071363872
-2430514852816 --->|filters| 2430514834272
-2430514850864 --->|parameters| 2430514863552
-2430514863552 ---> 2430071382416
-2430514863552 --->|expr| 2430071825568
-2430071943664 ---> 2430071358016
-2430071943664 ---> 2430071359968
-2430514850864 ---> 2430071359968
-2430071978800 ---> 2430071876320
-2430071978800 ---> 2430071878272
-2430071943664 ---> 2430071816784
-2430071813856 ---> 2430071808976
-2430071976848 ---> 2430071359968
-2430514863552 ---> 2430071808976
-2430071809952 ---> 2430071363872
-2430071976848 --->|expressions| 2430071825568
-2430071809952 --->|identityKeys| 2430071814832
-2430071813856 --->|identityValues| 2430071825568
-2430071825568 --->|SourceRef| 2430071819712
-2430514850864 ---> 2430071808976
-2430514863552 --->|expr| 2430071356064
-2430514850864 --->|cachedFilterDisplayItems| 2430071973920
-2430071978800 ---> 2430071874368
-2430514850864 ---> 2430071382416
-2430071809952 ---> 2430071808976
-2430514824512 ---> 2430071745536
-2430514844032 --->|levels| 2430071809952
-2430071356064 --->|SelectRef| 2430071366800
-2430514850864 --->|orderBy| 2430071943664
-2430071976848 --->|expressions| 2430071356064
-2430071943664 --->|Expression| 2430071356064
-2430514863552 ---> 2430071363872
-2430514850864 --->|activeProjections| 2430071825568
-2430514863552 --->|expr| 2430071814832
-2430071809952 ---> 2430071359968
-2430514863552 ---> 2430071365824
-2430071809952 ---> 2430071382416
-2430514844032 --->|root| 2430071823616
-2430514850864 ---> 2430071365824
-2430514842080 ---> 2430514815728
-2430514863552 ---> 2430071359968
-2430071978800 ---> 2430071846064
-2430071809952 ---> 2430071358016
-2430514852816 --->|singleVisual| 2430514850864
-2430071809952 --->|identityKeys| 2430071356064
-2430071813856 ---> 2430071359968
-2430514834272 ---> 2430071997344
-2430514836224 --->|selection| 2430514819632
-2430071813856 ---> 2430071365824
-2430071814832 --->|TransformOutputRoleRef| 2430071820688
-2430071978800 ---> 2430071854848
-2430514863552 ---> 2430071358016
-2430071813856 ---> 2430071363872
-2430514850864 --->|expansionStates| 2430514844032
-2430071809952 --->|identityKeys| 2430071825568
-2430514852816 --->|highlight| 2430514836224
-2430514850864 --->|activeProjections| 2430071814832
-2430071813856 ---> 2430071358016
-2430071809952 ---> 2430071816784
-2430071813856 ---> 2430071382416
-2430071813856 ---> 2430071816784
-2430071943664 ---> 2430071808976
-2430071976848 ---> 2430071816784
-2430514863552 ---> 2430071816784
-2430071976848 ---> 2430071358016
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+ArithmeticSource[<a href='/layout/erd/ArithmeticSource'>ArithmeticSource</a>]
+style ArithmeticSource stroke:#ff0000,stroke-width:1px
+BookmarkExpansionState[BookmarkExpansionState]
+BookmarkFilter[<a href='/layout/erd/BookmarkFilter'>BookmarkFilter</a>]
+style BookmarkFilter stroke:#ff0000,stroke-width:1px
+BookmarkFilters[BookmarkFilters]
+BookmarkPartialVisual[BookmarkPartialVisual]
+BookmarkPartialVisualObject[BookmarkPartialVisualObject]
+BookmarkVisual[<a href='/layout/erd/BookmarkVisual'>BookmarkVisual</a>]
+CachedDisplayNames[CachedDisplayNames]
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+Condition[<a href='/layout/erd/Condition'>Condition</a>]
+style Condition stroke:#ff0000,stroke-width:1px
+Display[Display]
+Entity[Entity]
+ExpansionStateChild[ExpansionStateChild]
+ExpansionStateLevel[ExpansionStateLevel]
+ExpansionStateRoot[ExpansionStateRoot]
+ExpressionName[ExpressionName]
+GroupSource[<a href='/layout/erd/GroupSource'>GroupSource</a>]
+style GroupSource stroke:#ff0000,stroke-width:1px
+HierarchyLevelSource[<a href='/layout/erd/HierarchyLevelSource'>HierarchyLevelSource</a>]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+Highlight[Highlight]
+Information[Information]
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureSource[<a href='/layout/erd/MeasureSource'>MeasureSource</a>]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+Orderby[Orderby]
+Parameter[Parameter]
+PropertyDef[<a href='/layout/erd/PropertyDef'>PropertyDef</a>]
+style PropertyDef stroke:#ff0000,stroke-width:1px
+ProtoSource[ProtoSource]
+ProtoSourceRef[ProtoSourceRef]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+style PrototypeQuery stroke:#ff0000,stroke-width:1px
+Remove[Remove]
+RoleRef[RoleRef]
+Scope[<a href='/layout/erd/Scope'>Scope</a>]
+style Scope stroke:#ff0000,stroke-width:1px
+SelectRef[SelectRef]
+Selector[<a href='/layout/erd/Selector'>Selector</a>]
+style Selector stroke:#ff0000,stroke-width:1px
+Subquery[Subquery]
+TransformOutputRoleRef[TransformOutputRoleRef]
+_SubqueryHelper[_SubqueryHelper]
+_SubqueryHelper2[_SubqueryHelper2]
+ExpansionStateChild --->|identityValues| ProtoSourceRef
+BookmarkVisual --->|singleVisual| BookmarkPartialVisual
+Parameter ---> GroupSource
+Highlight --->|From| Entity
+BookmarkPartialVisual --->|orderBy| Orderby
+ProtoSourceRef --->|SourceRef| ProtoSource
+BookmarkPartialVisualObject ---> PropertyDef
+Parameter --->|expr| SelectRef
+ExpansionStateLevel ---> LiteralSource
+BookmarkPartialVisual ---> AggregationSource
+Orderby ---> HierarchyLevelSource
+ExpansionStateChild ---> ArithmeticSource
+BookmarkPartialVisual --->|cachedFilterDisplayItems| CachedDisplayNames
+BookmarkPartialVisual ---> LiteralSource
+Orderby ---> ArithmeticSource
+Subquery --->|Expression| _SubqueryHelper
+ExpansionStateLevel ---> ArithmeticSource
+Orderby ---> AggregationSource
+BookmarkPartialVisual --->|display| Display
+Highlight ---> Condition
+Parameter ---> ArithmeticSource
+BookmarkPartialVisual ---> ArithmeticSource
+Orderby ---> ColumnSource
+Parameter ---> MeasureSource
+_SubqueryHelper2 ---> PrototypeQuery
+ExpansionStateRoot --->|children| ExpansionStateChild
+BookmarkPartialVisual ---> ColumnSource
+Parameter ---> ColumnSource
+ExpansionStateChild --->|identityValues| SelectRef
+BookmarkPartialVisual --->|expansionStates| BookmarkExpansionState
+ExpansionStateChild ---> GroupSource
+ExpansionStateChild --->|identityValues| TransformOutputRoleRef
+ExpansionStateLevel --->|AIInformation| Information
+ExpansionStateLevel ---> AggregationSource
+TransformOutputRoleRef --->|TransformOutputRoleRef| RoleRef
+ExpansionStateChild ---> LiteralSource
+Parameter --->|expr| ProtoSourceRef
+_SubqueryHelper --->|Subquery| _SubqueryHelper2
+Parameter ---> AggregationSource
+BookmarkPartialVisual --->|objects| BookmarkPartialVisualObject
+BookmarkPartialVisual --->|activeProjections| SelectRef
+Remove ---> Selector
+BookmarkPartialVisualObject --->|remove| Remove
+Parameter --->|expr| TransformOutputRoleRef
+Orderby ---> LiteralSource
+Orderby ---> MeasureSource
+Highlight --->|From| Subquery
+SelectRef --->|SelectRef| ExpressionName
+ExpansionStateChild --->|children| ExpansionStateChild
+BookmarkPartialVisual --->|activeProjections| TransformOutputRoleRef
+Orderby --->|Expression| ProtoSourceRef
+ExpansionStateLevel ---> MeasureSource
+Orderby --->|Expression| SelectRef
+Orderby ---> GroupSource
+ExpansionStateChild ---> MeasureSource
+BookmarkVisual --->|highlight| Highlight
+BookmarkPartialVisual --->|parameters| Parameter
+Parameter ---> LiteralSource
+ExpansionStateLevel --->|identityKeys| ProtoSourceRef
+BookmarkFilters ---> BookmarkFilter
+CachedDisplayNames ---> Scope
+ExpansionStateLevel --->|identityKeys| TransformOutputRoleRef
+BookmarkPartialVisual ---> HierarchyLevelSource
+ExpansionStateLevel ---> ColumnSource
+Orderby --->|Expression| TransformOutputRoleRef
+Parameter ---> HierarchyLevelSource
+ExpansionStateLevel --->|identityKeys| SelectRef
+ExpansionStateChild ---> HierarchyLevelSource
+ExpansionStateChild ---> AggregationSource
+BookmarkExpansionState --->|root| ExpansionStateRoot
+ExpansionStateChild ---> ColumnSource
+ExpansionStateLevel ---> GroupSource
+BookmarkVisual --->|filters| BookmarkFilters
+BookmarkPartialVisual ---> GroupSource
+BookmarkPartialVisual --->|activeProjections| ProtoSourceRef
+BookmarkExpansionState --->|levels| ExpansionStateLevel
+ExpansionStateLevel ---> HierarchyLevelSource
+BookmarkPartialVisual ---> MeasureSource
 ```

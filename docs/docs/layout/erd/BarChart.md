@@ -3,238 +3,238 @@
 title: BarChart
 ---
 graph 
-2430552762192["BarChart"]
-2430552737792["_RibbonBandsPropertiesHelper"]
-2430552710464["GeneralProperties"]
-2430552766096["_ZoomPropertiesHelper"]
-2430071951472["PrototypeQuery"]
-style 2430071951472 stroke:#ff0000,stroke-width:1px
-2430071907552["SolidColorExpression"]
-style 2430071907552 stroke:#ff0000,stroke-width:1px
-2430071930000["AlgorithmExpression"]
-style 2430071930000 stroke:#ff0000,stroke-width:1px
-2430071921216["ResourcePackageAccess"]
-style 2430071921216 stroke:#ff0000,stroke-width:1px
-2430071926096["ImageKindExpression"]
-style 2430071926096 stroke:#ff0000,stroke-width:1px
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430552697776["DataPointProperties"]
-2430552678256["ColumnProperty"]
-2430514799136["ProjectionConfig"]
-2430071925120["ColumnExpression"]
-style 2430071925120 stroke:#ff0000,stroke-width:1px
-2430552686064["_CategoryAxisPropertiesHelper"]
-2430071920240["LinearGradient2Expression"]
-style 2430071920240 stroke:#ff0000,stroke-width:1px
-2430552751456["ZoomProperties"]
-2430071930976["ExpressionList"]
-2430071910480["LinearGradient3Expression"]
-style 2430071910480 stroke:#ff0000,stroke-width:1px
-2430514817680["QueryOptions"]
-2430071888032["MeasureExpression"]
-style 2430071888032 stroke:#ff0000,stroke-width:1px
-2430552725104["LabelsProperties"]
-2430552730960["ValueAxisProperties"]
-2430552721200["_LegendPropertiesHelper"]
-2430552690944["CategoryAxisProperties"]
-2430071923168["SelectRefExpression"]
-style 2430071923168 stroke:#ff0000,stroke-width:1px
-2430552709488["_LabelsPropertiesHelper"]
-2430071919264["ImageExpression"]
-style 2430071919264 stroke:#ff0000,stroke-width:1px
-2430071745536["Selector"]
-style 2430071745536 stroke:#ff0000,stroke-width:1px
-2430552746576["_ValueAxisPropertiesHelper"]
-2430552753408["BarChartProperties"]
-2430071889008["AggregationExpression"]
-style 2430071889008 stroke:#ff0000,stroke-width:1px
-2430552700704["_DataPointPropertiesHelper"]
-2430552749504["XAxisReferenceLineProperties"]
-2430071918288["GeoJsonExpression"]
-style 2430071918288 stroke:#ff0000,stroke-width:1px
-2430552732912["LegendProperties"]
-2430514805968["VCProperties"]
-style 2430514805968 stroke:#ff0000,stroke-width:1px
-2430552714368["_LayoutPropertiesHelper"]
-2430552745600["RibbonBandsProperties"]
-2430514810848["Display"]
-2430552693872["_GeneralPropertiesHelper"]
-2430552755360["_XAxisReferenceLinePropertiesHelper"]
-2430552719248["LayoutProperties"]
-2430552686064 ---> 2430071889008
-2430552721200 ---> 2430071887056
-2430552746576 --->|axisScale| 2430071930976
-2430552737792 ---> 2430071918288
-2430552686064 ---> 2430071925120
-2430552721200 ---> 2430071919264
-2430552714368 ---> 2430071889008
-2430552753408 --->|xAxisReferenceLine| 2430552749504
-2430552714368 ---> 2430071920240
-2430552753408 --->|general| 2430552710464
-2430552714368 ---> 2430071925120
-2430552693872 ---> 2430071920240
-2430552721200 ---> 2430071921216
-2430552678256 --->|display| 2430514810848
-2430552737792 ---> 2430071907552
-2430552766096 ---> 2430071920240
-2430552746576 ---> 2430071887056
-2430552737792 ---> 2430071926096
-2430552721200 ---> 2430071926096
-2430552714368 ---> 2430071930000
-2430552693872 ---> 2430071921216
-2430552725104 ---> 2430071745536
-2430552753408 --->|ribbonBands| 2430552745600
-2430552693872 ---> 2430071919264
-2430552766096 ---> 2430071930000
-2430552697776 --->|properties| 2430552700704
-2430552693872 ---> 2430071930000
-2430552714368 ---> 2430071919264
-2430552753408 --->|valueAxis| 2430552730960
-2430552686064 ---> 2430071919264
-2430552737792 ---> 2430071923168
-2430552721200 ---> 2430071889008
-2430552714368 ---> 2430071921216
-2430552766096 ---> 2430071910480
-2430552746576 ---> 2430071910480
-2430552737792 ---> 2430071889008
-2430552737792 ---> 2430071930000
-2430552709488 ---> 2430071925120
-2430552746576 ---> 2430071907552
-2430552766096 ---> 2430071919264
-2430552762192 --->|projections| 2430514799136
-2430552709488 ---> 2430071923168
-2430552709488 ---> 2430071919264
-2430552762192 --->|queryOptions| 2430514817680
-2430552737792 ---> 2430071919264
-2430552709488 ---> 2430071910480
-2430552714368 ---> 2430071926096
-2430552721200 ---> 2430071910480
-2430552686064 --->|axisStyle| 2430071930976
-2430552737792 ---> 2430071921216
-2430552721200 ---> 2430071888032
-2430552737792 ---> 2430071920240
-2430552753408 --->|zoom| 2430552751456
-2430552700704 ---> 2430071907552
-2430552737792 ---> 2430071910480
-2430552709488 ---> 2430071887056
-2430552721200 ---> 2430071918288
-2430552721200 ---> 2430071925120
-2430552766096 ---> 2430071926096
-2430552755360 ---> 2430071889008
-2430552714368 --->|ribbonGapSize| 2430071930976
-2430552700704 ---> 2430071910480
-2430552721200 ---> 2430071920240
-2430552693872 ---> 2430071923168
-2430552755360 ---> 2430071919264
-2430552714368 ---> 2430071923168
-2430552766096 ---> 2430071925120
-2430552755360 --->|displayName| 2430071930976
-2430552686064 ---> 2430071921216
-2430552709488 --->|backgroundColor| 2430071930976
-2430552737792 --->|borderColorMatchFill| 2430071930976
-2430552766096 ---> 2430071907552
-2430552755360 ---> 2430071920240
-2430552709488 ---> 2430071889008
-2430552755360 ---> 2430071921216
-2430552700704 ---> 2430071918288
-2430552700704 ---> 2430071921216
-2430552700704 ---> 2430071889008
-2430552710464 --->|properties| 2430552693872
-2430552709488 ---> 2430071907552
-2430552746576 ---> 2430071921216
-2430552755360 ---> 2430071888032
-2430552709488 ---> 2430071930000
-2430552700704 ---> 2430071887056
-2430552721200 ---> 2430071930000
-2430552753408 --->|labels| 2430552725104
-2430552709488 ---> 2430071888032
-2430552686064 ---> 2430071920240
-2430552714368 ---> 2430071887056
-2430552700704 --->|borderColorMatchFill| 2430071930976
-2430552721200 ---> 2430071923168
-2430552746576 ---> 2430071923168
-2430552746576 ---> 2430071918288
-2430552730960 --->|properties| 2430552746576
-2430552762192 ---> 2430514805968
-2430552755360 ---> 2430071918288
-2430552709488 ---> 2430071918288
-2430552766096 ---> 2430071889008
-2430552755360 ---> 2430071887056
-2430552755360 ---> 2430071926096
-2430552686064 ---> 2430071930000
-2430552755360 ---> 2430071930000
-2430552766096 ---> 2430071923168
-2430552700704 ---> 2430071919264
-2430552745600 --->|properties| 2430552737792
-2430552678256 ---> 2430514805968
-2430552678256 ---> 2430071951472
-2430552753408 --->|legend| 2430552732912
-2430552766096 ---> 2430071888032
-2430552686064 ---> 2430071910480
-2430552749504 ---> 2430071745536
-2430552751456 --->|properties| 2430552766096
-2430552709488 ---> 2430071921216
-2430552721200 --->|fontSize| 2430071930976
-2430552737792 ---> 2430071925120
-2430552700704 ---> 2430071923168
-2430552762192 ---> 2430071951472
-2430552709488 ---> 2430071926096
-2430552693872 ---> 2430071910480
-2430552714368 ---> 2430071910480
-2430552755360 ---> 2430071923168
-2430552746576 ---> 2430071926096
-2430552700704 ---> 2430071920240
-2430552693872 ---> 2430071889008
-2430552693872 --->|responsive| 2430071930976
-2430552709488 ---> 2430071920240
-2430552714368 ---> 2430071907552
-2430552755360 ---> 2430071907552
-2430552746576 ---> 2430071925120
-2430552737792 ---> 2430071887056
-2430552737792 ---> 2430071888032
-2430552686064 ---> 2430071907552
-2430552762192 --->|display| 2430514810848
-2430552746576 ---> 2430071919264
-2430552700704 ---> 2430071930000
-2430552686064 ---> 2430071926096
-2430552719248 --->|properties| 2430552714368
-2430552693872 ---> 2430071918288
-2430552746576 ---> 2430071930000
-2430552697776 ---> 2430071745536
-2430552766096 ---> 2430071887056
-2430552762192 --->|columnProperties| 2430552678256
-2430552686064 ---> 2430071887056
-2430552678256 --->|queryOptions| 2430514817680
-2430552686064 ---> 2430071918288
-2430552714368 ---> 2430071888032
-2430552762192 --->|objects| 2430552753408
-2430552766096 ---> 2430071921216
-2430552686064 ---> 2430071923168
-2430552690944 --->|properties| 2430552686064
-2430552746576 ---> 2430071889008
-2430552766096 --->|show| 2430071930976
-2430552678256 --->|projections| 2430514799136
-2430552746576 ---> 2430071888032
-2430552693872 ---> 2430071888032
-2430552700704 ---> 2430071888032
-2430552746576 ---> 2430071920240
-2430552725104 --->|properties| 2430552709488
-2430552693872 ---> 2430071925120
-2430552766096 ---> 2430071918288
-2430552714368 ---> 2430071918288
-2430552700704 ---> 2430071926096
-2430552749504 --->|properties| 2430552755360
-2430552700704 ---> 2430071925120
-2430552753408 --->|layout| 2430552719248
-2430552693872 ---> 2430071907552
-2430552721200 ---> 2430071907552
-2430552693872 ---> 2430071926096
-2430552755360 ---> 2430071925120
-2430552753408 --->|categoryAxis| 2430552690944
-2430552753408 --->|dataPoint| 2430552697776
-2430552755360 ---> 2430071910480
-2430552686064 ---> 2430071888032
-2430552732912 --->|properties| 2430552721200
-2430552693872 ---> 2430071887056
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+style AggregationExpression stroke:#ff0000,stroke-width:1px
+AlgorithmExpression[<a href='/layout/erd/AlgorithmExpression'>AlgorithmExpression</a>]
+style AlgorithmExpression stroke:#ff0000,stroke-width:1px
+BarChart[<a href='/layout/erd/BarChart'>BarChart</a>]
+BarChartProperties[BarChartProperties]
+CategoryAxisProperties[CategoryAxisProperties]
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+style ColumnExpression stroke:#ff0000,stroke-width:1px
+ColumnProperty[<a href='/layout/erd/ColumnProperty'>ColumnProperty</a>]
+DataPointProperties[DataPointProperties]
+Display[Display]
+ExpressionList[ExpressionList]
+GeneralProperties[GeneralProperties]
+GeoJsonExpression[<a href='/layout/erd/GeoJsonExpression'>GeoJsonExpression</a>]
+style GeoJsonExpression stroke:#ff0000,stroke-width:1px
+ImageExpression[<a href='/layout/erd/ImageExpression'>ImageExpression</a>]
+style ImageExpression stroke:#ff0000,stroke-width:1px
+ImageKindExpression[<a href='/layout/erd/ImageKindExpression'>ImageKindExpression</a>]
+style ImageKindExpression stroke:#ff0000,stroke-width:1px
+LabelsProperties[LabelsProperties]
+LayoutProperties[LayoutProperties]
+LegendProperties[LegendProperties]
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
+LinearGradient3Expression[<a href='/layout/erd/LinearGradient3Expression'>LinearGradient3Expression</a>]
+style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+MeasureExpression[<a href='/layout/erd/MeasureExpression'>MeasureExpression</a>]
+style MeasureExpression stroke:#ff0000,stroke-width:1px
+ProjectionConfig[ProjectionConfig]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+style PrototypeQuery stroke:#ff0000,stroke-width:1px
+QueryOptions[QueryOptions]
+ResourcePackageAccess[<a href='/layout/erd/ResourcePackageAccess'>ResourcePackageAccess</a>]
+style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
+RibbonBandsProperties[RibbonBandsProperties]
+SelectRefExpression[<a href='/layout/erd/SelectRefExpression'>SelectRefExpression</a>]
+style SelectRefExpression stroke:#ff0000,stroke-width:1px
+Selector[<a href='/layout/erd/Selector'>Selector</a>]
+style Selector stroke:#ff0000,stroke-width:1px
+SolidColorExpression[<a href='/layout/erd/SolidColorExpression'>SolidColorExpression</a>]
+style SolidColorExpression stroke:#ff0000,stroke-width:1px
+VCProperties[<a href='/layout/erd/VCProperties'>VCProperties</a>]
+style VCProperties stroke:#ff0000,stroke-width:1px
+ValueAxisProperties[ValueAxisProperties]
+XAxisReferenceLineProperties[XAxisReferenceLineProperties]
+ZoomProperties[ZoomProperties]
+_CategoryAxisPropertiesHelper[_CategoryAxisPropertiesHelper]
+_DataPointPropertiesHelper[_DataPointPropertiesHelper]
+_GeneralPropertiesHelper[_GeneralPropertiesHelper]
+_LabelsPropertiesHelper[_LabelsPropertiesHelper]
+_LayoutPropertiesHelper[_LayoutPropertiesHelper]
+_LegendPropertiesHelper[_LegendPropertiesHelper]
+_RibbonBandsPropertiesHelper[_RibbonBandsPropertiesHelper]
+_ValueAxisPropertiesHelper[_ValueAxisPropertiesHelper]
+_XAxisReferenceLinePropertiesHelper[_XAxisReferenceLinePropertiesHelper]
+_ZoomPropertiesHelper[_ZoomPropertiesHelper]
+BarChart --->|objects| BarChartProperties
+_ZoomPropertiesHelper ---> SolidColorExpression
+_LegendPropertiesHelper ---> ColumnExpression
+_LabelsPropertiesHelper ---> ColumnExpression
+_LayoutPropertiesHelper ---> SelectRefExpression
+_RibbonBandsPropertiesHelper ---> AggregationExpression
+_LabelsPropertiesHelper ---> MeasureExpression
+_RibbonBandsPropertiesHelper ---> GeoJsonExpression
+_DataPointPropertiesHelper ---> ImageKindExpression
+ValueAxisProperties --->|properties| _ValueAxisPropertiesHelper
+BarChart ---> PrototypeQuery
+_XAxisReferenceLinePropertiesHelper ---> ResourcePackageAccess
+BarChartProperties --->|valueAxis| ValueAxisProperties
+_RibbonBandsPropertiesHelper --->|borderColorMatchFill| ExpressionList
+LegendProperties --->|properties| _LegendPropertiesHelper
+LayoutProperties --->|properties| _LayoutPropertiesHelper
+_XAxisReferenceLinePropertiesHelper ---> AlgorithmExpression
+_ValueAxisPropertiesHelper ---> LinearGradient3Expression
+_LayoutPropertiesHelper ---> SolidColorExpression
+_LegendPropertiesHelper ---> SolidColorExpression
+ColumnProperty --->|display| Display
+_CategoryAxisPropertiesHelper ---> SolidColorExpression
+_LayoutPropertiesHelper ---> AggregationExpression
+_ZoomPropertiesHelper ---> LinearGradient2Expression
+_RibbonBandsPropertiesHelper ---> LiteralExpression
+_LayoutPropertiesHelper ---> LinearGradient2Expression
+BarChart --->|columnProperties| ColumnProperty
+_LegendPropertiesHelper ---> ResourcePackageAccess
+BarChart --->|queryOptions| QueryOptions
+_CategoryAxisPropertiesHelper ---> ColumnExpression
+_CategoryAxisPropertiesHelper --->|axisStyle| ExpressionList
+_RibbonBandsPropertiesHelper ---> ImageExpression
+BarChartProperties --->|general| GeneralProperties
+_LabelsPropertiesHelper ---> SelectRefExpression
+_GeneralPropertiesHelper ---> SolidColorExpression
+_LabelsPropertiesHelper ---> SolidColorExpression
+BarChartProperties --->|legend| LegendProperties
+_CategoryAxisPropertiesHelper ---> AggregationExpression
+_XAxisReferenceLinePropertiesHelper ---> AggregationExpression
+_GeneralPropertiesHelper ---> LinearGradient3Expression
+_LabelsPropertiesHelper ---> AggregationExpression
+_LabelsPropertiesHelper --->|backgroundColor| ExpressionList
+_GeneralPropertiesHelper ---> MeasureExpression
+_CategoryAxisPropertiesHelper ---> MeasureExpression
+BarChartProperties --->|categoryAxis| CategoryAxisProperties
+_LayoutPropertiesHelper --->|ribbonGapSize| ExpressionList
+_ValueAxisPropertiesHelper ---> SelectRefExpression
+_XAxisReferenceLinePropertiesHelper ---> ImageKindExpression
+_ZoomPropertiesHelper ---> MeasureExpression
+_ValueAxisPropertiesHelper ---> ImageKindExpression
+_CategoryAxisPropertiesHelper ---> SelectRefExpression
+_ZoomPropertiesHelper ---> ImageKindExpression
+_LayoutPropertiesHelper ---> ImageKindExpression
+XAxisReferenceLineProperties ---> Selector
+DataPointProperties ---> Selector
+_CategoryAxisPropertiesHelper ---> AlgorithmExpression
+_GeneralPropertiesHelper ---> LiteralExpression
+_LegendPropertiesHelper ---> ImageExpression
+_XAxisReferenceLinePropertiesHelper ---> LinearGradient3Expression
+RibbonBandsProperties --->|properties| _RibbonBandsPropertiesHelper
+_RibbonBandsPropertiesHelper ---> ColumnExpression
+_GeneralPropertiesHelper ---> ImageExpression
+_ValueAxisPropertiesHelper ---> LinearGradient2Expression
+_ZoomPropertiesHelper ---> ResourcePackageAccess
+_GeneralPropertiesHelper ---> AlgorithmExpression
+_DataPointPropertiesHelper ---> ColumnExpression
+_RibbonBandsPropertiesHelper ---> LinearGradient2Expression
+_LegendPropertiesHelper ---> ImageKindExpression
+_LabelsPropertiesHelper ---> LinearGradient2Expression
+_ValueAxisPropertiesHelper --->|axisScale| ExpressionList
+_LayoutPropertiesHelper ---> ImageExpression
+_ValueAxisPropertiesHelper ---> AggregationExpression
+_GeneralPropertiesHelper ---> SelectRefExpression
+ColumnProperty ---> PrototypeQuery
+_ZoomPropertiesHelper ---> ColumnExpression
+_LegendPropertiesHelper ---> LiteralExpression
+_DataPointPropertiesHelper ---> LinearGradient3Expression
+_LabelsPropertiesHelper ---> ResourcePackageAccess
+_DataPointPropertiesHelper ---> ResourcePackageAccess
+BarChartProperties --->|layout| LayoutProperties
+_XAxisReferenceLinePropertiesHelper ---> ImageExpression
+_RibbonBandsPropertiesHelper ---> SelectRefExpression
+_XAxisReferenceLinePropertiesHelper ---> SolidColorExpression
+ColumnProperty --->|projections| ProjectionConfig
+_LegendPropertiesHelper --->|fontSize| ExpressionList
+_CategoryAxisPropertiesHelper ---> ResourcePackageAccess
+_RibbonBandsPropertiesHelper ---> MeasureExpression
+_LegendPropertiesHelper ---> GeoJsonExpression
+_CategoryAxisPropertiesHelper ---> ImageKindExpression
+_GeneralPropertiesHelper ---> AggregationExpression
+_XAxisReferenceLinePropertiesHelper --->|displayName| ExpressionList
+_RibbonBandsPropertiesHelper ---> SolidColorExpression
+BarChartProperties --->|labels| LabelsProperties
+_GeneralPropertiesHelper ---> ImageKindExpression
+_XAxisReferenceLinePropertiesHelper ---> ColumnExpression
+ColumnProperty --->|queryOptions| QueryOptions
+_LayoutPropertiesHelper ---> MeasureExpression
+_GeneralPropertiesHelper ---> GeoJsonExpression
+_LabelsPropertiesHelper ---> GeoJsonExpression
+_CategoryAxisPropertiesHelper ---> LiteralExpression
+XAxisReferenceLineProperties --->|properties| _XAxisReferenceLinePropertiesHelper
+BarChart --->|display| Display
+_ZoomPropertiesHelper ---> LinearGradient3Expression
+_LegendPropertiesHelper ---> MeasureExpression
+_RibbonBandsPropertiesHelper ---> ImageKindExpression
+_DataPointPropertiesHelper ---> LinearGradient2Expression
+_DataPointPropertiesHelper ---> AggregationExpression
+_LayoutPropertiesHelper ---> LinearGradient3Expression
+_LabelsPropertiesHelper ---> LinearGradient3Expression
+_ValueAxisPropertiesHelper ---> MeasureExpression
+_GeneralPropertiesHelper ---> LinearGradient2Expression
+_XAxisReferenceLinePropertiesHelper ---> LiteralExpression
+LabelsProperties --->|properties| _LabelsPropertiesHelper
+_DataPointPropertiesHelper --->|borderColorMatchFill| ExpressionList
+CategoryAxisProperties --->|properties| _CategoryAxisPropertiesHelper
+_LabelsPropertiesHelper ---> LiteralExpression
+_CategoryAxisPropertiesHelper ---> ImageExpression
+_ValueAxisPropertiesHelper ---> LiteralExpression
+_DataPointPropertiesHelper ---> LiteralExpression
+_ZoomPropertiesHelper ---> LiteralExpression
+BarChartProperties --->|dataPoint| DataPointProperties
+_RibbonBandsPropertiesHelper ---> AlgorithmExpression
+_XAxisReferenceLinePropertiesHelper ---> SelectRefExpression
+ColumnProperty ---> VCProperties
+_LayoutPropertiesHelper ---> ColumnExpression
+ZoomProperties --->|properties| _ZoomPropertiesHelper
+_CategoryAxisPropertiesHelper ---> LinearGradient2Expression
+_ValueAxisPropertiesHelper ---> SolidColorExpression
+_XAxisReferenceLinePropertiesHelper ---> MeasureExpression
+_ZoomPropertiesHelper ---> GeoJsonExpression
+_GeneralPropertiesHelper --->|altText| ExpressionList
+_DataPointPropertiesHelper ---> GeoJsonExpression
+_LayoutPropertiesHelper ---> AlgorithmExpression
+_LegendPropertiesHelper ---> SelectRefExpression
+BarChartProperties --->|xAxisReferenceLine| XAxisReferenceLineProperties
+_DataPointPropertiesHelper ---> ImageExpression
+_ZoomPropertiesHelper ---> AggregationExpression
+_LegendPropertiesHelper ---> LinearGradient3Expression
+_LegendPropertiesHelper ---> AlgorithmExpression
+_DataPointPropertiesHelper ---> MeasureExpression
+_LegendPropertiesHelper ---> LinearGradient2Expression
+_GeneralPropertiesHelper ---> ColumnExpression
+_ValueAxisPropertiesHelper ---> GeoJsonExpression
+BarChartProperties --->|ribbonBands| RibbonBandsProperties
+_DataPointPropertiesHelper ---> AlgorithmExpression
+_XAxisReferenceLinePropertiesHelper ---> LinearGradient2Expression
+BarChart ---> VCProperties
+_CategoryAxisPropertiesHelper ---> LinearGradient3Expression
+_ValueAxisPropertiesHelper ---> ColumnExpression
+BarChart --->|projections| ProjectionConfig
+_GeneralPropertiesHelper ---> ResourcePackageAccess
+_CategoryAxisPropertiesHelper ---> GeoJsonExpression
+_ZoomPropertiesHelper --->|show| ExpressionList
+_ValueAxisPropertiesHelper ---> AlgorithmExpression
+_ValueAxisPropertiesHelper ---> ImageExpression
+_RibbonBandsPropertiesHelper ---> LinearGradient3Expression
+_ZoomPropertiesHelper ---> SelectRefExpression
+_LabelsPropertiesHelper ---> AlgorithmExpression
+_ZoomPropertiesHelper ---> ImageExpression
+_DataPointPropertiesHelper ---> SelectRefExpression
+_LegendPropertiesHelper ---> AggregationExpression
+_ZoomPropertiesHelper ---> AlgorithmExpression
+_XAxisReferenceLinePropertiesHelper ---> GeoJsonExpression
+_LayoutPropertiesHelper ---> GeoJsonExpression
+DataPointProperties --->|properties| _DataPointPropertiesHelper
+GeneralProperties --->|properties| _GeneralPropertiesHelper
+_DataPointPropertiesHelper ---> SolidColorExpression
+_LabelsPropertiesHelper ---> ImageKindExpression
+BarChartProperties --->|zoom| ZoomProperties
+_ValueAxisPropertiesHelper ---> ResourcePackageAccess
+_LayoutPropertiesHelper ---> ResourcePackageAccess
+_LayoutPropertiesHelper ---> LiteralExpression
+LabelsProperties ---> Selector
+_RibbonBandsPropertiesHelper ---> ResourcePackageAccess
+_LabelsPropertiesHelper ---> ImageExpression
 ```

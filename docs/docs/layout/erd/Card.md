@@ -3,115 +3,129 @@
 title: Card
 ---
 graph 
-2430071951472["PrototypeQuery"]
-style 2430071951472 stroke:#ff0000,stroke-width:1px
-2430071907552["SolidColorExpression"]
-style 2430071907552 stroke:#ff0000,stroke-width:1px
-2430071930000["AlgorithmExpression"]
-style 2430071930000 stroke:#ff0000,stroke-width:1px
-2430552819776["_GeneralPropertiesHelper"]
-2430071921216["ResourcePackageAccess"]
-style 2430071921216 stroke:#ff0000,stroke-width:1px
-2430071926096["ImageKindExpression"]
-style 2430071926096 stroke:#ff0000,stroke-width:1px
-2430552678256["ColumnProperty"]
-2430514799136["ProjectionConfig"]
-2430071925120["ColumnExpression"]
-style 2430071925120 stroke:#ff0000,stroke-width:1px
-2430071920240["LinearGradient2Expression"]
-style 2430071920240 stroke:#ff0000,stroke-width:1px
-2430071930976["ExpressionList"]
-2430552816848["GeneralProperties"]
-2430552827584["CategoryLabelsProperties"]
-2430071910480["LinearGradient3Expression"]
-style 2430071910480 stroke:#ff0000,stroke-width:1px
-2430514817680["QueryOptions"]
-2430071888032["MeasureExpression"]
-style 2430071888032 stroke:#ff0000,stroke-width:1px
-2430552833440["WordWrapProperties"]
-2430552796352["_CategoryLabelsPropertiesHelper"]
-2430552837344["CardProperties"]
-2430071923168["SelectRefExpression"]
-style 2430071923168 stroke:#ff0000,stroke-width:1px
-2430071919264["ImageExpression"]
-style 2430071919264 stroke:#ff0000,stroke-width:1px
-2430071745536["Selector"]
-style 2430071745536 stroke:#ff0000,stroke-width:1px
-2430552826608["LabelsProperties"]
-2430071889008["AggregationExpression"]
-style 2430071889008 stroke:#ff0000,stroke-width:1px
-2430071918288["GeoJsonExpression"]
-style 2430071918288 stroke:#ff0000,stroke-width:1px
-2430514805968["VCProperties"]
-style 2430514805968 stroke:#ff0000,stroke-width:1px
-2430552843200["Card"]
-2430514810848["Display"]
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430552830512["_WordWrapperPropertiesHelper"]
-2430552823680["_LabelsPropertiesHelper"]
-2430552796352 ---> 2430071918288
-2430552796352 ---> 2430071887056
-2430552823680 ---> 2430071910480
-2430552823680 ---> 2430071925120
-2430552796352 ---> 2430071889008
-2430552823680 ---> 2430071888032
-2430552830512 ---> 2430071920240
-2430552837344 --->|labels| 2430552826608
-2430552827584 --->|properties| 2430552796352
-2430552796352 --->|color| 2430071930976
-2430552843200 ---> 2430514805968
-2430552837344 --->|wordWrap| 2430552833440
-2430552796352 ---> 2430071925120
-2430552796352 ---> 2430071907552
-2430552830512 ---> 2430071925120
-2430552830512 --->|show| 2430071930976
-2430552830512 ---> 2430071921216
-2430552843200 --->|queryOptions| 2430514817680
-2430552837344 --->|general| 2430552816848
-2430552843200 ---> 2430071951472
-2430552678256 --->|display| 2430514810848
-2430552823680 ---> 2430071923168
-2430552678256 --->|queryOptions| 2430514817680
-2430552830512 ---> 2430071926096
-2430552823680 ---> 2430071889008
-2430552796352 ---> 2430071923168
-2430552823680 ---> 2430071930000
-2430552843200 --->|objects| 2430552837344
-2430552823680 ---> 2430071926096
-2430552830512 ---> 2430071907552
-2430552843200 --->|columnProperties| 2430552678256
-2430552796352 ---> 2430071919264
-2430552826608 --->|properties| 2430552823680
-2430552678256 --->|projections| 2430514799136
-2430552833440 --->|properties| 2430552830512
-2430552823680 ---> 2430071907552
-2430552678256 ---> 2430514805968
-2430552678256 ---> 2430071951472
-2430552823680 ---> 2430071920240
-2430552796352 ---> 2430071888032
-2430552816848 --->|properties| 2430552819776
-2430552826608 ---> 2430071745536
-2430552823680 ---> 2430071918288
-2430552823680 --->|color| 2430071930976
-2430552796352 ---> 2430071930000
-2430552796352 ---> 2430071910480
-2430552830512 ---> 2430071887056
-2430552830512 ---> 2430071910480
-2430552837344 --->|categoryLabels| 2430552827584
-2430552830512 ---> 2430071888032
-2430552830512 ---> 2430071930000
-2430552796352 ---> 2430071926096
-2430552796352 ---> 2430071921216
-2430552830512 ---> 2430071919264
-2430552843200 --->|display| 2430514810848
-2430552830512 ---> 2430071918288
-2430552796352 ---> 2430071920240
-2430552843200 --->|projections| 2430514799136
-2430552827584 ---> 2430071745536
-2430552823680 ---> 2430071921216
-2430552823680 ---> 2430071887056
-2430552830512 ---> 2430071923168
-2430552823680 ---> 2430071919264
-2430552830512 ---> 2430071889008
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+style AggregationExpression stroke:#ff0000,stroke-width:1px
+AlgorithmExpression[<a href='/layout/erd/AlgorithmExpression'>AlgorithmExpression</a>]
+style AlgorithmExpression stroke:#ff0000,stroke-width:1px
+Card[<a href='/layout/erd/Card'>Card</a>]
+CardProperties[CardProperties]
+CategoryLabelsProperties[CategoryLabelsProperties]
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+style ColumnExpression stroke:#ff0000,stroke-width:1px
+ColumnProperty[<a href='/layout/erd/ColumnProperty'>ColumnProperty</a>]
+Display[Display]
+ExpressionList[ExpressionList]
+GeneralProperties[GeneralProperties]
+GeoJsonExpression[<a href='/layout/erd/GeoJsonExpression'>GeoJsonExpression</a>]
+style GeoJsonExpression stroke:#ff0000,stroke-width:1px
+ImageExpression[<a href='/layout/erd/ImageExpression'>ImageExpression</a>]
+style ImageExpression stroke:#ff0000,stroke-width:1px
+ImageKindExpression[<a href='/layout/erd/ImageKindExpression'>ImageKindExpression</a>]
+style ImageKindExpression stroke:#ff0000,stroke-width:1px
+LabelsProperties[LabelsProperties]
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
+LinearGradient3Expression[<a href='/layout/erd/LinearGradient3Expression'>LinearGradient3Expression</a>]
+style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+MeasureExpression[<a href='/layout/erd/MeasureExpression'>MeasureExpression</a>]
+style MeasureExpression stroke:#ff0000,stroke-width:1px
+ProjectionConfig[ProjectionConfig]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+style PrototypeQuery stroke:#ff0000,stroke-width:1px
+QueryOptions[QueryOptions]
+ResourcePackageAccess[<a href='/layout/erd/ResourcePackageAccess'>ResourcePackageAccess</a>]
+style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
+SelectRefExpression[<a href='/layout/erd/SelectRefExpression'>SelectRefExpression</a>]
+style SelectRefExpression stroke:#ff0000,stroke-width:1px
+Selector[<a href='/layout/erd/Selector'>Selector</a>]
+style Selector stroke:#ff0000,stroke-width:1px
+SolidColorExpression[<a href='/layout/erd/SolidColorExpression'>SolidColorExpression</a>]
+style SolidColorExpression stroke:#ff0000,stroke-width:1px
+VCProperties[<a href='/layout/erd/VCProperties'>VCProperties</a>]
+style VCProperties stroke:#ff0000,stroke-width:1px
+WordWrapProperties[WordWrapProperties]
+_CategoryLabelsPropertiesHelper[_CategoryLabelsPropertiesHelper]
+_GeneralPropertiesHelper[_GeneralPropertiesHelper]
+_LabelsPropertiesHelper[_LabelsPropertiesHelper]
+_WordWrapperPropertiesHelper[_WordWrapperPropertiesHelper]
+Card --->|display| Display
+_CategoryLabelsPropertiesHelper ---> ResourcePackageAccess
+_LabelsPropertiesHelper ---> ColumnExpression
+_LabelsPropertiesHelper ---> MeasureExpression
+Card ---> VCProperties
+_CategoryLabelsPropertiesHelper ---> AlgorithmExpression
+ColumnProperty --->|display| Display
+_WordWrapperPropertiesHelper ---> GeoJsonExpression
+_LabelsPropertiesHelper ---> SelectRefExpression
+_GeneralPropertiesHelper ---> SolidColorExpression
+_LabelsPropertiesHelper ---> SolidColorExpression
+_GeneralPropertiesHelper ---> LinearGradient3Expression
+_LabelsPropertiesHelper ---> AggregationExpression
+_CategoryLabelsPropertiesHelper ---> LiteralExpression
+_LabelsPropertiesHelper --->|backgroundColor| ExpressionList
+_GeneralPropertiesHelper ---> MeasureExpression
+_CategoryLabelsPropertiesHelper ---> GeoJsonExpression
+_CategoryLabelsPropertiesHelper --->|color| ExpressionList
+Card --->|queryOptions| QueryOptions
+CategoryLabelsProperties ---> Selector
+_GeneralPropertiesHelper ---> LiteralExpression
+_WordWrapperPropertiesHelper ---> LinearGradient3Expression
+_GeneralPropertiesHelper ---> ImageExpression
+_WordWrapperPropertiesHelper ---> ResourcePackageAccess
+_GeneralPropertiesHelper ---> AlgorithmExpression
+_CategoryLabelsPropertiesHelper ---> AggregationExpression
+_WordWrapperPropertiesHelper ---> SolidColorExpression
+_CategoryLabelsPropertiesHelper ---> ImageExpression
+_CategoryLabelsPropertiesHelper ---> ImageKindExpression
+_LabelsPropertiesHelper ---> LinearGradient2Expression
+CardProperties --->|labels| LabelsProperties
+_CategoryLabelsPropertiesHelper ---> LinearGradient2Expression
+_GeneralPropertiesHelper ---> SelectRefExpression
+ColumnProperty ---> PrototypeQuery
+_WordWrapperPropertiesHelper ---> AggregationExpression
+_WordWrapperPropertiesHelper ---> ImageKindExpression
+_WordWrapperPropertiesHelper --->|show| ExpressionList
+_LabelsPropertiesHelper ---> ResourcePackageAccess
+ColumnProperty --->|projections| ProjectionConfig
+_CategoryLabelsPropertiesHelper ---> SolidColorExpression
+_GeneralPropertiesHelper ---> AggregationExpression
+WordWrapProperties --->|properties| _WordWrapperPropertiesHelper
+_GeneralPropertiesHelper ---> ImageKindExpression
+ColumnProperty --->|queryOptions| QueryOptions
+Card --->|objects| CardProperties
+_GeneralPropertiesHelper ---> GeoJsonExpression
+_LabelsPropertiesHelper ---> GeoJsonExpression
+_LabelsPropertiesHelper ---> LinearGradient3Expression
+_GeneralPropertiesHelper ---> LinearGradient2Expression
+LabelsProperties --->|properties| _LabelsPropertiesHelper
+CardProperties --->|wordWrap| WordWrapProperties
+_WordWrapperPropertiesHelper ---> LiteralExpression
+_LabelsPropertiesHelper ---> LiteralExpression
+_WordWrapperPropertiesHelper ---> LinearGradient2Expression
+ColumnProperty ---> VCProperties
+_WordWrapperPropertiesHelper ---> SelectRefExpression
+_GeneralPropertiesHelper --->|altText| ExpressionList
+_CategoryLabelsPropertiesHelper ---> MeasureExpression
+_GeneralPropertiesHelper ---> ColumnExpression
+Card --->|projections| ProjectionConfig
+Card ---> PrototypeQuery
+_CategoryLabelsPropertiesHelper ---> SelectRefExpression
+Card --->|columnProperties| ColumnProperty
+_GeneralPropertiesHelper ---> ResourcePackageAccess
+_CategoryLabelsPropertiesHelper ---> ColumnExpression
+_WordWrapperPropertiesHelper ---> ColumnExpression
+_WordWrapperPropertiesHelper ---> ImageExpression
+CardProperties --->|general| GeneralProperties
+_LabelsPropertiesHelper ---> AlgorithmExpression
+CategoryLabelsProperties --->|properties| _CategoryLabelsPropertiesHelper
+GeneralProperties --->|properties| _GeneralPropertiesHelper
+_WordWrapperPropertiesHelper ---> AlgorithmExpression
+_LabelsPropertiesHelper ---> ImageKindExpression
+CardProperties --->|categoryLabels| CategoryLabelsProperties
+_WordWrapperPropertiesHelper ---> MeasureExpression
+_CategoryLabelsPropertiesHelper ---> LinearGradient3Expression
+LabelsProperties ---> Selector
+_LabelsPropertiesHelper ---> ImageExpression
 ```

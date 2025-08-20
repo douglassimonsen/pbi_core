@@ -3,18 +3,18 @@
 title: LinearGradient2Expression
 ---
 graph 
-2430071896816["SolidExpression"]
-style 2430071896816 stroke:#ff0000,stroke-width:1px
-2430071906576["LinearGradient2Helper"]
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071920240["LinearGradient2Expression"]
-2430071909504["StrategyExpression"]
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430071920240 --->|linearGradient2| 2430071906576
-2430071909504 ---> 2430071887056
-2430071906576 --->|nullColoringStrategy| 2430071909504
-2430071906576 ---> 2430071896816
-2430071909504 ---> 2430071816784
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+LinearGradient2Helper[LinearGradient2Helper]
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+SolidExpression[<a href='/layout/erd/SolidExpression'>SolidExpression</a>]
+style SolidExpression stroke:#ff0000,stroke-width:1px
+StrategyExpression[StrategyExpression]
+StrategyExpression ---> LiteralSource
+StrategyExpression ---> LiteralExpression
+LinearGradient2Helper ---> SolidExpression
+LinearGradient2Expression --->|linearGradient2| LinearGradient2Helper
+LinearGradient2Helper --->|nullColoringStrategy| StrategyExpression
 ```

@@ -3,8 +3,8 @@
 title: LiteralExpression
 ---
 graph 
-2430071887056["LiteralExpression"]
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071887056 ---> 2430071816784
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+LiteralExpression ---> LiteralSource
 ```

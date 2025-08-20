@@ -3,297 +3,294 @@
 title: Slicer
 ---
 graph 
-2430071907552["SolidColorExpression"]
-style 2430071907552 stroke:#ff0000,stroke-width:1px
-2430664116896["PendingChangeIconProperties"]
-2430071814832["TransformOutputRoleRef"]
-2430071366800["ExpressionName"]
-2430071878272["ExistsCondition"]
-style 2430071878272 stroke:#ff0000,stroke-width:1px
-2430071876320["AndCondition"]
-style 2430071876320 stroke:#ff0000,stroke-width:1px
-2430071921216["ResourcePackageAccess"]
-style 2430071921216 stroke:#ff0000,stroke-width:1px
-2430664331616["DataProperties"]
-2430552678256["ColumnProperty"]
-style 2430552678256 stroke:#ff0000,stroke-width:1px
-2430071910480["LinearGradient3Expression"]
-style 2430071910480 stroke:#ff0000,stroke-width:1px
-2430664329664["CachedFilterDisplayItems"]
-2430514817680["QueryOptions"]
-2430664130560["SliderProperties"]
-2430664348208["DateProperties"]
-2430071879248["OrCondition"]
-style 2430071879248 stroke:#ff0000,stroke-width:1px
-2430664335520["GeneralProperties"]
-2430664111040["SelectionProperties"]
-2430071923168["SelectRefExpression"]
-style 2430071923168 stroke:#ff0000,stroke-width:1px
-2430664096400["NumericInputStyleProperties"]
-2430664338448["_GeneralPropertiesHelper"]
-2430664122752["_SelectionPropertiesHelper"]
-2430664134464["SlicerProperties"]
-2430071889008["AggregationExpression"]
-style 2430071889008 stroke:#ff0000,stroke-width:1px
-2430664108112["_ItemPropertiesHelper"]
-2430071825568["ProtoSourceRef"]
-2430071846064["ContainsCondition"]
-style 2430071846064 stroke:#ff0000,stroke-width:1px
-2430071808976["GroupSource"]
-style 2430071808976 stroke:#ff0000,stroke-width:1px
-2430664328688["SyncGroup"]
-2430664095424["HeaderProperties"]
-2430664094448["_PendingChangeIconPropertiesHelper"]
-2430071813856["ExpansionStateChild"]
-2430514810848["Display"]
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430071747488["SelectorData"]
-2430664090544["_HeaderPropertiesHelper"]
-2430071382416["ArithmeticSource"]
-style 2430071382416 stroke:#ff0000,stroke-width:1px
-2430071874368["ComparisonCondition"]
-style 2430071874368 stroke:#ff0000,stroke-width:1px
-2430071820688["RoleRef"]
-2430071951472["PrototypeQuery"]
-style 2430071951472 stroke:#ff0000,stroke-width:1px
-2430071930000["AlgorithmExpression"]
-style 2430071930000 stroke:#ff0000,stroke-width:1px
-2430071823616["ExpansionStateRoot"]
-2430071761152["DataViewWildcard"]
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430664104208["ItemProperties"]
-2430071817760["Information"]
-2430071356064["SelectRef"]
-2430071926096["ImageKindExpression"]
-style 2430071926096 stroke:#ff0000,stroke-width:1px
-2430664088592["_NumericInputStylePropertiesHelper"]
-2430071827520["ExpansionState"]
-2430514799136["ProjectionConfig"]
-2430071925120["ColumnExpression"]
-style 2430071925120 stroke:#ff0000,stroke-width:1px
-2430071920240["LinearGradient2Expression"]
-style 2430071920240 stroke:#ff0000,stroke-width:1px
-2430071930976["ExpressionList"]
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430664140320["Slicer"]
-2430071854848["InCondition"]
-style 2430071854848 stroke:#ff0000,stroke-width:1px
-2430071888032["MeasureExpression"]
-style 2430071888032 stroke:#ff0000,stroke-width:1px
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071919264["ImageExpression"]
-style 2430071919264 stroke:#ff0000,stroke-width:1px
-2430071989536["Filter"]
-style 2430071989536 stroke:#ff0000,stroke-width:1px
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071918288["GeoJsonExpression"]
-style 2430071918288 stroke:#ff0000,stroke-width:1px
-2430071819712["ProtoSource"]
-2430514805968["VCProperties"]
-style 2430514805968 stroke:#ff0000,stroke-width:1px
-2430664129584["_SliderPropertiesHelper"]
-2430071809952["ExpansionStateLevel"]
-2430071880224["NotCondition"]
-style 2430071880224 stroke:#ff0000,stroke-width:1px
-2430664324784["_DataPropertiesHelper"]
-2430664346256["_DatePropertiesHelper"]
-2430664090544 ---> 2430071907552
-2430071813856 --->|children| 2430071813856
-2430664090544 ---> 2430071930000
-2430664122752 ---> 2430071888032
-2430664129584 ---> 2430071923168
-2430664346256 --->|background| 2430071930976
-2430664094448 ---> 2430071907552
-2430664346256 ---> 2430071889008
-2430071823616 --->|children| 2430071813856
-2430664140320 ---> 2430514805968
-2430664090544 ---> 2430071926096
-2430664108112 ---> 2430071887056
-2430664324784 ---> 2430071925120
-2430664140320 --->|projections| 2430514799136
-2430664338448 ---> 2430071889008
-2430664129584 ---> 2430071889008
-2430664346256 ---> 2430071888032
-2430664346256 ---> 2430071921216
-2430664129584 ---> 2430071921216
-2430071747488 ---> 2430071846064
-2430664094448 ---> 2430071921216
-2430664129584 ---> 2430071910480
-2430071747488 ---> 2430071874368
-2430664108112 ---> 2430071888032
-2430664096400 --->|properties| 2430664088592
-2430664122752 ---> 2430071926096
-2430664331616 --->|properties| 2430664324784
-2430664088592 ---> 2430071926096
-2430664134464 --->|numericInputStyle| 2430664096400
-2430071809952 --->|AIInformation| 2430071817760
-2430071747488 ---> 2430071879248
-2430664094448 ---> 2430071923168
-2430664088592 ---> 2430071888032
-2430664324784 ---> 2430071887056
-2430664088592 ---> 2430071930000
-2430664094448 ---> 2430071920240
-2430664088592 ---> 2430071910480
-2430071813856 --->|identityValues| 2430071356064
-2430664090544 ---> 2430071889008
-2430664140320 --->|queryOptions| 2430514817680
-2430664324784 ---> 2430071918288
-2430071813856 --->|identityValues| 2430071814832
-2430071809952 ---> 2430071365824
-2430664088592 ---> 2430071925120
-2430664338448 ---> 2430071926096
-2430664324784 ---> 2430071907552
-2430664129584 ---> 2430071920240
-2430664122752 ---> 2430071925120
-2430664108112 ---> 2430071918288
-2430664130560 --->|properties| 2430664129584
-2430664324784 ---> 2430071920240
-2430664090544 ---> 2430071919264
-2430664338448 ---> 2430071921216
-2430664324784 ---> 2430071930000
-2430664346256 ---> 2430071926096
-2430664134464 --->|date| 2430664348208
-2430071747488 ---> 2430071854848
-2430664338448 ---> 2430071923168
-2430664140320 ---> 2430552678256
-2430664088592 ---> 2430071918288
-2430664090544 ---> 2430071920240
-2430071747488 --->|dataViewWildcard| 2430071761152
-2430664140320 --->|syncGroup| 2430664328688
-2430664129584 ---> 2430071887056
-2430664129584 ---> 2430071918288
-2430664094448 ---> 2430071925120
-2430664324784 ---> 2430071910480
-2430664122752 ---> 2430071918288
-2430664094448 ---> 2430071930000
-2430664140320 --->|expansionStates| 2430071827520
-2430664122752 ---> 2430071923168
-2430664108112 ---> 2430071930000
-2430664122752 ---> 2430071921216
-2430664134464 --->|selection| 2430664111040
-2430664134464 --->|pendingChangesIcon| 2430664116896
-2430664346256 ---> 2430071923168
-2430664338448 --->|responsive| 2430071930976
-2430664094448 ---> 2430071919264
-2430664129584 ---> 2430071925120
-2430664346256 ---> 2430071919264
-2430664088592 ---> 2430071920240
-2430664140320 --->|objects| 2430664134464
-2430664090544 ---> 2430071918288
-2430664122752 ---> 2430071907552
-2430664108112 ---> 2430071920240
-2430664108112 ---> 2430071910480
-2430071747488 ---> 2430071876320
-2430664094448 ---> 2430071888032
-2430664129584 ---> 2430071888032
-2430664094448 ---> 2430071918288
-2430664088592 ---> 2430071889008
-2430664111040 --->|properties| 2430664122752
-2430664346256 ---> 2430071920240
-2430071813856 ---> 2430071808976
-2430664088592 ---> 2430071919264
-2430664140320 ---> 2430071951472
-2430071809952 ---> 2430071363872
-2430664134464 --->|data| 2430664331616
-2430664122752 ---> 2430071887056
-2430071827520 --->|levels| 2430071809952
-2430664338448 ---> 2430071930000
-2430071809952 --->|identityKeys| 2430071814832
-2430071813856 --->|identityValues| 2430071825568
-2430664122752 ---> 2430071910480
-2430071825568 --->|SourceRef| 2430071819712
-2430664088592 ---> 2430071887056
-2430664108112 ---> 2430071907552
-2430664338448 ---> 2430071888032
-2430664090544 ---> 2430071923168
-2430664090544 ---> 2430071921216
-2430664122752 --->|selectAllCheckboxEnabled| 2430071930976
-2430664090544 ---> 2430071888032
-2430664129584 ---> 2430071930000
-2430664090544 ---> 2430071910480
-2430664095424 --->|properties| 2430664090544
-2430664129584 ---> 2430071919264
-2430664338448 ---> 2430071989536
-2430664324784 ---> 2430071919264
-2430664324784 ---> 2430071923168
-2430664088592 ---> 2430071923168
-2430664134464 --->|header| 2430664095424
-2430071809952 ---> 2430071808976
-2430664122752 ---> 2430071920240
-2430664338448 ---> 2430071925120
-2430664108112 ---> 2430071889008
-2430071356064 --->|SelectRef| 2430071366800
-2430664338448 ---> 2430071907552
-2430664346256 ---> 2430071925120
-2430664094448 ---> 2430071926096
-2430664104208 --->|properties| 2430664108112
-2430664108112 ---> 2430071919264
-2430664108112 ---> 2430071923168
-2430664090544 ---> 2430071925120
-2430664338448 ---> 2430071919264
-2430664094448 ---> 2430071889008
-2430071809952 ---> 2430071359968
-2430664088592 --->|background| 2430071930976
-2430664324784 ---> 2430071921216
-2430664338448 ---> 2430071918288
-2430664324784 --->|endDate| 2430071930976
-2430664094448 ---> 2430071910480
-2430664346256 ---> 2430071910480
-2430071809952 ---> 2430071382416
-2430664088592 ---> 2430071907552
-2430664122752 ---> 2430071930000
-2430664122752 ---> 2430071919264
-2430071747488 ---> 2430071880224
-2430664324784 ---> 2430071888032
-2430664108112 ---> 2430071921216
-2430664140320 --->|cachedFilterDisplayItems| 2430664329664
-2430664088592 ---> 2430071921216
-2430664116896 --->|properties| 2430664094448
-2430664094448 --->|color| 2430071930976
-2430664108112 ---> 2430071926096
-2430071809952 ---> 2430071358016
-2430664346256 ---> 2430071907552
-2430071813856 ---> 2430071359968
-2430071809952 --->|identityKeys| 2430071356064
-2430664129584 --->|color| 2430071930976
-2430664348208 --->|properties| 2430664346256
-2430664338448 ---> 2430071910480
-2430071813856 ---> 2430071365824
-2430071814832 --->|TransformOutputRoleRef| 2430071820688
-2430071813856 ---> 2430071363872
-2430071747488 ---> 2430071878272
-2430664338448 ---> 2430071887056
-2430071809952 --->|identityKeys| 2430071825568
-2430664129584 ---> 2430071926096
-2430664140320 --->|display| 2430514810848
-2430664329664 --->|id| 2430071747488
-2430664122752 ---> 2430071889008
-2430664134464 --->|slider| 2430664130560
-2430071827520 --->|root| 2430071823616
-2430664094448 ---> 2430071887056
-2430664134464 --->|general| 2430664335520
-2430071813856 ---> 2430071358016
-2430664346256 ---> 2430071887056
-2430071809952 ---> 2430071816784
-2430664108112 ---> 2430071925120
-2430664090544 --->|background| 2430071930976
-2430071813856 ---> 2430071382416
-2430664324784 ---> 2430071889008
-2430664134464 --->|items| 2430664104208
-2430664346256 ---> 2430071918288
-2430664335520 --->|properties| 2430664338448
-2430071813856 ---> 2430071816784
-2430664324784 ---> 2430071926096
-2430664129584 ---> 2430071907552
-2430664090544 ---> 2430071887056
-2430664338448 ---> 2430071920240
-2430664346256 ---> 2430071930000
-2430664108112 --->|background| 2430071930976
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+style AggregationExpression stroke:#ff0000,stroke-width:1px
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+AlgorithmExpression[<a href='/layout/erd/AlgorithmExpression'>AlgorithmExpression</a>]
+style AlgorithmExpression stroke:#ff0000,stroke-width:1px
+AndCondition[<a href='/layout/erd/AndCondition'>AndCondition</a>]
+style AndCondition stroke:#ff0000,stroke-width:1px
+ArithmeticSource[<a href='/layout/erd/ArithmeticSource'>ArithmeticSource</a>]
+style ArithmeticSource stroke:#ff0000,stroke-width:1px
+CachedFilterDisplayItems[CachedFilterDisplayItems]
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+style ColumnExpression stroke:#ff0000,stroke-width:1px
+ColumnProperty[<a href='/layout/erd/ColumnProperty'>ColumnProperty</a>]
+style ColumnProperty stroke:#ff0000,stroke-width:1px
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+ComparisonCondition[<a href='/layout/erd/ComparisonCondition'>ComparisonCondition</a>]
+style ComparisonCondition stroke:#ff0000,stroke-width:1px
+ContainsCondition[<a href='/layout/erd/ContainsCondition'>ContainsCondition</a>]
+style ContainsCondition stroke:#ff0000,stroke-width:1px
+DataProperties[DataProperties]
+DataViewWildcard[DataViewWildcard]
+DateProperties[DateProperties]
+Display[Display]
+ExistsCondition[<a href='/layout/erd/ExistsCondition'>ExistsCondition</a>]
+style ExistsCondition stroke:#ff0000,stroke-width:1px
+ExpansionState[<a href='/layout/erd/ExpansionState'>ExpansionState</a>]
+ExpansionStateChild[ExpansionStateChild]
+ExpansionStateLevel[ExpansionStateLevel]
+ExpansionStateRoot[ExpansionStateRoot]
+ExpressionList[ExpressionList]
+ExpressionName[ExpressionName]
+GeneralProperties[GeneralProperties]
+GeoJsonExpression[<a href='/layout/erd/GeoJsonExpression'>GeoJsonExpression</a>]
+style GeoJsonExpression stroke:#ff0000,stroke-width:1px
+GroupSource[<a href='/layout/erd/GroupSource'>GroupSource</a>]
+style GroupSource stroke:#ff0000,stroke-width:1px
+HeaderProperties[HeaderProperties]
+HierarchyLevelSource[<a href='/layout/erd/HierarchyLevelSource'>HierarchyLevelSource</a>]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+ImageExpression[<a href='/layout/erd/ImageExpression'>ImageExpression</a>]
+style ImageExpression stroke:#ff0000,stroke-width:1px
+ImageKindExpression[<a href='/layout/erd/ImageKindExpression'>ImageKindExpression</a>]
+style ImageKindExpression stroke:#ff0000,stroke-width:1px
+InCondition[<a href='/layout/erd/InCondition'>InCondition</a>]
+style InCondition stroke:#ff0000,stroke-width:1px
+Information[Information]
+ItemProperties[ItemProperties]
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
+LinearGradient3Expression[<a href='/layout/erd/LinearGradient3Expression'>LinearGradient3Expression</a>]
+style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureExpression[<a href='/layout/erd/MeasureExpression'>MeasureExpression</a>]
+style MeasureExpression stroke:#ff0000,stroke-width:1px
+MeasureSource[<a href='/layout/erd/MeasureSource'>MeasureSource</a>]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+NotCondition[<a href='/layout/erd/NotCondition'>NotCondition</a>]
+style NotCondition stroke:#ff0000,stroke-width:1px
+NumericInputStyleProperties[NumericInputStyleProperties]
+OrCondition[<a href='/layout/erd/OrCondition'>OrCondition</a>]
+style OrCondition stroke:#ff0000,stroke-width:1px
+PendingChangeIconProperties[PendingChangeIconProperties]
+ProjectionConfig[ProjectionConfig]
+ProtoSource[ProtoSource]
+ProtoSourceRef[ProtoSourceRef]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+style PrototypeQuery stroke:#ff0000,stroke-width:1px
+QueryOptions[QueryOptions]
+ResourcePackageAccess[<a href='/layout/erd/ResourcePackageAccess'>ResourcePackageAccess</a>]
+style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
+RoleRef[RoleRef]
+SelectRef[SelectRef]
+SelectRefExpression[<a href='/layout/erd/SelectRefExpression'>SelectRefExpression</a>]
+style SelectRefExpression stroke:#ff0000,stroke-width:1px
+SelectionProperties[SelectionProperties]
+SelectorData[SelectorData]
+Slicer[<a href='/layout/erd/Slicer'>Slicer</a>]
+SlicerProperties[SlicerProperties]
+SliderProperties[SliderProperties]
+SolidColorExpression[<a href='/layout/erd/SolidColorExpression'>SolidColorExpression</a>]
+style SolidColorExpression stroke:#ff0000,stroke-width:1px
+SyncGroup[SyncGroup]
+TransformOutputRoleRef[TransformOutputRoleRef]
+VCProperties[<a href='/layout/erd/VCProperties'>VCProperties</a>]
+style VCProperties stroke:#ff0000,stroke-width:1px
+_DataPropertiesHelper[_DataPropertiesHelper]
+_DatePropertiesHelper[_DatePropertiesHelper]
+_GeneralPropertiesHelper[_GeneralPropertiesHelper]
+_HeaderPropertiesHelper[_HeaderPropertiesHelper]
+_ItemPropertiesHelper[_ItemPropertiesHelper]
+_NumericInputStylePropertiesHelper[_NumericInputStylePropertiesHelper]
+_PendingChangeIconPropertiesHelper[_PendingChangeIconPropertiesHelper]
+_SelectionPropertiesHelper[_SelectionPropertiesHelper]
+_SliderPropertiesHelper[_SliderPropertiesHelper]
+_SelectionPropertiesHelper --->|selectAllCheckboxEnabled| ExpressionList
+SlicerProperties --->|header| HeaderProperties
+_ItemPropertiesHelper ---> LiteralExpression
+ExpansionStateChild --->|identityValues| ProtoSourceRef
+SelectorData ---> NotCondition
+_ItemPropertiesHelper ---> ColumnExpression
+_SelectionPropertiesHelper ---> ColumnExpression
+SlicerProperties --->|pendingChangesIcon| PendingChangeIconProperties
+_DatePropertiesHelper ---> ImageKindExpression
+ProtoSourceRef --->|SourceRef| ProtoSource
+Slicer ---> ColumnProperty
+Slicer --->|queryOptions| QueryOptions
+_DataPropertiesHelper ---> AlgorithmExpression
+_SliderPropertiesHelper ---> AlgorithmExpression
+_NumericInputStylePropertiesHelper ---> ImageExpression
+SelectorData --->|dataViewWildcard| DataViewWildcard
+ExpansionStateLevel ---> LiteralSource
+SliderProperties --->|properties| _SliderPropertiesHelper
+_HeaderPropertiesHelper --->|background| ExpressionList
+_DataPropertiesHelper ---> LinearGradient3Expression
+_SelectionPropertiesHelper ---> SolidColorExpression
+_SliderPropertiesHelper ---> ImageExpression
+_HeaderPropertiesHelper ---> LinearGradient2Expression
+_SelectionPropertiesHelper ---> ImageKindExpression
+_DatePropertiesHelper ---> SelectRefExpression
+ExpansionStateChild ---> ArithmeticSource
+_DataPropertiesHelper ---> LinearGradient2Expression
+_GeneralPropertiesHelper ---> SolidColorExpression
+SlicerProperties --->|general| GeneralProperties
+SelectorData ---> ComparisonCondition
+_PendingChangeIconPropertiesHelper ---> ColumnExpression
+_SliderPropertiesHelper ---> LinearGradient3Expression
+_ItemPropertiesHelper ---> GeoJsonExpression
+_NumericInputStylePropertiesHelper ---> SolidColorExpression
+_GeneralPropertiesHelper ---> LinearGradient3Expression
+_DatePropertiesHelper ---> LiteralExpression
+_SelectionPropertiesHelper ---> AggregationExpression
+_GeneralPropertiesHelper ---> MeasureExpression
+_DatePropertiesHelper ---> MeasureExpression
+ExpansionStateLevel ---> ArithmeticSource
+_DatePropertiesHelper ---> LinearGradient3Expression
+_DataPropertiesHelper ---> SelectRefExpression
+_NumericInputStylePropertiesHelper --->|background| ExpressionList
+_SelectionPropertiesHelper ---> LinearGradient3Expression
+_HeaderPropertiesHelper ---> MeasureExpression
+Slicer --->|syncGroup| SyncGroup
+_PendingChangeIconPropertiesHelper ---> MeasureExpression
+SelectorData ---> ExistsCondition
+_SliderPropertiesHelper ---> ResourcePackageAccess
+_DatePropertiesHelper ---> ResourcePackageAccess
+_SliderPropertiesHelper ---> LiteralExpression
+_SliderPropertiesHelper ---> SelectRefExpression
+_DatePropertiesHelper ---> ColumnExpression
+HeaderProperties --->|properties| _HeaderPropertiesHelper
+_GeneralPropertiesHelper ---> LiteralExpression
+SelectorData ---> InCondition
+_SelectionPropertiesHelper ---> ImageExpression
+_SelectionPropertiesHelper ---> SelectRefExpression
+_NumericInputStylePropertiesHelper ---> GeoJsonExpression
+_HeaderPropertiesHelper ---> LinearGradient3Expression
+_PendingChangeIconPropertiesHelper ---> SolidColorExpression
+SelectorData ---> ContainsCondition
+_DataPropertiesHelper ---> SolidColorExpression
+_GeneralPropertiesHelper ---> ImageExpression
+_DatePropertiesHelper ---> SolidColorExpression
+_NumericInputStylePropertiesHelper ---> ImageKindExpression
+_PendingChangeIconPropertiesHelper --->|color| ExpressionList
+SlicerProperties --->|data| DataProperties
+ExpansionState --->|levels| ExpansionStateLevel
+_GeneralPropertiesHelper ---> AlgorithmExpression
+_SelectionPropertiesHelper ---> LiteralExpression
+_PendingChangeIconPropertiesHelper ---> AlgorithmExpression
+ItemProperties --->|properties| _ItemPropertiesHelper
+_HeaderPropertiesHelper ---> GeoJsonExpression
+_HeaderPropertiesHelper ---> SolidColorExpression
+DateProperties --->|properties| _DatePropertiesHelper
+Slicer --->|display| Display
+_SelectionPropertiesHelper ---> MeasureExpression
+SelectorData ---> OrCondition
+_PendingChangeIconPropertiesHelper ---> SelectRefExpression
+_HeaderPropertiesHelper ---> SelectRefExpression
+Slicer ---> VCProperties
+_DatePropertiesHelper --->|background| ExpressionList
+_NumericInputStylePropertiesHelper ---> ResourcePackageAccess
+_DataPropertiesHelper ---> AggregationExpression
+ExpansionStateRoot --->|children| ExpansionStateChild
+_SliderPropertiesHelper ---> AggregationExpression
+_GeneralPropertiesHelper ---> SelectRefExpression
+_ItemPropertiesHelper ---> ImageExpression
+_ItemPropertiesHelper ---> SolidColorExpression
+SlicerProperties --->|numericInputStyle| NumericInputStyleProperties
+_ItemPropertiesHelper ---> LinearGradient3Expression
+Slicer --->|expansionStates| ExpansionState
+_SelectionPropertiesHelper ---> ResourcePackageAccess
+_SelectionPropertiesHelper ---> GeoJsonExpression
+_NumericInputStylePropertiesHelper ---> AggregationExpression
+_PendingChangeIconPropertiesHelper ---> LinearGradient2Expression
+SelectionProperties --->|properties| _SelectionPropertiesHelper
+ExpansionStateChild --->|identityValues| SelectRef
+_SliderPropertiesHelper ---> MeasureExpression
+_ItemPropertiesHelper ---> MeasureExpression
+SlicerProperties --->|date| DateProperties
+_SliderPropertiesHelper ---> ColumnExpression
+ExpansionStateChild ---> GroupSource
+ExpansionStateChild --->|identityValues| TransformOutputRoleRef
+SlicerProperties --->|items| ItemProperties
+_SelectionPropertiesHelper ---> LinearGradient2Expression
+ExpansionStateLevel --->|AIInformation| Information
+_GeneralPropertiesHelper ---> AggregationExpression
+SlicerProperties --->|slider| SliderProperties
+_DataPropertiesHelper ---> ColumnExpression
+ExpansionStateLevel ---> AggregationSource
+_GeneralPropertiesHelper ---> ImageKindExpression
+_HeaderPropertiesHelper ---> ResourcePackageAccess
+_PendingChangeIconPropertiesHelper ---> AggregationExpression
+_DatePropertiesHelper ---> LinearGradient2Expression
+_GeneralPropertiesHelper ---> GeoJsonExpression
+_DataPropertiesHelper ---> ResourcePackageAccess
+_HeaderPropertiesHelper ---> LiteralExpression
+TransformOutputRoleRef --->|TransformOutputRoleRef| RoleRef
+_NumericInputStylePropertiesHelper ---> LinearGradient2Expression
+_SliderPropertiesHelper ---> GeoJsonExpression
+ExpansionStateChild ---> LiteralSource
+_ItemPropertiesHelper ---> ImageKindExpression
+_PendingChangeIconPropertiesHelper ---> ImageKindExpression
+_ItemPropertiesHelper ---> ResourcePackageAccess
+_HeaderPropertiesHelper ---> ImageKindExpression
+_GeneralPropertiesHelper ---> LinearGradient2Expression
+_PendingChangeIconPropertiesHelper ---> LinearGradient3Expression
+CachedFilterDisplayItems --->|id| SelectorData
+_DataPropertiesHelper ---> MeasureExpression
+SelectRef --->|SelectRef| ExpressionName
+_ItemPropertiesHelper ---> AggregationExpression
+ExpansionStateChild --->|children| ExpansionStateChild
+NumericInputStyleProperties --->|properties| _NumericInputStylePropertiesHelper
+_DatePropertiesHelper ---> GeoJsonExpression
+ExpansionStateLevel ---> MeasureSource
+_DataPropertiesHelper --->|endDate| ExpressionList
+_DatePropertiesHelper ---> ImageExpression
+_ItemPropertiesHelper ---> SelectRefExpression
+_NumericInputStylePropertiesHelper ---> SelectRefExpression
+_PendingChangeIconPropertiesHelper ---> LiteralExpression
+PendingChangeIconProperties --->|properties| _PendingChangeIconPropertiesHelper
+_SliderPropertiesHelper ---> SolidColorExpression
+_NumericInputStylePropertiesHelper ---> ColumnExpression
+_SliderPropertiesHelper ---> LinearGradient2Expression
+ExpansionStateChild ---> MeasureSource
+_GeneralPropertiesHelper --->|altText| ExpressionList
+_HeaderPropertiesHelper ---> AlgorithmExpression
+ExpansionStateLevel --->|identityKeys| ProtoSourceRef
+DataProperties --->|properties| _DataPropertiesHelper
+_DataPropertiesHelper ---> GeoJsonExpression
+_SelectionPropertiesHelper ---> AlgorithmExpression
+Slicer --->|objects| SlicerProperties
+_GeneralPropertiesHelper ---> ColumnExpression
+_DatePropertiesHelper ---> AggregationExpression
+_PendingChangeIconPropertiesHelper ---> ResourcePackageAccess
+_NumericInputStylePropertiesHelper ---> LinearGradient3Expression
+ExpansionState --->|root| ExpansionStateRoot
+ExpansionStateLevel --->|identityKeys| TransformOutputRoleRef
+_PendingChangeIconPropertiesHelper ---> ImageExpression
+ExpansionStateLevel ---> ColumnSource
+SelectorData ---> AndCondition
+_HeaderPropertiesHelper ---> ColumnExpression
+_GeneralPropertiesHelper ---> ResourcePackageAccess
+ExpansionStateLevel --->|identityKeys| SelectRef
+ExpansionStateChild ---> HierarchyLevelSource
+_DataPropertiesHelper ---> ImageExpression
+ExpansionStateChild ---> AggregationSource
+_ItemPropertiesHelper --->|background| ExpressionList
+_PendingChangeIconPropertiesHelper ---> GeoJsonExpression
+_ItemPropertiesHelper ---> AlgorithmExpression
+_SliderPropertiesHelper ---> ImageKindExpression
+Slicer ---> PrototypeQuery
+_HeaderPropertiesHelper ---> AggregationExpression
+_NumericInputStylePropertiesHelper ---> AlgorithmExpression
+ExpansionStateChild ---> ColumnSource
+_NumericInputStylePropertiesHelper ---> MeasureExpression
+ExpansionStateLevel ---> GroupSource
+SlicerProperties --->|selection| SelectionProperties
+_HeaderPropertiesHelper ---> ImageExpression
+Slicer --->|projections| ProjectionConfig
+_SliderPropertiesHelper --->|color| ExpressionList
+GeneralProperties --->|properties| _GeneralPropertiesHelper
+_DataPropertiesHelper ---> LiteralExpression
+Slicer --->|cachedFilterDisplayItems| CachedFilterDisplayItems
+_DatePropertiesHelper ---> AlgorithmExpression
+ExpansionStateLevel ---> HierarchyLevelSource
+_NumericInputStylePropertiesHelper ---> LiteralExpression
+_ItemPropertiesHelper ---> LinearGradient2Expression
+_DataPropertiesHelper ---> ImageKindExpression
 ```

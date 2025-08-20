@@ -3,26 +3,26 @@
 title: Bookmark
 ---
 graph 
-2430514862576["BookmarkSection"]
-2430514888928["BookmarkOptions"]
-2430514881120["ExplorationState"]
-2430514847936["VisualContainerGroup"]
-2430514834272["BookmarkFilters"]
-2430071997344["BookmarkFilter"]
-style 2430071997344 stroke:#ff0000,stroke-width:1px
-2430514883072["Bookmark"]
-2430514852816["BookmarkVisual"]
-style 2430514852816 stroke:#ff0000,stroke-width:1px
-2430514868432["ExplorationStateProperties"]
-style 2430514868432 stroke:#ff0000,stroke-width:1px
-2430514862576 ---> 2430514852816
-2430514834272 ---> 2430071997344
-2430514881120 --->|sections| 2430514862576
-2430514862576 --->|visualContainerGroups| 2430514847936
-2430514883072 --->|options| 2430514888928
-2430514883072 --->|explorationState| 2430514881120
-2430514881120 --->|filters| 2430514834272
-2430514881120 ---> 2430514868432
-2430514862576 --->|filters| 2430514834272
-2430514847936 --->|children| 2430514847936
+Bookmark[<a href='/layout/erd/Bookmark'>Bookmark</a>]
+BookmarkFilter[<a href='/layout/erd/BookmarkFilter'>BookmarkFilter</a>]
+style BookmarkFilter stroke:#ff0000,stroke-width:1px
+BookmarkFilters[BookmarkFilters]
+BookmarkOptions[BookmarkOptions]
+BookmarkSection[BookmarkSection]
+BookmarkVisual[<a href='/layout/erd/BookmarkVisual'>BookmarkVisual</a>]
+style BookmarkVisual stroke:#ff0000,stroke-width:1px
+ExplorationState[ExplorationState]
+ExplorationStateProperties[<a href='/layout/erd/ExplorationStateProperties'>ExplorationStateProperties</a>]
+style ExplorationStateProperties stroke:#ff0000,stroke-width:1px
+VisualContainerGroup[VisualContainerGroup]
+Bookmark --->|options| BookmarkOptions
+Bookmark --->|explorationState| ExplorationState
+ExplorationState ---> ExplorationStateProperties
+VisualContainerGroup --->|children| VisualContainerGroup
+BookmarkSection --->|filters| BookmarkFilters
+BookmarkSection --->|visualContainerGroups| VisualContainerGroup
+ExplorationState --->|filters| BookmarkFilters
+BookmarkFilters ---> BookmarkFilter
+BookmarkSection ---> BookmarkVisual
+ExplorationState --->|sections| BookmarkSection
 ```

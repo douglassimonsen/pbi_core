@@ -3,56 +3,56 @@
 title: PrototypeQuery
 ---
 graph 
-2430071820688["RoleRef"]
-2430071951472["PrototypeQuery"]
-2430071814832["TransformOutputRoleRef"]
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071943664["Orderby"]
-2430071366800["ExpressionName"]
-2430071949520["TransformMeta"]
-style 2430071949520 stroke:#ff0000,stroke-width:1px
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071825568["ProtoSourceRef"]
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071808976["GroupSource"]
-style 2430071808976 stroke:#ff0000,stroke-width:1px
-2430071356064["SelectRef"]
-2430071819712["ProtoSource"]
-2430071882176["Condition"]
-style 2430071882176 stroke:#ff0000,stroke-width:1px
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430071382416["ArithmeticSource"]
-style 2430071382416 stroke:#ff0000,stroke-width:1px
-2430071943664 ---> 2430071363872
-2430071951472 ---> 2430071363872
-2430071951472 ---> 2430071882176
-2430071951472 ---> 2430071816784
-2430071951472 ---> 2430071365824
-2430071825568 --->|SourceRef| 2430071819712
-2430071951472 ---> 2430071382416
-2430071814832 --->|TransformOutputRoleRef| 2430071820688
-2430071951472 ---> 2430071359968
-2430071951472 ---> 2430071358016
-2430071943664 --->|Expression| 2430071814832
-2430071943664 ---> 2430071365824
-2430071943664 --->|Expression| 2430071825568
-2430071356064 --->|SelectRef| 2430071366800
-2430071951472 --->|OrderBy| 2430071943664
-2430071951472 ---> 2430071949520
-2430071951472 --->|Select| 2430071825568
-2430071943664 ---> 2430071358016
-2430071943664 --->|Expression| 2430071356064
-2430071943664 ---> 2430071359968
-2430071951472 --->|Select| 2430071814832
-2430071951472 --->|Select| 2430071356064
-2430071951472 ---> 2430071808976
-2430071943664 ---> 2430071382416
-2430071943664 ---> 2430071808976
-2430071943664 ---> 2430071816784
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+ArithmeticSource[<a href='/layout/erd/ArithmeticSource'>ArithmeticSource</a>]
+style ArithmeticSource stroke:#ff0000,stroke-width:1px
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+Condition[<a href='/layout/erd/Condition'>Condition</a>]
+style Condition stroke:#ff0000,stroke-width:1px
+ExpressionName[ExpressionName]
+GroupSource[<a href='/layout/erd/GroupSource'>GroupSource</a>]
+style GroupSource stroke:#ff0000,stroke-width:1px
+HierarchyLevelSource[<a href='/layout/erd/HierarchyLevelSource'>HierarchyLevelSource</a>]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureSource[<a href='/layout/erd/MeasureSource'>MeasureSource</a>]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+Orderby[Orderby]
+ProtoSource[ProtoSource]
+ProtoSourceRef[ProtoSourceRef]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+RoleRef[RoleRef]
+SelectRef[SelectRef]
+TransformMeta[<a href='/layout/erd/TransformMeta'>TransformMeta</a>]
+style TransformMeta stroke:#ff0000,stroke-width:1px
+TransformOutputRoleRef[TransformOutputRoleRef]
+PrototypeQuery ---> Condition
+Orderby ---> AggregationSource
+PrototypeQuery ---> AggregationSource
+PrototypeQuery ---> MeasureSource
+ProtoSourceRef --->|SourceRef| ProtoSource
+PrototypeQuery --->|OrderBy| Orderby
+PrototypeQuery --->|Select| ProtoSourceRef
+Orderby --->|Expression| TransformOutputRoleRef
+TransformOutputRoleRef --->|TransformOutputRoleRef| RoleRef
+PrototypeQuery --->|Select| SelectRef
+Orderby ---> HierarchyLevelSource
+PrototypeQuery ---> GroupSource
+Orderby ---> ColumnSource
+Orderby ---> LiteralSource
+Orderby ---> MeasureSource
+SelectRef --->|SelectRef| ExpressionName
+PrototypeQuery ---> LiteralSource
+PrototypeQuery --->|Select| TransformOutputRoleRef
+Orderby ---> ArithmeticSource
+Orderby --->|Expression| ProtoSourceRef
+PrototypeQuery ---> ColumnSource
+PrototypeQuery ---> HierarchyLevelSource
+Orderby --->|Expression| SelectRef
+PrototypeQuery ---> TransformMeta
+PrototypeQuery ---> ArithmeticSource
+Orderby ---> GroupSource
 ```

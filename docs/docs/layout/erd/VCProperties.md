@@ -3,284 +3,282 @@
 title: VCProperties
 ---
 graph 
-2430071805072["DropShadowProperties"]
-2430071798240["DividerProperties"]
-2430514781568["_VisualHeaderTooltipPropertiesHelper"]
-2430514789376["VisualLinkProperties"]
-2430514740576["LockAspectProperties"]
-2430071907552["SolidColorExpression"]
-style 2430071907552 stroke:#ff0000,stroke-width:1px
-2430071792384["_DividerPropertiesHelper"]
-2430071930000["AlgorithmExpression"]
-style 2430071930000 stroke:#ff0000,stroke-width:1px
-2430514761072["SubTitleProperties"]
-2430071783600["_BorderPropertiesHelper"]
-2430514747408["StylePresetProperties"]
-2430071921216["ResourcePackageAccess"]
-style 2430071921216 stroke:#ff0000,stroke-width:1px
-2430514737648["_GeneralPropertiesHelper"]
-2430071926096["ImageKindExpression"]
-style 2430071926096 stroke:#ff0000,stroke-width:1px
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430514748384["_TitlePropertiesHelper"]
-2430071925120["ColumnExpression"]
-style 2430071925120 stroke:#ff0000,stroke-width:1px
-2430071920240["LinearGradient2Expression"]
-style 2430071920240 stroke:#ff0000,stroke-width:1px
-2430514773760["VisualHeaderProperties"]
-2430071930976["ExpressionList"]
-2430071910480["LinearGradient3Expression"]
-style 2430071910480 stroke:#ff0000,stroke-width:1px
-2430071888032["MeasureExpression"]
-style 2430071888032 stroke:#ff0000,stroke-width:1px
-2430514728864["_LockAspectPropertiesHelper"]
-2430514726912["GeneralProperties"]
-2430071802144["_DropShadowPropertiesHelper"]
-2430071923168["SelectRefExpression"]
-style 2430071923168 stroke:#ff0000,stroke-width:1px
-2430514792304["VisualTooltipProperties"]
-2430071919264["ImageExpression"]
-style 2430071919264 stroke:#ff0000,stroke-width:1px
-2430514795232["_VisualTooltipPropertiesHelper"]
-2430514783520["VisualHeaderTooltipProperties"]
-2430071889008["AggregationExpression"]
-style 2430071889008 stroke:#ff0000,stroke-width:1px
-2430514774736["_VisualHeaderPropertiesHelper"]
-2430071782624["BackgroundProperties"]
-2430514741552["_SpacingPropertiesHelper"]
-2430514791328["_VisualLinkPropertiesHelper"]
-2430071918288["GeoJsonExpression"]
-style 2430071918288 stroke:#ff0000,stroke-width:1px
-2430514805968["VCProperties"]
-2430071766032["_BackgroundPropertiesHelper"]
-2430514779616["TitleProperties"]
-2430071791408["BorderProperties"]
-2430514751312["SpacingProperties"]
-2430514744480["_SubTitlePropertiesHelper"]
-2430514745456["_StylePresetPropertiesHelper"]
-2430071783600 --->|background| 2430071930976
-2430514744480 ---> 2430071926096
-2430514728864 ---> 2430071930000
-2430514745456 ---> 2430071923168
-2430071792384 ---> 2430071930000
-2430514744480 ---> 2430071925120
-2430514791328 ---> 2430071919264
-2430071802144 ---> 2430071889008
-2430071766032 ---> 2430071910480
-2430514805968 --->|general| 2430514726912
-2430514737648 ---> 2430071907552
-2430071766032 ---> 2430071918288
-2430514781568 ---> 2430071921216
-2430514795232 ---> 2430071888032
-2430071802144 ---> 2430071887056
-2430071783600 ---> 2430071919264
-2430514728864 ---> 2430071907552
-2430071802144 ---> 2430071907552
-2430071783600 ---> 2430071920240
-2430071802144 ---> 2430071925120
-2430514774736 ---> 2430071919264
-2430071783600 ---> 2430071889008
-2430514761072 --->|properties| 2430514744480
-2430514745456 --->|name| 2430071930976
-2430071802144 ---> 2430071921216
-2430514748384 ---> 2430071930000
-2430514791328 ---> 2430071930000
-2430514737648 ---> 2430071919264
-2430514745456 ---> 2430071919264
-2430514795232 ---> 2430071907552
-2430071802144 ---> 2430071920240
-2430514774736 ---> 2430071888032
-2430514781568 ---> 2430071925120
-2430514789376 --->|properties| 2430514791328
-2430514748384 ---> 2430071925120
-2430514748384 ---> 2430071919264
-2430514741552 ---> 2430071930000
-2430514748384 ---> 2430071910480
-2430071783600 ---> 2430071926096
-2430514728864 ---> 2430071910480
-2430514748384 ---> 2430071889008
-2430514791328 --->|bookmark| 2430071930976
-2430071783600 ---> 2430071923168
-2430514744480 ---> 2430071918288
-2430514774736 ---> 2430071930000
-2430514781568 ---> 2430071919264
-2430514795232 ---> 2430071910480
-2430071783600 ---> 2430071918288
-2430514744480 ---> 2430071923168
-2430514795232 ---> 2430071926096
-2430071802144 ---> 2430071910480
-2430071805072 --->|properties| 2430071802144
-2430514741552 ---> 2430071910480
-2430071792384 --->|color| 2430071930976
-2430514737648 ---> 2430071888032
-2430514795232 ---> 2430071919264
-2430514795232 ---> 2430071921216
-2430071766032 ---> 2430071926096
-2430071783600 ---> 2430071921216
-2430514744480 ---> 2430071889008
-2430514805968 --->|background| 2430071782624
-2430514781568 ---> 2430071918288
-2430514774736 ---> 2430071923168
-2430514744480 ---> 2430071887056
-2430514737648 --->|altText| 2430071930976
-2430514741552 ---> 2430071887056
-2430514795232 --->|background| 2430071930976
-2430514791328 ---> 2430071918288
-2430514728864 ---> 2430071919264
-2430514748384 ---> 2430071888032
-2430071792384 ---> 2430071907552
-2430071802144 ---> 2430071888032
-2430514781568 ---> 2430071889008
-2430514737648 ---> 2430071887056
-2430514773760 --->|properties| 2430514774736
-2430514744480 ---> 2430071920240
-2430514774736 ---> 2430071921216
-2430514774736 ---> 2430071918288
-2430514741552 ---> 2430071907552
-2430514745456 ---> 2430071889008
-2430514791328 ---> 2430071889008
-2430514728864 ---> 2430071923168
-2430514745456 ---> 2430071910480
-2430514805968 --->|title| 2430514779616
-2430514737648 ---> 2430071926096
-2430514741552 ---> 2430071926096
-2430514740576 --->|properties| 2430514728864
-2430514745456 ---> 2430071930000
-2430071792384 ---> 2430071920240
-2430071792384 ---> 2430071926096
-2430514741552 ---> 2430071889008
-2430071766032 ---> 2430071919264
-2430071802144 ---> 2430071930000
-2430514781568 ---> 2430071923168
-2430514805968 --->|visualHeaderTooltip| 2430514783520
-2430514795232 ---> 2430071930000
-2430071766032 ---> 2430071907552
-2430514781568 ---> 2430071926096
-2430514781568 ---> 2430071920240
-2430071792384 ---> 2430071925120
-2430514741552 ---> 2430071925120
-2430514741552 ---> 2430071923168
-2430514781568 ---> 2430071907552
-2430071783600 ---> 2430071910480
-2430514744480 ---> 2430071910480
-2430514805968 --->|visualHeader| 2430514773760
-2430514791328 ---> 2430071887056
-2430514748384 --->|alignment| 2430071930976
-2430514781568 ---> 2430071888032
-2430514748384 ---> 2430071921216
-2430514805968 --->|divider| 2430071798240
-2430071792384 ---> 2430071918288
-2430514745456 ---> 2430071918288
-2430071792384 ---> 2430071919264
-2430071766032 --->|color| 2430071930976
-2430514745456 ---> 2430071887056
-2430071766032 ---> 2430071888032
-2430514781568 ---> 2430071887056
-2430514795232 ---> 2430071920240
-2430514748384 ---> 2430071923168
-2430514744480 ---> 2430071919264
-2430514728864 ---> 2430071888032
-2430514741552 ---> 2430071918288
-2430514783520 --->|properties| 2430514781568
-2430514741552 ---> 2430071921216
-2430071802144 ---> 2430071918288
-2430071783600 ---> 2430071907552
-2430514744480 ---> 2430071930000
-2430514795232 ---> 2430071887056
-2430514791328 ---> 2430071910480
-2430514792304 --->|properties| 2430514795232
-2430514745456 ---> 2430071925120
-2430514781568 --->|background| 2430071930976
-2430514805968 --->|subTitle| 2430514761072
-2430514774736 ---> 2430071887056
-2430514795232 ---> 2430071923168
-2430514747408 --->|properties| 2430514745456
-2430071802144 ---> 2430071923168
-2430514748384 ---> 2430071887056
-2430514791328 ---> 2430071926096
-2430071766032 ---> 2430071925120
-2430514745456 ---> 2430071926096
-2430514728864 ---> 2430071918288
-2430514748384 ---> 2430071907552
-2430514737648 ---> 2430071925120
-2430071792384 ---> 2430071887056
-2430071766032 ---> 2430071930000
-2430071766032 ---> 2430071887056
-2430514745456 ---> 2430071888032
-2430514774736 ---> 2430071926096
-2430071782624 --->|properties| 2430071766032
-2430071792384 ---> 2430071910480
-2430514744480 ---> 2430071888032
-2430514745456 ---> 2430071920240
-2430514805968 --->|stylePreset| 2430514747408
-2430514737648 ---> 2430071921216
-2430514781568 ---> 2430071910480
-2430514791328 ---> 2430071923168
-2430514737648 ---> 2430071920240
-2430514774736 --->|background| 2430071930976
-2430514737648 ---> 2430071910480
-2430514744480 --->|alignment| 2430071930976
-2430514741552 ---> 2430071919264
-2430514748384 ---> 2430071926096
-2430514781568 ---> 2430071930000
-2430514791328 ---> 2430071921216
-2430514741552 --->|customizeSpacing| 2430071930976
-2430071783600 ---> 2430071888032
-2430514805968 --->|dropShadow| 2430071805072
-2430071792384 ---> 2430071921216
-2430071798240 --->|properties| 2430071792384
-2430514805968 --->|lockAspect| 2430514740576
-2430514728864 ---> 2430071925120
-2430514791328 ---> 2430071925120
-2430514791328 ---> 2430071920240
-2430514795232 ---> 2430071925120
-2430071766032 ---> 2430071921216
-2430514728864 ---> 2430071920240
-2430514791328 ---> 2430071907552
-2430514795232 ---> 2430071918288
-2430514748384 ---> 2430071918288
-2430514726912 --->|properties| 2430514737648
-2430071792384 ---> 2430071888032
-2430514728864 --->|show| 2430071930976
-2430514774736 ---> 2430071907552
-2430514774736 ---> 2430071889008
-2430514774736 ---> 2430071910480
-2430071766032 ---> 2430071923168
-2430071783600 ---> 2430071930000
-2430514779616 --->|properties| 2430514748384
-2430071802144 --->|angle| 2430071930976
-2430514728864 ---> 2430071921216
-2430514745456 ---> 2430071921216
-2430514774736 ---> 2430071925120
-2430071802144 ---> 2430071926096
-2430514744480 ---> 2430071921216
-2430514791328 ---> 2430071888032
-2430514728864 ---> 2430071889008
-2430514748384 ---> 2430071920240
-2430514737648 ---> 2430071889008
-2430514744480 ---> 2430071907552
-2430514805968 --->|visualLink| 2430514789376
-2430514805968 --->|spacing| 2430514751312
-2430071783600 ---> 2430071887056
-2430514805968 --->|visualTooltip| 2430514792304
-2430514737648 ---> 2430071923168
-2430071766032 ---> 2430071920240
-2430514751312 --->|properties| 2430514741552
-2430514805968 --->|border| 2430071791408
-2430514741552 ---> 2430071920240
-2430071783600 ---> 2430071925120
-2430514737648 ---> 2430071918288
-2430514728864 ---> 2430071926096
-2430514745456 ---> 2430071907552
-2430514774736 ---> 2430071920240
-2430514728864 ---> 2430071887056
-2430514741552 ---> 2430071888032
-2430071791408 --->|properties| 2430071783600
-2430514795232 ---> 2430071889008
-2430071766032 ---> 2430071889008
-2430071792384 ---> 2430071923168
-2430514737648 ---> 2430071930000
-2430071792384 ---> 2430071889008
-2430071802144 ---> 2430071919264
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+style AggregationExpression stroke:#ff0000,stroke-width:1px
+AlgorithmExpression[<a href='/layout/erd/AlgorithmExpression'>AlgorithmExpression</a>]
+style AlgorithmExpression stroke:#ff0000,stroke-width:1px
+BackgroundProperties[BackgroundProperties]
+BorderProperties[BorderProperties]
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+style ColumnExpression stroke:#ff0000,stroke-width:1px
+DividerProperties[DividerProperties]
+DropShadowProperties[DropShadowProperties]
+ExpressionList[ExpressionList]
+GeneralProperties[GeneralProperties]
+GeoJsonExpression[<a href='/layout/erd/GeoJsonExpression'>GeoJsonExpression</a>]
+style GeoJsonExpression stroke:#ff0000,stroke-width:1px
+ImageExpression[<a href='/layout/erd/ImageExpression'>ImageExpression</a>]
+style ImageExpression stroke:#ff0000,stroke-width:1px
+ImageKindExpression[<a href='/layout/erd/ImageKindExpression'>ImageKindExpression</a>]
+style ImageKindExpression stroke:#ff0000,stroke-width:1px
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
+LinearGradient3Expression[<a href='/layout/erd/LinearGradient3Expression'>LinearGradient3Expression</a>]
+style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+LockAspectProperties[LockAspectProperties]
+MeasureExpression[<a href='/layout/erd/MeasureExpression'>MeasureExpression</a>]
+style MeasureExpression stroke:#ff0000,stroke-width:1px
+ResourcePackageAccess[<a href='/layout/erd/ResourcePackageAccess'>ResourcePackageAccess</a>]
+style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
+SelectRefExpression[<a href='/layout/erd/SelectRefExpression'>SelectRefExpression</a>]
+style SelectRefExpression stroke:#ff0000,stroke-width:1px
+SolidColorExpression[<a href='/layout/erd/SolidColorExpression'>SolidColorExpression</a>]
+style SolidColorExpression stroke:#ff0000,stroke-width:1px
+SpacingProperties[SpacingProperties]
+StylePresetProperties[StylePresetProperties]
+SubTitleProperties[SubTitleProperties]
+TitleProperties[TitleProperties]
+VCProperties[<a href='/layout/erd/VCProperties'>VCProperties</a>]
+VisualHeaderProperties[VisualHeaderProperties]
+VisualHeaderTooltipProperties[VisualHeaderTooltipProperties]
+VisualLinkProperties[VisualLinkProperties]
+VisualTooltipProperties[VisualTooltipProperties]
+_BorderPropertiesHelper[_BorderPropertiesHelper]
+_DividerPropertiesHelper[_DividerPropertiesHelper]
+_DropShadowPropertiesHelper[_DropShadowPropertiesHelper]
+_GeneralPropertiesHelper[_GeneralPropertiesHelper]
+_LockAspectPropertiesHelper[_LockAspectPropertiesHelper]
+_SpacingPropertiesHelper[_SpacingPropertiesHelper]
+_StylePresetPropertiesHelper[_StylePresetPropertiesHelper]
+_SubTitlePropertiesHelper[_SubTitlePropertiesHelper]
+_TitlePropertiesHelper[_TitlePropertiesHelper]
+_VisualHeaderPropertiesHelper[_VisualHeaderPropertiesHelper]
+_VisualHeaderTooltipPropertiesHelper[_VisualHeaderTooltipPropertiesHelper]
+_VisualLinkPropertiesHelper[_VisualLinkPropertiesHelper]
+_VisualTooltipPropertiesHelper[_VisualTooltipPropertiesHelper]
+_DividerPropertiesHelper ---> MeasureExpression
+_DividerPropertiesHelper --->|color| ExpressionList
+_LockAspectPropertiesHelper ---> ResourcePackageAccess
+_LockAspectPropertiesHelper --->|show| ExpressionList
+VCProperties --->|visualTooltip| VisualTooltipProperties
+_VisualLinkPropertiesHelper ---> SelectRefExpression
+BackgroundProperties ---> ImageExpression
+_BorderPropertiesHelper ---> ImageExpression
+LockAspectProperties --->|properties| _LockAspectPropertiesHelper
+BackgroundProperties ---> AggregationExpression
+_LockAspectPropertiesHelper ---> ImageExpression
+_VisualTooltipPropertiesHelper --->|background| ExpressionList
+VCProperties --->|title| TitleProperties
+BackgroundProperties ---> LinearGradient2Expression
+_VisualHeaderTooltipPropertiesHelper ---> MeasureExpression
+_VisualHeaderPropertiesHelper ---> AggregationExpression
+TitleProperties --->|properties| _TitlePropertiesHelper
+_VisualTooltipPropertiesHelper ---> SelectRefExpression
+_VisualTooltipPropertiesHelper ---> LiteralExpression
+VCProperties --->|general| GeneralProperties
+DropShadowProperties --->|properties| _DropShadowPropertiesHelper
+_LockAspectPropertiesHelper ---> SolidColorExpression
+BackgroundProperties ---> SolidColorExpression
+BackgroundProperties ---> ColumnExpression
+_VisualHeaderPropertiesHelper ---> MeasureExpression
+_LockAspectPropertiesHelper ---> ImageKindExpression
+_TitlePropertiesHelper ---> AggregationExpression
+VCProperties --->|divider| DividerProperties
+_SubTitlePropertiesHelper ---> AggregationExpression
+_DividerPropertiesHelper ---> ImageExpression
+_TitlePropertiesHelper ---> LinearGradient2Expression
+_TitlePropertiesHelper ---> GeoJsonExpression
+_GeneralPropertiesHelper ---> SolidColorExpression
+_BorderPropertiesHelper ---> AlgorithmExpression
+_SpacingPropertiesHelper ---> ColumnExpression
+_TitlePropertiesHelper ---> SolidColorExpression
+_VisualHeaderPropertiesHelper ---> ResourcePackageAccess
+DividerProperties --->|properties| _DividerPropertiesHelper
+SubTitleProperties --->|properties| _SubTitlePropertiesHelper
+_GeneralPropertiesHelper ---> LinearGradient3Expression
+_DividerPropertiesHelper ---> ResourcePackageAccess
+_TitlePropertiesHelper ---> AlgorithmExpression
+_VisualHeaderPropertiesHelper ---> LiteralExpression
+_DividerPropertiesHelper ---> GeoJsonExpression
+_VisualHeaderPropertiesHelper --->|background| ExpressionList
+_GeneralPropertiesHelper ---> MeasureExpression
+_SubTitlePropertiesHelper ---> LiteralExpression
+_StylePresetPropertiesHelper ---> MeasureExpression
+BackgroundProperties ---> MeasureExpression
+_TitlePropertiesHelper ---> SelectRefExpression
+VCProperties --->|visualHeader| VisualHeaderProperties
+_VisualHeaderTooltipPropertiesHelper --->|background| ExpressionList
+_VisualHeaderTooltipPropertiesHelper ---> ImageKindExpression
+_DropShadowPropertiesHelper ---> GeoJsonExpression
+_VisualLinkPropertiesHelper ---> ImageExpression
+_BorderPropertiesHelper ---> LiteralExpression
+_StylePresetPropertiesHelper ---> ResourcePackageAccess
+_DropShadowPropertiesHelper ---> SelectRefExpression
+_BorderPropertiesHelper ---> SelectRefExpression
+_SubTitlePropertiesHelper --->|alignment| ExpressionList
+_SubTitlePropertiesHelper ---> MeasureExpression
+_StylePresetPropertiesHelper ---> AggregationExpression
+_VisualHeaderPropertiesHelper ---> GeoJsonExpression
+_SubTitlePropertiesHelper ---> AlgorithmExpression
+_VisualHeaderTooltipPropertiesHelper ---> SelectRefExpression
+_VisualTooltipPropertiesHelper ---> AlgorithmExpression
+_VisualTooltipPropertiesHelper ---> MeasureExpression
+_SpacingPropertiesHelper ---> GeoJsonExpression
+VCProperties --->|visualHeaderTooltip| VisualHeaderTooltipProperties
+BackgroundProperties ---> ImageKindExpression
+_VisualLinkPropertiesHelper ---> GeoJsonExpression
+_BorderPropertiesHelper ---> LinearGradient3Expression
+_StylePresetPropertiesHelper ---> LiteralExpression
+_SpacingPropertiesHelper ---> ImageKindExpression
+_GeneralPropertiesHelper ---> LiteralExpression
+StylePresetProperties --->|properties| _StylePresetPropertiesHelper
+VCProperties --->|background| BackgroundProperties
+_SpacingPropertiesHelper ---> SolidColorExpression
+_LockAspectPropertiesHelper ---> LinearGradient2Expression
+_DividerPropertiesHelper ---> SelectRefExpression
+_SubTitlePropertiesHelper ---> ResourcePackageAccess
+_GeneralPropertiesHelper ---> ImageExpression
+_VisualTooltipPropertiesHelper ---> ImageExpression
+_LockAspectPropertiesHelper ---> LiteralExpression
+_VisualLinkPropertiesHelper ---> ColumnExpression
+VCProperties --->|subTitle| SubTitleProperties
+_GeneralPropertiesHelper ---> AlgorithmExpression
+_VisualHeaderPropertiesHelper ---> ImageKindExpression
+_VisualLinkPropertiesHelper ---> LinearGradient3Expression
+_VisualHeaderTooltipPropertiesHelper ---> ResourcePackageAccess
+_SpacingPropertiesHelper ---> LiteralExpression
+_VisualHeaderPropertiesHelper ---> SelectRefExpression
+_DropShadowPropertiesHelper ---> AlgorithmExpression
+_VisualTooltipPropertiesHelper ---> GeoJsonExpression
+_SubTitlePropertiesHelper ---> ColumnExpression
+_LockAspectPropertiesHelper ---> MeasureExpression
+_SubTitlePropertiesHelper ---> GeoJsonExpression
+_VisualLinkPropertiesHelper ---> SolidColorExpression
+_SpacingPropertiesHelper ---> SelectRefExpression
+_LockAspectPropertiesHelper ---> GeoJsonExpression
+VCProperties --->|border| BorderProperties
+BorderProperties --->|properties| _BorderPropertiesHelper
+_VisualLinkPropertiesHelper ---> LinearGradient2Expression
+_VisualHeaderPropertiesHelper ---> LinearGradient2Expression
+_StylePresetPropertiesHelper ---> LinearGradient3Expression
+_GeneralPropertiesHelper ---> SelectRefExpression
+_StylePresetPropertiesHelper ---> SolidColorExpression
+_VisualTooltipPropertiesHelper ---> ColumnExpression
+_DropShadowPropertiesHelper ---> LiteralExpression
+_VisualTooltipPropertiesHelper ---> LinearGradient2Expression
+_DividerPropertiesHelper ---> LiteralExpression
+_TitlePropertiesHelper ---> ResourcePackageAccess
+VCProperties --->|visualLink| VisualLinkProperties
+_LockAspectPropertiesHelper ---> AggregationExpression
+VisualLinkProperties --->|properties| _VisualLinkPropertiesHelper
+_VisualHeaderPropertiesHelper ---> ColumnExpression
+_LockAspectPropertiesHelper ---> LinearGradient3Expression
+VCProperties --->|dropShadow| DropShadowProperties
+_TitlePropertiesHelper ---> LinearGradient3Expression
+_SpacingPropertiesHelper ---> AggregationExpression
+_DividerPropertiesHelper ---> ColumnExpression
+_VisualLinkPropertiesHelper ---> MeasureExpression
+_LockAspectPropertiesHelper ---> ColumnExpression
+_GeneralPropertiesHelper ---> AggregationExpression
+_DividerPropertiesHelper ---> AlgorithmExpression
+_SubTitlePropertiesHelper ---> LinearGradient2Expression
+_SpacingPropertiesHelper ---> ResourcePackageAccess
+BackgroundProperties ---> GeoJsonExpression
+BackgroundProperties ---> LinearGradient3Expression
+_DropShadowPropertiesHelper ---> LinearGradient2Expression
+_VisualHeaderTooltipPropertiesHelper ---> ColumnExpression
+_VisualHeaderPropertiesHelper ---> SolidColorExpression
+_BorderPropertiesHelper ---> ImageKindExpression
+_GeneralPropertiesHelper ---> ImageKindExpression
+_VisualHeaderTooltipPropertiesHelper ---> AggregationExpression
+_DividerPropertiesHelper ---> ImageKindExpression
+_TitlePropertiesHelper --->|alignment| ExpressionList
+_GeneralPropertiesHelper ---> GeoJsonExpression
+VisualHeaderProperties --->|properties| _VisualHeaderPropertiesHelper
+_VisualTooltipPropertiesHelper ---> AggregationExpression
+_StylePresetPropertiesHelper --->|name| ExpressionList
+VisualHeaderTooltipProperties --->|properties| _VisualHeaderTooltipPropertiesHelper
+_DividerPropertiesHelper ---> AggregationExpression
+_VisualHeaderTooltipPropertiesHelper ---> LiteralExpression
+_SpacingPropertiesHelper --->|customizeSpacing| ExpressionList
+_VisualHeaderTooltipPropertiesHelper ---> ImageExpression
+_SpacingPropertiesHelper ---> AlgorithmExpression
+_StylePresetPropertiesHelper ---> ImageKindExpression
+_DropShadowPropertiesHelper ---> ResourcePackageAccess
+_DropShadowPropertiesHelper ---> ImageExpression
+_GeneralPropertiesHelper ---> LinearGradient2Expression
+_BorderPropertiesHelper ---> LinearGradient2Expression
+_VisualTooltipPropertiesHelper ---> LinearGradient3Expression
+_VisualLinkPropertiesHelper ---> LiteralExpression
+BackgroundProperties ---> ResourcePackageAccess
+_BorderPropertiesHelper --->|background| ExpressionList
+_DividerPropertiesHelper ---> SolidColorExpression
+_VisualHeaderPropertiesHelper ---> ImageExpression
+_TitlePropertiesHelper ---> LiteralExpression
+_StylePresetPropertiesHelper ---> SelectRefExpression
+_DropShadowPropertiesHelper ---> ColumnExpression
+_BorderPropertiesHelper ---> ColumnExpression
+SpacingProperties --->|properties| _SpacingPropertiesHelper
+_VisualLinkPropertiesHelper --->|bookmark| ExpressionList
+_GeneralPropertiesHelper --->|altText| ExpressionList
+_BorderPropertiesHelper ---> ResourcePackageAccess
+_VisualTooltipPropertiesHelper ---> ImageKindExpression
+_BorderPropertiesHelper ---> MeasureExpression
+_VisualHeaderPropertiesHelper ---> LinearGradient3Expression
+VCProperties --->|stylePreset| StylePresetProperties
+_GeneralPropertiesHelper ---> ColumnExpression
+_VisualLinkPropertiesHelper ---> ResourcePackageAccess
+_DropShadowPropertiesHelper ---> LinearGradient3Expression
+VCProperties --->|lockAspect| LockAspectProperties
+_BorderPropertiesHelper ---> AggregationExpression
+_SubTitlePropertiesHelper ---> LinearGradient3Expression
+_StylePresetPropertiesHelper ---> AlgorithmExpression
+_TitlePropertiesHelper ---> ImageKindExpression
+_LockAspectPropertiesHelper ---> AlgorithmExpression
+_DropShadowPropertiesHelper ---> AggregationExpression
+_SpacingPropertiesHelper ---> LinearGradient2Expression
+_VisualHeaderTooltipPropertiesHelper ---> GeoJsonExpression
+_BorderPropertiesHelper ---> GeoJsonExpression
+BackgroundProperties ---> SelectRefExpression
+_SpacingPropertiesHelper ---> MeasureExpression
+_LockAspectPropertiesHelper ---> SelectRefExpression
+_DividerPropertiesHelper ---> LinearGradient3Expression
+_GeneralPropertiesHelper ---> ResourcePackageAccess
+_TitlePropertiesHelper ---> ColumnExpression
+_SubTitlePropertiesHelper ---> SelectRefExpression
+_DropShadowPropertiesHelper ---> ImageKindExpression
+_VisualTooltipPropertiesHelper ---> ResourcePackageAccess
+_TitlePropertiesHelper ---> ImageExpression
+_VisualHeaderTooltipPropertiesHelper ---> SolidColorExpression
+BackgroundProperties ---> LiteralExpression
+_DividerPropertiesHelper ---> LinearGradient2Expression
+VisualTooltipProperties --->|properties| _VisualTooltipPropertiesHelper
+_SpacingPropertiesHelper ---> LinearGradient3Expression
+_VisualTooltipPropertiesHelper ---> SolidColorExpression
+_DropShadowPropertiesHelper ---> SolidColorExpression
+_SpacingPropertiesHelper ---> ImageExpression
+_BorderPropertiesHelper ---> SolidColorExpression
+_VisualLinkPropertiesHelper ---> AggregationExpression
+_VisualHeaderTooltipPropertiesHelper ---> LinearGradient3Expression
+_DropShadowPropertiesHelper ---> MeasureExpression
+_StylePresetPropertiesHelper ---> ImageExpression
+_SubTitlePropertiesHelper ---> ImageKindExpression
+GeneralProperties --->|properties| _GeneralPropertiesHelper
+VCProperties --->|spacing| SpacingProperties
+_VisualLinkPropertiesHelper ---> AlgorithmExpression
+_DropShadowPropertiesHelper --->|angle| ExpressionList
+_SubTitlePropertiesHelper ---> ImageExpression
+_StylePresetPropertiesHelper ---> LinearGradient2Expression
+_StylePresetPropertiesHelper ---> ColumnExpression
+_SubTitlePropertiesHelper ---> SolidColorExpression
+BackgroundProperties ---> AlgorithmExpression
+_TitlePropertiesHelper ---> MeasureExpression
+_VisualHeaderTooltipPropertiesHelper ---> AlgorithmExpression
+_StylePresetPropertiesHelper ---> GeoJsonExpression
+_VisualHeaderPropertiesHelper ---> AlgorithmExpression
+_VisualLinkPropertiesHelper ---> ImageKindExpression
+BackgroundProperties --->|show| ExpressionList
+_VisualHeaderTooltipPropertiesHelper ---> LinearGradient2Expression
 ```

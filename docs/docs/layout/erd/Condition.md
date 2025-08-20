@@ -3,59 +3,59 @@
 title: Condition
 ---
 graph 
-2430071874368["ComparisonCondition"]
-style 2430071874368 stroke:#ff0000,stroke-width:1px
-2430071820688["RoleRef"]
-2430071814832["TransformOutputRoleRef"]
-2430071366800["ExpressionName"]
-2430071878272["ExistsCondition"]
-style 2430071878272 stroke:#ff0000,stroke-width:1px
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071876320["AndCondition"]
-style 2430071876320 stroke:#ff0000,stroke-width:1px
-2430071356064["SelectRef"]
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430071854848["InCondition"]
-style 2430071854848 stroke:#ff0000,stroke-width:1px
-2430071879248["OrCondition"]
-style 2430071879248 stroke:#ff0000,stroke-width:1px
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071825568["ProtoSourceRef"]
-2430071846064["ContainsCondition"]
-style 2430071846064 stroke:#ff0000,stroke-width:1px
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071808976["GroupSource"]
-style 2430071808976 stroke:#ff0000,stroke-width:1px
-2430071819712["ProtoSource"]
-2430071880224["NotCondition"]
-style 2430071880224 stroke:#ff0000,stroke-width:1px
-2430071882176["Condition"]
-2430071382416["ArithmeticSource"]
-style 2430071382416 stroke:#ff0000,stroke-width:1px
-2430071882176 ---> 2430071854848
-2430071882176 --->|Target| 2430071814832
-2430071882176 ---> 2430071880224
-2430071825568 --->|SourceRef| 2430071819712
-2430071882176 ---> 2430071382416
-2430071882176 ---> 2430071363872
-2430071882176 ---> 2430071846064
-2430071814832 --->|TransformOutputRoleRef| 2430071820688
-2430071882176 ---> 2430071816784
-2430071882176 ---> 2430071358016
-2430071882176 ---> 2430071874368
-2430071882176 ---> 2430071359968
-2430071882176 ---> 2430071365824
-2430071882176 ---> 2430071876320
-2430071356064 --->|SelectRef| 2430071366800
-2430071882176 ---> 2430071879248
-2430071882176 ---> 2430071878272
-2430071882176 --->|Target| 2430071356064
-2430071882176 ---> 2430071808976
-2430071882176 --->|Target| 2430071825568
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+AndCondition[<a href='/layout/erd/AndCondition'>AndCondition</a>]
+style AndCondition stroke:#ff0000,stroke-width:1px
+ArithmeticSource[<a href='/layout/erd/ArithmeticSource'>ArithmeticSource</a>]
+style ArithmeticSource stroke:#ff0000,stroke-width:1px
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+ComparisonCondition[<a href='/layout/erd/ComparisonCondition'>ComparisonCondition</a>]
+style ComparisonCondition stroke:#ff0000,stroke-width:1px
+Condition[<a href='/layout/erd/Condition'>Condition</a>]
+ContainsCondition[<a href='/layout/erd/ContainsCondition'>ContainsCondition</a>]
+style ContainsCondition stroke:#ff0000,stroke-width:1px
+ExistsCondition[<a href='/layout/erd/ExistsCondition'>ExistsCondition</a>]
+style ExistsCondition stroke:#ff0000,stroke-width:1px
+ExpressionName[ExpressionName]
+GroupSource[<a href='/layout/erd/GroupSource'>GroupSource</a>]
+style GroupSource stroke:#ff0000,stroke-width:1px
+HierarchyLevelSource[<a href='/layout/erd/HierarchyLevelSource'>HierarchyLevelSource</a>]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+InCondition[<a href='/layout/erd/InCondition'>InCondition</a>]
+style InCondition stroke:#ff0000,stroke-width:1px
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureSource[<a href='/layout/erd/MeasureSource'>MeasureSource</a>]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+NotCondition[<a href='/layout/erd/NotCondition'>NotCondition</a>]
+style NotCondition stroke:#ff0000,stroke-width:1px
+OrCondition[<a href='/layout/erd/OrCondition'>OrCondition</a>]
+style OrCondition stroke:#ff0000,stroke-width:1px
+ProtoSource[ProtoSource]
+ProtoSourceRef[ProtoSourceRef]
+RoleRef[RoleRef]
+SelectRef[SelectRef]
+TransformOutputRoleRef[TransformOutputRoleRef]
+Condition ---> LiteralSource
+Condition ---> GroupSource
+Condition ---> ExistsCondition
+ProtoSourceRef --->|SourceRef| ProtoSource
+Condition ---> ComparisonCondition
+Condition --->|Target| TransformOutputRoleRef
+Condition ---> ArithmeticSource
+TransformOutputRoleRef --->|TransformOutputRoleRef| RoleRef
+Condition ---> ContainsCondition
+Condition ---> AndCondition
+Condition ---> MeasureSource
+Condition ---> ColumnSource
+Condition ---> OrCondition
+Condition ---> InCondition
+Condition ---> HierarchyLevelSource
+Condition --->|Target| SelectRef
+SelectRef --->|SelectRef| ExpressionName
+Condition ---> NotCondition
+Condition ---> AggregationSource
+Condition --->|Target| ProtoSourceRef
 ```

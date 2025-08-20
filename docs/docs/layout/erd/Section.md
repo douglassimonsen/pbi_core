@@ -3,152 +3,192 @@
 title: Section
 ---
 graph 
-2430693763904["PageSizeProperties"]
-2430071814832["TransformOutputRoleRef"]
-2430071366800["ExpressionName"]
-2430693761952["OutspacePaneProperties"]
-2430693817584["Section"]
-2430693754144["BindingParameter"]
-2430071944640["FilterObjects"]
-2430693794160["PersonalizeVisual"]
-2430072001248["PageFilter"]
-2430071825568["ProtoSourceRef"]
-2430693781472["FilterCard"]
-2430071808976["GroupSource"]
-style 2430071808976 stroke:#ff0000,stroke-width:1px
-2430071973920["CachedDisplayNames"]
-2430693768784["BackgroundProperties"]
-2430071382416["ArithmeticSource"]
-style 2430071382416 stroke:#ff0000,stroke-width:1px
-2430693745360["VisualContainer"]
-style 2430693745360 stroke:#ff0000,stroke-width:1px
-2430071820688["RoleRef"]
-2430071951472["PrototypeQuery"]
-style 2430071951472 stroke:#ff0000,stroke-width:1px
-2430693808800["AutoPageGenerationConfig"]
-2430693795136["PageFormattingObjects"]
-2430693769760["Background"]
-2430693778544["PageRefresh"]
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071356064["SelectRef"]
-2430693798064["QuickExploreVisualContainerConfig"]
-2430693749264["PageInformationProperties"]
-2430693782448["PageRefreshProperties"]
-2430693800992["QuickExploreRelatedLayout"]
-2430693797088["VisualInteraction"]
-2430693764880["PageSize"]
-2430693775616["DisplayAreaProperties"]
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430693740480["PageBinding"]
-2430693787328["PersonalizeVisualProperties"]
-2430693773664["DisplayArea"]
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430693759024["PageInformation"]
-2430693804896["QuickExploreCombinationLayout"]
-2430071960256["Scope"]
-style 2430071960256 stroke:#ff0000,stroke-width:1px
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071933904["FilterPropertiesContainer"]
-2430071745536["Selector"]
-style 2430071745536 stroke:#ff0000,stroke-width:1px
-2430693784400["FilterCardProperties"]
-2430693752192["SectionConfig"]
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071819712["ProtoSource"]
-2430693760976["OutspacePane"]
-2430693805872["QuickExploreLayoutContainer"]
-2430693812704["Annotation"]
-2430071915360["FilterProperties"]
-style 2430071915360 stroke:#ff0000,stroke-width:1px
-2430693808800 --->|visualContainerConfigurations| 2430693798064
-2430693795136 --->|pageSize| 2430693764880
-2430693795136 --->|filterCard| 2430693781472
-2430693817584 --->|filters| 2430072001248
-2430693769760 --->|properties| 2430693768784
-2430693808800 ---> 2430071382416
-2430693808800 ---> 2430071358016
-2430693798064 --->|fields| 2430071825568
-2430072001248 ---> 2430071363872
-2430072001248 --->|expression| 2430071814832
-2430693805872 --->|related| 2430693800992
-2430693808800 --->|selectedFields| 2430071356064
-2430072001248 ---> 2430071359968
-2430693754144 --->|fieldExpr| 2430071356064
-2430693808800 ---> 2430071816784
-2430693798064 ---> 2430071816784
-2430693798064 ---> 2430071382416
-2430693769760 ---> 2430071745536
-2430693754144 ---> 2430071363872
-2430693808800 ---> 2430071808976
-2430693817584 --->|visualInteractions| 2430693797088
-2430693740480 --->|parameters| 2430693754144
-2430693817584 ---> 2430693745360
-2430693795136 --->|pageRefresh| 2430693778544
-2430693778544 ---> 2430071745536
-2430693795136 --->|outspacePane| 2430693760976
-2430693759024 ---> 2430071745536
-2430693798064 ---> 2430071808976
-2430693817584 --->|autoPageGenerationConfig| 2430693808800
-2430071944640 --->|general| 2430071933904
-2430693754144 --->|fieldExpr| 2430071814832
-2430693805872 --->|combination| 2430693804896
-2430693760976 --->|properties| 2430693761952
-2430071973920 ---> 2430071960256
-2430693808800 ---> 2430071363872
-2430693808800 ---> 2430071365824
-2430072001248 --->|expression| 2430071356064
-2430693795136 --->|personalizeVisuals| 2430693794160
-2430693773664 ---> 2430071745536
-2430693817584 --->|pageBinding| 2430693740480
-2430693817584 --->|annotations| 2430693812704
-2430693817584 --->|config| 2430693752192
-2430693808800 --->|selectedFields| 2430071814832
-2430693795136 --->|displayArea| 2430693773664
-2430693808800 --->|selectedFields| 2430071825568
-2430693798064 ---> 2430071359968
-2430693781472 ---> 2430071745536
-2430693795136 --->|background| 2430693769760
-2430693754144 --->|fieldExpr| 2430071825568
-2430071825568 --->|SourceRef| 2430071819712
-2430693798064 ---> 2430071365824
-2430693773664 --->|properties| 2430693775616
-2430693754144 ---> 2430071359968
-2430072001248 ---> 2430071951472
-2430693808800 --->|layout| 2430693805872
-2430072001248 ---> 2430071365824
-2430072001248 --->|expression| 2430071825568
-2430072001248 ---> 2430071358016
-2430693798064 --->|fields| 2430071814832
-2430071356064 --->|SelectRef| 2430071366800
-2430693754144 ---> 2430071365824
-2430693754144 ---> 2430071382416
-2430693760976 ---> 2430071745536
-2430072001248 --->|cachedDisplayNames| 2430071973920
-2430693754144 ---> 2430071358016
-2430693798064 --->|fields| 2430071356064
-2430693778544 --->|properties| 2430693782448
-2430071933904 ---> 2430071915360
-2430693754144 ---> 2430071816784
-2430693798064 ---> 2430071363872
-2430693808800 ---> 2430071359968
-2430072001248 ---> 2430071382416
-2430693764880 --->|properties| 2430693763904
-2430693798064 ---> 2430071358016
-2430693794160 ---> 2430071745536
-2430693817584 --->|objects| 2430693795136
-2430072001248 ---> 2430071808976
-2430693781472 --->|properties| 2430693784400
-2430071814832 --->|TransformOutputRoleRef| 2430071820688
-2430072001248 --->|objects| 2430071944640
-2430072001248 ---> 2430071816784
-2430693795136 --->|pageInformation| 2430693759024
-2430693764880 ---> 2430071745536
-2430693754144 ---> 2430071808976
-2430693759024 --->|propeties| 2430693749264
-2430693794160 --->|properties| 2430693787328
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+style AggregationExpression stroke:#ff0000,stroke-width:1px
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+AlgorithmExpression[<a href='/layout/erd/AlgorithmExpression'>AlgorithmExpression</a>]
+style AlgorithmExpression stroke:#ff0000,stroke-width:1px
+Annotation[Annotation]
+ArithmeticSource[<a href='/layout/erd/ArithmeticSource'>ArithmeticSource</a>]
+style ArithmeticSource stroke:#ff0000,stroke-width:1px
+AutoPageGenerationConfig[AutoPageGenerationConfig]
+Background[Background]
+BackgroundProperties[BackgroundProperties]
+BindingParameter[BindingParameter]
+CachedDisplayNames[CachedDisplayNames]
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+style ColumnExpression stroke:#ff0000,stroke-width:1px
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+DisplayArea[DisplayArea]
+DisplayAreaProperties[DisplayAreaProperties]
+ExpressionList[ExpressionList]
+ExpressionName[ExpressionName]
+FilterCard[FilterCard]
+FilterCardProperties[FilterCardProperties]
+FilterObjects[FilterObjects]
+FilterProperties[<a href='/layout/erd/FilterProperties'>FilterProperties</a>]
+style FilterProperties stroke:#ff0000,stroke-width:1px
+FilterPropertiesContainer[FilterPropertiesContainer]
+GeoJsonExpression[<a href='/layout/erd/GeoJsonExpression'>GeoJsonExpression</a>]
+style GeoJsonExpression stroke:#ff0000,stroke-width:1px
+GroupSource[<a href='/layout/erd/GroupSource'>GroupSource</a>]
+style GroupSource stroke:#ff0000,stroke-width:1px
+HierarchyLevelSource[<a href='/layout/erd/HierarchyLevelSource'>HierarchyLevelSource</a>]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+ImageExpression[<a href='/layout/erd/ImageExpression'>ImageExpression</a>]
+style ImageExpression stroke:#ff0000,stroke-width:1px
+ImageKindExpression[<a href='/layout/erd/ImageKindExpression'>ImageKindExpression</a>]
+style ImageKindExpression stroke:#ff0000,stroke-width:1px
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
+LinearGradient3Expression[<a href='/layout/erd/LinearGradient3Expression'>LinearGradient3Expression</a>]
+style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureExpression[<a href='/layout/erd/MeasureExpression'>MeasureExpression</a>]
+style MeasureExpression stroke:#ff0000,stroke-width:1px
+MeasureSource[<a href='/layout/erd/MeasureSource'>MeasureSource</a>]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+OutspacePane[OutspacePane]
+OutspacePaneProperties[OutspacePaneProperties]
+PageBinding[PageBinding]
+PageFilter[PageFilter]
+PageFormattingObjects[PageFormattingObjects]
+PageInformation[PageInformation]
+PageInformationProperties[PageInformationProperties]
+PageRefresh[PageRefresh]
+PageRefreshProperties[PageRefreshProperties]
+PageSize[PageSize]
+PageSizeProperties[PageSizeProperties]
+PersonalizeVisual[PersonalizeVisual]
+PersonalizeVisualProperties[PersonalizeVisualProperties]
+ProtoSource[ProtoSource]
+ProtoSourceRef[ProtoSourceRef]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+style PrototypeQuery stroke:#ff0000,stroke-width:1px
+QuickExploreCombinationLayout[QuickExploreCombinationLayout]
+QuickExploreLayoutContainer[QuickExploreLayoutContainer]
+QuickExploreRelatedLayout[QuickExploreRelatedLayout]
+QuickExploreVisualContainerConfig[QuickExploreVisualContainerConfig]
+ResourcePackageAccess[<a href='/layout/erd/ResourcePackageAccess'>ResourcePackageAccess</a>]
+style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
+RoleRef[RoleRef]
+Scope[<a href='/layout/erd/Scope'>Scope</a>]
+style Scope stroke:#ff0000,stroke-width:1px
+Section[<a href='/layout/erd/Section'>Section</a>]
+SectionConfig[SectionConfig]
+SelectRef[SelectRef]
+SelectRefExpression[<a href='/layout/erd/SelectRefExpression'>SelectRefExpression</a>]
+style SelectRefExpression stroke:#ff0000,stroke-width:1px
+Selector[<a href='/layout/erd/Selector'>Selector</a>]
+style Selector stroke:#ff0000,stroke-width:1px
+SolidColorExpression[<a href='/layout/erd/SolidColorExpression'>SolidColorExpression</a>]
+style SolidColorExpression stroke:#ff0000,stroke-width:1px
+TransformOutputRoleRef[TransformOutputRoleRef]
+VisualContainer[<a href='/layout/erd/VisualContainer'>VisualContainer</a>]
+style VisualContainer stroke:#ff0000,stroke-width:1px
+VisualInteraction[VisualInteraction]
+QuickExploreVisualContainerConfig ---> ColumnSource
+BindingParameter --->|fieldExpr| TransformOutputRoleRef
+AutoPageGenerationConfig ---> AggregationSource
+BindingParameter ---> GroupSource
+BackgroundProperties ---> ImageExpression
+BindingParameter ---> ColumnSource
+BackgroundProperties ---> AggregationExpression
+PageFormattingObjects --->|displayArea| DisplayArea
+Section ---> VisualContainer
+ProtoSourceRef --->|SourceRef| ProtoSource
+BackgroundProperties ---> LinearGradient2Expression
+AutoPageGenerationConfig ---> LiteralSource
+BackgroundProperties ---> SolidColorExpression
+BackgroundProperties ---> ColumnExpression
+QuickExploreLayoutContainer --->|combination| QuickExploreCombinationLayout
+Section --->|annotations| Annotation
+PageFormattingObjects --->|pageInformation| PageInformation
+BindingParameter ---> ArithmeticSource
+PageRefresh ---> Selector
+PageFilter --->|expression| TransformOutputRoleRef
+PageFilter ---> PrototypeQuery
+PersonalizeVisual ---> Selector
+PageFilter ---> ColumnSource
+AutoPageGenerationConfig ---> HierarchyLevelSource
+FilterObjects --->|general| FilterPropertiesContainer
+BindingParameter ---> HierarchyLevelSource
+BackgroundProperties ---> MeasureExpression
+BindingParameter ---> LiteralSource
+PersonalizeVisual --->|properties| PersonalizeVisualProperties
+QuickExploreVisualContainerConfig ---> HierarchyLevelSource
+AutoPageGenerationConfig ---> ArithmeticSource
+BackgroundProperties ---> ImageKindExpression
+PageSize ---> Selector
+AutoPageGenerationConfig --->|layout| QuickExploreLayoutContainer
+QuickExploreVisualContainerConfig ---> ArithmeticSource
+BindingParameter --->|fieldExpr| SelectRef
+PageFilter ---> HierarchyLevelSource
+BindingParameter --->|fieldExpr| ProtoSourceRef
+PageFilter --->|cachedDisplayNames| CachedDisplayNames
+DisplayArea ---> Selector
+PageRefresh --->|properties| PageRefreshProperties
+AutoPageGenerationConfig --->|visualContainerConfigurations| QuickExploreVisualContainerConfig
+PageFormattingObjects --->|pageRefresh| PageRefresh
+PageFilter ---> AggregationSource
+PageBinding --->|parameters| BindingParameter
+FilterPropertiesContainer ---> FilterProperties
+AutoPageGenerationConfig ---> MeasureSource
+BackgroundProperties ---> GeoJsonExpression
+Section --->|pageBinding| PageBinding
+BackgroundProperties ---> LinearGradient3Expression
+PageInformation --->|propeties| PageInformationProperties
+PageFormattingObjects --->|personalizeVisuals| PersonalizeVisual
+PageFilter ---> LiteralSource
+TransformOutputRoleRef --->|TransformOutputRoleRef| RoleRef
+QuickExploreVisualContainerConfig --->|fields| TransformOutputRoleRef
+QuickExploreVisualContainerConfig ---> AggregationSource
+PageFilter --->|expression| ProtoSourceRef
+PageFilter --->|expression| SelectRef
+FilterCard ---> Selector
+BindingParameter ---> AggregationSource
+PageInformation ---> Selector
+SelectRef --->|SelectRef| ExpressionName
+BackgroundProperties ---> ResourcePackageAccess
+OutspacePane --->|properties| OutspacePaneProperties
+PageFormattingObjects --->|pageSize| PageSize
+FilterCard --->|properties| FilterCardProperties
+Section --->|config| SectionConfig
+PageFormattingObjects --->|filterCard| FilterCard
+Section --->|autoPageGenerationConfig| AutoPageGenerationConfig
+QuickExploreVisualContainerConfig ---> LiteralSource
+AutoPageGenerationConfig --->|selectedFields| SelectRef
+DisplayArea --->|properties| DisplayAreaProperties
+Section --->|filters| PageFilter
+QuickExploreVisualContainerConfig ---> GroupSource
+AutoPageGenerationConfig --->|selectedFields| ProtoSourceRef
+AutoPageGenerationConfig --->|selectedFields| TransformOutputRoleRef
+BindingParameter ---> MeasureSource
+PageFilter ---> ArithmeticSource
+QuickExploreVisualContainerConfig --->|fields| SelectRef
+Section --->|objects| PageFormattingObjects
+AutoPageGenerationConfig ---> ColumnSource
+PageFilter ---> GroupSource
+CachedDisplayNames ---> Scope
+QuickExploreVisualContainerConfig --->|fields| ProtoSourceRef
+BackgroundProperties ---> SelectRefExpression
+PageFilter ---> MeasureSource
+PageSize --->|properties| PageSizeProperties
+BackgroundProperties ---> LiteralExpression
+QuickExploreVisualContainerConfig ---> MeasureSource
+AutoPageGenerationConfig ---> GroupSource
+PageFilter --->|objects| FilterObjects
+Section --->|visualInteractions| VisualInteraction
+PageFormattingObjects --->|outspacePane| OutspacePane
+BackgroundProperties ---> AlgorithmExpression
+PageFormattingObjects --->|background| Background
+Background --->|properties| BackgroundProperties
+OutspacePane ---> Selector
+QuickExploreLayoutContainer --->|related| QuickExploreRelatedLayout
+BackgroundProperties --->|show| ExpressionList
 ```

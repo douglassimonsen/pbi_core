@@ -3,22 +3,22 @@
 title: ERD
 ---
 graph 
-2430693818560["PublicCustomVisual"]
-2430693847840["Layout"]
-2430071754320["GlobalFilter"]
-style 2430071754320 stroke:#ff0000,stroke-width:1px
-2430514896736["Pod"]
-style 2430514896736 stroke:#ff0000,stroke-width:1px
-2430514892832["ResourcePackage"]
-style 2430514892832 stroke:#ff0000,stroke-width:1px
-2430693817584["Section"]
-style 2430693817584 stroke:#ff0000,stroke-width:1px
-2430693841984["LayoutConfig"]
-style 2430693841984 stroke:#ff0000,stroke-width:1px
-2430693847840 ---> 2430514892832
-2430693847840 ---> 2430693817584
-2430693847840 ---> 2430693841984
-2430693847840 ---> 2430514896736
-2430693847840 --->|publicCustomVisuals| 2430693818560
-2430693847840 ---> 2430071754320
+GlobalFilter[<a href='/layout/erd/GlobalFilter'>GlobalFilter</a>]
+style GlobalFilter stroke:#ff0000,stroke-width:1px
+Layout[Layout]
+LayoutConfig[<a href='/layout/erd/LayoutConfig'>LayoutConfig</a>]
+style LayoutConfig stroke:#ff0000,stroke-width:1px
+Pod[<a href='/layout/erd/Pod'>Pod</a>]
+style Pod stroke:#ff0000,stroke-width:1px
+PublicCustomVisual[PublicCustomVisual]
+ResourcePackage[<a href='/layout/erd/ResourcePackage'>ResourcePackage</a>]
+style ResourcePackage stroke:#ff0000,stroke-width:1px
+Section[<a href='/layout/erd/Section'>Section</a>]
+style Section stroke:#ff0000,stroke-width:1px
+Layout ---> Section
+Layout ---> GlobalFilter
+Layout ---> Pod
+Layout ---> LayoutConfig
+Layout --->|publicCustomVisuals| PublicCustomVisual
+Layout ---> ResourcePackage
 ```

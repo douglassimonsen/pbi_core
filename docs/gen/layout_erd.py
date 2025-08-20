@@ -15,11 +15,94 @@ def unwrap(t: type) -> list[type]:
     return [t]
 
 
+BREAK_NODE_CLASSES = [
+    "MeasureSource",
+    "LiteralSource",
+    "DateSpan",  # after LiteralSource
+    "LiteralExpression",
+    "HierarchyLevelSource",
+    "ColumnSource",
+    "AggregationSource",
+    "ArithmeticSource",
+    "GroupSource",
+    "ScopedEvalAgg",
+    "ScopedEvalArith",
+    "AndCondition",
+    "ComparisonCondition",
+    "ContainsCondition",
+    "ExistsCondition",
+    "NotCondition",
+    "InCondition",
+    "OrCondition",
+    "Condition",
+    "ConditionalSource",
+    "FillRule",
+    "SolidExpression",
+    "AlgorithmExpression",
+    "AggregationExpression",
+    "ColumnExpression",
+    "ResourcePackageAccess",
+    "ImageExpression",
+    "SolidColorExpression",
+    "MeasureExpression",
+    "GeoJsonExpression",
+    "LinearGradient2Expression",
+    "LinearGradient3Expression",
+    "ImageKindExpression",
+    "SelectRefExpression",
+    "Scope",
+    "TransformMeta",
+    "PrototypeQuery",
+    "FilterProperties",
+    "Filter",
+    "Selector",
+    "VCProperties",
+    "ActionButton",
+    "BarChart",
+    "BasicShape",
+    "Card",
+    "ClusteredColumnChart",
+    "ColumnChart",
+    "ColumnProperty",
+    "DonutChart",
+    "Funnel",
+    "Image",
+    "LineChart",
+    "LineStackedColumnComboChart",
+    "PieChart",
+    "ScatterChart",
+    "Slicer",
+    "TableChart",
+    "Paragraph",
+    "TextBox",
+    "PropertyDef",
+    "Query",
+    "VisualFilter",
+    "VisualConfig",
+    "ExpansionState",
+    "QueryMetadata",
+    "VisualContainer",
+    "ExplorationStateProperties",
+    "BookmarkFilter",
+    "BookmarkVisual",
+    "Bookmark",
+    "LayoutConfig",
+    "ResourcePackage",
+    "GlobalFilter",
+    "Section",
+    "Pod",
+]
+
+
 class ERD:
     visited_nodes: set[Node] = set()
 
     def helper(self, m: type[pydantic.BaseModel]) -> tuple[Node, set[Node], set[Link]]:
-        head = Node(id=str(id(m)), content=m.__name__)
+        if m.__name__ in BREAK_NODE_CLASSES:
+            content = f"<a href='/layout/erd/{m.__name__}'>{m.__name__}</a>"
+        else:
+            content = m.__name__
+        head = Node(id=m.__name__, content=content)
         nodes = {head}
         links = set()
 
@@ -40,10 +123,10 @@ class ERD:
         return head, nodes, links
 
     @staticmethod
-    def _get_node(nodes: set["Node"], content: str) -> "Node":
-        ret = [n for n in nodes if n.content == content]
+    def _get_node(nodes: set["Node"], name: str) -> "Node":
+        ret = [n for n in nodes if n.id == name]
         if len(ret) != 1:
-            msg = f"Node with content '{content}' not found in nodes. Found {len(ret)} matches."
+            msg = f"Node with id '{name}' not found in nodes. Found {len(ret)} matches."
             raise ValueError(msg)
         return ret[0]
 
@@ -52,85 +135,7 @@ class ERD:
         _head, nodes, links = self.helper(Layout)
         diagram = MermaidDiagram(list(nodes), list(links), title="ERD for Layout")
 
-        break_node_classes = [
-            "MeasureSource",
-            "LiteralSource",
-            "DateSpan",  # after LiteralSource
-            "LiteralExpression",
-            "HierarchyLevelSource",
-            "ColumnSource",
-            "AggregationSource",
-            "ArithmeticSource",
-            "GroupSource",
-            "ScopedEvalAgg",
-            "ScopedEvalArith",
-            "AndCondition",
-            "ComparisonCondition",
-            "ContainsCondition",
-            "ExistsCondition",
-            "NotCondition",
-            "InCondition",
-            "OrCondition",
-            "Condition",
-            "ConditionalSource",
-            "FillRule",
-            "SolidExpression",
-            "AlgorithmExpression",
-            "AggregationExpression",
-            "ColumnExpression",
-            "ResourcePackageAccess",
-            "ImageExpression",
-            "SolidColorExpression",
-            "MeasureExpression",
-            "GeoJsonExpression",
-            "LinearGradient2Expression",
-            "LinearGradient3Expression",
-            "ImageKindExpression",
-            "SelectRefExpression",
-            "Scope",
-            "TransformMeta",
-            "PrototypeQuery",
-            "FilterProperties",
-            "Filter",
-            "Selector",
-            "VCProperties",
-            "ActionButton",
-            "BarChart",
-            "BasicShape",
-            "Card",
-            "ClusteredColumnChart",
-            "ColumnChart",
-            "ColumnProperty",
-            "DonutChart",
-            "Funnel",
-            "Image",
-            "LineChart",
-            "LineStackedColumnComboChart",
-            "PieChart",
-            "ScatterChart",
-            "Slicer",
-            "TableChart",
-            "Paragraph",
-            "TextBox",
-            "PropertyDef",
-            "Query",
-            "VisualFilter",
-            "VisualConfig",
-            "ExpansionState",
-            "QueryMetadata",
-            "VisualContainer",
-            "ExplorationStateProperties",
-            "BookmarkFilter",
-            "BookmarkVisual",
-            "Bookmark",
-            "LayoutConfig",
-            "ResourcePackage",
-            "GlobalFilter",
-            "Section",
-            "Pod",
-        ]
-
-        break_nodes = [self._get_node(nodes, name) for name in break_node_classes]
+        break_nodes = [self._get_node(nodes, name) for name in BREAK_NODE_CLASSES]
 
         diagrams = diagram.chunk(break_nodes)
         for ret_diagram in diagrams:

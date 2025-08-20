@@ -3,57 +3,57 @@
 title: ExpansionState
 ---
 graph 
-2430071820688["RoleRef"]
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071814832["TransformOutputRoleRef"]
-2430071366800["ExpressionName"]
-2430071823616["ExpansionStateRoot"]
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071825568["ProtoSourceRef"]
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071817760["Information"]
-2430071808976["GroupSource"]
-style 2430071808976 stroke:#ff0000,stroke-width:1px
-2430071356064["SelectRef"]
-2430071819712["ProtoSource"]
-2430071827520["ExpansionState"]
-2430071809952["ExpansionStateLevel"]
-2430071813856["ExpansionStateChild"]
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430071382416["ArithmeticSource"]
-style 2430071382416 stroke:#ff0000,stroke-width:1px
-2430071813856 --->|children| 2430071813856
-2430071809952 ---> 2430071363872
-2430071823616 --->|children| 2430071813856
-2430071827520 --->|levels| 2430071809952
-2430071809952 --->|identityKeys| 2430071814832
-2430071809952 ---> 2430071358016
-2430071813856 --->|identityValues| 2430071825568
-2430071813856 ---> 2430071359968
-2430071809952 --->|identityKeys| 2430071356064
-2430071825568 --->|SourceRef| 2430071819712
-2430071813856 ---> 2430071365824
-2430071814832 --->|TransformOutputRoleRef| 2430071820688
-2430071813856 ---> 2430071363872
-2430071809952 ---> 2430071808976
-2430071809952 --->|identityKeys| 2430071825568
-2430071809952 --->|AIInformation| 2430071817760
-2430071356064 --->|SelectRef| 2430071366800
-2430071827520 --->|root| 2430071823616
-2430071813856 ---> 2430071358016
-2430071809952 ---> 2430071816784
-2430071813856 ---> 2430071382416
-2430071813856 --->|identityValues| 2430071356064
-2430071809952 ---> 2430071359968
-2430071813856 ---> 2430071816784
-2430071809952 ---> 2430071382416
-2430071813856 --->|identityValues| 2430071814832
-2430071809952 ---> 2430071365824
-2430071813856 ---> 2430071808976
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+ArithmeticSource[<a href='/layout/erd/ArithmeticSource'>ArithmeticSource</a>]
+style ArithmeticSource stroke:#ff0000,stroke-width:1px
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+ExpansionState[<a href='/layout/erd/ExpansionState'>ExpansionState</a>]
+ExpansionStateChild[ExpansionStateChild]
+ExpansionStateLevel[ExpansionStateLevel]
+ExpansionStateRoot[ExpansionStateRoot]
+ExpressionName[ExpressionName]
+GroupSource[<a href='/layout/erd/GroupSource'>GroupSource</a>]
+style GroupSource stroke:#ff0000,stroke-width:1px
+HierarchyLevelSource[<a href='/layout/erd/HierarchyLevelSource'>HierarchyLevelSource</a>]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+Information[Information]
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureSource[<a href='/layout/erd/MeasureSource'>MeasureSource</a>]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+ProtoSource[ProtoSource]
+ProtoSourceRef[ProtoSourceRef]
+RoleRef[RoleRef]
+SelectRef[SelectRef]
+TransformOutputRoleRef[TransformOutputRoleRef]
+ExpansionStateChild --->|identityValues| SelectRef
+ExpansionStateChild --->|identityValues| ProtoSourceRef
+ExpansionStateLevel --->|identityKeys| ProtoSourceRef
+ExpansionStateChild ---> GroupSource
+ExpansionStateChild --->|identityValues| TransformOutputRoleRef
+ExpansionStateLevel --->|AIInformation| Information
+ProtoSourceRef --->|SourceRef| ProtoSource
+ExpansionStateLevel ---> AggregationSource
+ExpansionState --->|root| ExpansionStateRoot
+ExpansionStateLevel --->|identityKeys| TransformOutputRoleRef
+ExpansionStateLevel ---> ColumnSource
+ExpansionStateLevel ---> LiteralSource
+TransformOutputRoleRef --->|TransformOutputRoleRef| RoleRef
+ExpansionStateLevel --->|identityKeys| SelectRef
+ExpansionStateChild ---> HierarchyLevelSource
+ExpansionStateChild ---> AggregationSource
+ExpansionStateChild ---> LiteralSource
+ExpansionState --->|levels| ExpansionStateLevel
+ExpansionStateChild ---> ArithmeticSource
+ExpansionStateChild ---> ColumnSource
+ExpansionStateLevel ---> GroupSource
+SelectRef --->|SelectRef| ExpressionName
+ExpansionStateRoot --->|children| ExpansionStateChild
+ExpansionStateChild --->|children| ExpansionStateChild
+ExpansionStateLevel ---> HierarchyLevelSource
+ExpansionStateLevel ---> MeasureSource
+ExpansionStateLevel ---> ArithmeticSource
+ExpansionStateChild ---> MeasureSource
 ```

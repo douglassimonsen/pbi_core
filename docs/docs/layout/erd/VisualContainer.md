@@ -3,87 +3,87 @@
 title: VisualContainer
 ---
 graph 
-2430664261344["DataRole"]
-2430071820688["RoleRef"]
-2430664265248["QueryMetadata"]
-style 2430664265248 stroke:#ff0000,stroke-width:1px
-2430664258416["Values"]
-2430071814832["TransformOutputRoleRef"]
-2430664266224["DataTransformSelectType"]
-2430071366800["ExpressionName"]
-2430664240848["Query"]
-style 2430664240848 stroke:#ff0000,stroke-width:1px
-2430664245728["KPI"]
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071356064["SelectRef"]
-2430664260368["ColumnFormatting"]
-2430664268176["DataTransformSelect"]
-2430071827520["ExpansionState"]
-style 2430071827520 stroke:#ff0000,stroke-width:1px
-2430664253536["ColumnFormattingDataBars"]
-2430664249632["Split"]
-2430514799136["ProjectionConfig"]
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430664263296["DataTransformVisualElement"]
-2430664259392["RelatedObjects"]
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430664185216["VisualConfig"]
-style 2430664185216 stroke:#ff0000,stroke-width:1px
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071745536["Selector"]
-style 2430071745536 stroke:#ff0000,stroke-width:1px
-2430071825568["ProtoSourceRef"]
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071808976["GroupSource"]
-style 2430071808976 stroke:#ff0000,stroke-width:1px
-2430071819712["ProtoSource"]
-2430664232064["AggregateSources"]
-2430664272080["DataTransform"]
-2430664267200["Title"]
-2430072005152["VisualFilter"]
-style 2430072005152 stroke:#ff0000,stroke-width:1px
-2430514815728["PropertyDef"]
-style 2430514815728 stroke:#ff0000,stroke-width:1px
-2430071382416["ArithmeticSource"]
-style 2430071382416 stroke:#ff0000,stroke-width:1px
-2430693745360["VisualContainer"]
-2430693745360 ---> 2430664240848
-2430664268176 --->|kpi| 2430664245728
-2430664272080 --->|projectionActiveItems| 2430514799136
-2430693745360 ---> 2430664185216
-2430664272080 ---> 2430071827520
-2430664263296 --->|DataRoles| 2430664261344
-2430664258416 ---> 2430071745536
-2430664268176 --->|aggregateSources| 2430664232064
-2430071825568 --->|SourceRef| 2430071819712
-2430693745360 --->|dataTransforms| 2430664272080
-2430071814832 --->|TransformOutputRoleRef| 2430071820688
-2430664268176 --->|type| 2430664266224
-2430664268176 ---> 2430071808976
-2430664268176 ---> 2430071359968
-2430693745360 ---> 2430072005152
-2430664259392 --->|columnFormatting| 2430664260368
-2430071356064 --->|SelectRef| 2430071366800
-2430664268176 --->|relatedObjects| 2430664259392
-2430664272080 --->|splits| 2430664249632
-2430664268176 ---> 2430071816784
-2430664272080 ---> 2430664265248
-2430664259392 --->|values| 2430664258416
-2430664259392 --->|title| 2430664267200
-2430664272080 ---> 2430514815728
-2430664268176 ---> 2430071382416
-2430664268176 --->|expr| 2430071814832
-2430664260368 --->|dataBars| 2430664253536
-2430664268176 ---> 2430071358016
-2430664268176 ---> 2430071363872
-2430664272080 --->|visualElements| 2430664263296
-2430664268176 ---> 2430071365824
-2430664268176 --->|expr| 2430071356064
-2430664272080 --->|selects| 2430664268176
-2430664268176 --->|expr| 2430071825568
+AggregateSources[AggregateSources]
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+ArithmeticSource[<a href='/layout/erd/ArithmeticSource'>ArithmeticSource</a>]
+style ArithmeticSource stroke:#ff0000,stroke-width:1px
+ColumnFormatting[ColumnFormatting]
+ColumnFormattingDataBars[ColumnFormattingDataBars]
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+DataRole[DataRole]
+DataTransform[DataTransform]
+DataTransformSelect[DataTransformSelect]
+DataTransformSelectType[DataTransformSelectType]
+DataTransformVisualElement[DataTransformVisualElement]
+ExpansionState[<a href='/layout/erd/ExpansionState'>ExpansionState</a>]
+style ExpansionState stroke:#ff0000,stroke-width:1px
+ExpressionName[ExpressionName]
+GroupSource[<a href='/layout/erd/GroupSource'>GroupSource</a>]
+style GroupSource stroke:#ff0000,stroke-width:1px
+HierarchyLevelSource[<a href='/layout/erd/HierarchyLevelSource'>HierarchyLevelSource</a>]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+KPI[KPI]
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureSource[<a href='/layout/erd/MeasureSource'>MeasureSource</a>]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+ProjectionConfig[ProjectionConfig]
+PropertyDef[<a href='/layout/erd/PropertyDef'>PropertyDef</a>]
+style PropertyDef stroke:#ff0000,stroke-width:1px
+ProtoSource[ProtoSource]
+ProtoSourceRef[ProtoSourceRef]
+Query[<a href='/layout/erd/Query'>Query</a>]
+style Query stroke:#ff0000,stroke-width:1px
+QueryMetadata[<a href='/layout/erd/QueryMetadata'>QueryMetadata</a>]
+style QueryMetadata stroke:#ff0000,stroke-width:1px
+RelatedObjects[RelatedObjects]
+RoleRef[RoleRef]
+SelectRef[SelectRef]
+Selector[<a href='/layout/erd/Selector'>Selector</a>]
+style Selector stroke:#ff0000,stroke-width:1px
+Split[Split]
+Title[Title]
+TransformOutputRoleRef[TransformOutputRoleRef]
+Values[Values]
+VisualConfig[<a href='/layout/erd/VisualConfig'>VisualConfig</a>]
+style VisualConfig stroke:#ff0000,stroke-width:1px
+VisualContainer[<a href='/layout/erd/VisualContainer'>VisualContainer</a>]
+VisualFilter[<a href='/layout/erd/VisualFilter'>VisualFilter</a>]
+style VisualFilter stroke:#ff0000,stroke-width:1px
+DataTransform ---> QueryMetadata
+ColumnFormatting --->|dataBars| ColumnFormattingDataBars
+DataTransformSelect --->|type| DataTransformSelectType
+DataTransformSelect --->|kpi| KPI
+DataTransform --->|splits| Split
+DataTransformVisualElement --->|DataRoles| DataRole
+RelatedObjects --->|title| Title
+DataTransformSelect ---> ArithmeticSource
+DataTransformSelect --->|expr| TransformOutputRoleRef
+ProtoSourceRef --->|SourceRef| ProtoSource
+RelatedObjects --->|values| Values
+VisualContainer ---> Query
+DataTransformSelect ---> GroupSource
+VisualContainer ---> VisualConfig
+DataTransform --->|visualElements| DataTransformVisualElement
+DataTransformSelect ---> MeasureSource
+VisualContainer --->|dataTransforms| DataTransform
+DataTransform ---> ExpansionState
+DataTransform --->|projectionActiveItems| ProjectionConfig
+TransformOutputRoleRef --->|TransformOutputRoleRef| RoleRef
+VisualContainer ---> VisualFilter
+DataTransformSelect --->|aggregateSources| AggregateSources
+DataTransformSelect --->|relatedObjects| RelatedObjects
+DataTransformSelect ---> AggregationSource
+SelectRef --->|SelectRef| ExpressionName
+DataTransform ---> PropertyDef
+DataTransformSelect --->|expr| SelectRef
+Values ---> Selector
+DataTransformSelect ---> ColumnSource
+DataTransformSelect ---> HierarchyLevelSource
+DataTransformSelect --->|expr| ProtoSourceRef
+DataTransform --->|selects| DataTransformSelect
+RelatedObjects --->|columnFormatting| ColumnFormatting
+DataTransformSelect ---> LiteralSource
 ```

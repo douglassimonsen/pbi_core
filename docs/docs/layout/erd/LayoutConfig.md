@@ -3,86 +3,66 @@
 title: LayoutConfig
 ---
 graph 
-2430693834176["OutspacePaneProperties"]
-2430693823440["LayoutProperties"]
-2430693833200["ConfigSection"]
-2430071907552["SolidColorExpression"]
-style 2430071907552 stroke:#ff0000,stroke-width:1px
-2430693815632["ThemeCollection"]
-2430693803920["Settings"]
-2430071930000["AlgorithmExpression"]
-style 2430071930000 stroke:#ff0000,stroke-width:1px
-2430071921216["ResourcePackageAccess"]
-style 2430071921216 stroke:#ff0000,stroke-width:1px
-2430071926096["ImageKindExpression"]
-style 2430071926096 stroke:#ff0000,stroke-width:1px
-2430693820512["SlowDataSourceSettings"]
-2430071925120["ColumnExpression"]
-style 2430071925120 stroke:#ff0000,stroke-width:1px
-2430693810752["ThemeVersionInfo"]
-2430514889904["BookmarkFolder"]
-2430071920240["LinearGradient2Expression"]
-style 2430071920240 stroke:#ff0000,stroke-width:1px
-2430071930976["ExpressionList"]
-2430071910480["LinearGradient3Expression"]
-style 2430071910480 stroke:#ff0000,stroke-width:1px
-2430071888032["MeasureExpression"]
-style 2430071888032 stroke:#ff0000,stroke-width:1px
-2430693831248["OutspacePane"]
-2430071923168["SelectRefExpression"]
-style 2430071923168 stroke:#ff0000,stroke-width:1px
-2430071919264["ImageExpression"]
-style 2430071919264 stroke:#ff0000,stroke-width:1px
-2430693829296["ConfigSectionProperties"]
-2430071889008["AggregationExpression"]
-style 2430071889008 stroke:#ff0000,stroke-width:1px
-2430071918288["GeoJsonExpression"]
-style 2430071918288 stroke:#ff0000,stroke-width:1px
-2430693841984["LayoutConfig"]
-2430514883072["Bookmark"]
-style 2430514883072 stroke:#ff0000,stroke-width:1px
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430693813680["ThemeInfo"]
-2430693834176 ---> 2430071888032
-2430693834176 ---> 2430071918288
-2430693829296 ---> 2430071888032
-2430693829296 ---> 2430071918288
-2430693829296 ---> 2430071923168
-2430693829296 ---> 2430071920240
-2430693823440 --->|section| 2430693833200
-2430693829296 ---> 2430071919264
-2430693829296 --->|verticalAlignment| 2430071930976
-2430693841984 ---> 2430514883072
-2430693833200 --->|properties| 2430693829296
-2430693829296 ---> 2430071889008
-2430693823440 --->|outspacePane| 2430693831248
-2430693829296 ---> 2430071910480
-2430693834176 ---> 2430071907552
-2430693834176 ---> 2430071923168
-2430693829296 ---> 2430071926096
-2430693834176 ---> 2430071930000
-2430693834176 ---> 2430071920240
-2430693834176 ---> 2430071887056
-2430693813680 --->|version| 2430693810752
-2430693841984 --->|slowDataSourceSettings| 2430693820512
-2430693829296 ---> 2430071925120
-2430693829296 ---> 2430071907552
-2430693834176 ---> 2430071919264
-2430693841984 --->|objects| 2430693823440
-2430693815632 --->|baseTheme| 2430693813680
-2430693841984 --->|settings| 2430693803920
-2430693841984 --->|themeCollection| 2430693815632
-2430514889904 ---> 2430514883072
-2430693829296 ---> 2430071921216
-2430693834176 ---> 2430071925120
-2430693834176 --->|visible| 2430071930976
-2430693834176 ---> 2430071926096
-2430693831248 --->|properties| 2430693834176
-2430693829296 ---> 2430071930000
-2430693834176 ---> 2430071921216
-2430693834176 ---> 2430071889008
-2430693834176 ---> 2430071910480
-2430693841984 --->|bookmarks| 2430514889904
-2430693829296 ---> 2430071887056
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+style AggregationExpression stroke:#ff0000,stroke-width:1px
+AlgorithmExpression[<a href='/layout/erd/AlgorithmExpression'>AlgorithmExpression</a>]
+style AlgorithmExpression stroke:#ff0000,stroke-width:1px
+Bookmark[<a href='/layout/erd/Bookmark'>Bookmark</a>]
+style Bookmark stroke:#ff0000,stroke-width:1px
+BookmarkFolder[BookmarkFolder]
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+style ColumnExpression stroke:#ff0000,stroke-width:1px
+ExpressionList[ExpressionList]
+GeoJsonExpression[<a href='/layout/erd/GeoJsonExpression'>GeoJsonExpression</a>]
+style GeoJsonExpression stroke:#ff0000,stroke-width:1px
+ImageExpression[<a href='/layout/erd/ImageExpression'>ImageExpression</a>]
+style ImageExpression stroke:#ff0000,stroke-width:1px
+ImageKindExpression[<a href='/layout/erd/ImageKindExpression'>ImageKindExpression</a>]
+style ImageKindExpression stroke:#ff0000,stroke-width:1px
+LayoutConfig[<a href='/layout/erd/LayoutConfig'>LayoutConfig</a>]
+LayoutProperties[LayoutProperties]
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
+LinearGradient3Expression[<a href='/layout/erd/LinearGradient3Expression'>LinearGradient3Expression</a>]
+style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+MeasureExpression[<a href='/layout/erd/MeasureExpression'>MeasureExpression</a>]
+style MeasureExpression stroke:#ff0000,stroke-width:1px
+ResourcePackageAccess[<a href='/layout/erd/ResourcePackageAccess'>ResourcePackageAccess</a>]
+style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
+SelectRefExpression[<a href='/layout/erd/SelectRefExpression'>SelectRefExpression</a>]
+style SelectRefExpression stroke:#ff0000,stroke-width:1px
+Settings[Settings]
+SlowDataSourceSettings[SlowDataSourceSettings]
+SolidColorExpression[<a href='/layout/erd/SolidColorExpression'>SolidColorExpression</a>]
+style SolidColorExpression stroke:#ff0000,stroke-width:1px
+ThemeCollection[ThemeCollection]
+ThemeInfo[ThemeInfo]
+ThemeVersionInfo[ThemeVersionInfo]
+_LayoutPropertiesHelper[_LayoutPropertiesHelper]
+_LayoutPropertiesHelper ---> AlgorithmExpression
+_LayoutPropertiesHelper ---> SelectRefExpression
+LayoutConfig ---> Bookmark
+_LayoutPropertiesHelper ---> ImageKindExpression
+LayoutProperties --->|properties| _LayoutPropertiesHelper
+LayoutConfig --->|objects| LayoutProperties
+_LayoutPropertiesHelper ---> MeasureExpression
+LayoutConfig --->|themeCollection| ThemeCollection
+_LayoutPropertiesHelper ---> SolidColorExpression
+LayoutConfig --->|slowDataSourceSettings| SlowDataSourceSettings
+_LayoutPropertiesHelper ---> AggregationExpression
+ThemeCollection --->|baseTheme| ThemeInfo
+_LayoutPropertiesHelper ---> LiteralExpression
+_LayoutPropertiesHelper ---> LinearGradient2Expression
+_LayoutPropertiesHelper ---> LinearGradient3Expression
+ThemeInfo --->|version| ThemeVersionInfo
+LayoutConfig --->|settings| Settings
+_LayoutPropertiesHelper ---> GeoJsonExpression
+BookmarkFolder ---> Bookmark
+_LayoutPropertiesHelper ---> ImageExpression
+_LayoutPropertiesHelper ---> ResourcePackageAccess
+_LayoutPropertiesHelper ---> ColumnExpression
+LayoutConfig --->|bookmarks| BookmarkFolder
+_LayoutPropertiesHelper --->|ribbonGapSize| ExpressionList
 ```

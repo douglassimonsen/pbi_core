@@ -3,178 +3,177 @@
 title: DonutChart
 ---
 graph 
-2430591732400["_TitlePropertiesHelper"]
-2430591719712["_SlicesPropertiesHelper"]
-2430071951472["PrototypeQuery"]
-style 2430071951472 stroke:#ff0000,stroke-width:1px
-2430071907552["SolidColorExpression"]
-style 2430071907552 stroke:#ff0000,stroke-width:1px
-2430591723616["DonutChartProperties"]
-2430591737280["TitleProperties"]
-2430071930000["AlgorithmExpression"]
-style 2430071930000 stroke:#ff0000,stroke-width:1px
-2430591705072["_LegendPropertiesHelper"]
-2430071921216["ResourcePackageAccess"]
-style 2430071921216 stroke:#ff0000,stroke-width:1px
-2430071926096["ImageKindExpression"]
-style 2430071926096 stroke:#ff0000,stroke-width:1px
-2430552678256["ColumnProperty"]
-style 2430552678256 stroke:#ff0000,stroke-width:1px
-2430514799136["ProjectionConfig"]
-2430071925120["ColumnExpression"]
-style 2430071925120 stroke:#ff0000,stroke-width:1px
-2430591716784["LegendProperties"]
-2430071920240["LinearGradient2Expression"]
-style 2430071920240 stroke:#ff0000,stroke-width:1px
-2430071930976["ExpressionList"]
-2430071910480["LinearGradient3Expression"]
-style 2430071910480 stroke:#ff0000,stroke-width:1px
-2430514817680["QueryOptions"]
-2430591698240["_GeneralPropertiesHelper"]
-2430591708976["LabelsProperties"]
-2430071888032["MeasureExpression"]
-style 2430071888032 stroke:#ff0000,stroke-width:1px
-2430591712880["GeneralProperties"]
-2430591697264["DataPointProperties"]
-2430071923168["SelectRefExpression"]
-style 2430071923168 stroke:#ff0000,stroke-width:1px
-2430071919264["ImageExpression"]
-style 2430071919264 stroke:#ff0000,stroke-width:1px
-2430071745536["Selector"]
-style 2430071745536 stroke:#ff0000,stroke-width:1px
-2430591687504["BackgroundProperties"]
-2430591729472["SlicesProperties"]
-2430071889008["AggregationExpression"]
-style 2430071889008 stroke:#ff0000,stroke-width:1px
-2430591941264["_BackgroundPropertiesHelper"]
-2430071918288["GeoJsonExpression"]
-style 2430071918288 stroke:#ff0000,stroke-width:1px
-2430514805968["VCProperties"]
-style 2430514805968 stroke:#ff0000,stroke-width:1px
-2430591728496["DonutChart"]
-2430591701168["_LabelsPropertiesHelper"]
-2430514810848["Display"]
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430591692384["_DataPointPropertiesHelper"]
-2430591705072 ---> 2430071923168
-2430591723616 --->|general| 2430591712880
-2430591701168 ---> 2430071887056
-2430591698240 ---> 2430071930000
-2430591941264 ---> 2430071926096
-2430591719712 ---> 2430071907552
-2430591705072 ---> 2430071888032
-2430591701168 ---> 2430071921216
-2430591941264 ---> 2430071919264
-2430591705072 ---> 2430071907552
-2430591698240 --->|altText| 2430071930976
-2430591701168 ---> 2430071888032
-2430591698240 ---> 2430071907552
-2430591719712 ---> 2430071923168
-2430591941264 ---> 2430071925120
-2430591732400 ---> 2430071921216
-2430591719712 ---> 2430071910480
-2430591701168 ---> 2430071919264
-2430591701168 ---> 2430071930000
-2430591705072 ---> 2430071925120
-2430591723616 --->|background| 2430591687504
-2430591705072 ---> 2430071887056
-2430591732400 ---> 2430071930000
-2430591692384 --->|fill| 2430071930976
-2430591728496 ---> 2430071951472
-2430591692384 ---> 2430071889008
-2430591698240 ---> 2430071888032
-2430591941264 ---> 2430071910480
-2430591723616 --->|legend| 2430591716784
-2430591692384 ---> 2430071907552
-2430591698240 ---> 2430071910480
-2430591701168 ---> 2430071926096
-2430591692384 ---> 2430071888032
-2430591941264 --->|show| 2430071930976
-2430591941264 ---> 2430071889008
-2430591687504 --->|properties| 2430591941264
-2430591701168 ---> 2430071923168
-2430591701168 ---> 2430071910480
-2430591692384 ---> 2430071921216
-2430591705072 ---> 2430071919264
-2430591692384 ---> 2430071923168
-2430591692384 ---> 2430071930000
-2430591728496 ---> 2430552678256
-2430591692384 ---> 2430071925120
-2430591705072 ---> 2430071920240
-2430591719712 ---> 2430071926096
-2430591941264 ---> 2430071907552
-2430591719712 ---> 2430071925120
-2430591723616 --->|title| 2430591737280
-2430591719712 ---> 2430071921216
-2430591705072 ---> 2430071921216
-2430591698240 ---> 2430071925120
-2430591719712 ---> 2430071889008
-2430591701168 ---> 2430071889008
-2430591716784 --->|properties| 2430591705072
-2430591698240 ---> 2430071887056
-2430591692384 ---> 2430071926096
-2430591705072 --->|fontSize| 2430071930976
-2430591705072 ---> 2430071910480
-2430591705072 ---> 2430071889008
-2430591701168 ---> 2430071920240
-2430591732400 ---> 2430071920240
-2430591732400 ---> 2430071926096
-2430591723616 --->|slices| 2430591729472
-2430591701168 --->|background| 2430071930976
-2430591697264 --->|properties| 2430591692384
-2430591941264 ---> 2430071930000
-2430591692384 ---> 2430071920240
-2430591698240 ---> 2430071920240
-2430591719712 ---> 2430071918288
-2430591732400 ---> 2430071889008
-2430591732400 ---> 2430071923168
-2430591728496 ---> 2430514805968
-2430591719712 ---> 2430071919264
-2430591728496 --->|display| 2430514810848
-2430591701168 ---> 2430071918288
-2430591732400 ---> 2430071888032
-2430591701168 ---> 2430071907552
-2430591941264 ---> 2430071921216
-2430591698240 ---> 2430071923168
-2430591732400 ---> 2430071925120
-2430591692384 ---> 2430071918288
-2430591698240 ---> 2430071919264
-2430591728496 --->|projections| 2430514799136
-2430591719712 ---> 2430071920240
-2430591732400 ---> 2430071910480
-2430591698240 ---> 2430071926096
-2430591732400 ---> 2430071918288
-2430591723616 --->|labels| 2430591708976
-2430591692384 ---> 2430071919264
-2430591941264 ---> 2430071920240
-2430591941264 ---> 2430071887056
-2430591701168 ---> 2430071925120
-2430591698240 ---> 2430071921216
-2430591732400 --->|alignment| 2430071930976
-2430591712880 --->|properties| 2430591698240
-2430591719712 ---> 2430071888032
-2430591941264 ---> 2430071923168
-2430591723616 --->|dataPoint| 2430591697264
-2430591692384 ---> 2430071910480
-2430591692384 ---> 2430071887056
-2430591698240 ---> 2430071918288
-2430591708976 --->|properties| 2430591701168
-2430591705072 ---> 2430071930000
-2430591728496 --->|queryOptions| 2430514817680
-2430591705072 ---> 2430071918288
-2430591732400 ---> 2430071887056
-2430591941264 ---> 2430071888032
-2430591737280 --->|properties| 2430591732400
-2430591705072 ---> 2430071926096
-2430591729472 --->|properties| 2430591719712
-2430591697264 ---> 2430071745536
-2430591719712 --->|innerRadiusRatio| 2430071930976
-2430591728496 --->|objects| 2430591723616
-2430591719712 ---> 2430071887056
-2430591941264 ---> 2430071918288
-2430591732400 ---> 2430071919264
-2430591698240 ---> 2430071889008
-2430591719712 ---> 2430071930000
-2430591732400 ---> 2430071907552
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+style AggregationExpression stroke:#ff0000,stroke-width:1px
+AlgorithmExpression[<a href='/layout/erd/AlgorithmExpression'>AlgorithmExpression</a>]
+style AlgorithmExpression stroke:#ff0000,stroke-width:1px
+BackgroundProperties[BackgroundProperties]
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+style ColumnExpression stroke:#ff0000,stroke-width:1px
+ColumnProperty[<a href='/layout/erd/ColumnProperty'>ColumnProperty</a>]
+style ColumnProperty stroke:#ff0000,stroke-width:1px
+DataPointProperties[DataPointProperties]
+Display[Display]
+DonutChart[<a href='/layout/erd/DonutChart'>DonutChart</a>]
+DonutChartProperties[DonutChartProperties]
+ExpressionList[ExpressionList]
+GeneralProperties[GeneralProperties]
+GeoJsonExpression[<a href='/layout/erd/GeoJsonExpression'>GeoJsonExpression</a>]
+style GeoJsonExpression stroke:#ff0000,stroke-width:1px
+ImageExpression[<a href='/layout/erd/ImageExpression'>ImageExpression</a>]
+style ImageExpression stroke:#ff0000,stroke-width:1px
+ImageKindExpression[<a href='/layout/erd/ImageKindExpression'>ImageKindExpression</a>]
+style ImageKindExpression stroke:#ff0000,stroke-width:1px
+LabelsProperties[LabelsProperties]
+LegendProperties[LegendProperties]
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
+LinearGradient3Expression[<a href='/layout/erd/LinearGradient3Expression'>LinearGradient3Expression</a>]
+style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+MeasureExpression[<a href='/layout/erd/MeasureExpression'>MeasureExpression</a>]
+style MeasureExpression stroke:#ff0000,stroke-width:1px
+ProjectionConfig[ProjectionConfig]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+style PrototypeQuery stroke:#ff0000,stroke-width:1px
+QueryOptions[QueryOptions]
+ResourcePackageAccess[<a href='/layout/erd/ResourcePackageAccess'>ResourcePackageAccess</a>]
+style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
+SelectRefExpression[<a href='/layout/erd/SelectRefExpression'>SelectRefExpression</a>]
+style SelectRefExpression stroke:#ff0000,stroke-width:1px
+Selector[<a href='/layout/erd/Selector'>Selector</a>]
+style Selector stroke:#ff0000,stroke-width:1px
+SlicesProperties[SlicesProperties]
+SolidColorExpression[<a href='/layout/erd/SolidColorExpression'>SolidColorExpression</a>]
+style SolidColorExpression stroke:#ff0000,stroke-width:1px
+TitleProperties[TitleProperties]
+VCProperties[<a href='/layout/erd/VCProperties'>VCProperties</a>]
+style VCProperties stroke:#ff0000,stroke-width:1px
+_DataPointPropertiesHelper[_DataPointPropertiesHelper]
+_GeneralPropertiesHelper[_GeneralPropertiesHelper]
+_LabelsPropertiesHelper[_LabelsPropertiesHelper]
+_LegendPropertiesHelper[_LegendPropertiesHelper]
+_SlicesPropertiesHelper[_SlicesPropertiesHelper]
+_TitlePropertiesHelper[_TitlePropertiesHelper]
+_SlicesPropertiesHelper ---> LinearGradient3Expression
+_LegendPropertiesHelper ---> ColumnExpression
+_LabelsPropertiesHelper ---> ColumnExpression
+_SlicesPropertiesHelper ---> AlgorithmExpression
+_LabelsPropertiesHelper ---> MeasureExpression
+BackgroundProperties ---> ImageExpression
+_DataPointPropertiesHelper ---> ImageKindExpression
+BackgroundProperties ---> AggregationExpression
+DonutChartProperties --->|slices| SlicesProperties
+DonutChart --->|display| Display
+BackgroundProperties ---> LinearGradient2Expression
+LegendProperties --->|properties| _LegendPropertiesHelper
+_SlicesPropertiesHelper ---> ResourcePackageAccess
+TitleProperties --->|properties| _TitlePropertiesHelper
+DonutChartProperties --->|legend| LegendProperties
+BackgroundProperties ---> SolidColorExpression
+BackgroundProperties ---> ColumnExpression
+_LegendPropertiesHelper ---> SolidColorExpression
+_TitlePropertiesHelper ---> AggregationExpression
+_LegendPropertiesHelper ---> ResourcePackageAccess
+_TitlePropertiesHelper ---> LinearGradient2Expression
+_TitlePropertiesHelper ---> GeoJsonExpression
+_LabelsPropertiesHelper ---> SelectRefExpression
+_GeneralPropertiesHelper ---> SolidColorExpression
+_LabelsPropertiesHelper ---> SolidColorExpression
+_TitlePropertiesHelper ---> AlgorithmExpression
+_TitlePropertiesHelper ---> SolidColorExpression
+_GeneralPropertiesHelper ---> LinearGradient3Expression
+_LabelsPropertiesHelper ---> AggregationExpression
+_SlicesPropertiesHelper ---> ImageExpression
+_LabelsPropertiesHelper --->|backgroundColor| ExpressionList
+_GeneralPropertiesHelper ---> MeasureExpression
+DonutChart ---> ColumnProperty
+BackgroundProperties ---> MeasureExpression
+_TitlePropertiesHelper ---> SelectRefExpression
+DonutChartProperties --->|general| GeneralProperties
+BackgroundProperties ---> ImageKindExpression
+_SlicesPropertiesHelper ---> SolidColorExpression
+DataPointProperties ---> Selector
+_GeneralPropertiesHelper ---> LiteralExpression
+_LegendPropertiesHelper ---> ImageExpression
+DonutChart --->|queryOptions| QueryOptions
+_SlicesPropertiesHelper ---> LiteralExpression
+DonutChartProperties --->|background| BackgroundProperties
+_GeneralPropertiesHelper ---> ImageExpression
+_SlicesPropertiesHelper ---> SelectRefExpression
+_GeneralPropertiesHelper ---> AlgorithmExpression
+_DataPointPropertiesHelper ---> ColumnExpression
+_LegendPropertiesHelper ---> ImageKindExpression
+_LabelsPropertiesHelper ---> LinearGradient2Expression
+_SlicesPropertiesHelper ---> LinearGradient2Expression
+DonutChart --->|objects| DonutChartProperties
+_GeneralPropertiesHelper ---> SelectRefExpression
+_LegendPropertiesHelper ---> LiteralExpression
+_DataPointPropertiesHelper ---> LinearGradient3Expression
+BackgroundProperties --->|show| ExpressionList
+_TitlePropertiesHelper ---> ResourcePackageAccess
+_LabelsPropertiesHelper ---> ResourcePackageAccess
+_DataPointPropertiesHelper ---> ResourcePackageAccess
+_SlicesPropertiesHelper ---> ImageKindExpression
+_LegendPropertiesHelper --->|fontSize| ExpressionList
+DonutChartProperties --->|labels| LabelsProperties
+_TitlePropertiesHelper ---> LinearGradient3Expression
+_LegendPropertiesHelper ---> GeoJsonExpression
+DonutChart ---> VCProperties
+_GeneralPropertiesHelper ---> AggregationExpression
+BackgroundProperties ---> GeoJsonExpression
+BackgroundProperties ---> LinearGradient3Expression
+_GeneralPropertiesHelper ---> ImageKindExpression
+_SlicesPropertiesHelper --->|innerRadiusRatio| ExpressionList
+DonutChart ---> PrototypeQuery
+_TitlePropertiesHelper --->|alignment| ExpressionList
+_GeneralPropertiesHelper ---> GeoJsonExpression
+DonutChartProperties --->|dataPoint| DataPointProperties
+_LabelsPropertiesHelper ---> GeoJsonExpression
+SlicesProperties --->|properties| _SlicesPropertiesHelper
+_SlicesPropertiesHelper ---> AggregationExpression
+_LegendPropertiesHelper ---> MeasureExpression
+_DataPointPropertiesHelper ---> LinearGradient2Expression
+_DataPointPropertiesHelper ---> AggregationExpression
+_LabelsPropertiesHelper ---> LinearGradient3Expression
+_GeneralPropertiesHelper ---> LinearGradient2Expression
+LabelsProperties --->|properties| _LabelsPropertiesHelper
+_DataPointPropertiesHelper --->|borderColorMatchFill| ExpressionList
+BackgroundProperties ---> ResourcePackageAccess
+_LabelsPropertiesHelper ---> LiteralExpression
+_DataPointPropertiesHelper ---> LiteralExpression
+_TitlePropertiesHelper ---> LiteralExpression
+_GeneralPropertiesHelper --->|altText| ExpressionList
+_DataPointPropertiesHelper ---> GeoJsonExpression
+_LegendPropertiesHelper ---> SelectRefExpression
+_DataPointPropertiesHelper ---> ImageExpression
+_LegendPropertiesHelper ---> LinearGradient3Expression
+_LegendPropertiesHelper ---> AlgorithmExpression
+_DataPointPropertiesHelper ---> MeasureExpression
+_LegendPropertiesHelper ---> LinearGradient2Expression
+_GeneralPropertiesHelper ---> ColumnExpression
+_TitlePropertiesHelper ---> ImageKindExpression
+_DataPointPropertiesHelper ---> AlgorithmExpression
+BackgroundProperties ---> SelectRefExpression
+_GeneralPropertiesHelper ---> ResourcePackageAccess
+_TitlePropertiesHelper ---> ColumnExpression
+_TitlePropertiesHelper ---> ImageExpression
+DonutChart --->|projections| ProjectionConfig
+BackgroundProperties ---> LiteralExpression
+_SlicesPropertiesHelper ---> MeasureExpression
+_SlicesPropertiesHelper ---> GeoJsonExpression
+_LabelsPropertiesHelper ---> AlgorithmExpression
+_DataPointPropertiesHelper ---> SelectRefExpression
+_LegendPropertiesHelper ---> AggregationExpression
+DataPointProperties --->|properties| _DataPointPropertiesHelper
+GeneralProperties --->|properties| _GeneralPropertiesHelper
+_DataPointPropertiesHelper ---> SolidColorExpression
+_SlicesPropertiesHelper ---> ColumnExpression
+DonutChartProperties --->|title| TitleProperties
+_LabelsPropertiesHelper ---> ImageKindExpression
+BackgroundProperties ---> AlgorithmExpression
+_TitlePropertiesHelper ---> MeasureExpression
+LabelsProperties ---> Selector
+_LabelsPropertiesHelper ---> ImageExpression
 ```

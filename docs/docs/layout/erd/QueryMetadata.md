@@ -3,44 +3,44 @@
 title: QueryMetadata
 ---
 graph 
-2430071820688["RoleRef"]
-2430664265248["QueryMetadata"]
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071814832["TransformOutputRoleRef"]
-2430664234016["Restatement"]
-2430071366800["ExpressionName"]
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430664245728["KPI"]
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071825568["ProtoSourceRef"]
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071356064["SelectRef"]
-2430071808976["GroupSource"]
-style 2430071808976 stroke:#ff0000,stroke-width:1px
-2430071819712["ProtoSource"]
-2430664252560["QueryMetadataFilter"]
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430071382416["ArithmeticSource"]
-style 2430071382416 stroke:#ff0000,stroke-width:1px
-2430071825568 --->|SourceRef| 2430071819712
-2430664265248 --->|Filters| 2430664252560
-2430664252560 ---> 2430071359968
-2430664252560 --->|expression| 2430071356064
-2430664234016 --->|kpi| 2430664245728
-2430664252560 ---> 2430071808976
-2430664252560 ---> 2430071358016
-2430664252560 ---> 2430071363872
-2430664252560 --->|expression| 2430071825568
-2430071356064 --->|SelectRef| 2430071366800
-2430071814832 --->|TransformOutputRoleRef| 2430071820688
-2430664252560 ---> 2430071816784
-2430664265248 --->|Select| 2430664234016
-2430664252560 ---> 2430071365824
-2430664252560 ---> 2430071382416
-2430664252560 --->|expression| 2430071814832
+AggregationSource[<a href='/layout/erd/AggregationSource'>AggregationSource</a>]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+ArithmeticSource[<a href='/layout/erd/ArithmeticSource'>ArithmeticSource</a>]
+style ArithmeticSource stroke:#ff0000,stroke-width:1px
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+ExpressionName[ExpressionName]
+GroupSource[<a href='/layout/erd/GroupSource'>GroupSource</a>]
+style GroupSource stroke:#ff0000,stroke-width:1px
+HierarchyLevelSource[<a href='/layout/erd/HierarchyLevelSource'>HierarchyLevelSource</a>]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+KPI[KPI]
+LiteralSource[<a href='/layout/erd/LiteralSource'>LiteralSource</a>]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureSource[<a href='/layout/erd/MeasureSource'>MeasureSource</a>]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+ProtoSource[ProtoSource]
+ProtoSourceRef[ProtoSourceRef]
+QueryMetadata[<a href='/layout/erd/QueryMetadata'>QueryMetadata</a>]
+QueryMetadataFilter[QueryMetadataFilter]
+Restatement[Restatement]
+RoleRef[RoleRef]
+SelectRef[SelectRef]
+TransformOutputRoleRef[TransformOutputRoleRef]
+QueryMetadataFilter ---> HierarchyLevelSource
+SelectRef --->|SelectRef| ExpressionName
+ProtoSourceRef --->|SourceRef| ProtoSource
+Restatement --->|kpi| KPI
+QueryMetadataFilter --->|expression| SelectRef
+QueryMetadataFilter --->|expression| ProtoSourceRef
+QueryMetadataFilter ---> LiteralSource
+QueryMetadata --->|Filters| QueryMetadataFilter
+QueryMetadata --->|Select| Restatement
+QueryMetadataFilter ---> GroupSource
+QueryMetadataFilter ---> ArithmeticSource
+QueryMetadataFilter ---> AggregationSource
+TransformOutputRoleRef --->|TransformOutputRoleRef| RoleRef
+QueryMetadataFilter ---> MeasureSource
+QueryMetadataFilter ---> ColumnSource
+QueryMetadataFilter --->|expression| TransformOutputRoleRef
 ```

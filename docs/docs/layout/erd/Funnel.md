@@ -3,124 +3,125 @@
 title: Funnel
 ---
 graph 
-2430071951472["PrototypeQuery"]
-style 2430071951472 stroke:#ff0000,stroke-width:1px
-2430071907552["SolidColorExpression"]
-style 2430071907552 stroke:#ff0000,stroke-width:1px
-2430591749968["LabelsProperties"]
-2430071930000["AlgorithmExpression"]
-style 2430071930000 stroke:#ff0000,stroke-width:1px
-2430071921216["ResourcePackageAccess"]
-style 2430071921216 stroke:#ff0000,stroke-width:1px
-2430071926096["ImageKindExpression"]
-style 2430071926096 stroke:#ff0000,stroke-width:1px
-2430552678256["ColumnProperty"]
-style 2430552678256 stroke:#ff0000,stroke-width:1px
-2430514799136["ProjectionConfig"]
-2430071925120["ColumnExpression"]
-style 2430071925120 stroke:#ff0000,stroke-width:1px
-2430591758752["_LabelsPropertiesHelper"]
-2430071920240["LinearGradient2Expression"]
-style 2430071920240 stroke:#ff0000,stroke-width:1px
-2430071930976["ExpressionList"]
-2430591760704["CategoryAxisProperties"]
-2430071910480["LinearGradient3Expression"]
-style 2430071910480 stroke:#ff0000,stroke-width:1px
-2430514817680["QueryOptions"]
-2430071888032["MeasureExpression"]
-style 2430071888032 stroke:#ff0000,stroke-width:1px
-2430591778272["PercentBarLabelProperties"]
-2430591753872["_DataPointPropertiesHelper"]
-2430591780224["FunnelProperties"]
-2430071923168["SelectRefExpression"]
-style 2430071923168 stroke:#ff0000,stroke-width:1px
-2430591727520["_CategoryAxisPropertiesHelper"]
-2430071919264["ImageExpression"]
-style 2430071919264 stroke:#ff0000,stroke-width:1px
-2430071745536["Selector"]
-style 2430071745536 stroke:#ff0000,stroke-width:1px
-2430591748016["DataPointProperties"]
-2430071889008["AggregationExpression"]
-style 2430071889008 stroke:#ff0000,stroke-width:1px
-2430591766560["_PercentBarLabelPropertiesHelper"]
-2430071918288["GeoJsonExpression"]
-style 2430071918288 stroke:#ff0000,stroke-width:1px
-2430514805968["VCProperties"]
-style 2430514805968 stroke:#ff0000,stroke-width:1px
-2430514810848["Display"]
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430591777296["Funnel"]
-2430591766560 ---> 2430071907552
-2430591758752 ---> 2430071930000
-2430591753872 ---> 2430071918288
-2430591758752 ---> 2430071921216
-2430591777296 --->|objects| 2430591780224
-2430591780224 --->|categoryAxis| 2430591760704
-2430591766560 ---> 2430071887056
-2430591727520 ---> 2430071887056
-2430591727520 ---> 2430071919264
-2430591753872 ---> 2430071889008
-2430591727520 ---> 2430071889008
-2430591766560 ---> 2430071888032
-2430591758752 ---> 2430071926096
-2430591780224 --->|dataPoint| 2430591748016
-2430591766560 --->|color| 2430071930976
-2430591777296 ---> 2430552678256
-2430591760704 --->|properties| 2430591727520
-2430591766560 ---> 2430071926096
-2430591758752 ---> 2430071920240
-2430591753872 ---> 2430071887056
-2430591753872 ---> 2430071923168
-2430591727520 ---> 2430071921216
-2430591777296 --->|projections| 2430514799136
-2430591758752 --->|color| 2430071930976
-2430591777296 ---> 2430514805968
-2430591753872 ---> 2430071910480
-2430591758752 ---> 2430071889008
-2430591749968 --->|properties| 2430591758752
-2430591766560 ---> 2430071925120
-2430591727520 ---> 2430071925120
-2430591748016 ---> 2430071745536
-2430591758752 ---> 2430071888032
-2430591727520 ---> 2430071926096
-2430591758752 ---> 2430071910480
-2430591748016 --->|properties| 2430591753872
-2430591753872 ---> 2430071925120
-2430591766560 ---> 2430071930000
-2430591766560 ---> 2430071910480
-2430591758752 ---> 2430071907552
-2430591780224 --->|percentBarLabel| 2430591778272
-2430591766560 ---> 2430071889008
-2430591727520 ---> 2430071930000
-2430591727520 ---> 2430071918288
-2430591753872 ---> 2430071930000
-2430591753872 ---> 2430071920240
-2430591753872 ---> 2430071888032
-2430591758752 ---> 2430071918288
-2430591780224 --->|labels| 2430591749968
-2430591758752 ---> 2430071919264
-2430591777296 --->|queryOptions| 2430514817680
-2430591727520 ---> 2430071907552
-2430591766560 ---> 2430071920240
-2430591766560 ---> 2430071919264
-2430591727520 ---> 2430071920240
-2430591777296 ---> 2430071951472
-2430591758752 ---> 2430071887056
-2430591753872 ---> 2430071926096
-2430591753872 ---> 2430071919264
-2430591727520 ---> 2430071910480
-2430591766560 ---> 2430071923168
-2430591766560 ---> 2430071918288
-2430591766560 ---> 2430071921216
-2430591778272 --->|properties| 2430591766560
-2430591758752 ---> 2430071923168
-2430591753872 ---> 2430071921216
-2430591777296 --->|display| 2430514810848
-2430591727520 ---> 2430071923168
-2430591727520 ---> 2430071888032
-2430591753872 --->|fill| 2430071930976
-2430591753872 ---> 2430071907552
-2430591727520 --->|color| 2430071930976
-2430591758752 ---> 2430071925120
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+style AggregationExpression stroke:#ff0000,stroke-width:1px
+AlgorithmExpression[<a href='/layout/erd/AlgorithmExpression'>AlgorithmExpression</a>]
+style AlgorithmExpression stroke:#ff0000,stroke-width:1px
+CategoryAxisProperties[CategoryAxisProperties]
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+style ColumnExpression stroke:#ff0000,stroke-width:1px
+ColumnProperty[<a href='/layout/erd/ColumnProperty'>ColumnProperty</a>]
+style ColumnProperty stroke:#ff0000,stroke-width:1px
+DataPointProperties[DataPointProperties]
+Display[Display]
+ExpressionList[ExpressionList]
+Funnel[<a href='/layout/erd/Funnel'>Funnel</a>]
+FunnelProperties[FunnelProperties]
+GeoJsonExpression[<a href='/layout/erd/GeoJsonExpression'>GeoJsonExpression</a>]
+style GeoJsonExpression stroke:#ff0000,stroke-width:1px
+ImageExpression[<a href='/layout/erd/ImageExpression'>ImageExpression</a>]
+style ImageExpression stroke:#ff0000,stroke-width:1px
+ImageKindExpression[<a href='/layout/erd/ImageKindExpression'>ImageKindExpression</a>]
+style ImageKindExpression stroke:#ff0000,stroke-width:1px
+LabelsProperties[LabelsProperties]
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
+LinearGradient3Expression[<a href='/layout/erd/LinearGradient3Expression'>LinearGradient3Expression</a>]
+style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+MeasureExpression[<a href='/layout/erd/MeasureExpression'>MeasureExpression</a>]
+style MeasureExpression stroke:#ff0000,stroke-width:1px
+PercentBarLabelProperties[PercentBarLabelProperties]
+ProjectionConfig[ProjectionConfig]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+style PrototypeQuery stroke:#ff0000,stroke-width:1px
+QueryOptions[QueryOptions]
+ResourcePackageAccess[<a href='/layout/erd/ResourcePackageAccess'>ResourcePackageAccess</a>]
+style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
+SelectRefExpression[<a href='/layout/erd/SelectRefExpression'>SelectRefExpression</a>]
+style SelectRefExpression stroke:#ff0000,stroke-width:1px
+Selector[<a href='/layout/erd/Selector'>Selector</a>]
+style Selector stroke:#ff0000,stroke-width:1px
+SolidColorExpression[<a href='/layout/erd/SolidColorExpression'>SolidColorExpression</a>]
+style SolidColorExpression stroke:#ff0000,stroke-width:1px
+VCProperties[<a href='/layout/erd/VCProperties'>VCProperties</a>]
+style VCProperties stroke:#ff0000,stroke-width:1px
+_CategoryAxisPropertiesHelper[_CategoryAxisPropertiesHelper]
+_DataPointPropertiesHelper[_DataPointPropertiesHelper]
+_LabelsPropertiesHelper[_LabelsPropertiesHelper]
+_PercentBarLabelPropertiesHelper[_PercentBarLabelPropertiesHelper]
+_PercentBarLabelPropertiesHelper ---> SelectRefExpression
+PercentBarLabelProperties --->|properties| _PercentBarLabelPropertiesHelper
+_CategoryAxisPropertiesHelper ---> ResourcePackageAccess
+_DataPointPropertiesHelper ---> GeoJsonExpression
+_LabelsPropertiesHelper ---> ColumnExpression
+_PercentBarLabelPropertiesHelper ---> LinearGradient3Expression
+_PercentBarLabelPropertiesHelper ---> ImageKindExpression
+_LabelsPropertiesHelper ---> MeasureExpression
+_PercentBarLabelPropertiesHelper ---> ColumnExpression
+_CategoryAxisPropertiesHelper ---> ImageKindExpression
+_DataPointPropertiesHelper ---> ImageKindExpression
+Funnel --->|objects| FunnelProperties
+_DataPointPropertiesHelper ---> ImageExpression
+_PercentBarLabelPropertiesHelper ---> AlgorithmExpression
+_DataPointPropertiesHelper ---> MeasureExpression
+FunnelProperties --->|labels| LabelsProperties
+_CategoryAxisPropertiesHelper ---> SelectRefExpression
+_DataPointPropertiesHelper ---> AlgorithmExpression
+Funnel --->|projections| ProjectionConfig
+DataPointProperties ---> Selector
+_CategoryAxisPropertiesHelper ---> AlgorithmExpression
+_CategoryAxisPropertiesHelper ---> LinearGradient3Expression
+_LabelsPropertiesHelper ---> GeoJsonExpression
+Funnel --->|queryOptions| QueryOptions
+FunnelProperties --->|dataPoint| DataPointProperties
+_PercentBarLabelPropertiesHelper --->|color| ExpressionList
+_DataPointPropertiesHelper ---> ResourcePackageAccess
+FunnelProperties --->|categoryAxis| CategoryAxisProperties
+_CategoryAxisPropertiesHelper ---> LiteralExpression
+_PercentBarLabelPropertiesHelper ---> LinearGradient2Expression
+_CategoryAxisPropertiesHelper ---> GeoJsonExpression
+_PercentBarLabelPropertiesHelper ---> ImageExpression
+_CategoryAxisPropertiesHelper ---> SolidColorExpression
+Funnel --->|display| Display
+_DataPointPropertiesHelper ---> LinearGradient2Expression
+FunnelProperties --->|percentBarLabel| PercentBarLabelProperties
+_DataPointPropertiesHelper ---> ColumnExpression
+_PercentBarLabelPropertiesHelper ---> AggregationExpression
+_DataPointPropertiesHelper ---> AggregationExpression
+_LabelsPropertiesHelper ---> LinearGradient3Expression
+_CategoryAxisPropertiesHelper ---> ColumnExpression
+_LabelsPropertiesHelper ---> AlgorithmExpression
+Funnel ---> PrototypeQuery
+_CategoryAxisPropertiesHelper --->|axisStyle| ExpressionList
+_DataPointPropertiesHelper ---> SelectRefExpression
+_LabelsPropertiesHelper ---> SelectRefExpression
+_PercentBarLabelPropertiesHelper ---> ResourcePackageAccess
+Funnel ---> ColumnProperty
+DataPointProperties --->|properties| _DataPointPropertiesHelper
+_PercentBarLabelPropertiesHelper ---> SolidColorExpression
+LabelsProperties --->|properties| _LabelsPropertiesHelper
+Funnel ---> VCProperties
+_DataPointPropertiesHelper ---> SolidColorExpression
+_LabelsPropertiesHelper ---> LinearGradient2Expression
+_PercentBarLabelPropertiesHelper ---> GeoJsonExpression
+_LabelsPropertiesHelper ---> SolidColorExpression
+CategoryAxisProperties --->|properties| _CategoryAxisPropertiesHelper
+_LabelsPropertiesHelper ---> LiteralExpression
+_LabelsPropertiesHelper ---> ImageKindExpression
+_CategoryAxisPropertiesHelper ---> AggregationExpression
+_LabelsPropertiesHelper ---> AggregationExpression
+_DataPointPropertiesHelper --->|borderColorMatchFill| ExpressionList
+_CategoryAxisPropertiesHelper ---> ImageExpression
+_DataPointPropertiesHelper ---> LiteralExpression
+_PercentBarLabelPropertiesHelper ---> MeasureExpression
+_LabelsPropertiesHelper --->|backgroundColor| ExpressionList
+_DataPointPropertiesHelper ---> LinearGradient3Expression
+_CategoryAxisPropertiesHelper ---> MeasureExpression
+LabelsProperties ---> Selector
+_CategoryAxisPropertiesHelper ---> LinearGradient2Expression
+_LabelsPropertiesHelper ---> ResourcePackageAccess
+_LabelsPropertiesHelper ---> ImageExpression
+_PercentBarLabelPropertiesHelper ---> LiteralExpression
 ```

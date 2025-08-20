@@ -3,106 +3,107 @@
 title: PieChart
 ---
 graph 
-2430626040416["_LegendPropertiesHelper"]
-2430071951472["PrototypeQuery"]
-style 2430071951472 stroke:#ff0000,stroke-width:1px
-2430071907552["SolidColorExpression"]
-style 2430071907552 stroke:#ff0000,stroke-width:1px
-2430626069696["PieChartProperties"]
-2430071930000["AlgorithmExpression"]
-style 2430071930000 stroke:#ff0000,stroke-width:1px
-2430626042368["_LabelsPropertiesHelper"]
-2430071921216["ResourcePackageAccess"]
-style 2430071921216 stroke:#ff0000,stroke-width:1px
-2430071926096["ImageKindExpression"]
-style 2430071926096 stroke:#ff0000,stroke-width:1px
-2430552678256["ColumnProperty"]
-style 2430552678256 stroke:#ff0000,stroke-width:1px
-2430514799136["ProjectionConfig"]
-2430071925120["ColumnExpression"]
-style 2430071925120 stroke:#ff0000,stroke-width:1px
-2430071920240["LinearGradient2Expression"]
-style 2430071920240 stroke:#ff0000,stroke-width:1px
-2430071930976["ExpressionList"]
-2430071910480["LinearGradient3Expression"]
-style 2430071910480 stroke:#ff0000,stroke-width:1px
-2430514817680["QueryOptions"]
-2430071888032["MeasureExpression"]
-style 2430071888032 stroke:#ff0000,stroke-width:1px
-2430626052128["DataPointProperties"]
-2430071923168["SelectRefExpression"]
-style 2430071923168 stroke:#ff0000,stroke-width:1px
-2430071919264["ImageExpression"]
-style 2430071919264 stroke:#ff0000,stroke-width:1px
-2430626045296["LabelsProperties"]
-2430626049200["_DataPointPropertiesHelper"]
-2430071745536["Selector"]
-style 2430071745536 stroke:#ff0000,stroke-width:1px
-2430071889008["AggregationExpression"]
-style 2430071889008 stroke:#ff0000,stroke-width:1px
-2430071918288["GeoJsonExpression"]
-style 2430071918288 stroke:#ff0000,stroke-width:1px
-2430514805968["VCProperties"]
-style 2430514805968 stroke:#ff0000,stroke-width:1px
-2430626070672["PieChart"]
-2430626043344["LegendProperties"]
-2430514810848["Display"]
-2430071887056["LiteralExpression"]
-style 2430071887056 stroke:#ff0000,stroke-width:1px
-2430626069696 --->|labels| 2430626045296
-2430626040416 ---> 2430071910480
-2430626070672 ---> 2430071951472
-2430626049200 ---> 2430071921216
-2430626049200 ---> 2430071925120
-2430626052128 ---> 2430071745536
-2430626049200 ---> 2430071923168
-2430626040416 ---> 2430071907552
-2430626040416 ---> 2430071930000
-2430626049200 ---> 2430071907552
-2430626049200 ---> 2430071919264
-2430626042368 ---> 2430071923168
-2430626040416 --->|position| 2430071930976
-2430626049200 ---> 2430071910480
-2430626042368 ---> 2430071925120
-2430626042368 ---> 2430071889008
-2430626042368 ---> 2430071888032
-2430626042368 ---> 2430071930000
-2430626049200 ---> 2430071918288
-2430626040416 ---> 2430071923168
-2430626042368 --->|color| 2430071930976
-2430626040416 ---> 2430071889008
-2430626042368 ---> 2430071910480
-2430626049200 ---> 2430071889008
-2430626049200 ---> 2430071926096
-2430626042368 ---> 2430071919264
-2430626052128 --->|properties| 2430626049200
-2430626049200 --->|fill| 2430071930976
-2430626070672 ---> 2430552678256
-2430626042368 ---> 2430071918288
-2430626040416 ---> 2430071918288
-2430626069696 --->|legend| 2430626043344
-2430626040416 ---> 2430071921216
-2430626049200 ---> 2430071930000
-2430626070672 --->|display| 2430514810848
-2430626069696 --->|dataPoint| 2430626052128
-2430626040416 ---> 2430071926096
-2430626042368 ---> 2430071887056
-2430626049200 ---> 2430071887056
-2430626040416 ---> 2430071887056
-2430626070672 --->|objects| 2430626069696
-2430626049200 ---> 2430071920240
-2430626049200 ---> 2430071888032
-2430626043344 --->|properties| 2430626040416
-2430626042368 ---> 2430071920240
-2430626070672 --->|projections| 2430514799136
-2430626045296 --->|properties| 2430626042368
-2430626040416 ---> 2430071925120
-2430626042368 ---> 2430071907552
-2430626040416 ---> 2430071888032
-2430626042368 ---> 2430071921216
-2430626040416 ---> 2430071919264
-2430626042368 ---> 2430071926096
-2430626070672 ---> 2430514805968
-2430626070672 --->|queryOptions| 2430514817680
-2430626040416 ---> 2430071920240
+AggregationExpression[<a href='/layout/erd/AggregationExpression'>AggregationExpression</a>]
+style AggregationExpression stroke:#ff0000,stroke-width:1px
+AlgorithmExpression[<a href='/layout/erd/AlgorithmExpression'>AlgorithmExpression</a>]
+style AlgorithmExpression stroke:#ff0000,stroke-width:1px
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+style ColumnExpression stroke:#ff0000,stroke-width:1px
+ColumnProperty[<a href='/layout/erd/ColumnProperty'>ColumnProperty</a>]
+style ColumnProperty stroke:#ff0000,stroke-width:1px
+DataPointProperties[DataPointProperties]
+Display[Display]
+ExpressionList[ExpressionList]
+GeoJsonExpression[<a href='/layout/erd/GeoJsonExpression'>GeoJsonExpression</a>]
+style GeoJsonExpression stroke:#ff0000,stroke-width:1px
+ImageExpression[<a href='/layout/erd/ImageExpression'>ImageExpression</a>]
+style ImageExpression stroke:#ff0000,stroke-width:1px
+ImageKindExpression[<a href='/layout/erd/ImageKindExpression'>ImageKindExpression</a>]
+style ImageKindExpression stroke:#ff0000,stroke-width:1px
+LabelsProperties[LabelsProperties]
+LegendProperties[LegendProperties]
+LinearGradient2Expression[<a href='/layout/erd/LinearGradient2Expression'>LinearGradient2Expression</a>]
+style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
+LinearGradient3Expression[<a href='/layout/erd/LinearGradient3Expression'>LinearGradient3Expression</a>]
+style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
+LiteralExpression[<a href='/layout/erd/LiteralExpression'>LiteralExpression</a>]
+style LiteralExpression stroke:#ff0000,stroke-width:1px
+MeasureExpression[<a href='/layout/erd/MeasureExpression'>MeasureExpression</a>]
+style MeasureExpression stroke:#ff0000,stroke-width:1px
+PieChart[<a href='/layout/erd/PieChart'>PieChart</a>]
+PieChartProperties[PieChartProperties]
+ProjectionConfig[ProjectionConfig]
+PrototypeQuery[<a href='/layout/erd/PrototypeQuery'>PrototypeQuery</a>]
+style PrototypeQuery stroke:#ff0000,stroke-width:1px
+QueryOptions[QueryOptions]
+ResourcePackageAccess[<a href='/layout/erd/ResourcePackageAccess'>ResourcePackageAccess</a>]
+style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
+SelectRefExpression[<a href='/layout/erd/SelectRefExpression'>SelectRefExpression</a>]
+style SelectRefExpression stroke:#ff0000,stroke-width:1px
+Selector[<a href='/layout/erd/Selector'>Selector</a>]
+style Selector stroke:#ff0000,stroke-width:1px
+SolidColorExpression[<a href='/layout/erd/SolidColorExpression'>SolidColorExpression</a>]
+style SolidColorExpression stroke:#ff0000,stroke-width:1px
+VCProperties[<a href='/layout/erd/VCProperties'>VCProperties</a>]
+style VCProperties stroke:#ff0000,stroke-width:1px
+_DataPointPropertiesHelper[_DataPointPropertiesHelper]
+_LabelsPropertiesHelper[_LabelsPropertiesHelper]
+_LegendPropertiesHelper[_LegendPropertiesHelper]
+_LegendPropertiesHelper --->|fontSize| ExpressionList
+_DataPointPropertiesHelper ---> GeoJsonExpression
+_LegendPropertiesHelper ---> ColumnExpression
+_LabelsPropertiesHelper ---> ColumnExpression
+_LegendPropertiesHelper ---> GeoJsonExpression
+_LabelsPropertiesHelper ---> MeasureExpression
+_LegendPropertiesHelper ---> SelectRefExpression
+_DataPointPropertiesHelper ---> ImageKindExpression
+_DataPointPropertiesHelper ---> ImageExpression
+_LegendPropertiesHelper ---> LinearGradient3Expression
+_LegendPropertiesHelper ---> AlgorithmExpression
+PieChart ---> VCProperties
+_LegendPropertiesHelper ---> LinearGradient2Expression
+_DataPointPropertiesHelper ---> MeasureExpression
+PieChart --->|objects| PieChartProperties
+LegendProperties --->|properties| _LegendPropertiesHelper
+_DataPointPropertiesHelper ---> AlgorithmExpression
+PieChart ---> PrototypeQuery
+DataPointProperties ---> Selector
+_LegendPropertiesHelper ---> ImageExpression
+_LabelsPropertiesHelper ---> GeoJsonExpression
+PieChartProperties --->|labels| LabelsProperties
+_DataPointPropertiesHelper ---> ResourcePackageAccess
+_LegendPropertiesHelper ---> SolidColorExpression
+PieChartProperties --->|legend| LegendProperties
+_LegendPropertiesHelper ---> MeasureExpression
+PieChart --->|display| Display
+PieChart ---> ColumnProperty
+_DataPointPropertiesHelper ---> ColumnExpression
+_DataPointPropertiesHelper ---> LinearGradient2Expression
+_DataPointPropertiesHelper ---> AggregationExpression
+_LegendPropertiesHelper ---> ResourcePackageAccess
+_LabelsPropertiesHelper ---> LinearGradient3Expression
+PieChartProperties --->|dataPoint| DataPointProperties
+_LabelsPropertiesHelper ---> AlgorithmExpression
+_LegendPropertiesHelper ---> ImageKindExpression
+_DataPointPropertiesHelper ---> SelectRefExpression
+PieChart --->|projections| ProjectionConfig
+_LegendPropertiesHelper ---> AggregationExpression
+_LabelsPropertiesHelper ---> SelectRefExpression
+_LabelsPropertiesHelper ---> LinearGradient2Expression
+LabelsProperties --->|properties| _LabelsPropertiesHelper
+DataPointProperties --->|properties| _DataPointPropertiesHelper
+_LabelsPropertiesHelper ---> SolidColorExpression
+_DataPointPropertiesHelper ---> SolidColorExpression
+_DataPointPropertiesHelper --->|borderColorMatchFill| ExpressionList
+_LabelsPropertiesHelper ---> ImageKindExpression
+_LabelsPropertiesHelper ---> LiteralExpression
+_LabelsPropertiesHelper ---> AggregationExpression
+_DataPointPropertiesHelper ---> LiteralExpression
+_LegendPropertiesHelper ---> LiteralExpression
+_LabelsPropertiesHelper --->|backgroundColor| ExpressionList
+_DataPointPropertiesHelper ---> LinearGradient3Expression
+PieChart --->|queryOptions| QueryOptions
+LabelsProperties ---> Selector
+_LabelsPropertiesHelper ---> ResourcePackageAccess
+_LabelsPropertiesHelper ---> ImageExpression
 ```

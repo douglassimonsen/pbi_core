@@ -3,8 +3,8 @@
 title: ColumnExpression
 ---
 graph 
-2430071925120["ColumnExpression"]
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071925120 ---> 2430071365824
+ColumnExpression[<a href='/layout/erd/ColumnExpression'>ColumnExpression</a>]
+ColumnSource[<a href='/layout/erd/ColumnSource'>ColumnSource</a>]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+ColumnExpression ---> ColumnSource
 ```
