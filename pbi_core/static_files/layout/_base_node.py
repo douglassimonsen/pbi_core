@@ -119,7 +119,23 @@ class LayoutNode(BaseValidation):
         raise NotImplementedError
 
     def find_xpath(self, xpath: list[str | int]) -> "LayoutNode":
-        return _find_xpath(self, xpath)
+        if len(xpath) == 0:
+            return self
+
+        next_step = xpath.pop(0)
+        if isinstance(next_step, int):
+            msg = f"Cannot index {self.__class__.__name__} with an integer: {next_step}"
+            raise TypeError(msg)
+        attr = getattr(self, next_step)
+
+        while isinstance(attr, (dict, list)):
+            next_step = xpath.pop(0)
+            attr = attr[next_step]  # pyright: ignore[reportCallIssue, reportArgumentType]
+
+        if not isinstance(attr, LayoutNode):
+            msg = f"Cannot index {self.__class__.__name__} with a non-LayoutNode: {attr}"
+            raise TypeError(msg)
+        return attr.find_xpath(xpath)
 
     def pprint(self, indent: int = 4) -> None:
         ret = self.model_dump_json(indent=indent)
