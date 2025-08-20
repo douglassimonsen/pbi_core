@@ -29,7 +29,7 @@ class SsasCommands:
     column_permission = BaseCommands.new(commands["ColumnPermissions"])
     culture = RenameCommands.new(commands["Cultures"])
     data_source = RenameCommands.new(commands["DataSources"])
-    detail_row_defintion = BaseCommands.new(commands["DetailRowsDefinition"])
+    detail_row_definition = BaseCommands.new(commands["DetailRowsDefinition"])
     expression = RenameCommands.new(commands["Expressions"])
     extended_property = RenameCommands.new(commands["ExtendedProperties"])
     format_string_definition = BaseCommands.new(commands["FormatStringDefinitions"])
