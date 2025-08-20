@@ -115,13 +115,22 @@ class LocalReport(LocalSsasReport, LocalStaticReport):
                 LocalReport: the local PBIX class
 
         """
+        logger.info(
+            "Loading PBIX report",
+            path=path,
+            load_ssas=load_ssas,
+            load_static_files=load_static_files,
+        )
         if load_ssas & load_static_files:
             ssas_content = LocalSsasReport.load_pbix(path, kill_ssas_on_exit=kill_ssas_on_exit)
             static_content = LocalStaticReport.load_pbix(path)
+            logger.info("Loaded PBIX report", components="ssas+static")
             return LocalReport(ssas=ssas_content.ssas, static_files=static_content.static_files)
         if load_ssas:
+            logger.info("Loaded PBIX report", components="ssas")
             return LocalSsasReport.load_pbix(path, kill_ssas_on_exit=kill_ssas_on_exit)
         if load_static_files:
+            logger.info("Loaded PBIX report", components="static")
             return LocalStaticReport.load_pbix(path)
         msg = "At least one of load_ssas or load_static_files must be True"
         raise ValueError(msg)
@@ -143,12 +152,14 @@ class LocalReport(LocalSsasReport, LocalStaticReport):
             sync_ssas_changes (bool, optional): whether to sync changes made in the SSAS model back to the PBIX file
 
         """
+        logger.info("Saving PBIX report", path=path, sync_ssas_changes=sync_ssas_changes)
         # Dev note: DO NOT call save_pbix of LocalSsasReport or LocalStaticReport, as they are implemented assuming the
         # other doesn't exist, causing changes to be overwritten by them copying the source file
         if sync_ssas_changes:
             self.ssas.sync_to()
         self.ssas.save_pbix(path)
         self.static_files.save_pbix(path)
+        logger.info("Saved PBIX report", path=path)
 
     def cleanse_ssas_model(self) -> None:
         """Removes all unused tables, columns, and measures in an SSAS model.
@@ -195,6 +206,11 @@ class LocalReport(LocalSsasReport, LocalStaticReport):
             and not c.table().name.startswith("DateTableTemplate")
             and c.table() not in tables_to_drop
         }
+        logger.info(
+            "Dropping unused SSAS elements",
+            tables_to_drop=len(tables_to_drop),
+            columns_to_drop=len(columns_to_drop),
+        )
         affected_tables: dict[Table, list[Column]] = {}
         for c in columns_to_drop:
             t = c.table()
@@ -212,3 +228,9 @@ class LocalReport(LocalSsasReport, LocalStaticReport):
         for affected_table, table_columns_to_drop in affected_tables.items():
             for partition in affected_table.partitions():
                 partition.remove_columns(table_columns_to_drop)
+        logger.info(
+            "SSAS model cleansed",
+            tables_dropped=len(tables_to_drop),
+            columns_dropped=len(columns_to_drop),
+            measures_dropped=len(measures_to_drop),
+        )

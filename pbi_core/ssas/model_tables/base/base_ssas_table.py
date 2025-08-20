@@ -81,10 +81,12 @@ class SsasTable(BaseValidation, IdBase):
 
     def query_dax(self, query: str, db_name: str | None = None) -> None:
         """Helper function to remove the ``.tabular_model.server`` required to run a DAX query from an SSAS element."""
+        logger.debug("Executing DAX query", query=query, db_name=db_name)
         self.tabular_model.server.query_dax(query, db_name=db_name)
 
     def query_xml(self, query: str, db_name: str | None = None) -> BeautifulSoup:
         """Helper function to remove the ``.tabular_model.server`` required to run an XML query from an SSAS element."""
+        logger.debug("Executing XML query", query=query, db_name=db_name)
         return self.tabular_model.server.query_xml(query, db_name)
 
     @staticmethod
@@ -114,6 +116,11 @@ class SsasTable(BaseValidation, IdBase):
 
         Entity schemas can be found at `pbi_core/ssas/server/command_templates/schema`
         """
+        logger.debug(
+            "Rendering XML command",
+            db_name=db_name,
+            fields=list(values.keys()),
+        )
         xml_row = SsasTable._get_row_xml(values, command)
         xml_entity_definition = command.entity_template.render(rows=xml_row)
         return command.base_template.render(db_name=db_name, entity_def=xml_entity_definition)
