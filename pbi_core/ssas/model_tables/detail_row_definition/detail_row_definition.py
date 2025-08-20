@@ -31,7 +31,7 @@ class DetailRowDefinition(SsasEditableRecord):
 
     modified_time: datetime.datetime
 
-    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.detail_row_defintion)
+    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.detail_row_definition)
 
     @classmethod
     def _db_type_name(cls) -> str:
