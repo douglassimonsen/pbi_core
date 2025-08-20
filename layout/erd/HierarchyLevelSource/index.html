@@ -3655,31 +3655,31 @@
 title: HierarchyLevelSource
 ---
 graph 
-2430071339472["SourceExpression"]
-2430071370704["PropertyVariationSource"]
-2430071367776["_PropertyVariationSourceHelper"]
-2430071358992["_HierarchySourceHelper"]
-2430071355088["SourceRef"]
-2430071344352["Source"]
-2430071368752["HierarchySource"]
-2430071364848["_HierarchyLevelSourceHelper"]
-2430071338496["TransformTableRef"]
-2430071363872["HierarchyLevelSource"]
-2430071353136["Entity"]
-2430071358992 ---&gt;|Expression| 2430071355088
-2430071339472 ---&gt;|Expression| 2430071338496
-2430071368752 ---&gt;|Hierarchy| 2430071358992
-2430071338496 ---&gt;|TransformTableRef| 2430071353136
-2430071363872 ---&gt;|HierarchyLevel| 2430071364848
-2430071339472 ---&gt;|Expression| 2430071355088
-2430071358992 ---&gt;|Expression| 2430071339472
-2430071367776 ---&gt;|PropertyVariationSource| 2430071370704
-2430071338496 ---&gt;|TransformTableRef| 2430071344352
-2430071364848 ---&gt;|Expression| 2430071368752
-2430071355088 ---&gt;|SourceRef| 2430071344352
-2430071358992 ---&gt;|Expression| 2430071367776
-2430071370704 ---&gt;|Expression| 2430071355088
-2430071355088 ---&gt;|SourceRef| 2430071353136</code></pre>
+Entity[Entity]
+HierarchyLevelSource[&lt;a href='/layout/erd/HierarchyLevelSource'&gt;HierarchyLevelSource&lt;/a&gt;]
+HierarchySource[HierarchySource]
+PropertyVariationSource[PropertyVariationSource]
+Source[Source]
+SourceExpression[SourceExpression]
+SourceRef[SourceRef]
+TransformTableRef[TransformTableRef]
+_HierarchyLevelSourceHelper[_HierarchyLevelSourceHelper]
+_HierarchySourceHelper[_HierarchySourceHelper]
+_PropertyVariationSourceHelper[_PropertyVariationSourceHelper]
+TransformTableRef ---&gt;|TransformTableRef| Entity
+PropertyVariationSource ---&gt;|Expression| SourceRef
+_HierarchyLevelSourceHelper ---&gt;|Expression| HierarchySource
+_HierarchySourceHelper ---&gt;|Expression| _PropertyVariationSourceHelper
+HierarchyLevelSource ---&gt;|HierarchyLevel| _HierarchyLevelSourceHelper
+SourceRef ---&gt;|SourceRef| Source
+SourceExpression ---&gt;|Expression| SourceRef
+_HierarchySourceHelper ---&gt;|Expression| SourceExpression
+_HierarchySourceHelper ---&gt;|Expression| SourceRef
+SourceRef ---&gt;|SourceRef| Entity
+_PropertyVariationSourceHelper ---&gt;|PropertyVariationSource| PropertyVariationSource
+HierarchySource ---&gt;|Hierarchy| _HierarchySourceHelper
+SourceExpression ---&gt;|Expression| TransformTableRef
+TransformTableRef ---&gt;|TransformTableRef| Source</code></pre>
 
 
 

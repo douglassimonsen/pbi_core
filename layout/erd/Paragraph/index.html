@@ -3655,62 +3655,62 @@
 title: Paragraph
 ---
 graph 
-2430071756272["TextStyle"]
-2430071820688["RoleRef"]
-2430071814832["TransformOutputRoleRef"]
-2430071366800["ExpressionName"]
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071758224["CasePattern"]
-2430071768960["TextRun"]
-2430071356064["SelectRef"]
-2430071746512["Case"]
-2430071777744["TextRunExpression"]
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430071765056["DefaultCaseTextRun"]
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071745536["Selector"]
-style 2430071745536 stroke:#ff0000,stroke-width:1px
-2430071825568["ProtoSourceRef"]
-2430071771888["Paragraph"]
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071808976["GroupSource"]
-style 2430071808976 stroke:#ff0000,stroke-width:1px
-2430071819712["ProtoSource"]
-2430071767984["DefaultCase"]
-2430071773840["PropertyIdentifier"]
-2430071382416["ArithmeticSource"]
-style 2430071382416 stroke:#ff0000,stroke-width:1px
-2430071777744 ---&gt;|propertyIdentifier| 2430071773840
-2430071758224 ---&gt;|expr| 2430071356064
-2430071771888 ---&gt;|textRuns| 2430071768960
-2430071758224 ---&gt; 2430071363872
-2430071768960 ---&gt;|defaultCase| 2430071767984
-2430071767984 ---&gt;|textRuns| 2430071765056
-2430071768960 ---&gt;|expression| 2430071777744
-2430071777744 ---&gt; 2430071745536
-2430071768960 ---&gt;|textStyle| 2430071756272
-2430071758224 ---&gt; 2430071808976
-2430071825568 ---&gt;|SourceRef| 2430071819712
-2430071768960 ---&gt;|cases| 2430071746512
-2430071814832 ---&gt;|TransformOutputRoleRef| 2430071820688
-2430071773840 ---&gt; 2430071745536
-2430071773840 ---&gt;|propertyIdentifier| 2430071773840
-2430071356064 ---&gt;|SelectRef| 2430071366800
-2430071758224 ---&gt; 2430071359968
-2430071768960 ---&gt;|value| 2430071773840
-2430071758224 ---&gt; 2430071382416
-2430071758224 ---&gt;|expr| 2430071814832
-2430071758224 ---&gt; 2430071365824
-2430071746512 ---&gt;|pattern| 2430071758224
-2430071758224 ---&gt; 2430071816784
-2430071758224 ---&gt;|expr| 2430071825568
-2430071758224 ---&gt; 2430071358016</code></pre>
+AggregationSource[&lt;a href='/layout/erd/AggregationSource'&gt;AggregationSource&lt;/a&gt;]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+ArithmeticSource[&lt;a href='/layout/erd/ArithmeticSource'&gt;ArithmeticSource&lt;/a&gt;]
+style ArithmeticSource stroke:#ff0000,stroke-width:1px
+Case[Case]
+CasePattern[CasePattern]
+ColumnSource[&lt;a href='/layout/erd/ColumnSource'&gt;ColumnSource&lt;/a&gt;]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+DefaultCase[DefaultCase]
+DefaultCaseTextRun[DefaultCaseTextRun]
+ExpressionName[ExpressionName]
+GroupSource[&lt;a href='/layout/erd/GroupSource'&gt;GroupSource&lt;/a&gt;]
+style GroupSource stroke:#ff0000,stroke-width:1px
+HierarchyLevelSource[&lt;a href='/layout/erd/HierarchyLevelSource'&gt;HierarchyLevelSource&lt;/a&gt;]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+LiteralSource[&lt;a href='/layout/erd/LiteralSource'&gt;LiteralSource&lt;/a&gt;]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureSource[&lt;a href='/layout/erd/MeasureSource'&gt;MeasureSource&lt;/a&gt;]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+Paragraph[&lt;a href='/layout/erd/Paragraph'&gt;Paragraph&lt;/a&gt;]
+PropertyIdentifier[PropertyIdentifier]
+ProtoSource[ProtoSource]
+ProtoSourceRef[ProtoSourceRef]
+RoleRef[RoleRef]
+SelectRef[SelectRef]
+Selector[&lt;a href='/layout/erd/Selector'&gt;Selector&lt;/a&gt;]
+style Selector stroke:#ff0000,stroke-width:1px
+TextRun[TextRun]
+TextRunExpression[TextRunExpression]
+TextStyle[TextStyle]
+TransformOutputRoleRef[TransformOutputRoleRef]
+CasePattern ---&gt;|expr| ProtoSourceRef
+PropertyIdentifier ---&gt;|propertyIdentifier| PropertyIdentifier
+ProtoSourceRef ---&gt;|SourceRef| ProtoSource
+Paragraph ---&gt;|textRuns| TextRun
+CasePattern ---&gt; LiteralSource
+CasePattern ---&gt; AggregationSource
+TextRun ---&gt;|textStyle| TextStyle
+CasePattern ---&gt;|expr| SelectRef
+CasePattern ---&gt; MeasureSource
+CasePattern ---&gt; ArithmeticSource
+TextRun ---&gt;|cases| Case
+TransformOutputRoleRef ---&gt;|TransformOutputRoleRef| RoleRef
+TextRunExpression ---&gt; Selector
+PropertyIdentifier ---&gt; Selector
+TextRun ---&gt;|value| PropertyIdentifier
+CasePattern ---&gt; HierarchyLevelSource
+CasePattern ---&gt; GroupSource
+TextRun ---&gt;|expression| TextRunExpression
+SelectRef ---&gt;|SelectRef| ExpressionName
+DefaultCase ---&gt;|textRuns| DefaultCaseTextRun
+CasePattern ---&gt; ColumnSource
+TextRunExpression ---&gt;|propertyIdentifier| PropertyIdentifier
+CasePattern ---&gt;|expr| TransformOutputRoleRef
+TextRun ---&gt;|defaultCase| DefaultCase
+Case ---&gt;|pattern| CasePattern</code></pre>
 
 
 

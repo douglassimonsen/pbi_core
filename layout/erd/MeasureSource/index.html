@@ -3655,19 +3655,19 @@
 title: MeasureSource
 ---
 graph 
-2430071339472["SourceExpression"]
-2430071355088["SourceRef"]
-2430071344352["Source"]
-2430071338496["TransformTableRef"]
-2430071353136["Entity"]
-2430071359968["MeasureSource"]
-2430071339472 ---&gt;|Expression| 2430071338496
-2430071338496 ---&gt;|TransformTableRef| 2430071353136
-2430071355088 ---&gt;|SourceRef| 2430071344352
-2430071339472 ---&gt;|Expression| 2430071355088
-2430071338496 ---&gt;|TransformTableRef| 2430071344352
-2430071359968 ---&gt;|Measure| 2430071339472
-2430071355088 ---&gt;|SourceRef| 2430071353136</code></pre>
+Entity[Entity]
+MeasureSource[&lt;a href='/layout/erd/MeasureSource'&gt;MeasureSource&lt;/a&gt;]
+Source[Source]
+SourceExpression[SourceExpression]
+SourceRef[SourceRef]
+TransformTableRef[TransformTableRef]
+TransformTableRef ---&gt;|TransformTableRef| Entity
+SourceRef ---&gt;|SourceRef| Source
+MeasureSource ---&gt;|Measure| SourceExpression
+SourceExpression ---&gt;|Expression| SourceRef
+SourceRef ---&gt;|SourceRef| Entity
+SourceExpression ---&gt;|Expression| TransformTableRef
+TransformTableRef ---&gt;|TransformTableRef| Source</code></pre>
 
 
 

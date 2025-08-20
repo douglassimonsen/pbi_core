@@ -3655,38 +3655,30 @@
 title: ArithmeticSource
 ---
 graph 
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071360944["AllRolesRef"]
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071379488["_ArithmeticSourceHelper"]
-2430071371680["ScopedEvalAgg"]
-2430071362896["AllRolesRef"]
-2430071361920["ScopedEval2"]
-2430071376560["ScopedEvalArith"]
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430071369728["ScopedEval2"]
-2430071382416["ArithmeticSource"]
-2430071376560 ---&gt;|ScopedEval| 2430071361920
-2430071361920 ---&gt;|Expression| 2430071371680
-2430071361920 ---&gt; 2430071365824
-2430071379488 ---&gt;|Left| 2430071371680
-2430071382416 ---&gt;|Arithmetic| 2430071379488
-2430071379488 ---&gt;|Right| 2430071376560
-2430071371680 ---&gt;|ScopedEval| 2430071369728
-2430071361920 ---&gt; 2430071359968
-2430071361920 ---&gt; 2430071363872
-2430071379488 ---&gt; 2430071358016
-2430071379488 ---&gt; 2430071363872
-2430071379488 ---&gt; 2430071365824
-2430071361920 ---&gt; 2430071358016
-2430071379488 ---&gt; 2430071359968
-2430071369728 ---&gt;|Scope| 2430071362896
-2430071361920 ---&gt;|Scope| 2430071360944</code></pre>
+AggregationSource[&lt;a href='/layout/erd/AggregationSource'&gt;AggregationSource&lt;/a&gt;]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+AllRolesRef[AllRolesRef]
+ArithmeticSource[&lt;a href='/layout/erd/ArithmeticSource'&gt;ArithmeticSource&lt;/a&gt;]
+ColumnSource[&lt;a href='/layout/erd/ColumnSource'&gt;ColumnSource&lt;/a&gt;]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+HierarchyLevelSource[&lt;a href='/layout/erd/HierarchyLevelSource'&gt;HierarchyLevelSource&lt;/a&gt;]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+MeasureSource[&lt;a href='/layout/erd/MeasureSource'&gt;MeasureSource&lt;/a&gt;]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+ScopedEval2[ScopedEval2]
+ScopedEvalAgg[&lt;a href='/layout/erd/ScopedEvalAgg'&gt;ScopedEvalAgg&lt;/a&gt;]
+ScopedEvalArith[&lt;a href='/layout/erd/ScopedEvalArith'&gt;ScopedEvalArith&lt;/a&gt;]
+_ArithmeticSourceHelper[_ArithmeticSourceHelper]
+_ArithmeticSourceHelper ---&gt;|Left| ScopedEvalAgg
+ScopedEval2 ---&gt;|Scope| AllRolesRef
+_ArithmeticSourceHelper ---&gt; AggregationSource
+_ArithmeticSourceHelper ---&gt;|Right| ScopedEvalArith
+ArithmeticSource ---&gt;|Arithmetic| _ArithmeticSourceHelper
+_ArithmeticSourceHelper ---&gt; HierarchyLevelSource
+_ArithmeticSourceHelper ---&gt; MeasureSource
+_ArithmeticSourceHelper ---&gt; ColumnSource
+ScopedEvalArith ---&gt;|ScopedEval| ScopedEval2
+ScopedEvalAgg ---&gt;|ScopedEval| ScopedEval2</code></pre>
 
 
 

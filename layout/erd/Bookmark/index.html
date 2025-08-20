@@ -3655,28 +3655,28 @@
 title: Bookmark
 ---
 graph 
-2430514862576["BookmarkSection"]
-2430514888928["BookmarkOptions"]
-2430514881120["ExplorationState"]
-2430514847936["VisualContainerGroup"]
-2430514834272["BookmarkFilters"]
-2430071997344["BookmarkFilter"]
-style 2430071997344 stroke:#ff0000,stroke-width:1px
-2430514883072["Bookmark"]
-2430514852816["BookmarkVisual"]
-style 2430514852816 stroke:#ff0000,stroke-width:1px
-2430514868432["ExplorationStateProperties"]
-style 2430514868432 stroke:#ff0000,stroke-width:1px
-2430514862576 ---&gt; 2430514852816
-2430514834272 ---&gt; 2430071997344
-2430514881120 ---&gt;|sections| 2430514862576
-2430514862576 ---&gt;|visualContainerGroups| 2430514847936
-2430514883072 ---&gt;|options| 2430514888928
-2430514883072 ---&gt;|explorationState| 2430514881120
-2430514881120 ---&gt;|filters| 2430514834272
-2430514881120 ---&gt; 2430514868432
-2430514862576 ---&gt;|filters| 2430514834272
-2430514847936 ---&gt;|children| 2430514847936</code></pre>
+Bookmark[&lt;a href='/layout/erd/Bookmark'&gt;Bookmark&lt;/a&gt;]
+BookmarkFilter[&lt;a href='/layout/erd/BookmarkFilter'&gt;BookmarkFilter&lt;/a&gt;]
+style BookmarkFilter stroke:#ff0000,stroke-width:1px
+BookmarkFilters[BookmarkFilters]
+BookmarkOptions[BookmarkOptions]
+BookmarkSection[BookmarkSection]
+BookmarkVisual[&lt;a href='/layout/erd/BookmarkVisual'&gt;BookmarkVisual&lt;/a&gt;]
+style BookmarkVisual stroke:#ff0000,stroke-width:1px
+ExplorationState[ExplorationState]
+ExplorationStateProperties[&lt;a href='/layout/erd/ExplorationStateProperties'&gt;ExplorationStateProperties&lt;/a&gt;]
+style ExplorationStateProperties stroke:#ff0000,stroke-width:1px
+VisualContainerGroup[VisualContainerGroup]
+Bookmark ---&gt;|options| BookmarkOptions
+Bookmark ---&gt;|explorationState| ExplorationState
+ExplorationState ---&gt; ExplorationStateProperties
+VisualContainerGroup ---&gt;|children| VisualContainerGroup
+BookmarkSection ---&gt;|filters| BookmarkFilters
+BookmarkSection ---&gt;|visualContainerGroups| VisualContainerGroup
+ExplorationState ---&gt;|filters| BookmarkFilters
+BookmarkFilters ---&gt; BookmarkFilter
+BookmarkSection ---&gt; BookmarkVisual
+ExplorationState ---&gt;|sections| BookmarkSection</code></pre>
 
 
 

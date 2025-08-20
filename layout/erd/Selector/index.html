@@ -3655,32 +3655,32 @@
 title: Selector
 ---
 graph 
-2430071874368["ComparisonCondition"]
-style 2430071874368 stroke:#ff0000,stroke-width:1px
-2430071846064["ContainsCondition"]
-style 2430071846064 stroke:#ff0000,stroke-width:1px
-2430071879248["OrCondition"]
-style 2430071879248 stroke:#ff0000,stroke-width:1px
-2430071880224["NotCondition"]
-style 2430071880224 stroke:#ff0000,stroke-width:1px
-2430071878272["ExistsCondition"]
-style 2430071878272 stroke:#ff0000,stroke-width:1px
-2430071761152["DataViewWildcard"]
-2430071745536["Selector"]
-2430071747488["SelectorData"]
-2430071854848["InCondition"]
-style 2430071854848 stroke:#ff0000,stroke-width:1px
-2430071876320["AndCondition"]
-style 2430071876320 stroke:#ff0000,stroke-width:1px
-2430071745536 ---&gt;|data| 2430071747488
-2430071747488 ---&gt;|dataViewWildcard| 2430071761152
-2430071747488 ---&gt; 2430071880224
-2430071747488 ---&gt; 2430071879248
-2430071747488 ---&gt; 2430071846064
-2430071747488 ---&gt; 2430071876320
-2430071747488 ---&gt; 2430071854848
-2430071747488 ---&gt; 2430071874368
-2430071747488 ---&gt; 2430071878272</code></pre>
+AndCondition[&lt;a href='/layout/erd/AndCondition'&gt;AndCondition&lt;/a&gt;]
+style AndCondition stroke:#ff0000,stroke-width:1px
+ComparisonCondition[&lt;a href='/layout/erd/ComparisonCondition'&gt;ComparisonCondition&lt;/a&gt;]
+style ComparisonCondition stroke:#ff0000,stroke-width:1px
+ContainsCondition[&lt;a href='/layout/erd/ContainsCondition'&gt;ContainsCondition&lt;/a&gt;]
+style ContainsCondition stroke:#ff0000,stroke-width:1px
+DataViewWildcard[DataViewWildcard]
+ExistsCondition[&lt;a href='/layout/erd/ExistsCondition'&gt;ExistsCondition&lt;/a&gt;]
+style ExistsCondition stroke:#ff0000,stroke-width:1px
+InCondition[&lt;a href='/layout/erd/InCondition'&gt;InCondition&lt;/a&gt;]
+style InCondition stroke:#ff0000,stroke-width:1px
+NotCondition[&lt;a href='/layout/erd/NotCondition'&gt;NotCondition&lt;/a&gt;]
+style NotCondition stroke:#ff0000,stroke-width:1px
+OrCondition[&lt;a href='/layout/erd/OrCondition'&gt;OrCondition&lt;/a&gt;]
+style OrCondition stroke:#ff0000,stroke-width:1px
+Selector[&lt;a href='/layout/erd/Selector'&gt;Selector&lt;/a&gt;]
+SelectorData[SelectorData]
+SelectorData ---&gt; ComparisonCondition
+SelectorData ---&gt;|dataViewWildcard| DataViewWildcard
+SelectorData ---&gt; InCondition
+SelectorData ---&gt; NotCondition
+SelectorData ---&gt; ExistsCondition
+SelectorData ---&gt; OrCondition
+SelectorData ---&gt; AndCondition
+Selector ---&gt;|data| SelectorData
+SelectorData ---&gt; ContainsCondition</code></pre>
 
 
 

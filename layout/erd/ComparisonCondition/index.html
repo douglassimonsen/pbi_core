@@ -3655,45 +3655,45 @@
 title: ComparisonCondition
 ---
 graph 
-2430071874368["ComparisonCondition"]
-2430071826544["AnyValue"]
-2430071852896["DateSpan"]
-style 2430071852896 stroke:#ff0000,stroke-width:1px
-2430071816784["LiteralSource"]
-style 2430071816784 stroke:#ff0000,stroke-width:1px
-2430071366800["ExpressionName"]
-2430071358016["AggregationSource"]
-style 2430071358016 stroke:#ff0000,stroke-width:1px
-2430071858752["RangePercent"]
-2430071837280["_AnyValueHelper"]
-2430071359968["MeasureSource"]
-style 2430071359968 stroke:#ff0000,stroke-width:1px
-2430071365824["ColumnSource"]
-style 2430071365824 stroke:#ff0000,stroke-width:1px
-2430071356064["SelectRef"]
-2430071848992["ComparisonConditionHelper"]
-2430071371680["ScopedEvalAgg"]
-style 2430071371680 stroke:#ff0000,stroke-width:1px
-2430071848016["RangePercentHelper"]
-2430071376560["ScopedEvalArith"]
-style 2430071376560 stroke:#ff0000,stroke-width:1px
-2430071363872["HierarchyLevelSource"]
-style 2430071363872 stroke:#ff0000,stroke-width:1px
-2430071848992 ---&gt;|Right| 2430071826544
-2430071848992 ---&gt; 2430071363872
-2430071848992 ---&gt; 2430071358016
-2430071848992 ---&gt; 2430071852896
-2430071848992 ---&gt; 2430071816784
-2430071848992 ---&gt;|Left| 2430071356064
-2430071356064 ---&gt;|SelectRef| 2430071366800
-2430071848992 ---&gt;|Right| 2430071858752
-2430071848016 ---&gt; 2430071376560
-2430071848992 ---&gt; 2430071365824
-2430071848992 ---&gt; 2430071371680
-2430071848992 ---&gt; 2430071359968
-2430071874368 ---&gt;|Comparison| 2430071848992
-2430071826544 ---&gt;|AnyValue| 2430071837280
-2430071858752 ---&gt;|RangePercent| 2430071848016</code></pre>
+AggregationSource[&lt;a href='/layout/erd/AggregationSource'&gt;AggregationSource&lt;/a&gt;]
+style AggregationSource stroke:#ff0000,stroke-width:1px
+AnyValue[AnyValue]
+ColumnSource[&lt;a href='/layout/erd/ColumnSource'&gt;ColumnSource&lt;/a&gt;]
+style ColumnSource stroke:#ff0000,stroke-width:1px
+ComparisonCondition[&lt;a href='/layout/erd/ComparisonCondition'&gt;ComparisonCondition&lt;/a&gt;]
+ComparisonConditionHelper[ComparisonConditionHelper]
+DateSpan[&lt;a href='/layout/erd/DateSpan'&gt;DateSpan&lt;/a&gt;]
+style DateSpan stroke:#ff0000,stroke-width:1px
+ExpressionName[ExpressionName]
+HierarchyLevelSource[&lt;a href='/layout/erd/HierarchyLevelSource'&gt;HierarchyLevelSource&lt;/a&gt;]
+style HierarchyLevelSource stroke:#ff0000,stroke-width:1px
+LiteralSource[&lt;a href='/layout/erd/LiteralSource'&gt;LiteralSource&lt;/a&gt;]
+style LiteralSource stroke:#ff0000,stroke-width:1px
+MeasureSource[&lt;a href='/layout/erd/MeasureSource'&gt;MeasureSource&lt;/a&gt;]
+style MeasureSource stroke:#ff0000,stroke-width:1px
+RangePercent[RangePercent]
+RangePercentHelper[RangePercentHelper]
+ScopedEvalAgg[&lt;a href='/layout/erd/ScopedEvalAgg'&gt;ScopedEvalAgg&lt;/a&gt;]
+style ScopedEvalAgg stroke:#ff0000,stroke-width:1px
+ScopedEvalArith[&lt;a href='/layout/erd/ScopedEvalArith'&gt;ScopedEvalArith&lt;/a&gt;]
+style ScopedEvalArith stroke:#ff0000,stroke-width:1px
+SelectRef[SelectRef]
+_AnyValueHelper[_AnyValueHelper]
+ComparisonCondition ---&gt;|Comparison| ComparisonConditionHelper
+SelectRef ---&gt;|SelectRef| ExpressionName
+AnyValue ---&gt;|AnyValue| _AnyValueHelper
+ComparisonConditionHelper ---&gt; HierarchyLevelSource
+RangePercentHelper ---&gt; ScopedEvalArith
+ComparisonConditionHelper ---&gt; MeasureSource
+ComparisonConditionHelper ---&gt; ScopedEvalAgg
+ComparisonConditionHelper ---&gt;|Left| SelectRef
+ComparisonConditionHelper ---&gt; LiteralSource
+ComparisonConditionHelper ---&gt;|Right| AnyValue
+RangePercent ---&gt;|RangePercent| RangePercentHelper
+ComparisonConditionHelper ---&gt;|Right| RangePercent
+ComparisonConditionHelper ---&gt; DateSpan
+ComparisonConditionHelper ---&gt; AggregationSource
+ComparisonConditionHelper ---&gt; ColumnSource</code></pre>
 
 
 
