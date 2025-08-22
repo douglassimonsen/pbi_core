@@ -17,7 +17,7 @@ from .visuals.properties.filter_properties import FilterObjects
 if TYPE_CHECKING:
     from pbi_prototype_query_translation import TranslationResult
 
-    from pbi_core.ssas.server import LocalTabularModel
+    from pbi_core.ssas.server import BaseTabularModel
 
 
 class Direction(IntEnum):
@@ -168,7 +168,7 @@ class PrototypeQuery(LayoutNode):
                 )
         return ret2
 
-    def get_dax(self, model: "LocalTabularModel") -> "TranslationResult":
+    def get_dax(self, model: "BaseTabularModel") -> "TranslationResult":
         """Creates a DAX query that returns the data for a visual based on the SSAS model supplied.
 
         Note:
@@ -177,7 +177,7 @@ class PrototypeQuery(LayoutNode):
                 please add it to the pbi_core repo!
 
         Args:
-            model (LocalTabularModel): The SSAS model to generate the DAX against.
+            model (BaseTabularModel): The SSAS model to generate the DAX against.
 
         Returns:
             DataViewQueryTranslationResult: an object containing the DAX query for this visual
@@ -190,7 +190,7 @@ class PrototypeQuery(LayoutNode):
             model.server.port,
         )
 
-    def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult:
+    def get_data(self, model: "BaseTabularModel") -> PrototypeQueryResult:
         dax_query = self.get_dax(model)
         data = model.server.query_dax(dax_query.dax)
 

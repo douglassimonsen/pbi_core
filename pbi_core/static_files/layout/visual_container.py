@@ -18,8 +18,7 @@ from .visuals.main import Visual
 from .visuals.properties.base import Expression
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.server import LocalTabularModel
-    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
+    from pbi_core.ssas.server import BaseTabularModel
 
     from .section import Section
 
@@ -492,7 +491,7 @@ class VisualContainer(LayoutNode):
             query = query_command.SemanticQueryDataShapeCommand.Query
         return query
 
-    def get_data(self, model: "LocalTabularModel") -> PrototypeQueryResult | None:
+    def get_data(self, model: "BaseTabularModel") -> PrototypeQueryResult | None:
         """Gets data that would populate this visual from the SSAS DB.
 
         Uses the PrototypeQuery found within query to generate a DAX statement that then gets passed to SSAS.
@@ -505,7 +504,7 @@ class VisualContainer(LayoutNode):
             return None
         return query.get_data(model)
 
-    def get_performance(self, model: "LocalTabularModel") -> Performance:
+    def get_performance(self, model: "BaseTabularModel") -> Performance:
         """Calculates various metrics on the speed of the visual.
 
         Current Metrics:
