@@ -119,6 +119,15 @@ class LayoutNode(BaseValidation):
         raise NotImplementedError
 
     def find_xpath(self, xpath: list[str | int]) -> "LayoutNode":
+        """Find a node in the layout using an XPath-like list of attributes.
+
+        Note: This method currently uses a DFS approach to find the node.
+            Eventually, I'll find a way to type-safely include element parents in the LayoutNode.
+
+        Raises:
+            TypeError: If the XPath is invalid or if the node is not found.
+
+        """
         if len(xpath) == 0:
             return self
 
@@ -137,6 +146,22 @@ class LayoutNode(BaseValidation):
             raise TypeError(msg)
         return attr.find_xpath(xpath)
 
+    def get_xpath(self, parent: "LayoutNode") -> list[str | int]:
+        """Get the XPath of this node relative to another element.
+
+        Args:
+            parent (LayoutNode): The parent node to which the XPath is relative.
+
+        Raises:
+            ValueError: If the node is not found in the parent.
+
+        """
+        ret = _get_xpath(parent, self)
+        if ret is None:
+            msg = f"Node {self.pbi_core_name()} not found in parent {parent.pbi_core_name()}"
+            raise ValueError(msg)
+        return ret
+
     def pprint(self, indent: int = 4) -> None:
         ret = self.model_dump_json(indent=indent)
         ret = ret.replace('"', "").replace(":", "=").replace("{", "(").replace("}", ")")
@@ -144,19 +169,43 @@ class LayoutNode(BaseValidation):
         print(ret)
 
 
-def _find_xpath(val: LayoutNode | list[LayoutNode] | dict[str, LayoutNode] | str, xpath: list[str | int]) -> LayoutNode:
-    if len(xpath) == 0:
-        assert isinstance(val, LayoutNode)
-        return val
-    if isinstance(val, list):
-        next_pos = xpath.pop(0)
-        assert isinstance(next_pos, int)
-        return _find_xpath(val[next_pos], xpath)
-    if isinstance(val, dict):
-        breakpoint()
-    elif isinstance(val, LayoutNode):
-        next_pos = xpath.pop(0)
-        assert isinstance(next_pos, str)
-        return _find_xpath(getattr(val, next_pos), xpath)
-    msg = f"What? xpath={xpath}, val={val}"
-    raise ValueError(msg)
+def _get_xpath(  # noqa: C901  # too complex, but it's actually not that complex
+    parent: LayoutNode | list | dict,
+    child: LayoutNode,
+    xpath: list[str | int] | None = None,
+) -> list[str | int] | None:
+    def _xpath_pydantic(parent: LayoutNode, child: LayoutNode, xpath: list[str | int]) -> list[str | int] | None:
+        for attr in parent.__pydantic_fields__:
+            print(parent.__class__.__name__, attr)
+            val = getattr(parent, attr)
+            ret = _get_xpath(val, child, xpath=[*xpath, attr])
+            if ret is not None:
+                return ret
+        return None
+
+    def _xpath_list(parent: list, child: LayoutNode, xpath: list[str | int]) -> list[str | int] | None:
+        for i, val in enumerate(parent):
+            ret = _get_xpath(val, child, xpath=[*xpath, i])
+            if ret is not None:
+                return ret
+        return None
+
+    def _xpath_dict(parent: dict, child: LayoutNode, xpath: list[str | int]) -> list[str | int] | None:
+        for key, val in parent.items():
+            ret = _get_xpath(val, child, xpath=[*xpath, key])
+            if ret is not None:
+                return ret
+        return None
+
+    xpath = xpath or []
+    # print(id(parent), id(child), child.pbi_core_name(), xpath)
+    if parent is child:
+        return xpath
+
+    if isinstance(parent, LayoutNode):
+        return _xpath_pydantic(parent, child, xpath)
+    if isinstance(parent, list):
+        return _xpath_list(parent, child, xpath)
+    if isinstance(parent, dict):
+        return _xpath_dict(parent, child, xpath)
+    return None

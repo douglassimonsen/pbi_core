@@ -75,7 +75,7 @@ class StaticFiles:
             for theme_path in theme_paths:
                 theme_json = json.loads(
                     zip_file.read(
-                        f"Report/StaticResources/SharedResources/BaseThemes/{theme_path}"
+                        f"Report/StaticResources/SharedResources/BaseThemes/{theme_path}",
                     ).decode("utf-8"),
                 )
                 themes[theme_path] = Theme.model_validate(theme_json)
@@ -95,7 +95,8 @@ class StaticFiles:
             security_bindings = zip_file.read("SecurityBindings")
 
             content_types = bs4.BeautifulSoup(
-                zip_file.read("[Content_Types].xml").decode("utf-8"), "xml"
+                zip_file.read("[Content_Types].xml").decode("utf-8"),
+                "xml",
             )
 
             metadata_json = json.loads(zip_file.read("Metadata").decode(LAYOUT_ENCODING))
