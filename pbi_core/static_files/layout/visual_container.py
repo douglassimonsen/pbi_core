@@ -10,6 +10,7 @@ from ._base_node import LayoutNode
 from .condition import Condition
 from .filters import From as FromType
 from .filters import PrototypeQuery, PrototypeQueryResult, VisualFilter
+from .performance import NoQueryError
 from .selector import Selector
 from .sources import Source
 from .visuals.base import FilterSortOrder, ProjectionConfig, PropertyDef
@@ -512,13 +513,13 @@ class VisualContainer(LayoutNode):
             Total Rows Retrieved
 
         Raises:
-            TypeError: If the visual does not have a query command.
+            NoQueryError: If the visual does not have a query command.
 
         """
         command = self._get_data_command()
         if command is None:
             msg = "Cannot get performance for a visual without a query command"
-            raise TypeError(msg)
+            raise NoQueryError(msg)
         return get_performance(model, [command.get_dax(model).dax])[0]
 
     def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:

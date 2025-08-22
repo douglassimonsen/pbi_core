@@ -93,16 +93,25 @@ class ThreadResult:
 @dataclass
 class Performance:
     command_text: str
+    """The text of the command being executed"""
     start_datetime: datetime.datetime
+    """When the query started"""
     end_datetime: datetime.datetime
+    """When the query ended"""
     query_cpu_time: int
-    # duration is the total time in milliseconds
+    """Total Query CPU Time (i.e. the sum of the time each core involved was used)"""
     total_duration: int
+    """Total duration is the total time in milliseconds"""
     total_cpu_time: int
+    """Total CPU Time (i.e. the sum of the time each core involved was used)"""
     vertipaq_cpu_time: int
+    """CPU Time spent by the vertipaq engine"""
     execution_delay: int
+    """Delay between the query start and processing due to other competing queries"""
     approximate_peak_consumption_kb: int
+    """The max memory used by the query throughout its execution"""
     rows_returned: int
+    """The number of rows returned by the query"""
     full_trace_log: list[dict[str, Any]]
 
     def __repr__(self) -> str:
