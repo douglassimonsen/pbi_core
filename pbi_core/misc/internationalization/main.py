@@ -14,16 +14,17 @@ if TYPE_CHECKING:
 
 @dataclass
 class StaticElement:
+    category: str
     xpath: list[str | int]
     field: str
     text: str
 
 
 class StaticElements:
-    static_elements: dict[str, list[StaticElement]]
+    static_elements: list[StaticElement]
 
-    def __init__(self) -> None:
-        self.static_elements = {}
+    def __init__(self, static_elements: list[StaticElement] | None = None) -> None:
+        self.static_elements = static_elements or []
 
     def to_csv(self) -> None:
         pass
@@ -43,16 +44,21 @@ class StaticElements:
 
 
 def get_static_elements(layout: Layout) -> StaticElements:
-    ret = StaticElements()
-    # for section in layout.find_all(Section):
-    #     ret.static_elements.setdefault("section", []).append(
-    #         StaticElement(
-    #             xpath=section.get_xpath(),
-    #             field="displayName",
-    #             text=section.displayName,
-    #         ),
-    #     )
-    return ret
+    elements = []
+    for section in layout.sections:
+        elements.append(
+            StaticElement(
+                category="Section",
+                xpath=section.get_xpath(layout),
+                field="displayName",
+                text=section.displayName,
+            ),
+        )
+        for visual_container in section.visualContainers:
+            for visual in visual_container.get_visuals():
+                pass
+
+    return StaticElements()
 
 
 def set_static_elements(translation_path: "StrPath", pbix_path: "StrPath") -> None:

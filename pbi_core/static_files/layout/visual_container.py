@@ -474,6 +474,17 @@ class VisualContainer(LayoutNode):
             return f"{self.config.singleVisual.visualType}(x={round(self.x, 2)}, y={round(self.y, 2)}, z={round(self.z, 2)})"  # noqa: E501
         return None
 
+    def get_visuals(self) -> list[BaseVisual]:
+        """Returns the list of Visuals contained within this VisualContainer.
+
+        Usually, this is a list of one, but can be zero (text boxes) or more (grouped visuals).
+
+        """
+        # TODO: find an example of grouped visuals
+        if self.config.singleVisual is not None:
+            return [self.config.singleVisual]
+        return []
+
     def _get_data_command(self) -> PrototypeQuery | None:
         if self.query is None:
             return None

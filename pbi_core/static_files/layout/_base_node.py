@@ -147,7 +147,7 @@ class LayoutNode(BaseValidation):
         return attr.find_xpath(xpath)
 
     def get_xpath(self, parent: "LayoutNode") -> list[str | int]:
-        """Get the XPath of this node relative to another element.
+        """Get the [XPath](https://developer.mozilla.org/en-US/docs/Web/XML/XPath) of this node relative to another element.
 
         Args:
             parent (LayoutNode): The parent node to which the XPath is relative.
