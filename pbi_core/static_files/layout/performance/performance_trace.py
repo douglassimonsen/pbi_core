@@ -7,6 +7,7 @@ import time
 from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
 from typing import Any
 
@@ -140,19 +141,47 @@ class Performance:
 )"""
 
 
+class SubscriberState(Enum):
+    INITIALIZED = "initialized"
+    SUBSCRIBED = "subscribed"
+
+
 class Subscriber:
+    _state: SubscriberState = SubscriberState.INITIALIZED
+    """The state is only used to manage the _pinger method"""
+
     trace_records: dict[str, list[dict[str, Any]]]
     reader: Reader
 
     def __init__(self, subscription_create_command: str, conn: Connection, events: Iterable[TraceEvents]) -> None:
+        """Initializes the Subscriber in Python and SSAS.
+
+        Note: Without the self.pinger on a separate doing a trivial ping, the subscription occasionally
+        (10% in tests) takes forever (1-5 minutes vs 1-2 seconds) to be created. Although hopefully
+        we solve the root cause, this workaround appears to solve the issue for now.
+        """
+        ping_thread = threading.Thread(target=self.pinger, args=(conn.clone(),), daemon=True)
+        ping_thread.start()
         self.reader = conn.execute_dax(
             subscription_create_command,
-        )  # occasionally seems to hang, but might actually be bad queries??
+        )  # occasionally seems to take forever (1-5 minutes vs 1-2 seconds)
+        self._state = SubscriberState.SUBSCRIBED
+
         self.events = events
         self.trace_records = {}
         self.command_request_ids: dict[str, str] = {}
         self.thread = threading.Thread(target=self.poll_cursor, daemon=True)
         self.thread.start()
+
+    def pinger(self, conn: Connection) -> None:
+        """Only used to remind the SSAS that there's a Subscription waiting to be created."""
+        conn.open()
+        while self._state != SubscriberState.SUBSCRIBED:
+            time.sleep(1)
+            conn.execute_dax(
+                "EVALUATE {1}",
+            ).close()  # simple ping to keep the connection alive. We don't actually care about the output
+        conn.close()
 
     def poll_cursor(self) -> None:
         event_mapping = {e.value: e.name for e in self.events}
@@ -245,6 +274,7 @@ class PerformanceTrace:
             )
 
         self.initialize_tracing()
+
         if clear_cache:
             logger.info("Clearing cache before performance testing")
             with self.db.server.conn(db_name=self.db.db_name) as conn:
