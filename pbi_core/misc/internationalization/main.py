@@ -9,7 +9,7 @@ from pbi_core import LocalReport
 from pbi_core.pydantic.main import BaseValidation
 from pbi_core.static_files import Layout
 from pbi_core.static_files.layout.filters import Filter
-from pbi_core.static_files.layout.sources.literal import LiteralSource
+from pbi_core.static_files.layout.sources.literal import LiteralSource, serialize_literal
 from pbi_core.static_files.layout.visuals.properties.base import LiteralExpression
 
 if TYPE_CHECKING:
@@ -38,6 +38,15 @@ class StaticElements:
         for element in self.static_elements:
             grouped.setdefault(element.category, []).append(element)
         return grouped
+
+    def set_elements(self, layout: Layout) -> None:
+        """Updates the static elements."""
+        for static_element in self.static_elements:
+            node = layout.find_xpath(static_element.xpath)
+            if isinstance(node, LiteralSource):
+                node.Literal.Value = serialize_literal(static_element.text)
+            else:
+                setattr(node, static_element.field, static_element.text)
 
     def to_excel(self, path: "StrPath") -> None:
         wb = openpyxl.Workbook()
@@ -69,7 +78,26 @@ def parse_config(config: BaseValidation | None) -> list[LiteralSource]:
 
 
 def get_static_elements(layout: Layout) -> StaticElements:
+    """Retrieves all static elements of a report Layout.
+
+    The static elements in the report are:
+    1. Section names
+    2. Filter names
+    3. Visual config names such as title, header, etc.
+    """
     elements = []
+
+    elements.extend(
+        StaticElement(
+            category="Filter",
+            xpath=f.get_xpath(layout),
+            field="displayName",
+            text=f.displayName,
+        )
+        for f in layout.find_all(Filter)
+        if f.displayName is not None
+    )
+
     for section in layout.sections:
         elements.append(
             StaticElement(
@@ -79,22 +107,13 @@ def get_static_elements(layout: Layout) -> StaticElements:
                 text=section.displayName,
             ),
         )
-        elements.extend(
-            StaticElement(
-                category="Filter",
-                xpath=f.get_xpath(layout),
-                field="displayName",
-                text=f.displayName,
-            )
-            for f in section.find_all(Filter)
-            if f.displayName is not None
-        )
+
         for visual_container in section.visualContainers:
             for visual in visual_container.get_visuals():
                 for config_obj in [visual.vcObjects, visual.objects]:
                     text_config = parse_config(config_obj)
-                    for text in text_config:
-                        val = text.value()
+                    for prop in text_config:
+                        val = prop.value()
                         assert isinstance(
                             val,
                             str,
@@ -102,8 +121,8 @@ def get_static_elements(layout: Layout) -> StaticElements:
                         elements.append(
                             StaticElement(
                                 category="Visual",
-                                xpath=text.get_xpath(layout),
-                                field="Value",
+                                xpath=prop.get_xpath(layout),
+                                field="expr",
                                 text=val,
                             ),
                         )
