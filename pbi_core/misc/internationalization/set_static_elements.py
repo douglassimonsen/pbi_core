@@ -29,6 +29,7 @@ def set_static_elements(translation_path: "StrPath", pbix_path: "StrPath") -> No
                 processing.setdefault(language, []).append(
                     TextElement(
                         category=ws.title,
+                        source="layout",
                         xpath=json.loads(str(row[0])),
                         field=str(row[1]),
                         text=str(row[3 + i]),

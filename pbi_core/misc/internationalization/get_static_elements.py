@@ -60,6 +60,7 @@ def get_static_elements(layout: Layout) -> TextElements:
     elements.extend(
         TextElement(
             category="Filter",
+            source="layout",
             xpath=f.get_xpath(layout),
             field="displayName",
             text=f.displayName,
@@ -72,6 +73,7 @@ def get_static_elements(layout: Layout) -> TextElements:
         elements.append(
             TextElement(
                 category="Section",
+                source="layout",
                 xpath=section.get_xpath(layout),
                 field="displayName",
                 text=section.displayName,
@@ -85,6 +87,7 @@ def get_static_elements(layout: Layout) -> TextElements:
                     elements.extend(
                         TextElement(
                             category="Visual",
+                            source="layout",
                             xpath=run.get_xpath(layout),
                             field="value",
                             text=run.value,
@@ -103,6 +106,7 @@ def get_static_elements(layout: Layout) -> TextElements:
                         elements.append(
                             TextElement(
                                 category="Visual",
+                                source="layout",
                                 xpath=prop.get_xpath(layout),
                                 field="expr",
                                 text=val,
