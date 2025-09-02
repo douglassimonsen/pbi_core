@@ -6,7 +6,11 @@ from typing import TYPE_CHECKING
 import openpyxl
 
 from pbi_core import LocalReport
+from pbi_core.pydantic.main import BaseValidation
 from pbi_core.static_files import Layout
+from pbi_core.static_files.layout.filters import Filter
+from pbi_core.static_files.layout.sources.literal import _LiteralSourceHelper
+from pbi_core.static_files.layout.visuals.properties.base import LiteralExpression
 
 if TYPE_CHECKING:
     from _typeshed import StrPath
@@ -29,11 +33,17 @@ class StaticElements:
     def to_csv(self) -> None:
         pass
 
+    def _grouped(self) -> dict[str, list[StaticElement]]:
+        grouped: dict[str, list[StaticElement]] = {}
+        for element in self.static_elements:
+            grouped.setdefault(element.category, []).append(element)
+        return grouped
+
     def to_excel(self, path: "StrPath") -> None:
         wb = openpyxl.Workbook()
-        for object_type, objects in self.static_elements.items():
-            ws = wb.create_sheet(object_type)
-            for j, name in enumerate(["xpath", "field", "default"]):
+        for category, objects in self._grouped().items():
+            ws = wb.create_sheet(category)
+            for j, name in enumerate(["xpath", "field", "source_text"]):
                 ws.cell(1, j + 1).value = name
             for i, obj in enumerate(objects):
                 ws.cell(2 + i, 1).value = json.dumps(obj.xpath)
@@ -41,6 +51,21 @@ class StaticElements:
                 ws.cell(2 + i, 3).value = obj.text
         wb.remove(wb["Sheet"])
         wb.save(path)
+
+
+def parse_config(config: BaseValidation | None) -> list[_LiteralSourceHelper]:
+    if config is None:
+        return []
+    ret: list[_LiteralSourceHelper] = []
+    for field_name in config.__pydantic_fields__:
+        value: list[BaseValidation] = getattr(config, field_name)
+        for element in value:
+            properties: BaseValidation = element.properties  # type: ignore reportAttributeAccessIssue
+            for prop_name in properties.__pydantic_fields__:
+                prop_value = getattr(properties, prop_name)
+                if isinstance(prop_value, LiteralExpression) and isinstance(prop_value.expr.value(), str):
+                    ret.append(prop_value.expr.Literal)
+    return ret
 
 
 def get_static_elements(layout: Layout) -> StaticElements:
@@ -54,14 +79,43 @@ def get_static_elements(layout: Layout) -> StaticElements:
                 text=section.displayName,
             ),
         )
+        elements.extend(
+            StaticElement(
+                category="Filter",
+                xpath=f.get_xpath(layout),
+                field="displayName",
+                text=f.displayName,
+            )
+            for f in section.find_all(Filter)
+            if f.displayName is not None
+        )
         for visual_container in section.visualContainers:
             for visual in visual_container.get_visuals():
-                pass
+                text_config = parse_config(visual.vcObjects)
+                elements.extend(
+                    StaticElement(
+                        category="Visual",
+                        xpath=text.get_xpath(layout),
+                        field="Value",
+                        text=text.Value,
+                    )
+                    for text in text_config
+                )
+                """iterate over config and measure names"""
+                print(len(elements))
+                breakpoint()
 
     return StaticElements()
 
 
 def set_static_elements(translation_path: "StrPath", pbix_path: "StrPath") -> None:
+    """We parse an excel file containing translations and create a pbix file for each language.
+
+    The excel file must have the following structure:
+    - Each worksheet represents a category (e.g., "Section", "Visual", etc.)
+    - The first row contains the headers: "xpath", "field", "default", and then one column for each language
+        (e.g., "en", "fr", "de").
+    """
     wb = openpyxl.load_workbook(translation_path)
     languages: list[str] = [str(x) for x in next(iter(wb.worksheets[0].values))[3:]]
     processing: dict[str, list[StaticElement]] = {}
@@ -69,7 +123,12 @@ def set_static_elements(translation_path: "StrPath", pbix_path: "StrPath") -> No
         for row in list(ws.values)[1:]:
             for i, language in enumerate(languages):
                 processing.setdefault(language, []).append(
-                    StaticElement(json.loads(str(row[0])), str(row[1]), str(row[3 + i])),
+                    StaticElement(
+                        category=ws.title,
+                        xpath=json.loads(str(row[0])),
+                        field=str(row[1]),
+                        text=str(row[3 + i]),
+                    ),
                 )
     for language, static_elements in processing.items():
         pbix = LocalReport.load_pbix(pbix_path)

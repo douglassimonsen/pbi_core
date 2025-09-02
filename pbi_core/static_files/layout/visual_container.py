@@ -21,6 +21,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
 
     from .section import Section
+    from .visuals.base import BaseVisual
 
 
 from .expansion_state import ExpansionState
@@ -474,7 +475,7 @@ class VisualContainer(LayoutNode):
             return f"{self.config.singleVisual.visualType}(x={round(self.x, 2)}, y={round(self.y, 2)}, z={round(self.z, 2)})"  # noqa: E501
         return None
 
-    def get_visuals(self) -> list[BaseVisual]:
+    def get_visuals(self) -> list["BaseVisual"]:
         """Returns the list of Visuals contained within this VisualContainer.
 
         Usually, this is a list of one, but can be zero (text boxes) or more (grouped visuals).
