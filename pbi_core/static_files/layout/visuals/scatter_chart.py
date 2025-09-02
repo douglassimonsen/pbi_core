@@ -142,17 +142,17 @@ class Y1AxisReferenceLineProperties(LayoutNode):
 
 
 class ScatterChartProperties(LayoutNode):
-    bubbles: list[BubblesProperties] | None = Field(default_factory=lambda: [BubblesProperties()])
-    categoryAxis: list[CategoryAxisProperties] | None = Field(default_factory=lambda: [CategoryAxisProperties()])
-    categoryLabels: list[CategoryLabelsProperties] | None = Field(default_factory=lambda: [CategoryLabelsProperties()])
-    colorBorder: list[ColorBorderProperties] | None = Field(default_factory=lambda: [ColorBorderProperties()])
-    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
-    fillPoint: list[FillPointProperties] | None = Field(default_factory=lambda: [FillPointProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
-    legend: list[LegendProperties] | None = Field(default_factory=lambda: [LegendProperties()])
-    plotArea: list[PlotAreaProperties] | None = Field(default_factory=lambda: [PlotAreaProperties()])
-    valueAxis: list[ValueAxisProperties] | None = Field(default_factory=lambda: [ValueAxisProperties()])
-    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] | None = Field(
+    bubbles: list[BubblesProperties] = Field(default_factory=lambda: [BubblesProperties()])
+    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
+    categoryLabels: list[CategoryLabelsProperties] = Field(default_factory=lambda: [CategoryLabelsProperties()])
+    colorBorder: list[ColorBorderProperties] = Field(default_factory=lambda: [ColorBorderProperties()])
+    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
+    fillPoint: list[FillPointProperties] = Field(default_factory=lambda: [FillPointProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
+    plotArea: list[PlotAreaProperties] = Field(default_factory=lambda: [PlotAreaProperties()])
+    valueAxis: list[ValueAxisProperties] = Field(default_factory=lambda: [ValueAxisProperties()])
+    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] = Field(
         default_factory=lambda: [Y1AxisReferenceLineProperties()],
     )
 
@@ -163,4 +163,4 @@ class ScatterChart(BaseVisual):
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: ScatterChartProperties | None = Field(default_factory=ScatterChartProperties)
+    objects: ScatterChartProperties = Field(default_factory=ScatterChartProperties)

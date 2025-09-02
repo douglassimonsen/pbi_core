@@ -76,11 +76,11 @@ class TextProperties(LayoutNode):
 
 
 class ActionButtonProperties(LayoutNode):
-    fill: list[FillProperties] | None = Field(default_factory=lambda: [FillProperties()])
-    icon: list[IconProperties] | None = Field(default_factory=lambda: [IconProperties()])
-    outline: list[OutlineProperties] | None = Field(default_factory=lambda: [OutlineProperties()])
-    shape: list[ShapeProperties] | None = Field(default_factory=lambda: [ShapeProperties()])
-    text: list[TextProperties] | None = Field(default_factory=lambda: [TextProperties()])
+    fill: list[FillProperties] = Field(default_factory=lambda: [FillProperties()])
+    icon: list[IconProperties] = Field(default_factory=lambda: [IconProperties()])
+    outline: list[OutlineProperties] = Field(default_factory=lambda: [OutlineProperties()])
+    shape: list[ShapeProperties] = Field(default_factory=lambda: [ShapeProperties()])
+    text: list[TextProperties] = Field(default_factory=lambda: [TextProperties()])
 
 
 class ActionButton(BaseVisual):
@@ -88,4 +88,4 @@ class ActionButton(BaseVisual):
     model_config = ConfigDict(extra="forbid")
 
     drillFilterOtherVisuals: bool = True
-    objects: ActionButtonProperties | None = Field(default_factory=ActionButtonProperties)
+    objects: ActionButtonProperties = Field(default_factory=ActionButtonProperties)

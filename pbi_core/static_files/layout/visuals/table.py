@@ -111,19 +111,19 @@ class ValuesProperties(LayoutNode):
 
 
 class TableChartColumnProperties(LayoutNode):
-    columnFormatting: list[ColumnFormattingProperties] | None = Field(
+    columnFormatting: list[ColumnFormattingProperties] = Field(
         default_factory=lambda: [ColumnFormattingProperties()],
     )
-    columnHeaders: list[ColumnHeadersProperties] | None = Field(default_factory=lambda: [ColumnHeadersProperties()])
-    columnWidth: list[ColumnWidthProperties] | None = Field(default_factory=lambda: [ColumnWidthProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
-    grid: list[GridProperties] | None = Field(default_factory=lambda: [GridProperties()])
-    total: list[TotalProperties] | None = Field(default_factory=lambda: [TotalProperties()])
-    values: list[ValuesProperties] | None = Field(default_factory=lambda: [ValuesProperties()])
+    columnHeaders: list[ColumnHeadersProperties] = Field(default_factory=lambda: [ColumnHeadersProperties()])
+    columnWidth: list[ColumnWidthProperties] = Field(default_factory=lambda: [ColumnWidthProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    grid: list[GridProperties] = Field(default_factory=lambda: [GridProperties()])
+    total: list[TotalProperties] = Field(default_factory=lambda: [TotalProperties()])
+    values: list[ValuesProperties] = Field(default_factory=lambda: [ValuesProperties()])
 
 
 class TableChart(BaseVisual):
     visualType: str = "tableEx"
-    objects: TableChartColumnProperties | None = Field(default_factory=TableChartColumnProperties)
+    objects: TableChartColumnProperties = Field(default_factory=TableChartColumnProperties)
     model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None

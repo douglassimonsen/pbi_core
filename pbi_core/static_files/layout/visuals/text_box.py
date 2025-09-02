@@ -29,13 +29,13 @@ class ValueProperties(LayoutNode):
         expr: _ValuePropertiesExpr = Field(default_factory=_ValuePropertiesExpr)
         formatString: Expression | None = None
 
-    properties: _ValuePropertiesHelper | None = Field(default_factory=_ValuePropertiesHelper)
+    properties: _ValuePropertiesHelper = Field(default_factory=_ValuePropertiesHelper)
     selector: Selector | None = None
 
 
 class TextBoxProperties(LayoutNode):
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
-    values: list[ValueProperties] | None = Field(default_factory=lambda: [ValueProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    values: list[ValueProperties] = Field(default_factory=lambda: [ValueProperties()])
 
 
 class TextBox(BaseVisual):
@@ -43,4 +43,4 @@ class TextBox(BaseVisual):
     model_config = ConfigDict(extra="forbid")
 
     drillFilterOtherVisuals: bool = True
-    objects: TextBoxProperties | None = Field(default_factory=TextBoxProperties)
+    objects: TextBoxProperties = Field(default_factory=TextBoxProperties)

@@ -184,24 +184,24 @@ class ZoomProperties(LayoutNode):
 
 
 class LineChartProperties(LayoutNode):
-    anomalyDetection: list[AnomalyDetectionProperties] | None = Field(
+    anomalyDetection: list[AnomalyDetectionProperties] = Field(
         default_factory=lambda: [AnomalyDetectionProperties()],
     )
-    categoryAxis: list[CategoryAxisProperties] | None = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
-    forecast: list[ForecastProperties] | None = Field(default_factory=lambda: [ForecastProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
-    labels: list[LabelsProperties] | None = Field(default_factory=lambda: [LabelsProperties()])
-    legend: list[LegendProperties] | None = Field(default_factory=lambda: [LegendProperties()])
-    lineStyles: list[LineStylesProperties] | None = Field(default_factory=lambda: [LineStylesProperties()])
-    plotArea: list[PlotAreaProperties] | None = Field(default_factory=lambda: [PlotAreaProperties()])
-    trend: list[TrendProperties] | None = Field(default_factory=lambda: [TrendProperties()])
-    valueAxis: list[ValueAxisProperties] | None = Field(default_factory=lambda: [ValueAxisProperties()])
-    zoom: list[ZoomProperties] | None = Field(default_factory=lambda: [ZoomProperties()])
-    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] | None = Field(
+    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
+    forecast: list[ForecastProperties] = Field(default_factory=lambda: [ForecastProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
+    lineStyles: list[LineStylesProperties] = Field(default_factory=lambda: [LineStylesProperties()])
+    plotArea: list[PlotAreaProperties] = Field(default_factory=lambda: [PlotAreaProperties()])
+    trend: list[TrendProperties] = Field(default_factory=lambda: [TrendProperties()])
+    valueAxis: list[ValueAxisProperties] = Field(default_factory=lambda: [ValueAxisProperties()])
+    zoom: list[ZoomProperties] = Field(default_factory=lambda: [ZoomProperties()])
+    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] = Field(
         default_factory=lambda: [Y1AxisReferenceLineProperties()],
     )
-    y2Axis: list[Y2AxisProperties] | None = Field(default_factory=lambda: [Y2AxisProperties()])
+    y2Axis: list[Y2AxisProperties] = Field(default_factory=lambda: [Y2AxisProperties()])
 
 
 class LineChart(BaseVisual):
@@ -210,4 +210,4 @@ class LineChart(BaseVisual):
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: LineChartProperties | None = Field(default_factory=LineChartProperties)
+    objects: LineChartProperties = Field(default_factory=LineChartProperties)

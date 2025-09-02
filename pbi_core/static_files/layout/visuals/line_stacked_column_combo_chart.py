@@ -99,16 +99,16 @@ class ValueAxisProperties(LayoutNode):
 
 
 class LineStackedColumnComboChartProperties(LayoutNode):
-    categoryAxis: list[CategoryAxisProperties] | None = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
-    labels: list[LabelsProperties] | None = Field(default_factory=lambda: [LabelsProperties()])
-    legend: list[LegendProperties] | None = Field(default_factory=lambda: [LegendProperties()])
-    lineStyles: list[LineStylesProperties] | None = Field(default_factory=lambda: [LineStylesProperties()])
-    smallMultiplesLayout: list[SmallMultiplesLayoutProperties] | None = Field(
+    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
+    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
+    lineStyles: list[LineStylesProperties] = Field(default_factory=lambda: [LineStylesProperties()])
+    smallMultiplesLayout: list[SmallMultiplesLayoutProperties] = Field(
         default_factory=lambda: [SmallMultiplesLayoutProperties()],
     )
-    subheader: list[SubheaderProperties] | None = Field(default_factory=lambda: [SubheaderProperties()])
-    valueAxis: list[ValueAxisProperties] | None = Field(default_factory=lambda: [ValueAxisProperties()])
+    subheader: list[SubheaderProperties] = Field(default_factory=lambda: [SubheaderProperties()])
+    valueAxis: list[ValueAxisProperties] = Field(default_factory=lambda: [ValueAxisProperties()])
 
 
 class LineStackedColumnComboChart(BaseVisual):
@@ -117,4 +117,4 @@ class LineStackedColumnComboChart(BaseVisual):
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: LineStackedColumnComboChartProperties | None = Field(default_factory=LineStackedColumnComboChartProperties)
+    objects: LineStackedColumnComboChartProperties = Field(default_factory=LineStackedColumnComboChartProperties)

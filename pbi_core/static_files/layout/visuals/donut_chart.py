@@ -76,13 +76,13 @@ class TitleProperties(LayoutNode):
 
 
 class DonutChartProperties(LayoutNode):
-    background: list[BackgroundProperties] | None = Field(default_factory=lambda: [BackgroundProperties()])
-    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
-    labels: list[LabelsProperties] | None = Field(default_factory=lambda: [LabelsProperties()])
-    legend: list[LegendProperties] | None = Field(default_factory=lambda: [LegendProperties()])
-    slices: list[SlicesProperties] | None = Field(default_factory=lambda: [SlicesProperties()])
-    title: list[TitleProperties] | None = Field(default_factory=lambda: [TitleProperties()])
+    background: list[BackgroundProperties] = Field(default_factory=lambda: [BackgroundProperties()])
+    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
+    slices: list[SlicesProperties] = Field(default_factory=lambda: [SlicesProperties()])
+    title: list[TitleProperties] = Field(default_factory=lambda: [TitleProperties()])
 
 
 class DonutChart(BaseVisual):
@@ -91,4 +91,4 @@ class DonutChart(BaseVisual):
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: DonutChartProperties | None = Field(default_factory=DonutChartProperties)
+    objects: DonutChartProperties = Field(default_factory=DonutChartProperties)

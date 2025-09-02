@@ -46,10 +46,10 @@ class WordWrapProperties(LayoutNode):
 
 
 class CardProperties(LayoutNode):
-    categoryLabels: list[CategoryLabelsProperties] | None = Field(default_factory=lambda: [CategoryLabelsProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
-    labels: list[LabelsProperties] | None = Field(default_factory=lambda: [LabelsProperties()])
-    wordWrap: list[WordWrapProperties] | None = Field(default_factory=lambda: [WordWrapProperties()])
+    categoryLabels: list[CategoryLabelsProperties] = Field(default_factory=lambda: [CategoryLabelsProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
+    wordWrap: list[WordWrapProperties] = Field(default_factory=lambda: [WordWrapProperties()])
 
 
 class Card(BaseVisual):
@@ -58,4 +58,4 @@ class Card(BaseVisual):
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: CardProperties | None = Field(default_factory=CardProperties)
+    objects: CardProperties = Field(default_factory=CardProperties)

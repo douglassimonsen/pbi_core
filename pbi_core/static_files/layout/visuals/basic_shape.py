@@ -40,10 +40,10 @@ class RotationProperties(LayoutNode):
 
 
 class BasicShapeProperties(LayoutNode):
-    fill: list[FillProperties] | None = Field(default_factory=lambda: [FillProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
-    line: list[LineProperties] | None = Field(default_factory=lambda: [LineProperties()])
-    rotation: list[RotationProperties] | None = Field(default_factory=lambda: [RotationProperties()])
+    fill: list[FillProperties] = Field(default_factory=lambda: [FillProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    line: list[LineProperties] = Field(default_factory=lambda: [LineProperties()])
+    rotation: list[RotationProperties] = Field(default_factory=lambda: [RotationProperties()])
 
 
 class BasicShape(BaseVisual):
@@ -51,4 +51,4 @@ class BasicShape(BaseVisual):
     model_config = ConfigDict(extra="forbid")
 
     drillFilterOtherVisuals: bool = True
-    objects: BasicShapeProperties | None = Field(default_factory=BasicShapeProperties)
+    objects: BasicShapeProperties = Field(default_factory=BasicShapeProperties)

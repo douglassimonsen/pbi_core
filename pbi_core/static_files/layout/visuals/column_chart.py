@@ -119,24 +119,24 @@ class ZoomProperties(LayoutNode):
 
 
 class ColumnChartColumnProperties(LayoutNode):
-    categoryAxis: list[CategoryAxisProperties] | None = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
-    labels: list[LabelsProperties] | None = Field(default_factory=lambda: [LabelsProperties()])
-    legend: list[LegendProperties] | None = Field(default_factory=lambda: [LegendProperties()])
-    valueAxis: list[ValueAxisProperties] | None = Field(default_factory=lambda: [ValueAxisProperties()])
-    totals: list[TotalProperties] | None = Field(default_factory=lambda: [TotalProperties()])
-    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] | None = Field(
+    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
+    valueAxis: list[ValueAxisProperties] = Field(default_factory=lambda: [ValueAxisProperties()])
+    totals: list[TotalProperties] = Field(default_factory=lambda: [TotalProperties()])
+    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] = Field(
         default_factory=lambda: [Y1AxisReferenceLineProperties()],
     )
-    zoom: list[ZoomProperties] | None = Field(default_factory=lambda: [ZoomProperties()])
+    zoom: list[ZoomProperties] = Field(default_factory=lambda: [ZoomProperties()])
 
 
 class ColumnChart(BaseVisual):
     visualType: str = "columnChart"
     model_config = ConfigDict(extra="forbid")
 
-    objects: ColumnChartColumnProperties | None = Field(default_factory=ColumnChartColumnProperties)
+    objects: ColumnChartColumnProperties = Field(default_factory=ColumnChartColumnProperties)
     selector: Selector | None = None
     columnCount: Expression | None = None
     columnProperties: dict[str, ColumnProperty] | None = None

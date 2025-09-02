@@ -45,10 +45,10 @@ class PercentBarLabelProperties(LayoutNode):
 
 
 class FunnelProperties(LayoutNode):
-    categoryAxis: list[CategoryAxisProperties] | None = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
-    labels: list[LabelsProperties] | None = Field(default_factory=lambda: [LabelsProperties()])
-    percentBarLabel: list[PercentBarLabelProperties] | None = Field(
+    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
+    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
+    percentBarLabel: list[PercentBarLabelProperties] = Field(
         default_factory=lambda: [PercentBarLabelProperties()],
     )
 
@@ -58,4 +58,4 @@ class Funnel(BaseVisual):
     model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: FunnelProperties | None = Field(default_factory=FunnelProperties)
+    objects: FunnelProperties = Field(default_factory=FunnelProperties)

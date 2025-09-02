@@ -21,8 +21,8 @@ class ImageScalingProperties(LayoutNode):
 
 
 class ImageProperties(LayoutNode):
-    general: list[GeneralProperties] | None = Field(default_factory=list[GeneralProperties()])
-    imageScaling: list[ImageScalingProperties] | None = Field(default_factory=list[ImageScalingProperties()])
+    general: list[GeneralProperties] = Field(default_factory=list[GeneralProperties()])
+    imageScaling: list[ImageScalingProperties] = Field(default_factory=list[ImageScalingProperties()])
 
 
 class Image(BaseVisual):
@@ -31,4 +31,4 @@ class Image(BaseVisual):
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: ImageProperties | None = Field(default_factory=ImageProperties)
+    objects: ImageProperties = Field(default_factory=ImageProperties)

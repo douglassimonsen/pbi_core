@@ -126,19 +126,19 @@ class SliderProperties(LayoutNode):
 
 
 class SlicerProperties(LayoutNode):
-    date: list[DateProperties] | None = Field(default_factory=lambda: [DateProperties()])
-    data: list[DataProperties] | None = Field(default_factory=lambda: [DataProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
+    date: list[DateProperties] = Field(default_factory=lambda: [DateProperties()])
+    data: list[DataProperties] = Field(default_factory=lambda: [DataProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
     header: list[HeaderProperties] = Field(default_factory=lambda: [HeaderProperties()])
     items: list[ItemProperties] = Field(default_factory=lambda: [ItemProperties()])
-    numericInputStyle: list[NumericInputStyleProperties] | None = Field(
+    numericInputStyle: list[NumericInputStyleProperties] = Field(
         default_factory=lambda: [NumericInputStyleProperties()],
     )
-    pendingChangesIcon: list[PendingChangeIconProperties] | None = Field(
+    pendingChangesIcon: list[PendingChangeIconProperties] = Field(
         default_factory=lambda: [PendingChangeIconProperties()],
     )
-    selection: list[SelectionProperties] | None = Field(default_factory=lambda: [SelectionProperties()])
-    slider: list[SliderProperties] | None = Field(default_factory=lambda: [SliderProperties()])
+    selection: list[SelectionProperties] = Field(default_factory=lambda: [SelectionProperties()])
+    slider: list[SliderProperties] = Field(default_factory=lambda: [SliderProperties()])
 
 
 class Slicer(BaseVisual):

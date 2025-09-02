@@ -176,22 +176,22 @@ class ZoomProperties(LayoutNode):
 
 
 class BarChartProperties(LayoutNode):
-    categoryAxis: list[CategoryAxisProperties] | None = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
-    labels: list[LabelsProperties] | None = Field(default_factory=lambda: [LabelsProperties()])
-    layout: list[LayoutProperties] | None = Field(default_factory=lambda: [LayoutProperties()])
-    legend: list[LegendProperties] | None = Field(default_factory=lambda: [LegendProperties()])
-    ribbonBands: list[RibbonBandsProperties] | None = Field(default_factory=lambda: [RibbonBandsProperties()])
-    valueAxis: list[ValueAxisProperties] | None = Field(default_factory=lambda: [ValueAxisProperties()])
-    xAxisReferenceLine: list[XAxisReferenceLineProperties] | None = Field(
+    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
+    layout: list[LayoutProperties] = Field(default_factory=lambda: [LayoutProperties()])
+    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
+    ribbonBands: list[RibbonBandsProperties] = Field(default_factory=lambda: [RibbonBandsProperties()])
+    valueAxis: list[ValueAxisProperties] = Field(default_factory=lambda: [ValueAxisProperties()])
+    xAxisReferenceLine: list[XAxisReferenceLineProperties] = Field(
         default_factory=lambda: [XAxisReferenceLineProperties()],
     )
-    zoom: list[ZoomProperties] | None = Field(default_factory=lambda: [ZoomProperties()])
+    zoom: list[ZoomProperties] = Field(default_factory=lambda: [ZoomProperties()])
 
 
 class BarChart(BaseVisual):
     visualType: str = "barChart"
     model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None
-    objects: BarChartProperties | None = Field(default_factory=BarChartProperties)
+    objects: BarChartProperties = Field(default_factory=BarChartProperties)

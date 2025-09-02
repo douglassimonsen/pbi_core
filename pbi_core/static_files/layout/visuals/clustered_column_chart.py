@@ -108,14 +108,14 @@ class ValueAxisProperties(LayoutNode):
 
 
 class ClusteredColumnChartProperties(LayoutNode):
-    categoryAxis: list[CategoryAxisProperties] | None = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] | None = Field(default_factory=lambda: [DataPointProperties()])
-    general: list[GeneralProperties] | None = Field(default_factory=lambda: [GeneralProperties()])
-    labels: list[LabelsProperties] | None = Field(default_factory=lambda: [LabelsProperties()])
-    legend: list[LegendProperties] | None = Field(default_factory=lambda: [LegendProperties()])
-    plotArea: list[PlotAreaProperties] | None = Field(default_factory=lambda: [PlotAreaProperties()])
-    trend: list[TrendProperties] | None = Field(default_factory=lambda: [TrendProperties()])
-    valueAxis: list[ValueAxisProperties] | None = Field(default_factory=lambda: [ValueAxisProperties()])
+    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
+    plotArea: list[PlotAreaProperties] = Field(default_factory=lambda: [PlotAreaProperties()])
+    trend: list[TrendProperties] = Field(default_factory=lambda: [TrendProperties()])
+    valueAxis: list[ValueAxisProperties] = Field(default_factory=lambda: [ValueAxisProperties()])
 
 
 class ClusteredColumnChart(BaseVisual):
@@ -124,4 +124,4 @@ class ClusteredColumnChart(BaseVisual):
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
-    objects: ClusteredColumnChartProperties | None = Field(default_factory=ClusteredColumnChartProperties)
+    objects: ClusteredColumnChartProperties = Field(default_factory=ClusteredColumnChartProperties)

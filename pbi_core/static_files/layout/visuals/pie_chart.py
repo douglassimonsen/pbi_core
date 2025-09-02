@@ -37,13 +37,13 @@ class LegendProperties(LayoutNode):
 
 
 class PieChartProperties(LayoutNode):
-    dataPoint: list[DataPointProperties] | None = Field(default_factory=list[DataPointProperties()])
-    labels: list[LabelsProperties] | None = Field(default_factory=list[LabelsProperties()])
-    legend: list[LegendProperties] | None = Field(default_factory=list[LegendProperties()])
+    dataPoint: list[DataPointProperties] = Field(default_factory=list[DataPointProperties()])
+    labels: list[LabelsProperties] = Field(default_factory=list[LabelsProperties()])
+    legend: list[LegendProperties] = Field(default_factory=list[LegendProperties()])
 
 
 class PieChart(BaseVisual):
     visualType: str = "pieChart"
     model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None
-    objects: PieChartProperties | None = Field(default_factory=PieChartProperties)
+    objects: PieChartProperties = Field(default_factory=PieChartProperties)
