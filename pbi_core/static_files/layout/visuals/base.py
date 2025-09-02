@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
-from pydantic import ConfigDict, Discriminator, Tag
+from pydantic import Discriminator, Tag
 
 from pbi_core.lineage import LineageNode
 from pbi_core.static_files.layout._base_node import LayoutNode
@@ -91,15 +91,17 @@ class BaseVisual(LayoutNode):
 
     """
 
-    model_config = ConfigDict(extra="allow")
-
     prototypeQuery: PrototypeQuery | None = None
     projections: dict[str, list[ProjectionConfig]] | None = None
     hasDefaultSort: bool = False
     drillFilterOtherVisuals: bool = False
     filterSortOrder: FilterSortOrder = FilterSortOrder.NA
-    # vcObjects means "visual container objects"
     vcObjects: VCProperties | None = None
+    """vcObjects means "visual container objects"."""
+    objects: Any = None
+    """Objects contains the properties unique to the specific visual type.
+
+    Subclasses should specify a real pydantic model for this field"""
     visualType: str = "unknown"
     queryOptions: QueryOptions | None = None
     showAllRoles: list[str] | None = None

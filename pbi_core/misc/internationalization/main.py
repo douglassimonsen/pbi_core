@@ -9,7 +9,7 @@ from pbi_core import LocalReport
 from pbi_core.pydantic.main import BaseValidation
 from pbi_core.static_files import Layout
 from pbi_core.static_files.layout.filters import Filter
-from pbi_core.static_files.layout.sources.literal import _LiteralSourceHelper
+from pbi_core.static_files.layout.sources.literal import LiteralSource
 from pbi_core.static_files.layout.visuals.properties.base import LiteralExpression
 
 if TYPE_CHECKING:
@@ -53,10 +53,10 @@ class StaticElements:
         wb.save(path)
 
 
-def parse_config(config: BaseValidation | None) -> list[_LiteralSourceHelper]:
+def parse_config(config: BaseValidation | None) -> list[LiteralSource]:
     if config is None:
         return []
-    ret: list[_LiteralSourceHelper] = []
+    ret: list[LiteralSource] = []
     for field_name in config.__pydantic_fields__:
         value: list[BaseValidation] = getattr(config, field_name)
         for element in value:
@@ -64,7 +64,7 @@ def parse_config(config: BaseValidation | None) -> list[_LiteralSourceHelper]:
             for prop_name in properties.__pydantic_fields__:
                 prop_value = getattr(properties, prop_name)
                 if isinstance(prop_value, LiteralExpression) and isinstance(prop_value.expr.value(), str):
-                    ret.append(prop_value.expr.Literal)
+                    ret.append(prop_value.expr)
     return ret
 
 
@@ -91,21 +91,24 @@ def get_static_elements(layout: Layout) -> StaticElements:
         )
         for visual_container in section.visualContainers:
             for visual in visual_container.get_visuals():
-                text_config = parse_config(visual.vcObjects)
-                elements.extend(
-                    StaticElement(
-                        category="Visual",
-                        xpath=text.get_xpath(layout),
-                        field="Value",
-                        text=text.Value,
-                    )
-                    for text in text_config
-                )
-                """iterate over config and measure names"""
-                print(len(elements))
-                breakpoint()
+                for config_obj in [visual.vcObjects, visual.objects]:
+                    text_config = parse_config(config_obj)
+                    for text in text_config:
+                        val = text.value()
+                        assert isinstance(
+                            val,
+                            str,
+                        )  # technically done before, but the type checker doesn't remember that
+                        elements.append(
+                            StaticElement(
+                                category="Visual",
+                                xpath=text.get_xpath(layout),
+                                field="Value",
+                                text=val,
+                            ),
+                        )
 
-    return StaticElements()
+    return StaticElements(elements)
 
 
 def set_static_elements(translation_path: "StrPath", pbix_path: "StrPath") -> None:
