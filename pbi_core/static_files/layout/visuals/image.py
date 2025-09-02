@@ -2,8 +2,7 @@ from pydantic import ConfigDict, Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 
-from .base import BaseVisual
-from .column_property import ColumnProperty
+from .base import BaseVisual, ColumnProperty
 from .properties.base import Expression
 
 

@@ -143,3 +143,7 @@ class BaseVisual(LayoutNode):
                         ret.append(candidate_measure)
                         break
         return LineageNode(self, lineage_type, relatives=[child.get_lineage(lineage_type) for child in ret])
+
+
+class ColumnProperty(LayoutNode):
+    displayName: str | None = None

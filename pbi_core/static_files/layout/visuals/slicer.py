@@ -5,9 +5,8 @@ from pbi_core.static_files.layout.expansion_state import ExpansionState
 from pbi_core.static_files.layout.filters import Filter
 from pbi_core.static_files.layout.selector import SelectorData
 
-from .base import BaseVisual
+from .base import BaseVisual, ColumnProperty
 from .properties.base import Expression
-from .table import ColumnProperty
 
 
 class SyncGroup(LayoutNode):

@@ -147,7 +147,7 @@ class LayoutNode(BaseValidation):
         return attr.find_xpath(xpath)
 
     def get_xpath(self, parent: "LayoutNode") -> list[str | int]:
-        """Get the [XPath](https://developer.mozilla.org/en-US/docs/Web/XML/XPath) of this node relative to another element.
+        """Get the [XPath](https://developer.mozilla.org/en-US/docs/Web/XML/XPath) of this node.
 
         Args:
             parent (LayoutNode): The parent node to which the XPath is relative.
@@ -176,7 +176,6 @@ def _get_xpath(  # noqa: C901  # too complex, but it's actually not that complex
 ) -> list[str | int] | None:
     def _xpath_pydantic(parent: LayoutNode, child: LayoutNode, xpath: list[str | int]) -> list[str | int] | None:
         for attr in parent.__pydantic_fields__:
-            print(parent.__class__.__name__, attr)
             val = getattr(parent, attr)
             ret = _get_xpath(val, child, xpath=[*xpath, attr])
             if ret is not None:
