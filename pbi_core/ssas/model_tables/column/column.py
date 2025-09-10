@@ -1,5 +1,5 @@
 import datetime
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 from uuid import UUID, uuid4
 
 from pydantic import PrivateAttr
@@ -10,9 +10,14 @@ from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState, DataType
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
+from pbi_core.static_files.layout.sources.column import ColumnSource
 
 from .commands import CommandMixin
 from .enums import Alignment, ColumnType, EncodingHint, SummarizedBy
+
+if TYPE_CHECKING:
+    from pbi_core.static_files.layout.layout import Layout
+
 
 logger: BoundLogger = get_logger()
 
@@ -74,3 +79,28 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
 
     def __repr__(self) -> str:
         return f"Column({self.table().name}.{self.pbi_core_name()})"
+
+    def set_name(self, new_name: str, layout: "Layout") -> None:
+        """Renames the column and update any dependent expressions to use the new name.
+
+        Since measures are referenced by name in DAX expressions, renaming a measure will break any dependent
+        expressions.
+        """
+        columns = layout.find_all(ColumnSource, lambda c: c.Column.Property == self.explicit_name)
+        for c in columns:
+            c.Column.Property = new_name
+            if c.NativeReferenceName == self.explicit_name:
+                c.NativeReferenceName = new_name
+
+        self.explicit_name = new_name
+
+    def modification_hash(self) -> int:
+        return hash((
+            self.explicit_name,
+            self.description,
+            self.display_folder,
+            self.format_string,
+            self.is_hidden,
+            self.summarize_by,
+            self.expression,
+        ))
