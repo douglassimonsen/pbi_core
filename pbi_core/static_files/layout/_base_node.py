@@ -49,7 +49,7 @@ class LayoutNode(BaseValidation):
 
     def find_all(
         self,
-        cls_type: type[T],
+        cls_type: type[T] | tuple[type[T], ...],
         attributes: dict[str, Any] | Callable[[T], bool] | None = None,
     ) -> list["T"]:
         ret: list[T] = []

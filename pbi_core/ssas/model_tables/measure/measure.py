@@ -11,6 +11,7 @@ from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.enums import DataState, DataType
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
+from pbi_core.static_files.layout.sources.measure import MeasureSource
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.calc_dependency import CalcDependency
@@ -19,6 +20,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.kpi import KPI
     from pbi_core.ssas.model_tables.table import Table
     from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
+    from pbi_core.static_files.layout.layout import Layout
 
 
 class Measure(SsasRenameRecord):
@@ -61,6 +63,20 @@ class Measure(SsasRenameRecord):
     structure_modified_time: datetime.datetime
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.measure)
+
+    def set_name(self, new_name: str, layout: "Layout") -> None:
+        """Renames the measure and update any dependent expressions to use the new name.
+
+        Since measures are referenced by name in DAX expressions, renaming a measure will break any dependent
+        expressions.
+        """
+        measures = layout.find_all(MeasureSource, lambda m: m.Measure.Property == self.name)
+        for m in measures:
+            m.Measure.Property = new_name
+            if m.NativeReferenceName == self.name:
+                m.NativeReferenceName = new_name
+
+        self.name = new_name
 
     def modification_hash(self) -> int:
         return hash((
