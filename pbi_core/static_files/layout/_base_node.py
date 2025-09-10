@@ -86,9 +86,6 @@ class LayoutNode(BaseValidation):
         msg = f"Object not found: {cls_type}"
         raise ValueError(msg)
 
-    def model_dump_json(self, **kwargs: Any) -> str:
-        return super().model_dump_json(round_trip=True, exclude_unset=True, **kwargs)
-
     def _children(self) -> list["LayoutNode"]:
         ret: list[LayoutNode] = []
         for attr in dir(self):

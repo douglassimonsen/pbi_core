@@ -17,3 +17,10 @@ class BaseValidation(BaseModel):
 
     def __format__(self, format_spec: str) -> str:
         return f"{self!s:{format_spec}}"
+
+    def model_dump_json(self, *, indent: int = 4) -> str:  # type: ignore[override]
+        # alias is required for models since the PBIX format uses the alias version of attribute names
+        # exclude_unset is required to avoid writing default values that are not present in the original PBIX.
+        #  This can cause issues otherwise with visual configs
+        # round_trip is required to return JSON types back to strings when 
+        return super().model_dump_json(by_alias=True, exclude_unset=True, indent=indent, round_trip=True)
