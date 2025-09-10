@@ -50,6 +50,10 @@ internationalization = [
   "langcodes>=3.4.1",
 ]
 
+[project.urls]
+Homepage = "https://github.com/douglassimonsen/pbi_core"
+Documentation = "https://douglassimonsen.github.io/pbi_core/"
+
 [tool.hatch.version]
 path = "pbi_core/__init__.py"
 

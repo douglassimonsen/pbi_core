@@ -82,6 +82,7 @@ def get_static_elements(layout: Layout) -> TextElements:
 
         for visual_container in section.visualContainers:
             for visual in visual_container.get_visuals():
+                breakpoint()
                 if isinstance(visual, TextBox):
                     text_runs = _get_text_runs(visual)
                     elements.extend(
