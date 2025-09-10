@@ -9,6 +9,7 @@ from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
+from pbi_core.static_files.layout.sources.hierarchy import HierarchySource
 
 from .enums import HideMembers
 
@@ -16,6 +17,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.level import Level
     from pbi_core.ssas.model_tables.table import Table
     from pbi_core.ssas.model_tables.variation import Variation
+    from pbi_core.static_files.layout.layout import Layout
 
 
 class Hierarchy(SsasRenameRecord):
@@ -43,6 +45,18 @@ class Hierarchy(SsasRenameRecord):
     structure_modified_time: datetime.datetime
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.hierarchy)
+
+    def set_name(self, new_name: str, layout: "Layout") -> None:
+        """Renames the measure and update any dependent expressions to use the new name.
+
+        Since measures are referenced by name in DAX expressions, renaming a measure will break any dependent
+        expressions.
+        """
+        hierarchies = layout.find_all(HierarchySource, lambda h: h.Hierarchy.Hierarchy == self.name)
+        for h in hierarchies:
+            h.Hierarchy.Hierarchy = new_name
+
+        self.name = new_name
 
     def table(self) -> "Table":
         return self.tabular_model.tables.find({"id": self.table_id})
@@ -73,3 +87,12 @@ class Hierarchy(SsasRenameRecord):
                 self.table().get_lineage(lineage_type),
             ],
         )
+
+    def modification_hash(self) -> int:
+        return hash((
+            self.name,
+            self.description,
+            self.display_folder,
+            self.hide_members,
+            self.is_hidden,
+        ))

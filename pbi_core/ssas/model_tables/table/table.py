@@ -13,14 +13,14 @@ from pbi_core.ssas.model_tables.measure import Measure
 from pbi_core.ssas.model_tables.partition import Partition
 from pbi_core.ssas.server._commands import RefreshCommands
 from pbi_core.ssas.server.utils import SsasCommands
-
-from ....static_files.layout.sources.base import Entity
+from pbi_core.static_files.layout.sources.base import Entity
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
     from pbi_core.ssas.model_tables.detail_row_definition import DetailRowDefinition
     from pbi_core.ssas.model_tables.model import Model
     from pbi_core.ssas.model_tables.refresh_policy import RefreshPolicy
+    from pbi_core.static_files.layout.layout import Layout
 
 
 class Table(SsasRefreshRecord):
