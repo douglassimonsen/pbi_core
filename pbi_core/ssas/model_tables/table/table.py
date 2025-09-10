@@ -14,6 +14,8 @@ from pbi_core.ssas.model_tables.partition import Partition
 from pbi_core.ssas.server._commands import RefreshCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
+from ....static_files.layout.sources.base import Entity
+
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
     from pbi_core.ssas.model_tables.detail_row_definition import DetailRowDefinition
@@ -58,6 +60,17 @@ class Table(SsasRefreshRecord):
     structure_modified_time: datetime.datetime
 
     _commands: RefreshCommands = PrivateAttr(default_factory=lambda: SsasCommands.table)
+
+    def set_name(self, new_name: str, layout: "Layout") -> None:
+        """Renames the measure and update any dependent expressions to use the new name.
+
+        Since measures are referenced by name in DAX expressions, renaming a measure will break any dependent
+        expressions.
+        """
+        entities = layout.find_all(Entity, lambda e: e.Entity == self.name)
+        for entity in entities:
+            entity.Entity = new_name
+        self.name = new_name
 
     def modification_hash(self) -> int:
         return hash((

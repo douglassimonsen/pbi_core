@@ -21,8 +21,9 @@
         <xs:element minOccurs="0" name="AlternateSourcePrecedence" sql:field="AlternateSourcePrecedence" type="xs:int"/>
         <xs:element minOccurs="0" name="LineageTag" sql:field="LineageTag" type="xs:string"/>
         <xs:element minOccurs="0" name="SourceLineageTag" sql:field="SourceLineageTag" type="xs:string"/>
+        <!-- These two fields, although pulled from the docs, are not supported by the local SSAS instance
         <xs:element minOccurs="0" name="SystemManaged" sql:field="SystemManaged" type="xs:boolean"/>
-        <xs:element minOccurs="0" name="ExcludeFromAutomaticAggregations" sql:field="ExcludeFromAutomaticAggregations" type="xs:boolean"/>
+        <xs:element minOccurs="0" name="ExcludeFromAutomaticAggregations" sql:field="ExcludeFromAutomaticAggregations" type="xs:boolean"/> -->
       </xs:sequence>
     </xs:complexType>
   </xs:schema>
