@@ -46,6 +46,15 @@ class ExtendedProperty(SsasRenameRecord):
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.extended_property)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.object_id,
+            self.object_type,
+            self.name,
+            self.type,
+            self.value,
+        ))
+
     def object(self) -> "SsasTable":
         """Returns the object the property is describing."""
         mapper: dict[ObjectType, Callable[[int], SsasTable]] = {

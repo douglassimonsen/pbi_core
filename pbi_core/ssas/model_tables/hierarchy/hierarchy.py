@@ -46,6 +46,19 @@ class Hierarchy(SsasRenameRecord):
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.hierarchy)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.description,
+            self.display_folder,
+            self.hide_members,
+            self.hierarchy_storage_id,
+            self.is_hidden,
+            self.name,
+            self.table_id,
+            self.lineage_tag,
+            self.source_lineage_tag,
+        ))
+
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.
 
@@ -89,12 +102,3 @@ class Hierarchy(SsasRenameRecord):
                 self.table().get_lineage(lineage_type),
             ],
         )
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.name,
-            self.description,
-            self.display_folder,
-            self.hide_members,
-            self.is_hidden,
-        ))

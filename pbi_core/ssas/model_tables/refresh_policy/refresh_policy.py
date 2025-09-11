@@ -26,3 +26,17 @@ class RefreshPolicy(SsasEditableRecord):
     table_id: int
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.refresh_policy)
+
+    def modification_hash(self) -> int:
+        return hash((
+            self.incremental_granularity,
+            self.incremental_periods,
+            self.incremental_periods_offset,
+            self.mode,
+            self.policy_type,
+            self.polling_expression,
+            self.rolling_window_granularity,
+            self.rolling_window_periods,
+            self.source_expression,
+            self.table_id,
+        ))

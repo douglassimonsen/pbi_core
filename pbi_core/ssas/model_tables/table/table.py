@@ -63,6 +63,28 @@ class Table(SsasRefreshRecord):
 
     _commands: RefreshCommands = PrivateAttr(default_factory=lambda: SsasCommands.table)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.alternate_source_precedence,
+            self.calculation_group_id,
+            self.data_category,
+            self.default_detail_rows_defintion_id,
+            self.description,
+            self.exclude_from_automatic_aggregations,
+            self.exclude_from_model_refresh,
+            self.is_hidden,
+            self.is_private,
+            self.model_id,
+            self.name,
+            self.refresh_policy_id,
+            self.show_as_variations_only,
+            # self.system_flags,
+            # self.system_managed,
+            self.table_storage_id,
+            self.lineage_tag,
+            self.source_lineage_tag,
+        ))
+
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.
 
@@ -75,13 +97,6 @@ class Table(SsasRefreshRecord):
 
         set_name.fix_dax(self, new_name)
         self.name = new_name
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.name,
-            self.description,
-            self.is_hidden,
-        ))
 
     def calculation_group(self) -> "CalculationGroup | None":
         if self.calculation_group_id is None:

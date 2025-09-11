@@ -23,6 +23,13 @@ class AttributeHierarchy(SsasReadonlyRecord):
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.attribute_hierarchy_storage_id,
+            self.column_id,
+            self.state,
+        ))
+
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""
         return self.column().pbi_core_name()

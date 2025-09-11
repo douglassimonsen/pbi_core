@@ -31,5 +31,15 @@ class TablePermission(SsasEditableRecord):
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.table_permission)
 
+    def modification_hash(self) -> int:
+        return hash((
+            # self.error_message,
+            self.filter_expression,
+            self.metadata_permission,
+            self.role_id,
+            # self.state,
+            self.table_id,
+        ))
+
     def role(self) -> "Role":
         return self.tabular_model.roles.find(self.role_id)

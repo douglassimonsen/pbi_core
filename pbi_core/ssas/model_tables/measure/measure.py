@@ -87,7 +87,7 @@ class Measure(SsasRenameRecord):
             self.description,
             self.detail_rows_definition_id,
             self.display_folder,
-            self.error_message,
+            # self.error_message,
             self.expression,
             self.format_string,
             self.format_string_definition_id,
@@ -99,8 +99,8 @@ class Measure(SsasRenameRecord):
             self.table_id,
             self.lineage_tag,
             self.source_lineage_tag,
-            self.modified_time,
-            self.structure_modified_time,
+            # self.modified_time,
+            # self.structure_modified_time,
         ))
 
     def expression_ast(self) -> dax.Expression | None:

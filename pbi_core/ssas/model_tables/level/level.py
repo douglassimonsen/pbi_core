@@ -35,6 +35,17 @@ class Level(SsasRenameRecord):
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.level)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.column_id,
+            self.description,
+            self.hierarchy_id,
+            self.name,
+            self.ordinal,
+            self.lineage_tag,
+            self.source_lineage_tag,
+        ))
+
     def column(self) -> "Column":
         return self.tabular_model.columns.find({"id": self.column_id})
 

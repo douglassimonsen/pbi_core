@@ -33,6 +33,13 @@ class DetailRowDefinition(SsasEditableRecord):
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.detail_row_definition)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.expression,
+            self.object_id,
+            self.object_type,
+        ))
+
     @classmethod
     def _db_type_name(cls) -> str:
         return "DetailRowsDefinition"

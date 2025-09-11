@@ -23,6 +23,13 @@ class DataAccessOptions(BaseValidation):
     legacyRedirects: bool = False
     returnErrorValuesAsNull: bool = False
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.fastCombine,
+            self.legacyRedirects,
+            self.returnErrorValuesAsNull,
+        ))
+
 
 class Model(SsasModelRecord):
     """tbd.
@@ -59,6 +66,31 @@ class Model(SsasModelRecord):
     structure_modified_time: datetime.datetime
 
     _commands: ModelCommands = PrivateAttr(default_factory=lambda: SsasCommands.model)
+
+    def modification_hash(self) -> int:
+        return hash((
+            self.automatic_aggregation_options,
+            self.collation,
+            self.culture,
+            self.data_access_options.modification_hash(),
+            self.data_source_default_max_connections,
+            self.data_source_variables_override_behavior,
+            self.default_data_view,
+            self.default_measure_id,
+            self.default_mode,
+            self.default_powerbi_data_source_version,
+            self.description,
+            self.discourage_composite_models,
+            self.discourage_implicit_measures,
+            self.disable_auto_exists,
+            self.force_unique_names,
+            self.m_attributes,
+            self.max_parallelism_per_refresh,
+            self.max_parallelism_per_query,
+            self.name,
+            self.source_query_culture,
+            self.storage_location,
+        ))
 
     def default_measure(self) -> "Measure | None":
         if self.default_measure_id is None:

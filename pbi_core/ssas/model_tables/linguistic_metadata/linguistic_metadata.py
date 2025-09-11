@@ -190,6 +190,13 @@ class LinguisticMetadata(SsasEditableRecord):
 
     _commands: BaseCommands = pydantic.PrivateAttr(default_factory=lambda: SsasCommands.linguistic_metadata)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.content.model_dump_json(),
+            self.content_type,
+            self.culture_id,
+        ))
+
     def culture(self) -> "Culture":
         return self.tabular_model.cultures.find({"id": self.culture_id})
 

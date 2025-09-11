@@ -25,5 +25,12 @@ class CalculationGroup(SsasEditableRecord):
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.calculation_group)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.description,
+            self.precedence,
+            self.table_id,
+        ))
+
     def table(self) -> "Table":
         return self.tabular_model.tables.find(self.table_id)

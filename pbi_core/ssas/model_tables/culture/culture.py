@@ -28,6 +28,13 @@ class Culture(SsasRenameRecord):
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.culture)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.linguistic_metadata_id,
+            self.model_id,
+            self.name,
+        ))
+
     def linguistic_metdata(self) -> "LinguisticMetadata":
         return self.tabular_model.linguistic_metadata.find({"id": self.linguistic_metadata_id})
 

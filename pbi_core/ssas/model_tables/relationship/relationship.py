@@ -49,6 +49,27 @@ class Relationship(SsasRenameRecord):
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.relationship)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.cross_filtering_behavior,
+            self.from_column_id,
+            self.from_cardinality,
+            self.from_table_id,
+            self.is_active,
+            self.join_on_date_behavior,
+            self.model_id,
+            self.name,
+            self.relationship_storage_id,
+            self.relationship_storage2_id,
+            self.rely_on_referential_integrity,
+            self.security_filtering_behavior,
+            self.state,
+            self.to_cardinality,
+            self.to_column_id,
+            self.to_table_id,
+            self.type,
+        ))
+
     def from_table(self) -> "Table":
         """Returns the table the relationship is using as a filter.
 

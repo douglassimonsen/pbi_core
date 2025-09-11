@@ -24,12 +24,19 @@ class FormatStringDefinition(SsasEditableRecord):
     error_message: str | None = None
     """When no issue exists, this field is blank"""
     expression: str
-    """The DAX expression defining the """
+    """The DAX expression defining the format string."""
     state: DataState
 
     modified_time: datetime.datetime
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.format_string_definition)
+
+    def modification_hash(self) -> int:
+        return hash((
+            self.object_type,
+            self.object_id,
+            self.expression,
+        ))
 
     def pbi_core_name(self) -> str:
         return str(self.object_id)

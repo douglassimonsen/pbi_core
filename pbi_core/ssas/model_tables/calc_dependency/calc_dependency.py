@@ -23,6 +23,10 @@ class CalcDependency(SsasReadonlyRecord):
     referenced_object: str
     referenced_expression: str | None = None
 
+    def modification_hash(self) -> int:
+        """CalcDependency is a readonly entity, so we just return a constant."""
+        return 1
+
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""
         return f"{self.object_type}[{self.object}] -> {self.referenced_object_type}[{self.referenced_object}]"

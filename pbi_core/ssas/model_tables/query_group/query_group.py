@@ -28,6 +28,13 @@ class QueryGroup(SsasEditableRecord):
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.query_group)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.description,
+            self.folder,
+            self.model_id,
+        ))
+
     def expressions(self) -> set["Expression"]:
         return self.tabular_model.expressions.find_all({"query_group_id": self.id})
 

@@ -30,6 +30,18 @@ class Variation(SsasRenameRecord):
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.variation)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.column,
+            self.column_id,
+            self.default_column_id,
+            self.default_hierarchy_id,
+            self.description,
+            self.is_default,
+            self.name,
+            self.relationship_id,
+        ))
+
     def get_column(self) -> "Column":
         """Name is bad to not consistent with other methods because the column field in this entity :(."""
         return self.tabular_model.columns.find(self.column_id)

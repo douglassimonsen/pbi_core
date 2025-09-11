@@ -29,5 +29,14 @@ class RoleMembership(SsasEditableRecord):
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.role_membership)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.identity_provider,
+            self.member_id,
+            self.member_name,
+            self.member_type,
+            self.role_id,
+        ))
+
     def role(self) -> "Role":
         return self.tabular_model.roles.find(self.role_id)

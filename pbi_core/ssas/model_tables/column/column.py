@@ -11,11 +11,10 @@ from pbi_core.ssas.model_tables.enums import DataState, DataType
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 from pbi_core.static_files.layout.filters import Filter
-from pbi_core.static_files.layout.sources.base import Entity, SourceRef
+from pbi_core.static_files.layout.sources.base import Entity, Source, SourceRef
 from pbi_core.static_files.layout.sources.column import ColumnSource
 from pbi_core.static_files.layout.visuals.base import BaseVisual
 
-from ....static_files.layout.sources.base import Source
 from . import set_name
 from .commands import CommandMixin
 from .enums import Alignment, ColumnType, EncodingHint, SummarizedBy
@@ -83,6 +82,43 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.column)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.alignment,
+            self.attribute_hierarchy_id,
+            self.column_origin_id,
+            self.column_storage_id,
+            self.data_category,
+            self.description,
+            self.display_folder,
+            self.display_ordinal,
+            self.encoding_hint,
+            # self.error_message,  I'm assuming this is read-only
+            self.explicit_data_type,
+            self.explicit_name,
+            self.expression,
+            self.format_string,
+            self.inferred_data_type,
+            self.inferred_name,
+            self.is_available_in_mdx,
+            self.is_default_image,
+            self.is_default_label,
+            self.is_hidden,
+            self.is_key,
+            self.is_nullable,
+            self.is_unique,
+            self.keep_unique_rows,
+            self.lineage_tag,
+            self.sort_by_column_id,
+            self.source_column,
+            self.state,
+            self.summarize_by,
+            self.system_flags,
+            self.table_id,
+            self.table_detail_position,
+            self.type,
+        ))
+
     def __repr__(self) -> str:
         return f"Column({self.table().name}.{self.pbi_core_name()})"
 
@@ -106,17 +142,6 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
                 c.NativeReferenceName = new_name
         set_name.fix_dax(self, new_name)
         self.explicit_name = new_name
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.explicit_name,
-            self.description,
-            self.display_folder,
-            self.format_string,
-            self.is_hidden,
-            self.summarize_by,
-            self.expression,
-        ))
 
 
 def _get_matching_columns(n: "LayoutNode", entity_mapping: dict[str, str], column: "Column") -> list[ColumnSource]:

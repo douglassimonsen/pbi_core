@@ -28,5 +28,13 @@ class Role(SsasRenameRecord):
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.role)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.description,
+            self.model_id,
+            self.model_permission,
+            self.name,
+        ))
+
     def model(self) -> "Model":
         return self.tabular_model.model

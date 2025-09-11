@@ -24,6 +24,13 @@ class Annotation(SsasRenameRecord):
     modified_time: datetime.datetime
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.annotation)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.object_type,
+            self.name,
+            self.value,
+        ))
+
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.
 

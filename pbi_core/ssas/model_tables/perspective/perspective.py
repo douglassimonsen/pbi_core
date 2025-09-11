@@ -25,5 +25,12 @@ class Perspective(SsasRenameRecord):
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.perspective)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.description,
+            self.model_id,
+            self.name,
+        ))
+
     def model(self) -> "Model":
         return self.tabular_model.model

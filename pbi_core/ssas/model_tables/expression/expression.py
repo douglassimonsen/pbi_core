@@ -41,6 +41,19 @@ class Expression(SsasRenameRecord):
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.expression)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.description,
+            self.expression,
+            self.kind,
+            self.model_id,
+            self.name,
+            self.parameter_values_column_id,
+            self.query_group_id,
+            self.lineage_tag,
+            self.source_lineage_tag,
+        ))
+
     def model(self) -> "Model":
         return self.tabular_model.model
 

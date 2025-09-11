@@ -138,9 +138,6 @@ class SsasTable(BaseValidation, IdBase):
         }
 
     def modification_hash(self) -> int:
-        """Returns a hash representing the current state of the object.
-
-        Used to identify when the object has changed from it's state in the SSAS instance.
-        By default, uses the id field, which means that no fields are tracked for changes.
-        """
-        return self.id
+        """Returns a hash representing the current state of the object."""
+        msg = "Subclasses must implement modification_hash()"
+        raise NotImplementedError(msg)

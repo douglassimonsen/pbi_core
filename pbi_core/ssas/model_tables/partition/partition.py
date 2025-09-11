@@ -62,6 +62,29 @@ class Partition(SsasRefreshRecord):
 
     _commands: RefreshCommands = PrivateAttr(default_factory=lambda: SsasCommands.partition)
 
+    def modification_hash(self) -> int:
+        return hash(
+            (
+                self.data_view,
+                self.data_source_id,
+                self.description,
+                # self.error_message,
+                self.expression_source_id,
+                self.m_attributes,
+                self.mode,
+                self.name,
+                self.partition_storage_id,
+                self.query_definition,
+                self.query_group_id,
+                self.range_granularity,
+                self.retain_data_till_force_calculate,
+                # self.state,
+                # self.system_flags,
+                self.table_id,
+                self.type,
+            ),
+        )
+
     def expression_ast(self) -> dax.Expression | pq.Expression | None:
         if self.type == PartitionType.CALCULATED:
             ret = pq.to_ast(self.query_definition)
@@ -140,15 +163,3 @@ class Partition(SsasRefreshRecord):
         setup += f"\nin\n    {new_final_table_name}"
         self.query_definition = setup
         return self.alter()
-
-    def modification_hash(self) -> int:
-        return hash(
-            (
-                self.name,
-                self.query_definition,
-                self.mode,
-                self.data_view,
-                self.retain_data_till_force_calculate,
-                self.type,
-            ),
-        )

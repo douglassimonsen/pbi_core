@@ -25,6 +25,12 @@ class PerspectiveMeasure(SsasEditableRecord):
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.perspective_measure)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.measure_id,
+            self.perspective_table_id,
+        ))
+
     def perspective_table(self) -> "PerspectiveTable":
         return self.tabular_model.perspective_tables.find(self.perspective_table_id)
 

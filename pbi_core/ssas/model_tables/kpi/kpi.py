@@ -33,6 +33,20 @@ class KPI(SsasEditableRecord):
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.kpi)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.description,
+            self.measure_id,
+            self.status_description,
+            self.status_expression,
+            self.status_graphic,
+            self.target_description,
+            self.target_expression,
+            self.target_format_string,
+            self.trend_description,
+            self.trend_expression,
+        ))
+
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""
         return self.measure().pbi_core_name()

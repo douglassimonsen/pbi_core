@@ -39,5 +39,24 @@ class DataSource(SsasRenameRecord):
 
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.data_source)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.account,
+            self.connection_string,
+            self.context_expression,
+            self.credential,
+            self.description,
+            self.impersonation_mode,
+            self.isolation,
+            self.max_connections,
+            self.model_id,
+            self.name,
+            self.options,
+            self.password,
+            self.provider,
+            self.timeout,
+            self.type,
+        ))
+
     def model(self) -> "Model":
         return self.tabular_model.model

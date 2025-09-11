@@ -27,6 +27,16 @@ class ObjectTranslation(SsasEditableRecord):
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.object_translation)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.altered,
+            self.culture_id,
+            self.object_id,
+            self.object_type,
+            self.property,
+            self.value,
+        ))
+
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.
 

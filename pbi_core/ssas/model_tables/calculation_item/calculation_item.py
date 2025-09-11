@@ -30,6 +30,18 @@ class CalculationItem(SsasRenameRecord):
     modified_time: datetime.datetime
     _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.calculation_item)
 
+    def modification_hash(self) -> int:
+        return hash((
+            self.calculation_group_id,
+            self.description,
+            # self.error_message,  I'm assuming this is read-only
+            self.expression,
+            self.format_string_definition_id,
+            self.name,
+            self.ordinal,
+            self.state,
+        ))
+
     def format_string_definition(self) -> "FormatStringDefinition":
         return self.tabular_model.format_string_definitions.find(self.format_string_definition_id)
 
