@@ -1,6 +1,7 @@
 import pathlib
 import shutil
-from typing import TYPE_CHECKING, Any, TypedDict, cast
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Any, cast
 
 import bs4
 from structlog import get_logger
@@ -59,10 +60,11 @@ if TYPE_CHECKING:
     from pbi_core.ssas.server.server import BaseServer, LocalServer
 
 
-class Update(TypedDict):
-    added: list["SsasTable"]
-    updated: list["SsasAlter"]
-    deleted: list[int]
+@dataclass
+class Update:
+    added: list["SsasTable"] = field(default_factory=list)
+    updated: list["SsasAlter"] = field(default_factory=list)
+    deleted: list[int] = field(default_factory=list)
 
 
 class BaseTabularModel:
@@ -167,38 +169,41 @@ class BaseTabularModel:
                     self._remote_state[field_name][obj.id] = obj.modification_hash()
         logger.info("Completed sync from SSAS", fields=len(self._remote_state))
 
-    def sync_to(self) -> None:
+    def sync_to(self) -> Update:
+        from pbi_core.ssas.model_tables.base.ssas_tables import SsasAlter  # noqa: PLC0415
+
         logger.info("Syncing to SSAS", db_name=self.db_name)
         updated_objects: dict[str, Update] = {}
         for field_name, remote_objects in self._remote_state.items():
-            field_updates: Update = {
-                "updated": [],
-                "deleted": [],
-                "added": [],
-            }
+            field_updates: Update = Update()
             current_objects: Group[SsasTable] = getattr(self, field_name)
-            field_updates["deleted"] = [obj.id for obj in current_objects if obj.id not in remote_objects]
+            field_updates.deleted = [obj.id for obj in current_objects if obj.id not in remote_objects]
             for obj in current_objects:
                 if obj.id not in self._remote_state[field_name]:
-                    field_updates["added"].append(obj)
-                if obj.modification_hash() != self._remote_state[field_name][obj.id]:
-                    field_updates["updated"].append(obj)  # pyright: ignore[reportArgumentType]
-            if field_updates["added"] or field_updates["updated"] or field_updates["deleted"]:
+                    field_updates.added.append(obj)
+                if obj.modification_hash() != self._remote_state[field_name][obj.id] and isinstance(obj, SsasAlter):
+                    field_updates.updated.append(obj)
+            if field_updates.added or field_updates.updated or field_updates.deleted:
                 updated_objects[field_name] = field_updates
 
         commands = [
             AlterCommand(
                 self.db_name,
-                {field_name: updates["updated"] for field_name, updates in updated_objects.items()},
+                {field_name: updates.updated for field_name, updates in updated_objects.items()},
             ),
         ]
         command_str = Batch(commands).render_xml()
         self.server.query_xml(command_str, db_name=self.db_name)
         logger.info(
             "Completed sync to SSAS",
-            added=sum(len(v["added"]) for v in updated_objects.values()),
-            updated=sum(len(v["updated"]) for v in updated_objects.values()),
-            deleted=sum(len(v["deleted"]) for v in updated_objects.values()),
+            added=sum(len(v.added) for v in updated_objects.values()),
+            updated=sum(len(v.updated) for v in updated_objects.values()),
+            deleted=sum(len(v.deleted) for v in updated_objects.values()),
+        )
+        return Update(
+            added=[obj for updates in updated_objects.values() for obj in updates.added],
+            updated=[obj for updates in updated_objects.values() for obj in updates.updated],
+            deleted=[obj_id for updates in updated_objects.values() for obj_id in updates.deleted],
         )
 
     @staticmethod
