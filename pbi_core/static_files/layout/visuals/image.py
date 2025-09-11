@@ -1,4 +1,4 @@
-from pydantic import ConfigDict, Field
+from pydantic import Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 
@@ -27,7 +27,6 @@ class ImageProperties(LayoutNode):
 
 class Image(BaseVisual):
     visualType: str = "image"
-    model_config = ConfigDict(extra="forbid")
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True

@@ -35,7 +35,7 @@ class StaticFiles:
     version: Version
     security_bindings: bytes
     settings: Settings
-    themes: dict[str, Theme]
+    themes: dict[str, dict[str, Theme]]
 
     def __init__(  # noqa: PLR0913, PLR0917
         self,
@@ -47,7 +47,7 @@ class StaticFiles:
         version: Version,
         security_bindings: bytes,
         settings: Settings,
-        themes: dict[str, Theme],
+        themes: dict[str, dict[str, Theme]],
     ) -> None:
         self.content_types = content_types
         self.connections = connections
@@ -66,19 +66,17 @@ class StaticFiles:
     def load_pbix(path: "StrPath") -> "StaticFiles":  # noqa: PLR0914
         """Load static report information from a PBIX file."""
         with ZipFile(path, mode="r") as zip_file:
-            themes: dict[str, Theme] = {}
+            themes: dict[str, dict[str, Theme]] = {}
             theme_paths = [
-                x.split("/")[-1]
-                for x in zip_file.namelist()
-                if x.startswith("Report/StaticResources/SharedResources/BaseThemes")
+                x.split("/")[-2:] for x in zip_file.namelist() if x.startswith("Report/StaticResources/SharedResources")
             ]
-            for theme_path in theme_paths:
+            for theme_folder, theme_path in theme_paths:
                 theme_json = json.loads(
                     zip_file.read(
-                        f"Report/StaticResources/SharedResources/BaseThemes/{theme_path}",
+                        f"Report/StaticResources/SharedResources/{theme_folder}/{theme_path}",
                     ).decode("utf-8"),
                 )
-                themes[theme_path] = Theme.model_validate(theme_json)
+                themes.setdefault(theme_folder, {})[theme_path] = Theme.model_validate(theme_json)
 
             layout_json = json.loads(zip_file.read("Report/Layout").decode(LAYOUT_ENCODING))
             layout = Layout.model_validate(layout_json)
@@ -148,10 +146,11 @@ class StaticFiles:
                     layout.model_dump_json().encode(LAYOUT_ENCODING),
                 )
 
-            for path_name, theme_info in self.themes.items():
-                zf.writestr(
-                    f"Report/StaticResources/SharedResources/BaseThemes/{path_name}",
-                    theme_info.model_dump_json().encode("utf-8"),
-                )
+            for theme_folder, them_folder_contents in self.themes.items():
+                for theme_path, theme in them_folder_contents.items():
+                    zf.writestr(
+                        f"Report/StaticResources/SharedResources/{theme_folder}/{theme_path}",
+                        theme.model_dump_json().encode("utf-8"),
+                    )
             zf.writestr("DataModel", data["DataModel"])
             zf.writestr("[Content_Types].xml", str(self.content_types).encode("utf8"))

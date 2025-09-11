@@ -1,4 +1,4 @@
-from pydantic import ConfigDict, Field
+from pydantic import Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -85,7 +85,6 @@ class ActionButtonProperties(LayoutNode):
 
 class ActionButton(BaseVisual):
     visualType: str = "actionButton"
-    model_config = ConfigDict(extra="forbid")
 
     drillFilterOtherVisuals: bool = True
     objects: ActionButtonProperties = Field(default_factory=ActionButtonProperties)

@@ -1,4 +1,4 @@
-from pydantic import ConfigDict, Field
+from pydantic import Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 
@@ -48,7 +48,6 @@ class BasicShapeProperties(LayoutNode):
 
 class BasicShape(BaseVisual):
     visualType: str = "basicShape"
-    model_config = ConfigDict(extra="forbid")
 
     drillFilterOtherVisuals: bool = True
     objects: BasicShapeProperties = Field(default_factory=BasicShapeProperties)

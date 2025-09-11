@@ -2,7 +2,7 @@ from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import ConfigDict, Json, StringConstraints, model_validator
+from pydantic import Json, StringConstraints, model_validator
 
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
@@ -41,7 +41,6 @@ class SectionVisibility(IntEnum):
 
 class SectionConfig(LayoutNode):
     visibility: SectionVisibility = SectionVisibility.VISIBLE
-    model_config = ConfigDict(extra="allow")
 
 
 class BindingType(Enum):

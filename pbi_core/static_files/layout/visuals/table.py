@@ -1,4 +1,4 @@
-from pydantic import ConfigDict, Field
+from pydantic import Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -125,5 +125,4 @@ class TableChartColumnProperties(LayoutNode):
 class TableChart(BaseVisual):
     visualType: str = "tableEx"
     objects: TableChartColumnProperties = Field(default_factory=TableChartColumnProperties)
-    model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None

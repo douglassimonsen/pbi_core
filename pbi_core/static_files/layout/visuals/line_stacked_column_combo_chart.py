@@ -1,4 +1,4 @@
-from pydantic import ConfigDict, Field
+from pydantic import Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -113,7 +113,6 @@ class LineStackedColumnComboChartProperties(LayoutNode):
 
 class LineStackedColumnComboChart(BaseVisual):
     visualType: str = "lineStackedColumnComboChart"
-    model_config = ConfigDict(extra="forbid")
 
     columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True

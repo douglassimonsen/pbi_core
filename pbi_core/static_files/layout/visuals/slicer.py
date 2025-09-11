@@ -1,4 +1,4 @@
-from pydantic import ConfigDict, Field
+from pydantic import Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.expansion_state import ExpansionState
@@ -143,7 +143,6 @@ class SlicerProperties(LayoutNode):
 
 class Slicer(BaseVisual):
     visualType: str = "slicer"
-    model_config = ConfigDict(extra="forbid")
     columnProperties: dict[str, ColumnProperty] | None = None
     syncGroup: SyncGroup | None = None
     cachedFilterDisplayItems: list[CachedFilterDisplayItems] | None = None

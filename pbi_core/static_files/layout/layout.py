@@ -35,7 +35,7 @@ class ThemeVersionInfo(LayoutNode):
 
 
 class ThemeResourcePackageType(Enum):
-    REGISTERED_RESORCES = 1
+    REGISTERED_RESOURCES = 1
     SHARED_RESOURCES = 2
 
 
@@ -108,7 +108,7 @@ class LayoutConfig(LayoutNode):
     themeCollection: ThemeCollection
     slowDataSourceSettings: SlowDataSourceSettings | None = None
     settings: Settings | None = None
-    version: float  # looks like a float
+    version: str  # looks like a float, but we keep it str to allow round tripping. Otherwise
     objects: LayoutProperties | None = None
     filterSortOrder: FilterSortOrder = FilterSortOrder.NA
 

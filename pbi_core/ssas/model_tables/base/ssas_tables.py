@@ -1,4 +1,3 @@
-import pydantic
 from bs4 import BeautifulSoup
 from structlog import get_logger
 
@@ -6,19 +5,6 @@ from pbi_core.ssas.server._commands import BaseCommands, ModelCommands, NoComman
 
 from .base_ssas_table import SsasTable
 from .enums import RefreshType
-
-logger = get_logger()
-
-
-SsasConfig = pydantic.ConfigDict(
-    arbitrary_types_allowed=True,
-    extra="forbid",
-    use_enum_values=False,
-    json_schema_mode_override="serialization",
-    validate_assignment=True,
-    protected_namespaces=(),
-)
-
 
 logger = get_logger()
 

@@ -1,6 +1,6 @@
 from typing import Any
 
-from pydantic import ConfigDict, Field
+from pydantic import Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -40,7 +40,6 @@ class TextBoxProperties(LayoutNode):
 
 class TextBox(BaseVisual):
     visualType: str = "textbox"
-    model_config = ConfigDict(extra="forbid")
 
     drillFilterOtherVisuals: bool = True
     objects: TextBoxProperties = Field(default_factory=TextBoxProperties)

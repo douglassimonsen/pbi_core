@@ -1,4 +1,3 @@
-
 from pydantic_extra_types.color import Color
 
 from ._base import BaseFileModel
@@ -7,7 +6,7 @@ base_val = bool | int | str
 
 
 class TextClass(BaseFileModel):
-    fontSize: int
+    fontSize: int | None = None
     fontFace: str
     color: Color
 
