@@ -15,6 +15,8 @@ from pbi_core.ssas.server._commands import RefreshCommands
 from pbi_core.ssas.server.utils import SsasCommands
 from pbi_core.static_files.layout.sources.base import Entity
 
+from . import set_name
+
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
     from pbi_core.ssas.model_tables.detail_row_definition import DetailRowDefinition
@@ -70,6 +72,8 @@ class Table(SsasRefreshRecord):
         entities = layout.find_all(Entity, lambda e: e.Entity == self.name)
         for entity in entities:
             entity.Entity = new_name
+
+        set_name.fix_dax(self, new_name)
         self.name = new_name
 
     def modification_hash(self) -> int:

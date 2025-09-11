@@ -56,6 +56,8 @@ class Hierarchy(SsasRenameRecord):
         for h in hierarchies:
             h.Hierarchy.Hierarchy = new_name
 
+        # no set_name for hierarchies like tables, columns, and measures since hierarchies are not directly referenced
+        # in DAX
         self.name = new_name
 
     def table(self) -> "Table":

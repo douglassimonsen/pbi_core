@@ -115,7 +115,7 @@ class SsasRefresh(SsasTable):
 
     def refresh(self, refresh_type: RefreshType | None = None) -> BeautifulSoup:
         xml_command = self.render_xml_command(
-            self.xml_fields(),
+            self.xml_fields() | {"RefreshType": (refresh_type or self._default_refresh_type).value},
             self._commands.refresh,
             self.tabular_model.db_name,
         )

@@ -9,7 +9,6 @@ from pbi_core.lineage import LineageNode
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables._group import RowNotFoundError
 from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord, SsasTable
-from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server._commands import RefreshCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -19,6 +18,7 @@ from .enums import DataView, PartitionMode, PartitionType
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from pbi_core.ssas.model_tables.column import Column
     from pbi_core.ssas.model_tables.expression import Expression
     from pbi_core.ssas.model_tables.query_group import QueryGroup
     from pbi_core.ssas.model_tables.table import Table
@@ -113,6 +113,8 @@ class Partition(SsasRefreshRecord):
 
         This means the upon refresh, the columns will not be included in the table
         """
+        from pbi_core.ssas.model_tables.column import Column  # noqa: PLC0415
+
         new_dropped_columns: list[str] = []
         for col in dropped_columns:
             if isinstance(col, Column):
@@ -138,3 +140,15 @@ class Partition(SsasRefreshRecord):
         setup += f"\nin\n    {new_final_table_name}"
         self.query_definition = setup
         return self.alter()
+
+    def modification_hash(self) -> int:
+        return hash(
+            (
+                self.name,
+                self.query_definition,
+                self.mode,
+                self.data_view,
+                self.retain_data_till_force_calculate,
+                self.type,
+            ),
+        )

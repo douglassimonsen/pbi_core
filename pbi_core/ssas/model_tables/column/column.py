@@ -10,12 +10,18 @@ from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState, DataType
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
+from pbi_core.static_files.layout.filters import Filter
+from pbi_core.static_files.layout.sources.base import Entity, SourceRef
 from pbi_core.static_files.layout.sources.column import ColumnSource
+from pbi_core.static_files.layout.visuals.base import BaseVisual
 
+from ....static_files.layout.sources.base import Source
+from . import set_name
 from .commands import CommandMixin
 from .enums import Alignment, ColumnType, EncodingHint, SummarizedBy
 
 if TYPE_CHECKING:
+    from pbi_core.static_files.layout._base_node import LayoutNode
     from pbi_core.static_files.layout.layout import Layout
 
 
@@ -81,17 +87,24 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
         return f"Column({self.table().name}.{self.pbi_core_name()})"
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
+        def get_matching_columns(c: ColumnSource) -> bool:
+            if c.Column.Property != self.explicit_name:
+                return False
+            if not isinstance(c.Column.Expression, SourceRef):
+                return False
+            return c.Column.Expression.SourceRef.table() == self.table().name
+
         """Renames the column and update any dependent expressions to use the new name.
 
         Since measures are referenced by name in DAX expressions, renaming a measure will break any dependent
         expressions.
         """
-        columns = layout.find_all(ColumnSource, lambda c: c.Column.Property == self.explicit_name)
+        columns = _get_columns_sources(self, layout)
         for c in columns:
             c.Column.Property = new_name
             if c.NativeReferenceName == self.explicit_name:
                 c.NativeReferenceName = new_name
-
+        set_name.fix_dax(self, new_name)
         self.explicit_name = new_name
 
     def modification_hash(self) -> int:
@@ -104,3 +117,43 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
             self.summarize_by,
             self.expression,
         ))
+
+
+def _get_matching_columns(n: "LayoutNode", entity_mapping: dict[str, str], column: "Column") -> list[ColumnSource]:
+    columns = []
+    for c in n.find_all(ColumnSource):
+        if c.Column.Property != column.explicit_name:
+            continue
+
+        if isinstance(c.Column.Expression, SourceRef):
+            src = c.Column.Expression.SourceRef
+        else:
+            src = c.Column.Expression.TransformTableRef
+
+        if isinstance(src, Source):
+            if entity_mapping[src.Source] == column.table().name:
+                columns.append(c)
+        elif src.Entity == column.table().name:
+            columns.append(c)
+
+    return columns
+
+
+def _get_columns_sources(column: "Column", layout: "Layout") -> list[ColumnSource]:
+    columns = []
+    visuals = layout.find_all(BaseVisual)
+    for v in visuals:
+        if v.prototypeQuery is None:
+            continue
+        entity_mapping = {
+            e.Name: e.Entity for e in v.prototypeQuery.From if isinstance(e, Entity) and e.Name is not None
+        }
+        columns.extend(_get_matching_columns(v, entity_mapping, column))
+
+    filters = layout.find_all(Filter)
+    for f in filters:
+        entity_mapping = {}
+        if f.filter is not None:
+            entity_mapping = {e.Name: e.Entity for e in f.filter.From if isinstance(e, Entity) and e.Name is not None}
+        columns.extend(_get_matching_columns(f, entity_mapping, column))
+    return columns
