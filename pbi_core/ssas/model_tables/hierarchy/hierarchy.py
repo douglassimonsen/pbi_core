@@ -7,6 +7,7 @@ from pydantic import PrivateAttr
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState
+from pbi_core.ssas.model_tables.hierarchy import set_name
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 from pbi_core.static_files.layout.sources.hierarchy import HierarchySource
@@ -71,6 +72,7 @@ class Hierarchy(SsasRenameRecord):
 
         # no set_name for hierarchies like tables, columns, and measures since hierarchies are not directly referenced
         # in DAX
+        set_name.fix_dax(self, new_name)
         self.name = new_name
 
     def table(self) -> "Table":

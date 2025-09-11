@@ -6,6 +6,10 @@ import openpyxl
 
 from pbi_core.logging import get_logger
 from pbi_core.report.local.main import LocalReport
+from pbi_core.ssas.model_tables.column import Column
+from pbi_core.ssas.model_tables.hierarchy import Hierarchy
+from pbi_core.ssas.model_tables.measure import Measure
+from pbi_core.ssas.model_tables.table import Table
 from pbi_core.static_files.layout.sources.literal import LiteralSource, serialize_literal
 
 if TYPE_CHECKING:
@@ -58,7 +62,11 @@ class TextElements:
                 assert isinstance(idx, int)
                 group = getattr(report.ssas, group)
                 entity = group.find(idx)
-                setattr(entity, text_element.field, text_element.text)
+                # These entities have DAX implications that need to be handled specially
+                if isinstance(entity, (Table, Measure, Column, Hierarchy)):
+                    entity.set_name(text_element.text, report.static_files.layout)
+                else:
+                    setattr(entity, text_element.field, text_element.text)
         if any(te.source == "ssas" for te in self.text_elements):
             report.ssas.sync_to()
 

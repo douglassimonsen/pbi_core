@@ -15,7 +15,7 @@ def update_measure_references(dax_expr: str, old_name: str, new_name: str) -> st
 
     ast_nodes = ast.find_all(dax.exprs.MeasureExpression)
     # this will eventually be a function to handle escaping properly
-    dax_new_name = f"'{new_name}'"
+    dax_new_name = f"[{new_name}]"
     for node in ast_nodes:
         if dax.utils.get_inner_text(node.name) == old_name:
             node.name = dax.Token.from_str(dax_new_name)

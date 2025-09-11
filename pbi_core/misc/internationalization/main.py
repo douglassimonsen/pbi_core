@@ -52,6 +52,8 @@ def get_ssas_elements(server: BaseTabularModel) -> TextElements:
                 ),
             )
     for c in server.columns:
+        if c.is_key:  # these are secret row-number columns, so we don't want to mess with them
+            continue
         if isinstance(c.explicit_name, str):
             text_elements.append(
                 TextElement(
@@ -72,6 +74,58 @@ def get_ssas_elements(server: BaseTabularModel) -> TextElements:
                     text=c.description,
                 ),
             )
+        if isinstance(c.expression, str):
+            text_elements.append(
+                TextElement(
+                    category="Column",
+                    source="ssas",
+                    xpath=["columns", c.id],
+                    field="expression",
+                    text=c.expression,
+                ),
+            )
+    for h in server.hierarchies:
+        text_elements.append(
+            TextElement(
+                category="Hierarchy",
+                source="ssas",
+                xpath=["hierarchies", h.id],
+                field="name",
+                text=h.name,
+            ),
+        )
+        if isinstance(h.description, str):
+            text_elements.append(
+                TextElement(
+                    category="Hierarchy",
+                    source="ssas",
+                    xpath=["hierarchies", h.id],
+                    field="description",
+                    text=h.description,
+                ),
+            )
+    for t in server.tables:
+        if t.is_private:
+            continue
+        if isinstance(t.description, str):
+            text_elements.append(
+                TextElement(
+                    category="Table",
+                    source="ssas",
+                    xpath=["tables", t.id],
+                    field="description",
+                    text=t.description,
+                ),
+            )
+        text_elements.append(
+            TextElement(
+                category="Table",
+                source="ssas",
+                xpath=["tables", t.id],
+                field="name",
+                text=t.name,
+            ),
+        )
     return TextElements(text_elements=text_elements)
 
 
