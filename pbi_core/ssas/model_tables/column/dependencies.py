@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.attribute_hierarchy import AttributeHierarchy
     from pbi_core.ssas.model_tables.base import SsasTable
     from pbi_core.ssas.model_tables.measure import Measure
+    from pbi_core.ssas.model_tables.table_permission import TablePermission
 
     from .column import Column
 
@@ -145,6 +146,28 @@ class DependencyMixin(HelpersMixin):
             return recursive_dependencies
 
         return {x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)}
+
+    def child_table_permissions(self) -> set["TablePermission"]:
+        """Returns table permissions dependent via DAX on this Column."""
+        object_type = self._column_type()
+        dependent_permissions = self.tabular_model.calc_dependencies.find_all({
+            "referenced_object_type": object_type,
+            "referenced_table": self.table().name,
+            "referenced_object": self.explicit_name,
+            "object_type": "ROWS_ALLOWED",
+        })
+
+        full_dependencies: list[TablePermission] = []
+        for dp in dependent_permissions:
+            table, rls_name = dp.table, dp.object
+            role = self.tabular_model.roles.find({"name": rls_name})
+            full_dependencies.extend(
+                tp
+                for tp in role.table_permissions()
+                if tp.table().name == table and f"[{self.explicit_name}]" in str(tp.filter_expression)
+            )
+
+        return set(full_dependencies)
 
     def parents(self, *, recursive: bool = False) -> "set[Column | Measure]":
         """Returns all columns and measures this Column is dependent on."""

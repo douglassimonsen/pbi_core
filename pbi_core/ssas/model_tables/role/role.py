@@ -11,6 +11,7 @@ from .enums import ModelPermission
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.model import Model
+    from pbi_core.ssas.model_tables.table_permission import TablePermission
 
 
 class Role(SsasRenameRecord):
@@ -38,3 +39,6 @@ class Role(SsasRenameRecord):
 
     def model(self) -> "Model":
         return self.tabular_model.model
+
+    def table_permissions(self) -> list["TablePermission"]:
+        return [tp for tp in self.tabular_model.table_permissions if tp.role_id == self.id]
