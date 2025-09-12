@@ -1,8 +1,7 @@
 from typing import TYPE_CHECKING, Literal, overload
 
 from pbi_core.logging import get_logger
-from pbi_core.ssas.model_tables.column import Column
-from pbi_core.ssas.model_tables.measure import Measure
+from pbi_core.ssas.model_tables import Column, Measure
 from pbi_core.ssas.server import LocalTabularModel
 from pbi_core.static_files import StaticFiles
 
@@ -14,7 +13,7 @@ logger = get_logger()
 if TYPE_CHECKING:
     from _typeshed import StrPath
 
-    from pbi_core.ssas.model_tables.table import Table
+    from pbi_core.ssas.model_tables import Table
 
 
 class LocalReport(LocalSsasReport, LocalStaticReport):

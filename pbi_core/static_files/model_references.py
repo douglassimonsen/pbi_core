@@ -3,9 +3,7 @@ from typing import TYPE_CHECKING
 from pbi_core.pydantic.main import BaseValidation
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.column import Column
-    from pbi_core.ssas.model_tables.measure import Measure
-    from pbi_core.ssas.model_tables.table import Table
+    from pbi_core.ssas.model_tables import Column, Measure, Table
     from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 
 

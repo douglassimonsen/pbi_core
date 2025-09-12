@@ -1,6 +1,5 @@
 from .logging import get_logger
-from .ssas.model_tables.column import Column
-from .ssas.model_tables.measure import Measure
+from .ssas.model_tables import Column, Measure
 from .static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 logger = get_logger()

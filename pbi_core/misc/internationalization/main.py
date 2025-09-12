@@ -1,6 +1,6 @@
 from pbi_core.logging import get_logger
 from pbi_core.report.local.main import LocalReport
-from pbi_core.ssas.model_tables.enums.enums import DataType
+from pbi_core.ssas.model_tables.enums import DataType
 from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 
 from .get_static_elements import get_static_elements

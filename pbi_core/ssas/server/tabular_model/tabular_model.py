@@ -51,11 +51,11 @@ if TYPE_CHECKING:
         Role,
         RoleMembership,
         Set,
+        SsasTable,
         Table,
         TablePermission,
         Variation,
     )
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.base.ssas_tables import SsasAlter
     from pbi_core.ssas.server.server import BaseServer, LocalServer
 
