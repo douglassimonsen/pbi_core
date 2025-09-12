@@ -3,7 +3,7 @@ from pydantic import Field
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
-from .base import BaseVisual, ColumnProperty
+from .base import BaseVisual
 from .properties.base import Expression
 
 
@@ -138,4 +138,3 @@ class ColumnChart(BaseVisual):
     objects: ColumnChartColumnProperties = Field(default_factory=ColumnChartColumnProperties)
     selector: Selector | None = None
     columnCount: Expression | None = None
-    columnProperties: dict[str, ColumnProperty] | None = None

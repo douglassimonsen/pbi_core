@@ -160,6 +160,5 @@ class ScatterChartProperties(LayoutNode):
 class ScatterChart(BaseVisual):
     visualType: str = "scatterChart"
 
-    columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
     objects: ScatterChartProperties = Field(default_factory=ScatterChartProperties)

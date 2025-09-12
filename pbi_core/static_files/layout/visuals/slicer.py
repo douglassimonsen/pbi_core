@@ -1,11 +1,10 @@
 from pydantic import Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
-from pbi_core.static_files.layout.expansion_state import ExpansionState
 from pbi_core.static_files.layout.filters import Filter
 from pbi_core.static_files.layout.selector import SelectorData
 
-from .base import BaseVisual, ColumnProperty
+from .base import BaseVisual
 from .properties.base import Expression
 
 
@@ -143,8 +142,6 @@ class SlicerProperties(LayoutNode):
 
 class Slicer(BaseVisual):
     visualType: str = "slicer"
-    columnProperties: dict[str, ColumnProperty] | None = None
     syncGroup: SyncGroup | None = None
     cachedFilterDisplayItems: list[CachedFilterDisplayItems] | None = None
-    expansionStates: list[ExpansionState] | None = None
     objects: SlicerProperties = Field(default_factory=SlicerProperties)

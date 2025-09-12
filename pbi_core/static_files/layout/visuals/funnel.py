@@ -55,6 +55,5 @@ class FunnelProperties(LayoutNode):
 
 class Funnel(BaseVisual):
     visualType: str = "funnel"
-    columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
     objects: FunnelProperties = Field(default_factory=FunnelProperties)

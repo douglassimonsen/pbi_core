@@ -2,7 +2,7 @@ from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import Json, StringConstraints, model_validator
+from pydantic import Field, Json, StringConstraints, model_validator
 
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
@@ -37,10 +37,6 @@ class DisplayOption(IntEnum):
 class SectionVisibility(IntEnum):
     VISIBLE = 0
     HIDDEN = 1
-
-
-class SectionConfig(LayoutNode):
-    visibility: SectionVisibility = SectionVisibility.VISIBLE
 
 
 class BindingType(Enum):
@@ -104,7 +100,7 @@ class PageInformation(LayoutNode):
     """Defines the scope at which to apply the formatting for this object.
     Can also define rules for matching highlighted values and how multiple definitions for the same property should
     be ordered."""
-    propeties: PageInformationProperties
+    properties: PageInformationProperties = Field(default_factory=PageInformationProperties)
     """Describes the properties of the object to apply formatting changes to."""
 
 
@@ -116,7 +112,7 @@ class PageSizeProperties(LayoutNode):
 
 class PageSize(LayoutNode):
     selector: Selector | None = None
-    properties: PageSizeProperties
+    properties: PageSizeProperties = Field(default_factory=PageSizeProperties)
 
 
 class PageSizeObjects(LayoutNode):
@@ -132,7 +128,7 @@ class BackgroundProperties(LayoutNode):
 
 class Background(LayoutNode):
     selector: Selector | None = None
-    properties: BackgroundProperties
+    properties: BackgroundProperties = Field(default_factory=BackgroundProperties)
 
 
 class DisplayAreaProperties(LayoutNode):
@@ -141,7 +137,7 @@ class DisplayAreaProperties(LayoutNode):
 
 class DisplayArea(LayoutNode):
     selector: Selector | None = None
-    properties: DisplayAreaProperties
+    properties: DisplayAreaProperties = Field(default_factory=DisplayAreaProperties)
 
 
 class OutspacePaneProperties(LayoutNode):
@@ -161,7 +157,7 @@ class OutspacePaneProperties(LayoutNode):
 
 class OutspacePane(LayoutNode):
     selector: Selector | None = None
-    properties: OutspacePaneProperties
+    properties: OutspacePaneProperties = Field(default_factory=OutspacePaneProperties)
 
 
 class FilterCardProperties(LayoutNode):
@@ -177,7 +173,7 @@ class FilterCardProperties(LayoutNode):
 
 class FilterCard(LayoutNode):
     selector: Selector | None = None
-    properties: FilterCardProperties
+    properties: FilterCardProperties = Field(default_factory=FilterCardProperties)
 
 
 class PageRefreshProperties(LayoutNode):
@@ -191,7 +187,7 @@ class PageRefreshProperties(LayoutNode):
 
 class PageRefresh(LayoutNode):
     selector: Selector | None = None
-    properties: PageRefreshProperties
+    properties: PageRefreshProperties = Field(default_factory=PageRefreshProperties)
 
 
 class PersonalizeVisualProperties(LayoutNode):
@@ -202,19 +198,19 @@ class PersonalizeVisualProperties(LayoutNode):
 
 class PersonalizeVisual(LayoutNode):
     selector: Selector | None = None
-    properties: PersonalizeVisualProperties
+    properties: PersonalizeVisualProperties = Field(default_factory=PersonalizeVisualProperties)
 
 
 class PageFormattingObjects(LayoutNode):
-    pageInformation: list[PageInformation]
-    pageSize: list[PageSize]
-    background: list[Background]
-    displayArea: list[DisplayArea]
-    outspace: list[Background]  # not a typo, this matches the json schema
-    outspacePane: list[OutspacePane]
-    filterCard: list[FilterCard]
-    pageRefresh: list[PageRefresh]
-    personalizeVisuals: list[PersonalizeVisual]
+    pageInformation: list[PageInformation] = Field(default_factory=lambda: [PageInformation()])
+    pageSize: list[PageSize] = Field(default_factory=lambda: [PageSize()])
+    background: list[Background] = Field(default_factory=lambda: [Background()])
+    displayArea: list[DisplayArea] = Field(default_factory=lambda: [DisplayArea()])
+    outspace: list[Background] = Field(default_factory=lambda: [Background()])  # This is in fact a Background
+    outspacePane: list[OutspacePane] = Field(default_factory=lambda: [OutspacePane()])
+    filterCard: list[FilterCard] = Field(default_factory=lambda: [FilterCard()])
+    pageRefresh: list[PageRefresh] = Field(default_factory=lambda: [PageRefresh()])
+    personalizeVisuals: list[PersonalizeVisual] = Field(default_factory=lambda: [PersonalizeVisual()])
 
 
 class PageType(Enum):
@@ -301,6 +297,26 @@ class Annotation(LayoutNode):
     """A value for this annotation."""
 
 
+class LinkField(LayoutNode):
+    asAggregation: bool = False
+    fieldExpr: Any = None
+
+
+class SectionRelationship(LayoutNode):
+    source: str
+    target: str
+    type: int
+
+
+class SectionConfig(LayoutNode):
+    visibility: SectionVisibility = SectionVisibility.VISIBLE
+    type: int | None = None
+    linkFields: list[LinkField] | None = None
+    objects: PageFormattingObjects | None = None
+    relationships: list[SectionRelationship] = Field(default_factory=list)
+    filterSortOrder: int | None = None
+
+
 class Section(LayoutNode):
     _layout: "Layout | None"
     """The layout the section is associated with, if it exists"""
@@ -323,7 +339,6 @@ class Section(LayoutNode):
     id: int | None = None
     pageBinding: PageBinding | None = None
     """Additional metadata defined for how this page is used (tooltip, drillthrough, etc)."""
-    objects: PageFormattingObjects | None = None
     """Defines the formatting for different objects on a page."""
     type: PageType | None = None
     """Specific usage of this page (for example drillthrough)."""

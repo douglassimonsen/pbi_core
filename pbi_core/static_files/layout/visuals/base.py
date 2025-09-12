@@ -5,6 +5,7 @@ from pydantic import Discriminator, Tag
 
 from pbi_core.lineage import LineageNode
 from pbi_core.static_files.layout._base_node import LayoutNode
+from pbi_core.static_files.layout.expansion_state import ExpansionState
 from pbi_core.static_files.layout.filters import Filter, PrototypeQuery
 from pbi_core.static_files.layout.selector import Selector
 from pbi_core.static_files.layout.sources.column import ColumnSource
@@ -80,6 +81,11 @@ class QueryOptions(LayoutNode):
     keepProjectionOrder: bool = True
 
 
+class ColumnProperty(LayoutNode):
+    displayName: str | None = None
+    formatString: str | None = None
+
+
 class BaseVisual(LayoutNode):
     """Base class for all visual representations in the layout.
 
@@ -106,6 +112,8 @@ class BaseVisual(LayoutNode):
     queryOptions: QueryOptions | None = None
     showAllRoles: list[str] | None = None
     display: Display | None = None
+    columnProperties: dict[str, ColumnProperty] | None = None
+    expansionStates: list[ExpansionState] | None = None
 
     @property
     def id(self) -> str:
@@ -145,8 +153,3 @@ class BaseVisual(LayoutNode):
                         ret.append(candidate_measure)
                         break
         return LineageNode(self, lineage_type, relatives=[child.get_lineage(lineage_type) for child in ret])
-
-
-class ColumnProperty(LayoutNode):
-    displayName: str | None = None
-    formatString: str | None = None

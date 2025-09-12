@@ -18,9 +18,15 @@ class BinSize(BaseValidation):
     value: float
     unit: int
 
+    def modification_hash(self) -> int:
+        return hash((self.value, self.unit))
+
 
 class BinningMetadata(BaseValidation):
     binSize: BinSize
+
+    def modification_hash(self) -> int:
+        return hash(self.binSize.modification_hash())
 
 
 class ExtendedPropertyValue(BaseValidation):
@@ -28,6 +34,14 @@ class ExtendedPropertyValue(BaseValidation):
     daxTemplateName: str | None = None
     groupedColumns: list[ColumnSource] | None = None
     binningMetadata: BinningMetadata | None = None
+
+    def modification_hash(self) -> int:
+        return hash((
+            self.version,
+            self.daxTemplateName,
+            tuple(self.groupedColumns) if self.groupedColumns else None,
+            self.binningMetadata.modification_hash() if self.binningMetadata else None,
+        ))
 
 
 class ExtendedProperty(SsasRenameRecord):
@@ -52,7 +66,7 @@ class ExtendedProperty(SsasRenameRecord):
             self.object_type,
             self.name,
             self.type,
-            self.value,
+            self.value.modification_hash(),
         ))
 
     def object(self) -> "SsasTable":

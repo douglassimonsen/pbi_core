@@ -2,7 +2,7 @@ from pydantic import Field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 
-from .base import BaseVisual, ColumnProperty
+from .base import BaseVisual
 from .properties.base import Expression
 
 
@@ -21,13 +21,12 @@ class ImageScalingProperties(LayoutNode):
 
 
 class ImageProperties(LayoutNode):
-    general: list[GeneralProperties] = Field(default_factory=list[GeneralProperties()])
-    imageScaling: list[ImageScalingProperties] = Field(default_factory=list[ImageScalingProperties()])
+    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
+    imageScaling: list[ImageScalingProperties] = Field(default_factory=lambda: [ImageScalingProperties()])
 
 
 class Image(BaseVisual):
     visualType: str = "image"
 
-    columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
     objects: ImageProperties = Field(default_factory=ImageProperties)

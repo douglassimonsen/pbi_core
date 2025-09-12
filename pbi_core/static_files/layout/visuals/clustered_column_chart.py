@@ -3,7 +3,7 @@ from pydantic import Field
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
-from .base import BaseVisual, ColumnProperty
+from .base import BaseVisual
 from .properties.base import Expression
 
 
@@ -121,6 +121,5 @@ class ClusteredColumnChartProperties(LayoutNode):
 class ClusteredColumnChart(BaseVisual):
     visualType: str = "clusteredColumnChart"
 
-    columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
     objects: ClusteredColumnChartProperties = Field(default_factory=ClusteredColumnChartProperties)

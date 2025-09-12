@@ -1,3 +1,6 @@
+from typing import Any
+
+from pydantic import Field
 from pydantic_extra_types.color import Color
 
 from ._base import BaseFileModel
@@ -32,7 +35,9 @@ class Theme(BaseFileModel):
     Documented `here <https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-report-themes#set-theme-colors>`
     """
 
-    name: str
+    name: str | None = None
+    type: str | None = None
+
     dataColors: list[str] = []
     foreground: str | None = None
     foregroundNeutralSecondary: Color | None = None
@@ -51,5 +56,9 @@ class Theme(BaseFileModel):
     hyperlink: Color | None = None
     visitedHyperlink: Color | None = None
 
+    objects: Any = None
+    arcs: list[list[list[int]]] = Field(default_factory=list)
+    transform: Any = None
+
     textClasses: TextClasses | None = None
-    visualStyles: dict[str, dict[str, dict[str, list[dict[str, bool | int | str | ColorThemeData]]]]]
+    visualStyles: dict[str, dict[str, dict[str, list[dict[str, bool | int | str | ColorThemeData]]]]] | None = None

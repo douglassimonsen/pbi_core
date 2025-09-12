@@ -3,7 +3,7 @@ from pydantic import Field
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
-from .base import BaseVisual, ColumnProperty
+from .base import BaseVisual
 from .properties.base import Expression
 
 
@@ -37,12 +37,11 @@ class LegendProperties(LayoutNode):
 
 
 class PieChartProperties(LayoutNode):
-    dataPoint: list[DataPointProperties] = Field(default_factory=list[DataPointProperties()])
-    labels: list[LabelsProperties] = Field(default_factory=list[LabelsProperties()])
-    legend: list[LegendProperties] = Field(default_factory=list[LegendProperties()])
+    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
+    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
 
 
 class PieChart(BaseVisual):
     visualType: str = "pieChart"
-    columnProperties: dict[str, ColumnProperty] | None = None
     objects: PieChartProperties = Field(default_factory=PieChartProperties)

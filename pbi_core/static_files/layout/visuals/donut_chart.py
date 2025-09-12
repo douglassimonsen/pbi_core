@@ -3,7 +3,7 @@ from pydantic import Field
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
-from .base import BaseVisual, ColumnProperty
+from .base import BaseVisual
 from .properties.base import Expression
 
 
@@ -88,6 +88,5 @@ class DonutChartProperties(LayoutNode):
 class DonutChart(BaseVisual):
     visualType: str = "donutChart"
 
-    columnProperties: dict[str, ColumnProperty] | None = None
     drillFilterOtherVisuals: bool = True
     objects: DonutChartProperties = Field(default_factory=DonutChartProperties)
