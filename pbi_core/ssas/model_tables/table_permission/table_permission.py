@@ -12,6 +12,7 @@ from .enums import MetadataPermission
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.role import Role
+    from pbi_core.ssas.model_tables.table import Table
 
 
 class TablePermission(SsasEditableRecord):
@@ -31,6 +32,9 @@ class TablePermission(SsasEditableRecord):
 
     _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.table_permission)
 
+    def __repr__(self) -> str:
+        return f"TablePermission(id={self.id}, role={self.role().name}, table={self.table()})"
+
     def modification_hash(self) -> int:
         return hash((
             # self.error_message,
@@ -43,3 +47,6 @@ class TablePermission(SsasEditableRecord):
 
     def role(self) -> "Role":
         return self.tabular_model.roles.find(self.role_id)
+
+    def table(self) -> "Table":
+        return self.tabular_model.tables.find(self.table_id)

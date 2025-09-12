@@ -44,3 +44,8 @@ def fix_dax(column: "Column", new_name: str) -> None:
     for c in column.tabular_model.columns:
         if isinstance(c.expression, str):
             c.expression = update_column_references(c.expression, column.explicit_name, new_name) or c.expression
+    for tp in column.tabular_model.table_permissions:
+        if tp.filter_expression:
+            tp.filter_expression = (
+                update_column_references(tp.filter_expression, column.explicit_name, new_name) or tp.filter_expression
+            )
