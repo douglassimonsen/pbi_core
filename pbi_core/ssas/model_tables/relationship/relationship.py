@@ -35,7 +35,9 @@ class Relationship(SsasRenameRecord):
     name: str
     relationship_storage_id: int | None = None
     relationship_storage2_id: int | None = None
-    relationship_storage2id: int | None = None  # TODO: check which one is wrong
+    """wtf these are two different fields in the json??!!??"""
+    relationship_storage2id: int | None = None
+    """wtf these are two different fields in the json??!!??"""
     rely_on_referential_integrity: bool
     security_filtering_behavior: SecurityFilteringBehavior
     state: DataState
