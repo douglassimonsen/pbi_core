@@ -52,7 +52,11 @@ def get_ssas_elements(server: BaseTabularModel) -> TextElements:
                 ),
             )
     for c in server.columns:
-        if c.is_key:  # these are secret row-number columns, so we don't want to mess with them
+        if (
+            c.is_key or c.table().is_private or c.table().show_as_variations_only
+        ):  # these are secret row-number columns, so we don't want to mess with them.
+            # The private tables are system tables that we shouldn't be changing either.
+            # The variations-only tables are for auto date tables, which we also shouldn't change.
             continue
         if isinstance(c.explicit_name, str):
             text_elements.append(
@@ -105,7 +109,7 @@ def get_ssas_elements(server: BaseTabularModel) -> TextElements:
                 ),
             )
     for t in server.tables:
-        if t.is_private:
+        if t.is_private or t.show_as_variations_only:
             continue
         if isinstance(t.description, str):
             text_elements.append(

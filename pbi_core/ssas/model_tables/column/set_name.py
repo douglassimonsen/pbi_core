@@ -13,7 +13,7 @@ def update_column_references(dax_expr: str, old_name: str, new_name: str) -> str
     if ast is None:
         return None
 
-    ast_nodes = ast.find_all(dax.exprs.ColumnExpression)
+    ast_nodes = ast.find_all((dax.exprs.ColumnExpression, dax.exprs.HierarchyExpression))
     # this will eventually be a function to handle escaping properly
     dax_new_name = f"[{new_name}]"
     for node in ast_nodes:

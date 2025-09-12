@@ -156,14 +156,14 @@ class PrototypeQuery(LayoutNode):
                 ret2.add(
                     ModelColumnReference(
                         column=source.Column.column(),
-                        table=table_mappings[source.Column.table()],
+                        table=source.Column.table(table_mappings),
                     ),
                 )
             else:
                 ret2.add(
                     ModelMeasureReference(
                         measure=source.Measure.column(),
-                        table=table_mappings[source.Measure.table()],
+                        table=source.Measure.table(table_mappings),
                     ),
                 )
         return ret2

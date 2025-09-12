@@ -63,7 +63,9 @@ class TextElements:
                 group = getattr(report.ssas, group)
                 entity = group.find(idx)
                 # These entities have DAX implications that need to be handled specially
-                if isinstance(entity, (Table, Measure, Column, Hierarchy)):
+                if (isinstance(entity, (Measure, Hierarchy, Table)) and text_element.field == "name") or (
+                    isinstance(entity, Column) and text_element.field == "explicit_name"
+                ):
                     entity.set_name(text_element.text, report.static_files.layout)
                 else:
                     setattr(entity, text_element.field, text_element.text)

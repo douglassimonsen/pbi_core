@@ -59,14 +59,22 @@ SourceRefSource = Annotated[
 class TransformTableRef(LayoutNode):
     TransformTableRef: SourceRefSource
 
-    def table(self) -> str:
+    def table(self, entity_mapping: dict[str, str] | None = None) -> str:
+        if entity_mapping is None:
+            entity_mapping = {}
+        if isinstance(self.TransformTableRef, Source):
+            return entity_mapping[self.TransformTableRef.table()]
         return self.TransformTableRef.table()
 
 
 class SourceRef(LayoutNode):
     SourceRef: SourceRefSource
 
-    def table(self) -> str:
+    def table(self, entity_mapping: dict[str, str] | None = None) -> str:
+        if entity_mapping is None:
+            entity_mapping = {}
+        if isinstance(self.SourceRef, Source):
+            return entity_mapping[self.SourceRef.table()]
         return self.SourceRef.table()
 
 
@@ -90,8 +98,10 @@ class SourceExpression(LayoutNode):
     Expression: SourceExpressionUnion
     Property: str
 
-    def table(self) -> str:
-        return self.Expression.table()
+    def table(self, entity_mapping: dict[str, str] | None = None) -> str:
+        if entity_mapping is None:
+            entity_mapping = {}
+        return self.Expression.table(entity_mapping)
 
     def column(self) -> str:
         return self.Property

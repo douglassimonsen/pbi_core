@@ -13,6 +13,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from pbi_core.static_files.layout.filters import Filter
 from pbi_core.static_files.layout.sources.base import Entity, Source, SourceRef
 from pbi_core.static_files.layout.sources.column import ColumnSource
+from pbi_core.static_files.layout.sources.hierarchy import HierarchySource, _PropertyVariationSourceHelper
 from pbi_core.static_files.layout.visuals.base import BaseVisual
 
 from . import set_name
@@ -123,13 +124,6 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
         return f"Column({self.table().name}.{self.pbi_core_name()})"
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
-        def get_matching_columns(c: ColumnSource) -> bool:
-            if c.Column.Property != self.explicit_name:
-                return False
-            if not isinstance(c.Column.Expression, SourceRef):
-                return False
-            return c.Column.Expression.SourceRef.table() == self.table().name
-
         """Renames the column and update any dependent expressions to use the new name.
 
         Since measures are referenced by name in DAX expressions, renaming a measure will break any dependent
@@ -140,6 +134,14 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
             c.Column.Property = new_name
             if c.NativeReferenceName == self.explicit_name:
                 c.NativeReferenceName = new_name
+        hierarchies = _get_hierarchies_sources(self, layout)
+        for h in hierarchies:
+            if isinstance(h.Hierarchy.Expression, SourceRef):
+                h.Hierarchy.Hierarchy = new_name
+            elif isinstance(h.Hierarchy.Expression, _PropertyVariationSourceHelper):
+                h.Hierarchy.Expression.PropertyVariationSource.Property = new_name
+            else:
+                h.Hierarchy.Hierarchy = new_name
         set_name.fix_dax(self, new_name)
         self.explicit_name = new_name
 
@@ -182,3 +184,42 @@ def _get_columns_sources(column: "Column", layout: "Layout") -> list[ColumnSourc
             entity_mapping = {e.Name: e.Entity for e in f.filter.From if isinstance(e, Entity) and e.Name is not None}
         columns.extend(_get_matching_columns(f, entity_mapping, column))
     return columns
+
+
+def _get_matching_hierarchies(
+    n: "LayoutNode",
+    entity_mapping: dict[str, str],
+    column: "Column",
+) -> list[HierarchySource]:
+    hierarchies = []
+    if column.explicit_name != "date_Column":
+        return []
+
+    for h in n.find_all(HierarchySource):
+        if isinstance(h.Hierarchy.Expression, SourceRef):
+            table_name = h.Hierarchy.Expression.table(entity_mapping)
+            column_name = h.Hierarchy.Hierarchy
+        if isinstance(h.Hierarchy.Expression, _PropertyVariationSourceHelper):
+            table_name = h.Hierarchy.Expression.PropertyVariationSource.Expression.table(entity_mapping)
+            column_name = h.Hierarchy.Expression.PropertyVariationSource.Property
+        else:
+            table_name = h.Hierarchy.Expression.table(entity_mapping)
+            column_name = h.Hierarchy.Hierarchy
+
+        if column_name == column.explicit_name and table_name == column.table().name:
+            hierarchies.append(h)
+    return hierarchies
+
+
+def _get_hierarchies_sources(column: "Column", layout: "Layout") -> list[HierarchySource]:
+    hierarchies = []
+    visuals = layout.find_all(BaseVisual)
+    for v in visuals:
+        if v.prototypeQuery is None:
+            continue
+        entity_mapping = {
+            e.Name: e.Entity for e in v.prototypeQuery.From if isinstance(e, Entity) and e.Name is not None
+        }
+        hierarchies.extend(_get_matching_hierarchies(v, entity_mapping, column))
+
+    return hierarchies

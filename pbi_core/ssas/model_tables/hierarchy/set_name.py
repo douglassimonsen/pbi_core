@@ -15,7 +15,7 @@ def update_hierarchy_references(dax_expr: str, old_name: str, new_name: str) -> 
 
     ast_nodes = ast.find_all(dax.exprs.HierarchyExpression)
     # this will eventually be a function to handle escaping properly
-    dax_new_name = f"'{new_name}'"
+    dax_new_name = f"[{new_name}]"
     for node in ast_nodes:
         if dax.utils.get_inner_text(node.column) == old_name:
             node.column = dax.Token.from_str(dax_new_name)

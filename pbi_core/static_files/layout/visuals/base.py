@@ -149,3 +149,4 @@ class BaseVisual(LayoutNode):
 
 class ColumnProperty(LayoutNode):
     displayName: str | None = None
+    formatString: str | None = None

@@ -19,8 +19,10 @@ class PropertyVariationSource(LayoutNode):
 class _PropertyVariationSourceHelper(LayoutNode):
     PropertyVariationSource: PropertyVariationSource
 
-    def table(self) -> str:
-        return self.PropertyVariationSource.Expression.table()
+    def table(self, entity_mapping: dict[str, str] | None = None) -> str:
+        if entity_mapping is None:
+            entity_mapping = {}
+        return self.PropertyVariationSource.Expression.table(entity_mapping)
 
     def column(self) -> str:
         return self.PropertyVariationSource.column()
