@@ -18,6 +18,8 @@ from pbi_core.static_files.layout.sources.base import Entity
 from . import set_name
 
 if TYPE_CHECKING:
+    from pbi_parsers.pq.misc.external_sources import BaseExternalSource
+
     from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
     from pbi_core.ssas.model_tables.detail_row_definition import DetailRowDefinition
     from pbi_core.ssas.model_tables.model import Model
@@ -214,3 +216,6 @@ class Table(SsasRefreshRecord):
                 self.model().refresh(),
             ]
         return [super().refresh()]
+
+    def external_sources(self) -> list["BaseExternalSource"]:
+        return list({source for partition in self.partitions() for source in partition.external_sources()})
