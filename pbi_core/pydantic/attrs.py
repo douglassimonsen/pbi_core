@@ -29,8 +29,10 @@ class BaseValidation:
 
         return converter.structure(data, cls)
 
-    def model_dump_json(self, indent: int = 4) -> str:
+    def model_dump(self) -> dict:
         from pbi_core.pydantic.cattrs import converter  # noqa: PLC0415
 
-        ret = converter.unstructure(self)
-        return json.dumps(ret, indent=indent)
+        return converter.unstructure(self)
+
+    def model_dump_json(self, indent: int = 4) -> str:
+        return json.dumps(self.model_dump(), indent=indent)
