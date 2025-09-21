@@ -1,7 +1,5 @@
 from typing import TYPE_CHECKING
 
-from pbi_parsers import dax
-
 from pbi_core.ssas.model_tables.partition.enums import PartitionType
 
 if TYPE_CHECKING:
@@ -9,6 +7,8 @@ if TYPE_CHECKING:
 
 
 def update_column_references(dax_expr: str, old_name: str, new_name: str) -> str | None:
+    from pbi_parsers import dax  # noqa: PLC0415
+
     ast = dax.to_ast(dax_expr)
     if ast is None:
         return None

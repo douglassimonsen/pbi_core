@@ -2,8 +2,6 @@ import datetime
 from typing import TYPE_CHECKING, Literal
 
 from bs4 import BeautifulSoup
-from pbi_parsers import dax, pq
-from pbi_parsers.pq.misc.external_sources import BaseExternalSource, get_external_sources
 from pydantic import PrivateAttr
 
 from pbi_core.lineage import LineageNode
@@ -18,6 +16,9 @@ from .enums import DataView, PartitionMode, PartitionType
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
+
+    from pbi_parsers import dax, pq
+    from pbi_parsers.pq.misc.external_sources import BaseExternalSource
 
     from pbi_core.ssas.model_tables.column import Column
     from pbi_core.ssas.model_tables.expression import Expression
@@ -86,7 +87,9 @@ class Partition(SsasRefreshRecord):
             ),
         )
 
-    def expression_ast(self) -> dax.Expression | pq.Expression | None:
+    def expression_ast(self) -> "dax.Expression | pq.Expression | None":
+        from pbi_parsers import dax, pq  # noqa: PLC0415
+
         if self.type == PartitionType.CALCULATED:
             ret = pq.to_ast(self.query_definition)
             if ret is None:
@@ -165,7 +168,9 @@ class Partition(SsasRefreshRecord):
         self.query_definition = setup
         return self.alter()
 
-    def external_sources(self) -> list[BaseExternalSource]:
+    def external_sources(self) -> "list[BaseExternalSource]":
+        from pbi_parsers.pq.misc.external_sources import get_external_sources  # noqa: PLC0415
+
         if self.type != PartitionType.M:
             return []
         return get_external_sources(self.query_definition)

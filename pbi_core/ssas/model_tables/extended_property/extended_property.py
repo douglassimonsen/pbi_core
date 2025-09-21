@@ -1,6 +1,6 @@
 import datetime
+from typing import TYPE_CHECKING
 
-from git import TYPE_CHECKING
 from pydantic import Json, PrivateAttr
 
 from pbi_core.pydantic import BaseValidation

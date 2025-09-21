@@ -3,7 +3,6 @@ import shutil
 from pathlib import Path
 
 import bs4
-import inquirer
 
 from .config import PACKAGE_DIR, PbiCoreStartupConfig
 
@@ -69,6 +68,8 @@ def create_ini_template(raw_path: Path) -> None:
 
 
 def interactive_setup() -> None:
+    import inquirer  # noqa: PLC0415 # heavy import
+
     cert_dir = get_certificate_directory()
     msmdsrv_exe_path = get_msmdsrv_exe_path()
     msmdsrv_ini_path = get_msmdsrv_ini_path()

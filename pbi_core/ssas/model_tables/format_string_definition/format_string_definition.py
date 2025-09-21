@@ -1,7 +1,6 @@
 import datetime
 from typing import TYPE_CHECKING
 
-from pbi_parsers import dax
 from pydantic import PrivateAttr
 
 from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
@@ -10,6 +9,8 @@ from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
+    from pbi_parsers import dax
+
     from pbi_core.ssas.model_tables._group import Group
 
 
@@ -83,7 +84,9 @@ class FormatStringDefinition(SsasEditableRecord):
 
         return type_mapper[self.object_type].find(self.object_id)
 
-    def expression_ast(self) -> dax.Expression | None:
+    def expression_ast(self) -> "dax.Expression | None":
+        from pbi_parsers import dax  # noqa: PLC0415
+
         if not isinstance(self.expression, str):
             return None
         ret = dax.to_ast(self.expression)

@@ -1,7 +1,7 @@
-from typing import Any, Literal, Protocol
+from typing import TYPE_CHECKING, Any, Literal, Protocol
 
-from pbi_mermaid import Link, MermaidDiagram, Node
-from pbi_mermaid.node import NodeShape
+if TYPE_CHECKING:
+    from pbi_mermaid import Link, MermaidDiagram, Node
 
 """
 #ffffcc, #ffcc99, #ffcccc,
@@ -55,7 +55,10 @@ class LineageNode:
         self.lineage_type = lineage_type
 
     @staticmethod
-    def _create_node(value: LineageProtocol) -> Node:
+    def _create_node(value: LineageProtocol) -> "Node":
+        from pbi_mermaid import Node  # noqa: PLC0415
+        from pbi_mermaid.node import NodeShape  # noqa: PLC0415
+
         return Node(
             id=f"{value.__class__.__name__}-{value.id}",
             content=value.pbi_core_name(),
@@ -63,7 +66,9 @@ class LineageNode:
             shape=NodeShape.round_edge,
         )
 
-    def _to_mermaid_helper(self, node: Node) -> tuple[list[Node], list[Link]]:
+    def _to_mermaid_helper(self, node: "Node") -> tuple[list["Node"], list["Link"]]:
+        from pbi_mermaid import Link  # noqa: PLC0415
+
         nodes: list[Node] = [node]
         links: list[Link] = []
         for relative in self.relatives:
@@ -74,7 +79,9 @@ class LineageNode:
             nodes.extend(child_nodes)
         return nodes, links
 
-    def to_mermaid(self) -> MermaidDiagram:
+    def to_mermaid(self) -> "MermaidDiagram":
+        from pbi_mermaid import MermaidDiagram  # noqa: PLC0415
+
         base_node = self._create_node(self.value)
         nodes, links = self._to_mermaid_helper(base_node)
         return MermaidDiagram(title="Lineage Chart", nodes=nodes, links=links)

@@ -2,7 +2,6 @@ import datetime
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
-from pbi_parsers import dax
 from pydantic import PrivateAttr
 
 from pbi_core.lineage import LineageNode
@@ -16,6 +15,8 @@ from pbi_core.static_files.layout.sources.measure import MeasureSource
 from . import set_name
 
 if TYPE_CHECKING:
+    from pbi_parsers import dax
+
     from pbi_core.ssas.model_tables.calc_dependency import CalcDependency
     from pbi_core.ssas.model_tables.detail_row_definition import DetailRowDefinition
     from pbi_core.ssas.model_tables.format_string_definition import FormatStringDefinition
@@ -103,7 +104,9 @@ class Measure(SsasRenameRecord):
             # self.structure_modified_time,
         ))
 
-    def expression_ast(self) -> dax.Expression | None:
+    def expression_ast(self) -> "dax.Expression | None":
+        from pbi_parsers import dax  # noqa: PLC0415
+
         if not isinstance(self.expression, str):
             return None
         ret = dax.to_ast(self.expression)

@@ -1,7 +1,6 @@
 from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, cast
 
-import pbi_prototype_query_translation
 from pydantic import Discriminator, Tag
 
 from pbi_core.pydantic.main import BaseValidation
@@ -183,6 +182,8 @@ class PrototypeQuery(LayoutNode):
             DataViewQueryTranslationResult: an object containing the DAX query for this visual
 
         """
+        import pbi_prototype_query_translation  # noqa: PLC0415 # this is a heavy import
+
         raw_query = self.model_dump_json()
         return pbi_prototype_query_translation.prototype_query(
             raw_query,

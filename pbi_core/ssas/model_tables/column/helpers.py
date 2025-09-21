@@ -1,9 +1,10 @@
-from typing import Literal
-
-from pbi_parsers import dax
+from typing import TYPE_CHECKING, Literal
 
 from .enums import Alignment, ColumnType
 from .relationships import RelationshipMixin
+
+if TYPE_CHECKING:
+    from pbi_parsers import dax
 
 
 class HelpersMixin(RelationshipMixin):
@@ -15,7 +16,9 @@ class HelpersMixin(RelationshipMixin):
     inferred_name: str | None
     type: ColumnType
 
-    def expression_ast(self) -> dax.Expression | None:
+    def expression_ast(self) -> "dax.Expression | None":
+        from pbi_parsers import dax  # noqa: PLC0415
+
         if not isinstance(self.expression, str):
             return None
         return dax.to_ast(self.expression)

@@ -217,7 +217,6 @@ class LocalReport(LocalSsasReport, LocalStaticReport):
                 affected_tables.setdefault(t, []).append(c)
 
         measures_to_drop = {m for m in self.ssas.measures if m not in used_measures}
-        # TODO: convert to batch deletion
         for t in tables_to_drop:
             t.delete()
         for c in columns_to_drop:

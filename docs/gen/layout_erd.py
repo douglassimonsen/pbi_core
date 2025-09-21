@@ -1,9 +1,12 @@
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pydantic
-from pbi_mermaid import Link, MermaidDiagram, Node
 
 from pbi_core.static_files.layout import Layout
+
+if TYPE_CHECKING:
+    from pbi_mermaid import Link, Node
 
 BASE_PATH = Path(__file__).parents[1] / "docs" / "layout" / "erd"
 BASE_PATH.mkdir(parents=True, exist_ok=True)
@@ -95,9 +98,11 @@ BREAK_NODE_CLASSES = [
 
 
 class ERD:
-    visited_nodes: set[Node] = set()
+    visited_nodes: set["Node"] = set()
 
-    def helper(self, m: type[pydantic.BaseModel]) -> tuple[Node, set[Node], set[Link]]:
+    def helper(self, m: type[pydantic.BaseModel]) -> tuple["Node", set["Node"], set["Link"]]:
+        from pbi_mermaid import Link, Node  # noqa: PLC0415
+
         if m.__name__ in BREAK_NODE_CLASSES:
             content = f"<a href='/layout/erd/{m.__name__}'>{m.__name__}</a>"
         else:
@@ -131,6 +136,8 @@ class ERD:
         return ret[0]
 
     def process(self) -> None:
+        from pbi_mermaid import MermaidDiagram  # noqa: PLC0415
+
         self.visited_nodes.clear()
         _head, nodes, links = self.helper(Layout)
         diagram = MermaidDiagram(list(nodes), list(links), title="ERD for Layout")
