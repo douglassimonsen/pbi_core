@@ -1,19 +1,21 @@
-from pydantic import Field
+from attrs import field
 
-from ._base import BaseFileModel
+from pbi_core.pydantic import BaseValidation, define
 
 base_val = bool | int | str
 
 
-class QueryNameMapping(BaseFileModel):
+@define()
+class QueryNameMapping(BaseValidation):
     Key: str
     Value: str
 
 
-class Metadata(BaseFileModel):
+@define()
+class Metadata(BaseValidation):
     Version: int
-    AutoCreatedRelationships: list[int] = []
+    AutoCreatedRelationships: list[int] = field(factory=list)
     CreatedFrom: str
     CreatedFromRelease: str
     FileDescription: str | None = None
-    QueryNameToKeyMapping: list[QueryNameMapping] = Field(alias="_queryNameToKeyMapping", default_factory=list)  # ruff: noqa: N815
+    QueryNameToKeyMapping: list[QueryNameMapping] = field(alias="_queryNameToKeyMapping", factory=list)

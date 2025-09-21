@@ -1,5 +1,5 @@
 from pbi_core.logging import get_logger
-from pbi_core.pydantic.main import BaseValidation
+from pbi_core.pydantic.pydantic import BaseValidation
 from pbi_core.static_files import Layout
 from pbi_core.static_files.layout.filters import Filter
 from pbi_core.static_files.layout.sources.literal import LiteralSource

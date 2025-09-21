@@ -2,11 +2,13 @@ from typing import Annotated, Any
 
 from pydantic import Discriminator, Tag
 
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 from pbi_core.static_files.layout.sources import Source
 
 
+@define()
 class TextStyle(LayoutNode):
     color: str | None = None  # TODO: check that it's hex
     fontSize: str | None = None
@@ -16,23 +18,28 @@ class TextStyle(LayoutNode):
     textDecoration: str | None = None  # underline, etc
 
 
+@define()
 class CasePattern(LayoutNode):
     expr: Source
 
 
+@define()
 class Case(LayoutNode):
     pattern: CasePattern
     textRuns: list["TextRun"]
 
 
+@define()
 class DefaultCaseTextRun(LayoutNode):
     value: str
 
 
+@define()
 class DefaultCase(LayoutNode):
     textRuns: list[DefaultCaseTextRun]
 
 
+@define()
 class PropertyIdentifier(LayoutNode):
     objectName: str | None = None
     propertyName: str | None = None
@@ -40,6 +47,7 @@ class PropertyIdentifier(LayoutNode):
     propertyIdentifier: "PropertyIdentifier | None" = None
 
 
+@define()
 class TextRunExpression(LayoutNode):
     propertyIdentifier: PropertyIdentifier
     selector: Selector | None = None
@@ -59,6 +67,7 @@ TextRunValue = Annotated[
 ]
 
 
+@define()
 class TextRun(LayoutNode):
     textStyle: TextStyle | None = None
     value: TextRunValue | None = None
@@ -68,6 +77,7 @@ class TextRun(LayoutNode):
     expression: TextRunExpression | None = None
 
 
+@define()
 class Paragraph(LayoutNode):
     horizontalTextAlignment: str | None = None  # TODO: convert to enum
     textRuns: list[TextRun]

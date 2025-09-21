@@ -1,7 +1,8 @@
 from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
-from pydantic import Discriminator, Field, Json, Tag
+from attrs import field
+from pydantic import Discriminator, Json, Tag
 
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
@@ -20,27 +21,32 @@ from .visuals.properties.base import Expression
 if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
 
-    from .section import Section
     from .visuals.base import BaseVisual
 
+
+from pbi_core.pydantic import define
 
 from .expansion_state import ExpansionState
 from .performance import Performance, get_performance
 
 
+@define()
 class BackgroundProperties(LayoutNode):
     show: Expression | None = None
     transparency: Expression | None = None
 
 
+@define()
 class Background(LayoutNode):
     properties: BackgroundProperties
 
 
+@define()
 class SingleVisualGroupProperties(LayoutNode):
     background: list[Background] | None = None
 
 
+@define()
 class SingleVisualGroup(LayoutNode):
     displayName: str
     groupMode: int
@@ -52,6 +58,7 @@ class VisualHowCreated(Enum):
     INSERT_VISUAL_BUTTON = "InsertVisualButton"
 
 
+@define()
 class VisualLayoutInfoPosition(LayoutNode):
     x: float
     y: float
@@ -64,11 +71,13 @@ class VisualLayoutInfoPosition(LayoutNode):
         return f"({self.x}, {self.y}, {self.z}, {self.width}, {self.height})"
 
 
+@define()
 class VisualLayoutInfo(LayoutNode):
     id: int
     position: VisualLayoutInfoPosition
 
 
+@define()
 class VisualConfig(LayoutNode):
     _name_field = "name"
 
@@ -88,12 +97,14 @@ class EntityType(IntEnum):
     TABLE = 0
 
 
+@define()
 class FromEntity(LayoutNode):
     Name: str
     Entity: str
     Type: EntityType = EntityType.TABLE
 
 
+@define()
 class PrimaryProjections(LayoutNode):
     Projections: list[int]
     SuppressedProjections: list[int] | None = None
@@ -102,33 +113,39 @@ class PrimaryProjections(LayoutNode):
     ShowItemsWithNoData: list[int] | None = None
 
 
+@define()
 class Level(LayoutNode):
     Expressions: list[Source]
     Default: int
 
 
+@define()
 class InstanceChild(LayoutNode):
     Values: list[Source]
     Children: list["InstanceChild"] | None = None
     WindowExpansionInstanceWindowValue: list[int] | None = None  # never seen the element
 
 
+@define()
 class Instance(LayoutNode):
     Children: list[InstanceChild]
     WindowExpansionInstanceWindowValue: list[int] | None = None  # never seen the element
     Values: list[Source] | None = None
 
 
+@define()
 class BindingExpansion(LayoutNode):
     From: list[FromEntity]
     Levels: list[Level]
     Instances: Instance
 
 
+@define()
 class Synch(LayoutNode):
     Groupings: list[int]
 
 
+@define()
 class BindingPrimary(LayoutNode):
     Groupings: list[PrimaryProjections]
     Expansion: BindingExpansion | None = None
@@ -144,31 +161,38 @@ class DataVolume(IntEnum):
     NA6 = 6
 
 
+@define()
 class SampleDataReduction(LayoutNode):
     Sample: dict[str, int]
 
 
+@define()
 class WindowDataReduction(LayoutNode):
     Window: dict[str, int]
 
 
+@define()
 class TopDataReduction(LayoutNode):
     Top: dict[str, int]
 
 
+@define()
 class BottomDataReduction(LayoutNode):
     Bottom: dict[str, int]
 
 
+@define()
 class OverlappingPointsSample(LayoutNode):
-    X: dict[str, int] = Field(default_factory=dict)
-    Y: dict[str, int] = Field(default_factory=dict)
+    X: dict[str, int] = field(factory=dict)
+    Y: dict[str, int] = field(factory=dict)
 
 
+@define()
 class OverlappingPointReduction(LayoutNode):
     OverlappingPointsSample: OverlappingPointsSample
 
 
+@define()
 class WindowExpansionType(LayoutNode):
     From: list[FromEntity]
     Levels: list[Level]
@@ -178,7 +202,9 @@ class WindowExpansionType(LayoutNode):
         return f"WindowExpansionType(From={self.From}, Levels={self.Levels}, WindowInstances={self.WindowInstances})"
 
 
+@define()
 class TopNPerLevelDataReduction(LayoutNode):
+    @define()
     class _TopNPerLevelDataReductionHelper(LayoutNode):
         Count: int
         WindowExpansion: WindowExpansionType
@@ -186,7 +212,9 @@ class TopNPerLevelDataReduction(LayoutNode):
     TopNPerLevel: _TopNPerLevelDataReductionHelper
 
 
+@define()
 class BinnedLineSample(LayoutNode):
+    @define()
     class _BinnedLineSampleHelper(LayoutNode):
         PrimaryScalarKey: int | None = None
         Count: int | None = None
@@ -228,11 +256,13 @@ PrimaryDataReduction = Annotated[
 ]
 
 
+@define()
 class VisualScope(LayoutNode):
     Algorithm: PrimaryDataReduction
     Scope: dict[str, list[int]]
 
 
+@define()
 class DataReductionType(LayoutNode):
     DataVolume: DataVolume
     Primary: PrimaryDataReduction | None = None
@@ -241,10 +271,12 @@ class DataReductionType(LayoutNode):
     Scoped: list[VisualScope] | None = None
 
 
+@define()
 class AggregateSourceScope(LayoutNode):
     PrimaryDepth: int
 
 
+@define()
 class AggregateSources2(LayoutNode):  # stupid name, but needs to be different from AggregateSources
     # This is a workaround for the fact that AggregateSources is already used in the QueryBindingAggregates class
     Min: dict[str, int] | None = None
@@ -253,16 +285,19 @@ class AggregateSources2(LayoutNode):  # stupid name, but needs to be different f
     RespectInstanceFilters: bool = False
 
 
+@define()
 class AggregateSources(LayoutNode):
     min: dict[str, int] | None = None
     max: dict[str, int] | None = None
 
 
+@define()
 class QueryBindingAggregates(LayoutNode):
     Aggregations: list[AggregateSources2]
     Select: int
 
 
+@define()
 class Highlight(LayoutNode):
     # TODO: merge with VisualFilterExpression. For some reason,
     # pydantic thinks From should be None when using the visal filter expression
@@ -271,6 +306,7 @@ class Highlight(LayoutNode):
     Where: list[Condition]
 
 
+@define()
 class QueryBinding(LayoutNode):
     IncludeEmptyGroups: bool = False
     Primary: BindingPrimary
@@ -283,12 +319,14 @@ class QueryBinding(LayoutNode):
     Version: int
 
 
+@define()
 class QueryCommand1(LayoutNode):
     ExecutionMetricsKind: ExecutionMetricsKindEnum = ExecutionMetricsKindEnum.NA
     Query: PrototypeQuery
     Binding: QueryBinding | None = None
 
 
+@define()
 class QueryCommand2(LayoutNode):
     SemanticQueryDataShapeCommand: QueryCommand1
 
@@ -310,6 +348,7 @@ QueryCommand = Annotated[
 ]
 
 
+@define()
 class Query(LayoutNode):
     Commands: list[QueryCommand]
 
@@ -333,16 +372,19 @@ class Query(LayoutNode):
         return ret
 
 
+@define()
 class Split(LayoutNode):
     # TODO: these strings are all stringy ints
     selects: dict[str, bool]
 
 
+@define()
 class KPI(LayoutNode):
     graphic: str
     normalizedFiveStateKpiRange: bool
 
 
+@define()
 class Restatement(LayoutNode):
     Restatement: str
     Name: str
@@ -352,53 +394,64 @@ class Restatement(LayoutNode):
     kpi: KPI | None = None
 
 
+@define()
 class QueryMetadataFilter(LayoutNode):
     type: int | None = None  # TODO: make enum
     expression: Source | None = None
 
 
+@define()
 class QueryMetadata(LayoutNode):
     Select: list[Restatement]
     Filters: list[QueryMetadataFilter] | None = None
 
 
+@define()
 class DataRole(LayoutNode):
     Name: str
     Projection: int
     isActive: bool
 
 
+@define()
 class DataTransformVisualElement(LayoutNode):
     DataRoles: list[DataRole]
 
 
+@define()
 class DataTransformSelectType(LayoutNode):
     category: str | None = None
     underlyingType: int | None = None  # TODO: make enum
 
 
+@define()
 class ColumnFormattingDataBars(LayoutNode):
     metadata: str
 
 
+@define()
 class ColumnFormatting(LayoutNode):
     dataBars: list[ColumnFormattingDataBars]
 
 
+@define()
 class Title(LayoutNode):
     text: list[None]
 
 
+@define()
 class Values(LayoutNode):
     fontColor: list[Selector]
 
 
+@define()
 class RelatedObjects(LayoutNode):
     columnFormatting: ColumnFormatting | None = None
     title: Title | None = None
     values: Values | None = None
 
 
+@define()
 class DataTransformSelect(LayoutNode):
     displayName: str | None = None
     format: str | None = None
@@ -413,6 +466,7 @@ class DataTransformSelect(LayoutNode):
     kpi: KPI | None = None
 
 
+@define()
 class DataTransform(LayoutNode):
     objects: dict[str, list[PropertyDef]] | None = None
     projectionOrdering: dict[str, list[int]]
@@ -424,6 +478,7 @@ class DataTransform(LayoutNode):
     expansionStates: list[ExpansionState] | None = None
 
 
+@define()
 class VisualContainer(LayoutNode):
     """A Container for visuals in a report page.
 
@@ -431,7 +486,6 @@ class VisualContainer(LayoutNode):
     It's at this level that the report connects with the SSAS model to get data for each visual.
     """
 
-    _section: "Section | None"
     _name_field = "name"
 
     x: float

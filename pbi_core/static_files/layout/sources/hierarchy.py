@@ -2,11 +2,13 @@ from typing import Annotated, Any
 
 from pydantic import Discriminator, Tag
 
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .base import SourceExpression, SourceRef
 
 
+@define()
 class PropertyVariationSource(LayoutNode):
     Expression: SourceRef
     Name: str
@@ -16,6 +18,7 @@ class PropertyVariationSource(LayoutNode):
         return self.Property
 
 
+@define()
 class _PropertyVariationSourceHelper(LayoutNode):
     PropertyVariationSource: PropertyVariationSource
 
@@ -48,20 +51,24 @@ ConditionType = Annotated[
 ]
 
 
+@define()
 class _HierarchySourceHelper(LayoutNode):
     Expression: ConditionType
     Hierarchy: str | None = None
 
 
+@define()
 class HierarchySource(LayoutNode):
     Hierarchy: _HierarchySourceHelper
 
 
+@define()
 class _HierarchyLevelSourceHelper(LayoutNode):
     Expression: HierarchySource
     Level: str | None = None
 
 
+@define()
 class HierarchyLevelSource(LayoutNode):
     HierarchyLevel: _HierarchyLevelSourceHelper
     Name: str | None = None

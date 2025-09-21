@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Annotated, Any, Literal
 from pydantic import Discriminator, Tag
 
 from pbi_core.lineage import LineageNode
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.expansion_state import ExpansionState
 from pbi_core.static_files.layout.filters import Filter, PrototypeQuery
@@ -32,16 +33,19 @@ class DisplayMode(Enum):
     hidden = "hidden"
 
 
+@define()
 class Display(LayoutNode):
     mode: DisplayMode
 
 
+@define()
 class ProjectionConfig(LayoutNode):
     queryRef: str
     active: bool = False
     suppressConcat: bool = False
 
 
+@define()
 class ColorRule1(LayoutNode):
     positiveColor: Expression
     negativeColor: Expression
@@ -71,21 +75,25 @@ PropertyExpression = Annotated[
 ]
 
 
+@define()
 class PropertyDef(LayoutNode):
     properties: dict[str, PropertyExpression]
     selector: Selector | None = None
 
 
+@define()
 class QueryOptions(LayoutNode):
     allowOverlappingPointsSample: bool = False
     keepProjectionOrder: bool = True
 
 
+@define()
 class ColumnProperty(LayoutNode):
     displayName: str | None = None
     formatString: str | None = None
 
 
+@define()
 class BaseVisual(LayoutNode):
     """Base class for all visual representations in the layout.
 

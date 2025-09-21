@@ -1,8 +1,10 @@
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .base import SourceExpression
 
 
+@define()
 class ColumnSource(LayoutNode):
     Column: SourceExpression
     Name: str | None = None  # only seen on a couple TopN filters

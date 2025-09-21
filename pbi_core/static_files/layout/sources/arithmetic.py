@@ -3,6 +3,7 @@ from typing import Annotated, Any
 
 from pydantic import Discriminator, Tag
 
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .aggregation import AggregationSource, DataSource
@@ -24,16 +25,19 @@ Expression = Annotated[
 ]
 
 
+@define()
 class AllRolesRef(LayoutNode):
     AllRolesRef: bool = True  # no values have been seen in this field
 
 
+@define()
 class ScopedEval2(LayoutNode):
     Expression: Expression
     Scope: list[AllRolesRef]
 
 
 # TODO: merge with ScopedEvalAgg
+@define()
 class ScopedEvalArith(LayoutNode):
     ScopedEval: ScopedEval2
 
@@ -42,12 +46,14 @@ class ArithmeticOperator(IntEnum):
     DIVIDE = 3
 
 
+@define()
 class _ArithmeticSourceHelper(LayoutNode):
     Left: Expression
     Right: ScopedEvalArith
     Operator: ArithmeticOperator
 
 
+@define()
 class ArithmeticSource(LayoutNode):
     Arithmetic: _ArithmeticSourceHelper
     Name: str | None = None

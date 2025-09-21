@@ -1,4 +1,4 @@
-from pbi_core.pydantic.main import BaseValidation
+from pbi_core.pydantic.pydantic import BaseValidation
 
 
 class BaseFileModel(BaseValidation):

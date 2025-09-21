@@ -1,8 +1,10 @@
-from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import Annotated, Any
 
+from attrs import field
 from pydantic import Discriminator, Tag
+
+from pbi_core.pydantic import converter, define
 
 from ._base_node import LayoutNode
 from .sources import DataSource, LiteralSource, Source, SourceRef, TransformOutputRoleRef
@@ -18,10 +20,12 @@ class ExpressionVersion(IntEnum):
     VERSION_2 = 2
 
 
+@define()
 class _AnyValueHelper(LayoutNode):
     DefaultValueOverridesAncestors: bool
 
 
+@define()
 class AnyValue(LayoutNode):
     AnyValue: _AnyValueHelper
 
@@ -55,7 +59,9 @@ class ComparisonKind(IntEnum):
         return OPERATOR_MAPPING[self]
 
 
+@define()
 class ContainsCondition(LayoutNode):
+    @define()
     class _ComparisonHelper(LayoutNode):
         Left: DataSource
         Right: LiteralSource
@@ -75,11 +81,11 @@ class ContainsCondition(LayoutNode):
         return [self.Contains.Left, self.Contains.Right]
 
 
-@dataclass
+@define()
 class Expression:
     template: str
     source: str
-    data: dict[str, str] = field(default_factory=dict)
+    data: dict[str, str] = field(factory=dict)
     expr_type: str = ""
 
     def to_text(self) -> str:
@@ -88,6 +94,7 @@ class Expression:
         return self.template
 
 
+@define()
 class InExpressionHelper(LayoutNode):
     Expressions: list[DataSource]
     Values: list[list[LiteralSource]]
@@ -103,6 +110,7 @@ class InExpressionHelper(LayoutNode):
         return self.Expressions
 
 
+@define()
 class InTopNExpressionHelper(LayoutNode):
     """Internal representation of the Top N option."""
 
@@ -138,6 +146,7 @@ def natural_language_source(d: Source | SourceRef | ScopedEvalExpression) -> str
     raise TypeError(msg)
 
 
+@define()
 class InCondition(LayoutNode):
     """In is how "is" and "is not" are internally represented."""
 
@@ -168,6 +177,7 @@ class TimeUnit(IntEnum):
     YEAR = 8
 
 
+@define()
 class _NowHelper(LayoutNode):
     Now: dict[str, str]  # actually an empty string
 
@@ -188,21 +198,25 @@ DateSpanUnion = Annotated[
 ]
 
 
+@define()
 class _DateSpanHelper(LayoutNode):
     Expression: DateSpanUnion
     TimeUnit: TimeUnit
 
 
+@define()
 class DateSpan(LayoutNode):
     DateSpan: _DateSpanHelper
 
 
+@define()
 class RangePercentHelper(LayoutNode):
     Min: ScopedEvalArith
     Max: ScopedEvalArith
     Percent: float
 
 
+@define()
 class RangePercent(LayoutNode):
     RangePercent: RangePercentHelper
 
@@ -230,12 +244,14 @@ ComparisonRightUnion = Annotated[
 ]
 
 
+@define()
 class ComparisonConditionHelper(LayoutNode):
     ComparisonKind: ComparisonKind
     Left: ScopedEvalExpression
     Right: ComparisonRightUnion
 
 
+@define()
 class ComparisonCondition(LayoutNode):
     Comparison: ComparisonConditionHelper
 
@@ -259,10 +275,12 @@ class ComparisonCondition(LayoutNode):
         return [left]
 
 
+@define()
 class NotConditionHelper(LayoutNode):
     Expression: "ConditionType"
 
 
+@define()
 class NotCondition(LayoutNode):
     Not: NotConditionHelper
 
@@ -277,10 +295,12 @@ class NotCondition(LayoutNode):
         return self.Not.Expression.get_sources()
 
 
+@define()
 class ExistsConditionHelper(LayoutNode):
     Expression: Source  # cannot be DataSource, might only be a ProtoSourceRef?
 
 
+@define()
 class ExistsCondition(LayoutNode):
     Exists: ExistsConditionHelper
 
@@ -299,11 +319,13 @@ class ExistsCondition(LayoutNode):
         ]
 
 
+@define()
 class CompositeConditionHelper(LayoutNode):
     Left: "ConditionType"
     Right: "ConditionType"
 
 
+@define()
 class AndCondition(LayoutNode):
     And: CompositeConditionHelper
 
@@ -315,6 +337,7 @@ class AndCondition(LayoutNode):
         return [*self.And.Left.get_sources(), *self.And.Right.get_sources()]
 
 
+@define()
 class OrCondition(LayoutNode):
     Or: CompositeConditionHelper
 
@@ -329,40 +352,36 @@ class OrCondition(LayoutNode):
         ]
 
 
-def get_type(v: object | dict[str, Any]) -> str:  # noqa: PLR0911
-    if isinstance(v, dict):
-        if "And" in v:
-            return "AndCondition"
-        if "Or" in v:
-            return "OrCondition"
-        if "Left" in v:
-            return "NonCompositeConditions"
-        if "In" in v:
-            return "InCondition"
-        if "Not" in v:
-            return "NotCondition"
-        if "Contains" in v:
-            return "ContainsCondition"
-        if "Comparison" in v:
-            return "ComparisonCondition"
-        if "Exists" in v:
-            return "ExistsCondition"
-        raise ValueError
-    return v.__class__.__name__
+ConditionType = (
+    AndCondition | OrCondition | InCondition | NotCondition | ContainsCondition | ComparisonCondition | ExistsCondition
+)
 
 
-ConditionType = Annotated[
-    Annotated[AndCondition, Tag("AndCondition")]
-    | Annotated[OrCondition, Tag("OrCondition")]
-    | Annotated[InCondition, Tag("InCondition")]
-    | Annotated[NotCondition, Tag("NotCondition")]
-    | Annotated[ContainsCondition, Tag("ContainsCondition")]
-    | Annotated[ComparisonCondition, Tag("ComparisonCondition")]
-    | Annotated[ExistsCondition, Tag("ExistsCondition")],
-    Discriminator(get_type),
-]
+@converter.register_structure_hook
+def get_condition_type(src: Any, _: type | None = None) -> ConditionType:
+    if not isinstance(src, dict):
+        raise TypeError(src)
+    condition_mapper = {
+        "And": AndCondition,
+        "Or": OrCondition,
+        "In": InCondition,
+        "Not": NotCondition,
+        "Contains": ContainsCondition,
+        "Comparison": ComparisonCondition,
+        "Exists": ExistsCondition,
+    }
+    for k, v in condition_mapper.items():
+        if k in src:
+            return v.model_validate(src)
+    raise TypeError(src)
 
 
+@converter.register_unstructure_hook
+def unparse_condition_type(src: ConditionType) -> dict[str, Any]:
+    return converter.unstructure(src)
+
+
+@define()
 class Condition(LayoutNode):
     Condition: ConditionType
     Target: list[Source] | None = None

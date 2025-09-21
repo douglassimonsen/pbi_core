@@ -1,9 +1,10 @@
-from typing import TYPE_CHECKING, Annotated, Literal
+from typing import TYPE_CHECKING, Literal
 from uuid import UUID
 
-from pydantic import Json, StringConstraints, model_validator
+from pydantic import Json
 
 from pbi_core.lineage.main import LineageNode
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.filters import PageFilter
 from pbi_core.static_files.layout.performance import Performance, get_performance
@@ -20,12 +21,10 @@ from .enums import (
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
-    from pbi_core.static_files.layout import Layout
 
 
+@define()
 class Section(LayoutNode):
-    _layout: "Layout | None"
-    """The layout the section is associated with, if it exists"""
     height: int
     """Height of the page (in pixels) - optional only for 'DeprecatedDynamic' option, required otherwise."""
     width: int
@@ -40,7 +39,8 @@ class Section(LayoutNode):
     """Filters that apply to all the visuals on this page - on top of the filters defined for the whole report."""
     displayName: str
     """A user facing name for this page."""
-    name: Annotated[str, StringConstraints(max_length=50)]
+    # TODO: make a constraint of <=50 characters
+    name: str
     """A unique identifier for the page across the whole report."""
     id: int | None = None
     pageBinding: PageBinding | None = None
@@ -121,9 +121,3 @@ class Section(LayoutNode):
             msg = "Cannot get performance for a page without any querying visuals"
             raise ValueError(msg)
         return get_performance(model, commands, clear_cache=clear_cache)
-
-    @model_validator(mode="after")
-    def update_sections(self) -> "Section":
-        for viz in self.visualContainers:
-            viz._section = self
-        return self

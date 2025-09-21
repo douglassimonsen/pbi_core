@@ -3,10 +3,13 @@ from uuid import UUID
 
 from pydantic import Json
 
+from pbi_core.pydantic.attrs import define
+
 from ._base_node import LayoutNode
 from .sources import ColumnSource
 
 
+@define()
 class Parameter(LayoutNode):
     name: str
     boundFilter: str
@@ -20,10 +23,12 @@ class PodType(IntEnum):
     NA2 = 2
 
 
+@define()
 class PodConfig(LayoutNode):
     acceptsFilterContext: bool = False
 
 
+@define()
 class Pod(LayoutNode):
     id: int | None = None
     name: str

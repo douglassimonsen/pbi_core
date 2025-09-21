@@ -1,5 +1,6 @@
 from typing import cast
 
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .aggregation import DataSource
@@ -7,12 +8,14 @@ from .base import SourceRef
 from .column import ColumnSource
 
 
+@define()
 class _GroupSourceHelper(LayoutNode):
     Expression: SourceRef
     GroupedColumns: list[ColumnSource]
     Property: str
 
 
+@define()
 class GroupSource(LayoutNode):
     GroupRef: _GroupSourceHelper
     Name: str | None = None

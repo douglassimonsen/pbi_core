@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Annotated, Any
 
 from pydantic import Discriminator, Tag
 
+from ...pydantic.attrs import define
 from ._base_node import LayoutNode
 from .expansion_state import ExpansionStateLevel, ExpansionStateRoot
 from .filters import BookmarkFilter, CachedDisplayNames, Direction, FilterExpressionMetadata, HighlightScope, Orderby
@@ -16,6 +17,7 @@ if TYPE_CHECKING:
     from .visuals.base import BaseVisual
 
 
+@define()
 class BookmarkFilters(LayoutNode):
     byExpr: list[BookmarkFilter] = []
     """Filter containers that will be identified by expression."""
@@ -27,11 +29,13 @@ class BookmarkFilters(LayoutNode):
     """Filter containers that are transient"""
 
 
+@define()
 class HighlightSelection(LayoutNode):
     dataMap: dict[str, list[HighlightScope]]
     metadata: list[str] | None = None
 
 
+@define()
 class Highlight(LayoutNode):
     selection: list[HighlightSelection]
     filterExpressionMetadata: FilterExpressionMetadata | None = None
@@ -53,33 +57,39 @@ class DataTableOptions(Enum):
     normal = "normal"
 
 
+@define()
 class MaximizedOptions(LayoutNode):
     dataTable: DataTableOptions
 
 
+@define()
 class Display(LayoutNode):
     mode: DisplayMode
     maximizedOptions: MaximizedOptions | None = None
 
 
+@define()
 class Remove(LayoutNode):
     object: str
     property: str
     selector: Selector | None = None
 
 
+@define()
 class BookmarkPartialVisualObject(LayoutNode):
     merge: dict[str, list[PropertyDef]] | None = None
     remove: list[Remove] | None = None
 
 
 # TODO: merge with ExpansionState in expansion_state
+@define()
 class BookmarkExpansionState(LayoutNode):
     roles: list[str]
     levels: list[ExpansionStateLevel]
     root: ExpansionStateRoot
 
 
+@define()
 class Parameter(LayoutNode):
     expr: Source
     """Parameter expression."""
@@ -96,6 +106,7 @@ class Parameter(LayoutNode):
         flip the parameter's sort direction."""
 
 
+@define()
 class BookmarkPartialVisual(LayoutNode):
     visualType: str
     """Name of visual"""
@@ -128,6 +139,7 @@ class BookmarkPartialVisual(LayoutNode):
     """Indicates whether the drill feature is disabled"""
 
 
+@define()
 class BookmarkVisual(LayoutNode):
     filters: BookmarkFilters | None = None
     """State of filters for this visual when the bookmark was captured."""
@@ -137,11 +149,13 @@ class BookmarkVisual(LayoutNode):
     """"Cross-highlights captured in the bookmark."""
 
 
+@define()
 class VisualContainerGroup(LayoutNode):
     isHidden: bool = False
     children: dict[str, "VisualContainerGroup"] | None = None
 
 
+@define()
 class BookmarkSection(LayoutNode):
     visualContainers: dict[str, BookmarkVisual]
     """Flat list of visual-container-specific state.
@@ -152,23 +166,28 @@ class BookmarkSection(LayoutNode):
     """Flat list of group-specific state.\nDoes not include state of visual containers."""
 
 
+@define()
 class OutspacePaneProperties(LayoutNode):
     expanded: Expression | None = None
     visible: Expression | None = None
 
 
+@define()
 class OutspacePane(LayoutNode):
     properties: OutspacePaneProperties
 
 
+@define()
 class MergeProperties(LayoutNode):
     outspacePane: list[OutspacePane]
 
 
+@define()
 class ExplorationStateProperties(LayoutNode):
     merge: MergeProperties | None = None
 
 
+@define()
 class ExplorationState(LayoutNode):
     version: str
     """Version of bookmark."""
@@ -187,6 +206,7 @@ class ExplorationState(LayoutNode):
     are applied when accessing the underlying direct query source."""
 
 
+@define()
 class BookmarkOptions(LayoutNode):
     applyOnlyToTargetVisuals: bool = False
     """Only applies changes to selected visuals when the bookmark was captured."""
@@ -200,6 +220,7 @@ class BookmarkOptions(LayoutNode):
     """Don't apply display property changes."""
 
 
+@define()
 class Bookmark(LayoutNode):
     """Defines a bookmark that captures the state of a report.
 
@@ -231,6 +252,7 @@ class Bookmark(LayoutNode):
         raise NotImplementedError
 
 
+@define()
 class BookmarkFolder(LayoutNode):
     displayName: str
     name: str  # acts as an ID

@@ -1,22 +1,25 @@
 from typing import Any, Literal
 from uuid import UUID
 
-from ._base import BaseFileModel
+from pbi_core.pydantic import BaseValidation, converter, define
 
 base_val = bool | int | str
 
 
-class Position(BaseFileModel):
+@define()
+class Position(BaseValidation):
     x: int | float
     y: int | float
 
 
-class Size(BaseFileModel):
+@define()
+class Size(BaseValidation):
     height: int | float
     width: int | float
 
 
-class Node100(BaseFileModel):
+@define()
+class Node100(BaseValidation):
     top: float
     left: float
     width: float
@@ -25,7 +28,8 @@ class Node100(BaseFileModel):
     nodeIndex: str
 
 
-class Node110(BaseFileModel):
+@define()
+class Node110(BaseValidation):
     location: Position
     nodeIndex: str
     nodeLineageTag: UUID | None = None
@@ -33,19 +37,22 @@ class Node110(BaseFileModel):
     zIndex: int
 
 
-class BoundingBoxPosition(BaseFileModel):
+@define()
+class BoundingBoxPosition(BaseValidation):
     x: float
     y: float
 
 
-class TableLayout(BaseFileModel):
+@define()
+class TableLayout(BaseValidation):
     boundingBoxHeight: float
     boundingBoxWidth: float
     boundingBoxPosition: BoundingBoxPosition
     nodes: list[Node100]
 
 
-class DiagramV100(BaseFileModel):
+@define()
+class DiagramV100(BaseValidation):
     name: str
     zoomValue: float
     isDefault: bool
@@ -53,7 +60,8 @@ class DiagramV100(BaseFileModel):
     layout: TableLayout
 
 
-class DiagramV110(BaseFileModel):
+@define()
+class DiagramV110(BaseValidation):
     ordinal: int
     scrollPosition: Position
     nodes: list[Node110]
@@ -65,7 +73,8 @@ class DiagramV110(BaseFileModel):
     tablesLocked: bool = False
 
 
-class DiagramLayoutV100(BaseFileModel):
+@define()
+class DiagramLayoutV100(BaseValidation):
     version: Literal["1.0.0"]
     diagrams: list[DiagramV100]
     selectedDiagram: str | None = None
@@ -73,7 +82,8 @@ class DiagramLayoutV100(BaseFileModel):
     showIntroduceNewModelViewDialog: bool = True
 
 
-class DiagramLayoutV110(BaseFileModel):
+@define()
+class DiagramLayoutV110(BaseValidation):
     version: Literal["1.1.0"]
     diagrams: list[DiagramV110]
     selectedDiagram: str | None = None
@@ -83,10 +93,16 @@ class DiagramLayoutV110(BaseFileModel):
 DiagramLayout = DiagramLayoutV100 | DiagramLayoutV110
 
 
-def parse_diagram_layout(v: dict[str, Any]) -> DiagramLayout:
+@converter.register_structure_hook
+def parse_diagram_layout(v: dict[str, Any], _: type | None = None) -> DiagramLayout:
     if v["version"] == "1.0.0":
         return DiagramLayoutV100.model_validate(v)
     if v["version"] == "1.1.0":
         return DiagramLayoutV110.model_validate(v)
     msg = f"Unknown Version: {v['version']}"
     raise ValueError(msg)
+
+
+@converter.register_unstructure_hook
+def unparse_diagram_layout(v: DiagramLayout) -> dict[str, Any]:
+    return converter.unstructure(v)

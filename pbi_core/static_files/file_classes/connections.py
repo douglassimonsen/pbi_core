@@ -1,13 +1,15 @@
 from uuid import UUID
 
-from ._base import BaseFileModel
+from pbi_core.pydantic import BaseValidation, define
 
 
-class RemoteArtifact(BaseFileModel):
+@define()
+class RemoteArtifact(BaseValidation):
     DatasetId: UUID
     ReportId: UUID
 
 
-class Connections(BaseFileModel):
+@define()
+class Connections(BaseValidation):
     Version: int
     RemoteArtifacts: list[RemoteArtifact]

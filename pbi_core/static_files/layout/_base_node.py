@@ -3,7 +3,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
 from pbi_core.lineage import LineageNode
-from pbi_core.pydantic.main import BaseValidation
+from pbi_core.pydantic.attrs import BaseValidation
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel

@@ -1,9 +1,10 @@
 from enum import Enum, IntEnum
 from typing import TYPE_CHECKING, Annotated, Any, cast
 
+import attrs
 from pydantic import Discriminator, Tag
 
-from pbi_core.pydantic.main import BaseValidation
+from pbi_core.pydantic import BaseValidation, converter, define
 from pbi_core.static_files.layout.sources.literal import LiteralSource
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
@@ -24,40 +25,48 @@ class Direction(IntEnum):
     DESCENDING = 2
 
 
+@define()
 class Orderby(LayoutNode):
     Direction: Direction
     Expression: Source
 
 
+@define()
 class PrototypeQueryResult(BaseValidation):
     data: list[dict[str, Any]]
     dax_query: str
     column_mapping: dict[str, str]
 
 
+@define()
 class InputParameter(LiteralSource):
     Name: str
 
 
+@define()
 class InputTableColumn(BaseValidation):
     Expression: Source
     Role: str | None = None
 
 
+@define()
 class InputTable(BaseValidation):
     Name: str
     Columns: list[InputTableColumn]
 
 
+@define()
 class TransformInput(BaseValidation):
     Parameters: list[InputParameter]
     Table: InputTable
 
 
+@define()
 class TransformOutput(BaseValidation):
     Table: InputTable
 
 
+@define()
 class TransformMeta(BaseValidation):
     Name: str
     Algorithm: str
@@ -84,6 +93,7 @@ class TransformMeta(BaseValidation):
         }
 
 
+@define()
 class PrototypeQuery(LayoutNode):
     Version: int
     From: list["From"]
@@ -202,10 +212,12 @@ class PrototypeQuery(LayoutNode):
         )
 
 
+@define()
 class _SubqueryHelper2(LayoutNode):
     Query: PrototypeQuery
 
 
+@define()
 class _SubqueryHelper(LayoutNode):
     Subquery: _SubqueryHelper2
 
@@ -214,6 +226,7 @@ class SubQueryType(IntEnum):
     NA = 2
 
 
+@define()
 class Subquery(LayoutNode):
     Name: str
     Expression: _SubqueryHelper
@@ -223,21 +236,24 @@ class Subquery(LayoutNode):
         return self.Expression.Subquery.Query.table_mapping()
 
 
-def get_from(v: Any) -> str:
-    if isinstance(v, dict):
-        if "Entity" in v:
-            return "Entity"
-        if "Expression" in v:
-            return "Subquery"
-        msg = f"Unknown Filter: {v.keys()}"
-        raise ValueError(msg)
-    return cast("str", v.__class__.__name__)
+From = Entity | Subquery
 
 
-From = Annotated[
-    Annotated[Entity, Tag("Entity")] | Annotated[Subquery, Tag("Subquery")],
-    Discriminator(get_from),
-]
+def unparse_from(v: From) -> dict[str, Any]:
+    return converter.unstructure(v)
+
+
+@converter.register_structure_hook
+def get_from(v: Any, _: type | None = None) -> From:
+    if "Entity" in v:
+        return Entity.model_validate(v)
+    if "Expression" in v:
+        return Subquery.model_validate(v)
+    msg = f"Unknown Filter: {v.keys()}"
+    raise ValueError(msg)
+
+
+attrs.resolve_types(PrototypeQuery)  # necessary for forward ref unions
 
 
 class HowCreated(IntEnum):
@@ -272,15 +288,18 @@ class FilterType(Enum):
     VISUAL_TOP_N = "VisualTopN"
 
 
+@define()
 class Scope(LayoutNode):
     scopeId: ConditionType
 
 
+@define()
 class CachedDisplayNames(LayoutNode):
     displayName: str
     id: Scope
 
 
+@define()
 class Filter(LayoutNode):
     name: str | None = None
     type: FilterType = FilterType.CATEGORIAL
@@ -329,6 +348,7 @@ class Filter(LayoutNode):
         return self.filter.get_ssas_elements()
 
 
+@define()
 class VisualFilterExpression(LayoutNode):
     Version: int | None = None
     From: list["From"] | None = None
@@ -339,25 +359,30 @@ class VisualFilterExpression(LayoutNode):
 # TODO: visual needs extra fields because it allows measure sources I think
 
 
+@define()
 class HighlightScope(LayoutNode):
     scopeId: ConditionType
 
 
+@define()
 class CachedValueItems(LayoutNode):
     identities: list[HighlightScope]
     valueMap: dict[str, str] | list[str]
 
 
+@define()
 class FilterExpressionMetadata(LayoutNode):
     expressions: list[Source]
     cachedValueItems: list[CachedValueItems]
 
 
+@define()
 class JsonFilter(LayoutNode):
     filterType: FilterType
     """Type of json filter."""
 
 
+@define()
 class DecomposedIdentities(LayoutNode):
     values: list[list[dict[int, Source]]]
     """`values` have 3 levels
@@ -374,6 +399,7 @@ class DecomposedIdentities(LayoutNode):
     """Defines the set of group-on key columns."""
 
 
+@define()
 class DecomposedFilterExpressionMetadata(LayoutNode):
     decomposedIdentities: DecomposedIdentities
     """Defines the group-on key fields and the filters applied on them."""
@@ -402,6 +428,7 @@ FilterExpression = Annotated[
 ]
 
 
+@define()
 class VisualFilter(Filter):
     restatement: str | None = None
     filterExpressionMetadata: FilterExpression | None = None
@@ -410,15 +437,18 @@ class VisualFilter(Filter):
         return cast("BookmarkFilter", self)
 
 
+@define()
 class BookmarkFilter(VisualFilter):
     """Meaning of properties is same as Filters defined outside the bookmark."""
 
     isTransient: bool = False
 
 
+@define()
 class PageFilter(Filter):
-    pass
+    """Structurally identical to Filter, but used for find/find_all."""
 
 
+@define()
 class GlobalFilter(Filter):
-    pass
+    """Structurally identical to Filter, but used for find/find_all."""

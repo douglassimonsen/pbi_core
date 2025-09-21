@@ -1,8 +1,10 @@
 from enum import IntEnum
 from typing import Annotated, Any
 
-from pydantic import Discriminator, Field, Tag
+from attrs import field
+from pydantic import Discriminator, Tag
 
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .column import ColumnSource
@@ -10,10 +12,12 @@ from .hierarchy import HierarchyLevelSource
 from .measure import MeasureSource
 
 
+@define()
 class ExpressionName(LayoutNode):
     ExpressionName: str
 
 
+@define()
 class SelectRef(LayoutNode):
     SelectRef: ExpressionName
 
@@ -30,16 +34,19 @@ def get_expression_type(v: object | dict[str, Any]) -> str:
     return v.__class__.__name__
 
 
+@define()
 class AllRolesRef(LayoutNode):
-    AllRolesRef: dict[str, bool] = Field(default_factory=dict)  # no values have been seen in this field
+    AllRolesRef: dict[str, bool] = field(factory=dict)  # no values have been seen in this field
 
 
+@define()
 class ScopedEval2(LayoutNode):
     Expression: "ScopedEvalExpression"
     Scope: list[AllRolesRef]
 
 
 # TODO: merge with ScopedEvalArith
+@define()
 class ScopedEvalAgg(LayoutNode):  # copied from arithmetic.py to avoid circular dependencies
     ScopedEval: ScopedEval2
 
@@ -79,11 +86,13 @@ class AggregationFunction(IntEnum):
     VAR_P = 8
 
 
+@define()
 class _AggregationSourceHelper(LayoutNode):
     Expression: DataSource
     Function: AggregationFunction
 
 
+@define()
 class AggregationSource(LayoutNode):
     Aggregation: _AggregationSourceHelper
     Name: str | None = None

@@ -1,7 +1,8 @@
 from typing import Any, Literal
 
-from pydantic import Field
+from attrs import field
 
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.sources import Source
 
@@ -15,26 +16,30 @@ from .enums import (
 from .properties import PageFormattingObjects
 
 
+@define()
 class LinkField(LayoutNode):
     asAggregation: bool = False
     fieldExpr: Any = None
 
 
+@define()
 class SectionRelationship(LayoutNode):
     source: str
     target: str
     type: int
 
 
+@define()
 class SectionConfig(LayoutNode):
     visibility: SectionVisibility = SectionVisibility.VISIBLE
     type: int | None = None
     linkFields: list[LinkField] | None = None
     objects: PageFormattingObjects | None = None
-    relationships: list[SectionRelationship] = Field(default_factory=list)
+    relationships: list[SectionRelationship] = field(factory=list)
     filterSortOrder: int | None = None
 
 
+@define()
 class BindingParameter(LayoutNode):
     name: str
     """Name of the parameter - unique across the report."""
@@ -48,6 +53,7 @@ class BindingParameter(LayoutNode):
     """Field expression for page binding"""
 
 
+@define()
 class PageBinding(LayoutNode):
     name: str
     """Name of this binding - unique across the report."""
@@ -61,6 +67,7 @@ class PageBinding(LayoutNode):
     """Should additional filter context flow when applying the binding."""
 
 
+@define()
 class VisualInteraction(LayoutNode):
     source: str
     """Visual name that will be the source of user interaction (selecting data point for example)."""
@@ -70,6 +77,7 @@ class VisualInteraction(LayoutNode):
     """How should the interaction flow from source to target visual (as highlights, as filter, none)."""
 
 
+@define()
 class QuickExploreVisualContainerConfig(LayoutNode):
     name: str
     """Name of the visual - matches the name property in visual.json files"""
@@ -77,18 +85,21 @@ class QuickExploreVisualContainerConfig(LayoutNode):
     """Specific data fields used to build this visual from the full set of selected fields"""
 
 
+@define()
 class QuickExploreRelatedLayout(LayoutNode):
     version: Literal[1] = 1
     dataTableName: str | None = None
     """If data table is shown, then the name of that visual"""
 
 
+@define()
 class QuickExploreCombinationLayout(LayoutNode):
     version: Literal[1] = 1
     dataTableName: str | None = None
     """If data table is shown, then the name of that visual"""
 
 
+@define()
 class QuickExploreLayoutContainer(LayoutNode):
     related: QuickExploreRelatedLayout
     """A layout that has 1 hero visual and some related visuals"""
@@ -97,6 +108,7 @@ class QuickExploreLayoutContainer(LayoutNode):
     Deprecated: Use related layout instead."""
 
 
+@define()
 class AutoPageGenerationConfig(LayoutNode):
     selectedFields: list[Source]
     """Data fields to use for the auto page generation"""
@@ -106,6 +118,7 @@ class AutoPageGenerationConfig(LayoutNode):
     """The specific layout chosen to render the auto-visuals"""
 
 
+@define()
 class Annotation(LayoutNode):
     name: str
     """Unique name for the annotation."""

@@ -2,6 +2,7 @@ from typing import Annotated, Any, Literal
 
 from pydantic import Discriminator, Tag
 
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.condition import ConditionType
 from pbi_core.static_files.layout.sources import LiteralSource, MeasureSource, Source
@@ -9,48 +10,59 @@ from pbi_core.static_files.layout.sources.aggregation import AggregationSource, 
 from pbi_core.static_files.layout.sources.column import ColumnSource
 
 
+@define()
 class LiteralExpression(LayoutNode):
     expr: LiteralSource
 
 
+@define()
 class MeasureExpression(LayoutNode):
     expr: MeasureSource
 
 
+@define()
 class AggregationExpression(LayoutNode):
     expr: AggregationSource
 
 
+@define()
 class ThemeDataColor(LayoutNode):
     ColorId: int
     Percent: float
 
 
+@define()
 class ThemeExpression(LayoutNode):
     ThemeDataColor: ThemeDataColor
 
 
+@define()
 class FillRule(LayoutNode):
     FillRule: "Expression"
     Input: Source
 
 
+@define()
 class FillRuleExpression(LayoutNode):
     FillRule: FillRule
 
 
+@define()
 class ConditionalCase(LayoutNode):
     Condition: ConditionType
     Value: LiteralSource
 
 
+@define()
 class ConditionalSource(LayoutNode):
+    @define()
     class _ConditionalSourceHelper(LayoutNode):
         Cases: list[ConditionalCase]
 
     Conditional: _ConditionalSourceHelper
 
 
+@define()
 class ConditionalExpression(LayoutNode):
     expr: ConditionalSource
 
@@ -85,6 +97,7 @@ ColorSubExpression = Annotated[
 ]
 
 
+@define()
 class ColorExpression(LayoutNode):
     expr: ColorSubExpression
 
@@ -106,11 +119,13 @@ Color = Annotated[
 ]
 
 
+@define()
 class SolidExpression(LayoutNode):
     color: Color
     value: LiteralSource | LiteralExpression | None = None  # TODO: explore the cases here more
 
 
+@define()
 class SolidColorExpression(LayoutNode):
     solid: SolidExpression
 
@@ -125,10 +140,12 @@ class SolidColorExpression(LayoutNode):
         )
 
 
+@define()
 class StrategyExpression(LayoutNode):
     strategy: LiteralExpression | LiteralSource  # TODO: explore the cases here more
 
 
+@define()
 class ExtremeColor(LayoutNode):
     color: LiteralSource
     value: LiteralSource
@@ -152,16 +169,19 @@ LinearGradient2HelperExtreme = Annotated[
 ]
 
 
+@define()
 class LinearGradient2Helper(LayoutNode):
     max: SolidExpression
     min: SolidExpression
     nullColoringStrategy: StrategyExpression
 
 
+@define()
 class LinearGradient2Expression(LayoutNode):
     linearGradient2: LinearGradient2Helper
 
 
+@define()
 class LinearGradient3Helper(LayoutNode):
     max: SolidExpression
     mid: SolidExpression
@@ -169,24 +189,29 @@ class LinearGradient3Helper(LayoutNode):
     nullColoringStrategy: StrategyExpression
 
 
+@define()
 class LinearGradient3Expression(LayoutNode):
     linearGradient3: LinearGradient3Helper
 
 
+@define()
 class ResourcePackageItem(LayoutNode):
     PackageName: str
     PackageType: int  # TODO: enum
     ItemName: str
 
 
+@define()
 class ResourcePackageAccessExpression(LayoutNode):
     ResourcePackageItem: ResourcePackageItem
 
 
+@define()
 class ResourcePackageAccess(LayoutNode):
     expr: ResourcePackageAccessExpression
 
 
+@define()
 class ImageKindExpression(LayoutNode):
     kind: Literal["Icon"]
     layout: LiteralExpression
@@ -195,10 +220,12 @@ class ImageKindExpression(LayoutNode):
 
 
 # TODO: centralize the expr: Source classes
+@define()
 class SelectRefExpression(LayoutNode):
     expr: SelectRef
 
 
+@define()
 class ImageExpression(LayoutNode):
     class _ImageExpressionHelper(LayoutNode):
         name: "Expression"
@@ -208,6 +235,7 @@ class ImageExpression(LayoutNode):
     image: _ImageExpressionHelper
 
 
+@define()
 class GeoJsonExpression(LayoutNode):
     class _GeoJsonExpressionHelper(LayoutNode):
         name: "Expression"
@@ -217,20 +245,24 @@ class GeoJsonExpression(LayoutNode):
     geoJson: _GeoJsonExpressionHelper
 
 
+@define()
 class AlgorithmParameter(LiteralSource):
     Name: str
 
 
+@define()
 class AlgorithmExpression(LayoutNode):
     algorithm: str
     parameters: list[AlgorithmParameter]
 
 
+@define()
 class ExpressionList(LayoutNode):
     exprs: list["Expression"]
     kind: Literal["ExprList"]
 
 
+@define()
 class ColumnExpression(LayoutNode):
     expr: ColumnSource
 

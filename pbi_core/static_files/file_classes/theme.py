@@ -1,35 +1,40 @@
 from typing import Any
 
-from pydantic import Field
-from pydantic_extra_types.color import Color
+from attrs import field
 
-from ._base import BaseFileModel
+from pbi_core.pydantic import BaseValidation, define
+from pbi_core.pydantic.extra import Color
 
 base_val = bool | int | str
 
 
-class TextClass(BaseFileModel):
+@define()
+class TextClass(BaseValidation):
     fontSize: int | None = None
     fontFace: str
     color: Color
 
 
-class TextClasses(BaseFileModel):
+@define()
+class TextClasses(BaseValidation):
     callout: TextClass
     title: TextClass
     header: TextClass
     label: TextClass
 
 
-class ColorName(BaseFileModel):
+@define()
+class ColorName(BaseValidation):
     color: Color
 
 
-class ColorThemeData(BaseFileModel):
+@define()
+class ColorThemeData(BaseValidation):
     solid: ColorName
 
 
-class Theme(BaseFileModel):
+@define()
+class Theme(BaseValidation):
     """A class mapping the fields of the Theme JSON.
 
     Documented `here <https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-report-themes#set-theme-colors>`
@@ -38,7 +43,7 @@ class Theme(BaseFileModel):
     name: str | None = None
     type: str | None = None
 
-    dataColors: list[str] = []
+    dataColors: list[str] = field(factory=list)
     foreground: str | None = None
     foregroundNeutralSecondary: Color | None = None
     foregroundNeutralTertiary: Color | None = None
@@ -57,7 +62,7 @@ class Theme(BaseFileModel):
     visitedHyperlink: Color | None = None
 
     objects: Any = None
-    arcs: list[list[list[int]]] = Field(default_factory=list)
+    arcs: list[list[list[int]]] = field(factory=list)
     transform: Any = None
 
     textClasses: TextClasses | None = None

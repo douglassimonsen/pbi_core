@@ -3,6 +3,7 @@ from typing import Annotated, Any
 
 from pydantic import Discriminator, Tag
 
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 
@@ -12,6 +13,7 @@ class EntityType(IntEnum):
     NA3 = 2
 
 
+@define()
 class Entity(LayoutNode):
     Entity: str
     Name: str | None = None
@@ -33,6 +35,7 @@ class Entity(LayoutNode):
         return f"Entity({self.Name}: {self.Entity})"
 
 
+@define()
 class Source(LayoutNode):
     Source: str
 
@@ -56,6 +59,7 @@ SourceRefSource = Annotated[
 ]
 
 
+@define()
 class TransformTableRef(LayoutNode):
     TransformTableRef: SourceRefSource
 
@@ -67,6 +71,7 @@ class TransformTableRef(LayoutNode):
         return self.TransformTableRef.table()
 
 
+@define()
 class SourceRef(LayoutNode):
     SourceRef: SourceRefSource
 
@@ -74,6 +79,10 @@ class SourceRef(LayoutNode):
         if entity_mapping is None:
             entity_mapping = {}
         if isinstance(self.SourceRef, Source):
+            # TODO: make this handle the utility case where the source missing should be an error and the
+            # printing version where it just prints something
+            if self.SourceRef.table() not in entity_mapping:
+                return self.SourceRef.table()
             return entity_mapping[self.SourceRef.table()]
         return self.SourceRef.table()
 
@@ -94,6 +103,7 @@ SourceExpressionUnion = Annotated[
 ]
 
 
+@define()
 class SourceExpression(LayoutNode):
     Expression: SourceExpressionUnion
     Property: str

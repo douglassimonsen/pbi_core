@@ -2,7 +2,7 @@ from typing import Annotated, Any
 
 from pydantic import Discriminator, Tag
 
-from pbi_core.pydantic.main import BaseValidation
+from pbi_core.pydantic.pydantic import BaseValidation
 
 from .aggregation import AggregationSource, DataSource, SelectRef
 from .arithmetic import ArithmeticSource

@@ -1,9 +1,10 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Literal
 
-from pydantic import Json, model_validator
+from attrs import field
 
 from pbi_core.lineage.main import LineageNode
+from pbi_core.pydantic import Json, define
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 from ._base_node import LayoutNode
@@ -24,32 +25,38 @@ class LayoutOptimization(Enum):
     MOBILE = 1
 
 
+@define()
 class PublicCustomVisual(LayoutNode):
     pass  # TODO: find an example where this occurs
 
 
+@define()
 class ThemeVersionInfo(LayoutNode):
     visual: str
     page: str
     report: str
 
 
+@define()
 class ThemeResourcePackageType(Enum):
     REGISTERED_RESOURCES = 1
     SHARED_RESOURCES = 2
 
 
+@define()
 class ThemeInfo(LayoutNode):
     name: str
     version: ThemeVersionInfo | str
     type: ThemeResourcePackageType  # def an enum
 
 
+@define()
 class ThemeCollection(LayoutNode):
     baseTheme: ThemeInfo | None = None
     customTheme: ThemeInfo | None = None
 
 
+@define()
 class Settings(LayoutNode):
     allowChangeFilterTypes: bool = True
     allowDataPointLassoSelect: bool = False
@@ -70,6 +77,7 @@ class Settings(LayoutNode):
     useDefaultAggregateDisplayName: bool = True
 
 
+@define()
 class SlowDataSourceSettings(LayoutNode):
     isCrossHighlightingDisabled: bool
     isFieldWellButtonEnabled: bool
@@ -78,28 +86,34 @@ class SlowDataSourceSettings(LayoutNode):
     isApplyAllButtonEnabled: bool = False
 
 
+@define()
 class OutspacePaneProperties(LayoutNode):
     visible: Expression | None = None
     expanded: Expression | None = None
 
 
+@define()
 class OutspacePane(LayoutNode):
     properties: OutspacePaneProperties
 
 
+@define()
 class ConfigSectionProperties(LayoutNode):
     verticalAlignment: Expression | None = None
 
 
+@define()
 class ConfigSection(LayoutNode):
     properties: ConfigSectionProperties
 
 
+@define()
 class LayoutProperties(LayoutNode):
     outspacePane: list[OutspacePane] | None = None
     section: list[ConfigSection] | None = None
 
 
+@define()
 class LayoutConfig(LayoutNode):
     linguisticSchemaSyncVersion: int | None = None
     defaultDrillFilterOtherVisuals: bool = True
@@ -113,19 +127,20 @@ class LayoutConfig(LayoutNode):
     filterSortOrder: FilterSortOrder = FilterSortOrder.NA
 
 
+@define()
 class Layout(LayoutNode):
     """Represents the layout of a Power BI report, including sections, filters, and other properties."""
 
     id: int = -3
     reportId: int = -1
-    filters: Json[list[GlobalFilter]] = []
+    filters: Json[list[GlobalFilter]] = field(factory=list)
     resourcePackages: list[ResourcePackage]
     sections: list[Section]
     config: Json[LayoutConfig]
     layoutOptimization: LayoutOptimization
     theme: str | None = None
-    pods: list[Pod] = []
-    publicCustomVisuals: list[PublicCustomVisual] = []
+    pods: list[Pod] = field(factory=list)
+    publicCustomVisuals: list[PublicCustomVisual] = field(factory=list)
 
     def pbi_core_name(self) -> str:  # noqa: PLR6301
         return "Layout"
@@ -159,9 +174,3 @@ class Layout(LayoutNode):
 
         children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
         return LineageNode(self, lineage_type, children_lineage)
-
-    @model_validator(mode="after")
-    def update_sections(self) -> "Layout":
-        for section in self.sections:
-            section._layout = self
-        return self

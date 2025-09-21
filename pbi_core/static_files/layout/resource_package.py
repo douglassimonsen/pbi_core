@@ -1,5 +1,7 @@
 from enum import IntEnum
 
+from pbi_core.pydantic.attrs import define
+
 from ._base_node import LayoutNode
 
 
@@ -14,6 +16,7 @@ class ResourcePackageItemType(IntEnum):
     JSON = 202
 
 
+@define()
 class ResourcePackageItem(LayoutNode):
     name: str | None = None
     path: str
@@ -29,6 +32,7 @@ class ResourcePackageDetailsType(IntEnum):
     BASE_THEME = 2
 
 
+@define()
 class ResourcePackageDetails(LayoutNode):
     disabled: bool = False
     items: list[ResourcePackageItem] = []
@@ -38,5 +42,6 @@ class ResourcePackageDetails(LayoutNode):
     reportId: int | None = None
 
 
+@define()
 class ResourcePackage(LayoutNode):
     resourcePackage: ResourcePackageDetails

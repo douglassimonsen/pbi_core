@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any, Literal
 import pydantic
 
 from pbi_core.lineage import LineageNode
-from pbi_core.pydantic import BaseValidation
+from pbi_core.pydantic.pydantic import BaseValidation
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands

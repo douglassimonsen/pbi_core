@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from structlog import get_logger
 
 from pbi_core.lineage import LineageNode
-from pbi_core.pydantic.main import BaseValidation
+from pbi_core.pydantic.pydantic import BaseValidation
 from pbi_core.ssas.model_tables._group import IdBase
 from pbi_core.ssas.server._commands import Command
 from pbi_core.ssas.server.tabular_model import BaseTabularModel

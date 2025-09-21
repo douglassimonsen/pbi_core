@@ -1,5 +1,6 @@
-from pydantic import Field
+from attrs import field
 
+from pbi_core.pydantic.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
@@ -7,7 +8,9 @@ from .base import BaseVisual
 from .properties.base import Expression
 
 
+@define()
 class CategoryAxisProperties(LayoutNode):
+    @define()
     class _CategoryAxisPropertiesHelper(LayoutNode):
         axisStyle: Expression | None = None
         axisType: Expression | None = None
@@ -36,10 +39,12 @@ class CategoryAxisProperties(LayoutNode):
         titleItalic: Expression | None = None
         titleText: Expression | None = None
 
-    properties: _CategoryAxisPropertiesHelper = Field(default_factory=_CategoryAxisPropertiesHelper)
+    properties: _CategoryAxisPropertiesHelper = field(factory=_CategoryAxisPropertiesHelper)
 
 
+@define()
 class DataPointProperties(LayoutNode):
+    @define()
     class _DataPointPropertiesHelper(LayoutNode):
         borderColorMatchFill: Expression | None = None
         borderShow: Expression | None = None
@@ -50,18 +55,22 @@ class DataPointProperties(LayoutNode):
         fillTransparency: Expression | None = None
         showAllDataPoints: Expression | None = None
 
-    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
+    properties: _DataPointPropertiesHelper = field(factory=_DataPointPropertiesHelper)
     selector: Selector | None = None
 
 
+@define()
 class GeneralProperties(LayoutNode):
+    @define()
     class _GeneralPropertiesHelper(LayoutNode):
         responsive: Expression | None = None
 
-    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
+    properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
+@define()
 class LabelsProperties(LayoutNode):
+    @define()
     class _LabelsPropertiesHelper(LayoutNode):
         backgroundColor: Expression | None = None
         backgroundTransparency: Expression | None = None
@@ -94,18 +103,22 @@ class LabelsProperties(LayoutNode):
         titleUnderline: Expression | None = None
         transparency: Expression | None = None
 
-    properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
+    properties: _LabelsPropertiesHelper = field(factory=_LabelsPropertiesHelper)
     selector: Selector | None = None
 
 
+@define()
 class LayoutProperties(LayoutNode):
+    @define()
     class _LayoutPropertiesHelper(LayoutNode):
         ribbonGapSize: Expression | None = None
 
-    properties: _LayoutPropertiesHelper = Field(default_factory=_LayoutPropertiesHelper)
+    properties: _LayoutPropertiesHelper = field(factory=_LayoutPropertiesHelper)
 
 
+@define()
 class LegendProperties(LayoutNode):
+    @define()
     class _LegendPropertiesHelper(LayoutNode):
         fontSize: Expression | None = None
         labelColor: Expression | None = None
@@ -114,10 +127,12 @@ class LegendProperties(LayoutNode):
         showTitle: Expression | None = None
         titleText: Expression | None = None
 
-    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
+    properties: _LegendPropertiesHelper = field(factory=_LegendPropertiesHelper)
 
 
+@define()
 class RibbonBandsProperties(LayoutNode):
+    @define()
     class _RibbonBandsPropertiesHelper(LayoutNode):
         borderColorMatchFill: Expression | None = None
         borderShow: Expression | None = None
@@ -127,10 +142,12 @@ class RibbonBandsProperties(LayoutNode):
         show: Expression | None = None
         transparency: Expression | None = None
 
-    properties: _RibbonBandsPropertiesHelper = Field(default_factory=_RibbonBandsPropertiesHelper)
+    properties: _RibbonBandsPropertiesHelper = field(factory=_RibbonBandsPropertiesHelper)
 
 
+@define()
 class ValueAxisProperties(LayoutNode):
+    @define()
     class _ValueAxisPropertiesHelper(LayoutNode):
         axisScale: Expression | None = None
         bold: Expression | None = None
@@ -153,16 +170,18 @@ class ValueAxisProperties(LayoutNode):
         titleFontSize: Expression | None = None
         titleText: Expression | None = None
 
-    properties: _ValueAxisPropertiesHelper = Field(default_factory=_ValueAxisPropertiesHelper)
+    properties: _ValueAxisPropertiesHelper = field(factory=_ValueAxisPropertiesHelper)
 
 
+@define()
 class XAxisReferenceLineProperties(LayoutNode):
+    @define()
     class _XAxisReferenceLinePropertiesHelper(LayoutNode):
         displayName: Expression | None = None
         show: Expression | None = None
         value: Expression | None = None
 
-    properties: _XAxisReferenceLinePropertiesHelper = Field(default_factory=_XAxisReferenceLinePropertiesHelper)
+    properties: _XAxisReferenceLinePropertiesHelper = field(factory=_XAxisReferenceLinePropertiesHelper)
     selector: Selector | None = None
 
 
@@ -172,24 +191,26 @@ class ZoomProperties(LayoutNode):
         showLabels: Expression | None = None
         showTooltip: Expression | None = None
 
-    properties: _ZoomPropertiesHelper = Field(default_factory=_ZoomPropertiesHelper)
+    properties: _ZoomPropertiesHelper = field(factory=_ZoomPropertiesHelper)
 
 
+@define()
 class BarChartProperties(LayoutNode):
-    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
-    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
-    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
-    layout: list[LayoutProperties] = Field(default_factory=lambda: [LayoutProperties()])
-    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
-    ribbonBands: list[RibbonBandsProperties] = Field(default_factory=lambda: [RibbonBandsProperties()])
-    valueAxis: list[ValueAxisProperties] = Field(default_factory=lambda: [ValueAxisProperties()])
-    xAxisReferenceLine: list[XAxisReferenceLineProperties] = Field(
-        default_factory=lambda: [XAxisReferenceLineProperties()],
+    categoryAxis: list[CategoryAxisProperties] = field(factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
+    general: list[GeneralProperties] = field(factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] = field(factory=lambda: [LabelsProperties()])
+    layout: list[LayoutProperties] = field(factory=lambda: [LayoutProperties()])
+    legend: list[LegendProperties] = field(factory=lambda: [LegendProperties()])
+    ribbonBands: list[RibbonBandsProperties] = field(factory=lambda: [RibbonBandsProperties()])
+    valueAxis: list[ValueAxisProperties] = field(factory=lambda: [ValueAxisProperties()])
+    xAxisReferenceLine: list[XAxisReferenceLineProperties] = field(
+        factory=lambda: [XAxisReferenceLineProperties()],
     )
-    zoom: list[ZoomProperties] = Field(default_factory=lambda: [ZoomProperties()])
+    zoom: list[ZoomProperties] = field(factory=lambda: [ZoomProperties()])
 
 
+@define()
 class BarChart(BaseVisual):
     visualType: str = "barChart"
-    objects: BarChartProperties = Field(default_factory=BarChartProperties)
+    objects: BarChartProperties = field(factory=BarChartProperties)

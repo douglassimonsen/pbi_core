@@ -42,7 +42,7 @@ def get_startup_config() -> PbiCoreStartupConfig:
             logger.info("Loaded startup configuration", path=config_path)
             return cfg
     except FileNotFoundError as e:
-        logger.error("Startup configuration not found", path=config_path)
+        logger.exception("Startup configuration not found", path=config_path)
         msg = textwrap.dedent("""
 
         When loading a pbix file with pbi_core, the package needs one of the following:
