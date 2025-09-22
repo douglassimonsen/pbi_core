@@ -1,6 +1,4 @@
-from typing import Annotated, TypeVar
-
-from git import TYPE_CHECKING
+from typing import TYPE_CHECKING, Annotated, TypeVar
 
 AnyType = TypeVar("AnyType")
 

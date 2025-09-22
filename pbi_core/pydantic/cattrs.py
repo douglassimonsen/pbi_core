@@ -26,18 +26,17 @@ def _structure_union(val: Any, tp: Any) -> Any:
 
     # Without doing a isinstance check first, cattrs will try to coerce strings to bools for instance
     for a in args:
+        if a is None and val is None:
+            return None
         try:
-            if a is None:
-                if val is None:
-                    return None
-            elif isinstance(val, a):
+            if isinstance(val, a):
                 return val
-        except Exception:
-            continue
+        except TypeError:
+            pass
     for a in args:
         try:
             return converter.structure(val, a)
-        except Exception:
+        except (cattrs.ClassValidationError, cattrs.StructureHandlerNotFoundError):
             continue
     raise ValueError(val, tp)
 
@@ -91,13 +90,13 @@ def unstruct_uuid(obj: UUID) -> str:
 
 class SubConverter(cattrs.Converter):
     @staticmethod
-    def _add_original_data(new_obj, old_obj) -> None:
+    def _add_original_data(new_obj: Any, old_obj: Any) -> None:
         if old_obj is None:
             return
         if isinstance(old_obj, str):
             try:
                 old_obj = json.loads(old_obj)
-            except Exception:
+            except json.JSONDecodeError:
                 return
 
         if isinstance(new_obj, list):
@@ -138,11 +137,11 @@ class SubConverter(cattrs.Converter):
                 base[attr.alias] = base_val
 
         ret = {}
-        try:
+        try:  # TODO: make all things have a original_data
             for k in obj._original_data:
                 # we should only have keys that were in the original data or are different from the default
                 ret[k] = base[k]
-        except:
+        except:  # noqa: E722
             return base
         return ret
 

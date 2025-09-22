@@ -1,6 +1,7 @@
 import json
 from typing import TYPE_CHECKING, Any, Self, TypeVar
 
+from attr._make import Attribute
 from attrs import define as _define
 from attrs import field
 
@@ -25,12 +26,17 @@ def define(
 
 class BaseValidation:
     _original_data: Any = field(init=False, repr=False, hash=False, eq=False)
+    __attrs_attrs__: tuple[Attribute, ...]
 
     @classmethod
     def model_validate(cls, data: dict) -> Self:
         from pbi_core.pydantic.cattrs import converter  # noqa: PLC0415
 
         return converter.structure(data, cls)
+
+    @classmethod
+    def model_validate_json(cls, data: str) -> Self:
+        return cls.model_validate(json.loads(data))
 
     def model_dump(self) -> dict:
         from pbi_core.pydantic.cattrs import converter  # noqa: PLC0415

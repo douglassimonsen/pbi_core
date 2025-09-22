@@ -40,8 +40,8 @@ class LayoutNode(BaseValidation):
         Differs from the model_dump_json method in that it does not convert the JSON models back to strings.
         """
         ret = {}
-        for field in self.model_fields:
-            ret[field] = self.serialize_helper(getattr(self, field))
+        for field in self.__attrs_attrs__:
+            ret[field.name] = self.serialize_helper(getattr(self, field.name))
         return ret
 
     def pbi_core_name(self) -> str:
@@ -172,9 +172,9 @@ def _get_xpath(  # noqa: C901  # too complex, but it's actually not that complex
     xpath: list[str | int] | None = None,
 ) -> list[str | int] | None:
     def _xpath_pydantic(parent: LayoutNode, child: LayoutNode, xpath: list[str | int]) -> list[str | int] | None:
-        for attr in parent.__pydantic_fields__:
-            val = getattr(parent, attr)
-            ret = _get_xpath(val, child, xpath=[*xpath, attr])
+        for attr in parent.__attrs_attrs__:
+            val = getattr(parent, attr.name)
+            ret = _get_xpath(val, child, xpath=[*xpath, attr.name])
             if ret is not None:
                 return ret
         return None

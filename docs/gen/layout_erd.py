@@ -5,6 +5,8 @@ import pydantic
 
 from pbi_core.static_files.layout import Layout
 
+from ...pbi_core.pydantic.attrs import BaseValidation  # noqa: TID252
+
 if TYPE_CHECKING:
     from pbi_mermaid import Link, Node
 
@@ -100,7 +102,7 @@ BREAK_NODE_CLASSES = [
 class ERD:
     visited_nodes: set["Node"] = set()
 
-    def helper(self, m: type[pydantic.BaseModel]) -> tuple["Node", set["Node"], set["Link"]]:
+    def helper(self, m: type[BaseValidation]) -> tuple["Node", set["Node"], set["Link"]]:
         from pbi_mermaid import Link, Node  # noqa: PLC0415
 
         if m.__name__ in BREAK_NODE_CLASSES:
@@ -115,15 +117,15 @@ class ERD:
             return head, nodes, links
         self.visited_nodes.add(head)
 
-        for attr_name, attr_type in m.__pydantic_fields__.items():
-            if attr_type.annotation is None:
+        for attr in m.__attrs_attrs__:
+            if attr.type is None:
                 continue
-            for child in unwrap(attr_type.annotation):
+            for child in unwrap(attr.type):
                 if issubclass(child, pydantic.BaseModel):
                     sub_head, sub_nodes, sub_links = self.helper(child)
                     nodes.update(sub_nodes)
                     links.update(sub_links)
-                    links.add(Link(head, sub_head, link_text=attr_name))
+                    links.add(Link(head, sub_head, link_text=attr.name))
 
         return head, nodes, links
 
