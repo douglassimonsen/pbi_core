@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class ServerStateDiscoverBeginColumns(IntEnum):
+class ServerStateDiscoverBeginColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     EVENTSUBCLASS = 1  # Event Subclass provides additional information about each event class: 1: DISCOVER_CONNECTIONS 2: DISCOVER_SESSIONS 3: DISCOVER_TRANSACTIONS 6: DISCOVER_DB_CONNECTIONS 7: DISCOVER_JOBS 8: DISCOVER_LOCKS 12: DISCOVER_PERFORMANCE_COUNTERS 13: DISCOVER_MEMORYUSAGE 14: DISCOVER_JOB_PROGRESS 15: DISCOVER_MEMORYGRANT
     CURRENTTIME = 2  # Contains the current time of the server state discover event, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -21,7 +21,7 @@ class ServerStateDiscoverBeginColumns(IntEnum):
     REQUESTID = 47
 
 
-class ServerStateDiscoverDataColumns(IntEnum):
+class ServerStateDiscoverDataColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     EVENTSUBCLASS = 1  # Event Subclass provides additional information about each event class: 1: DISCOVER_CONNECTIONS 2: DISCOVER_SESSIONS 3: DISCOVER_TRANSACTIONS 6: DISCOVER_DB_CONNECTIONS 7: DISCOVER_JOBS 8: DISCOVER_LOCKS 12: DISCOVER_PERFORMANCE_COUNTERS 13: DISCOVER_MEMORYUSAGE 14: DISCOVER_JOB_PROGRESS 15: DISCOVER_MEMORYGRANT
     CURRENTTIME = 2  # Contains the current time of the server state discover event, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -33,7 +33,7 @@ class ServerStateDiscoverDataColumns(IntEnum):
     SERVERNAME = 43  # Contains the name of the instance on which the server state discover event occurred.
 
 
-class ServerStateDiscoverEndColumns(IntEnum):
+class ServerStateDiscoverEndColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     EVENTSUBCLASS = 1  # Event Subclass provides additional information about each event class: 1: DISCOVER_CONNECTIONS 2: DISCOVER_SESSIONS 3: DISCOVER_TRANSACTIONS 6: DISCOVER_DB_CONNECTIONS 7: DISCOVER_JOBS 8: DISCOVER_LOCKS 12: DISCOVER_PERFORMANCE_COUNTERS 13: DISCOVER_MEMORYUSAGE 14: DISCOVER_JOB_PROGRESS 15: DISCOVER_MEMORYGRANT
     CURRENTTIME = 2  # Contains the current time of the server state discover event, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.

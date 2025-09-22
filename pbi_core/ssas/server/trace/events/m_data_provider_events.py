@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class ExecuteSourceQueryColumns(IntEnum):
+class ExecuteSourceQueryColumns(Enum):
     EVENTCLASS = 0
     CURRENTTIME = 2
     STARTTIME = 3

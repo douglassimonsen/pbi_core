@@ -1,5 +1,5 @@
 import datetime
-from enum import IntEnum
+from enum import Enum
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 from pbi_core.lineage import LineageNode
 
 
-class Kind(IntEnum):
+class Kind(Enum):
     M = 0
 
 

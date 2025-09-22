@@ -1,11 +1,11 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class PolicyType(IntEnum):
+class PolicyType(Enum):
     BASIC = 0
 
 
-class Granularity(IntEnum):
+class Granularity(Enum):
     INVALID = -1
     DAY = 0
     MONTH = 1
@@ -13,6 +13,6 @@ class Granularity(IntEnum):
     YEAR = 3
 
 
-class RefreshMode(IntEnum):
+class RefreshMode(Enum):
     IMPORT = 0
     HYBRID = 1

@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class AuditLoginColumns(IntEnum):
+class AuditLoginColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -20,7 +20,7 @@ class AuditLoginColumns(IntEnum):
     REQUESTID = 47
 
 
-class AuditLogoutColumns(IntEnum):
+class AuditLogoutColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     ENDTIME = 4  # Time at which the event ended. This column is not populated for starting event classes, such as SQL:BatchStarting or SP:Starting. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -39,7 +39,7 @@ class AuditLogoutColumns(IntEnum):
     REQUESTID = 47
 
 
-class AuditServerStartsAndStopsColumns(IntEnum):
+class AuditServerStartsAndStopsColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     EVENTSUBCLASS = 1  # Event Subclass provides additional information about each event class: 1: Instance Shutdown 2: Instance Started 3: Instance Paused 4: Instance Continued
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -52,7 +52,7 @@ class AuditServerStartsAndStopsColumns(IntEnum):
     REQUESTID = 47
 
 
-class AuditObjectPermissionEventColumns(IntEnum):
+class AuditObjectPermissionEventColumns(Enum):
     OBJECTID = 11  # Object ID (note this is a string).
     OBJECTTYPE = 12  # Object type.
     OBJECTNAME = 13  # Object name.
@@ -77,7 +77,7 @@ class AuditObjectPermissionEventColumns(IntEnum):
     REQUESTID = 47
 
 
-class AuditAdminOperationsEventColumns(IntEnum):
+class AuditAdminOperationsEventColumns(Enum):
     EVENTSUBCLASS = 1  # Event Subclass provides additional information about each event class: 1: Backup 2: Restore 3: Synchronize 4: Detach 5: Attach 6: ImageLoad 7: ImageSave
     SEVERITY = 22  # Severity level of an exception.
     SUCCESS = 23  # 1 = success. 0 = failure (for example, a 1 means success of a permissions check and a 0 means a failure of that check).

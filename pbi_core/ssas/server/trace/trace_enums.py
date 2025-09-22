@@ -1,6 +1,6 @@
 # C:\Program Files\Microsoft SQL Server\MSAS16.MSSQLSERVER\OLAP\bin\Resources\1033\tracedefinition.xml
 # ruff: noqa: E501
-from enum import IntEnum
+from enum import Enum
 
 from .events.command_events import CommandBeginColumns, CommandEndColumns
 from .events.discover_events import DiscoverBeginColumns, DiscoverEndColumns
@@ -71,7 +71,7 @@ from .events.security_audit import (
 from .events.sessions import ExistingConnectionColumns, ExistingSessionColumns, SessionInitializeColumns
 
 
-class TraceEvents(IntEnum):
+class TraceEvents(Enum):
     AUDIT_LOGIN = 1  # Collects all new connection events since the trace was started, such as when a client requests a connection to a server running an instance of SQL Server.
     AUDIT_LOGOUT = 2  # Collects all new disconnect events since the trace was started, such as when a client issues a disconnect command.
     AUDIT_SERVER_STARTS_AND_STOPS = 4  # Records service shut down, start, and pause activities.
@@ -161,11 +161,11 @@ class TraceEvents(IntEnum):
     JOB_GRAPH = 134  # Collection of Job Graph related events.
     EXECUTION_METRICS = 136
 
-    def get_columns(self) -> type[IntEnum]:
+    def get_columns(self) -> type[Enum]:
         return event_column_mapping[self]
 
 
-event_column_mapping: dict[TraceEvents, type[IntEnum]] = {
+event_column_mapping: dict[TraceEvents, type[Enum]] = {
     TraceEvents.AGGREGATE_TABLE_REWRITE_INFO: AggregateTableRewriteInfoColumns,
     TraceEvents.AGGREGATE_TABLE_REWRITE_QUERY: AggregateTableRewriteQueryColumns,
     TraceEvents.AUDIT_ADMIN_OPERATIONS_EVENT: AuditAdminOperationsEventColumns,

@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class WlgroupCpuThrottlingColumns(IntEnum):
+class WlgroupCpuThrottlingColumns(Enum):
     EVENTCLASS = 0
     CURRENTTIME = 2
     INTEGERDATA = 10
@@ -12,7 +12,7 @@ class WlgroupCpuThrottlingColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class WlgroupExceedsMemoryLimitColumns(IntEnum):
+class WlgroupExceedsMemoryLimitColumns(Enum):
     EVENTCLASS = 0
     CURRENTTIME = 2
     STARTTIME = 3
@@ -25,7 +25,7 @@ class WlgroupExceedsMemoryLimitColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class WlgroupExceedsProcessingLimitColumns(IntEnum):
+class WlgroupExceedsProcessingLimitColumns(Enum):
     EVENTCLASS = 0
     CURRENTTIME = 2
     INTEGERDATA = 10

@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class ImpersonationMode(IntEnum):
+class ImpersonationMode(Enum):
     DEFAULT = 1
     IMPERSONATE_ACCOUNT = 2
     IMPERSONATE_ANONYMOUS = 3
@@ -10,11 +10,11 @@ class ImpersonationMode(IntEnum):
     IMPERSONATE_UNATTENDED_ACCOUNT = 6
 
 
-class DataSourceType(IntEnum):
+class DataSourceType(Enum):
     PROVIDER = 1
     STRUCTURED = 2
 
 
-class Isolation(IntEnum):
+class Isolation(Enum):
     READ_COMMITTED = 1
     SNAPSHOT = 2

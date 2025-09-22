@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class CommandBeginColumns(IntEnum):
+class CommandBeginColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
@@ -28,7 +28,7 @@ class CommandBeginColumns(IntEnum):
     IDENTITY = 55
 
 
-class CommandEndColumns(IntEnum):
+class CommandEndColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2

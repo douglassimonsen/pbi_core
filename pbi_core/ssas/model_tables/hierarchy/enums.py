@@ -1,6 +1,6 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class HideMembers(IntEnum):
+class HideMembers(Enum):
     DEFAULT = 0
     HIDE_BLANK_MEMBERS = 1

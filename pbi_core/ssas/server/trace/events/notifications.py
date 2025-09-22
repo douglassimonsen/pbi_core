@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class NotificationColumns(IntEnum):
+class NotificationColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     EVENTSUBCLASS = 1  # Event Subclass provides additional information about each event class. The following Sub Class Id: Sub Class Name pairs are defined: 0: Proactive Caching Begin 1: Proactive Caching End 2: Flight Recorder Started 3: Flight Recorder Stopped 4: Configuration Properties Updated 5: SQL Trace 6: Object Created 7: Object Deleted 8: Object Altered 9: Proactive Caching Polling Begin 10: Proactive Caching Polling End 11: Flight Recorder Snapshot Begin 12: Flight Recorder Snapshot End 13: Proactive Caching: notifiable object updated 14: Lazy Processing: start processing 15: Lazy Processing: processing complete 16: SessionOpened Event Begin 17: SessionOpened Event End 18: SessionClosing Event Begin 19: SessionClosing Event End 20: CubeOpened Event Begin 21: CubeOpened Event End 22: CubeClosing Event Begin 23: CubeClosing Event End 24: Transaction abort requested
     CURRENTTIME = 2  # Contains the current time of the notification event, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -28,7 +28,7 @@ class NotificationColumns(IntEnum):
     REQUESTID = 47
 
 
-class UserDefinedColumns(IntEnum):
+class UserDefinedColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     EVENTSUBCLASS = 1  # A specific user event subclass that provides additional information about each event class.
     CURRENTTIME = 2  # Contains the current time of the notification event, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.

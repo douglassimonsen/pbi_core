@@ -1,5 +1,5 @@
 import datetime
-from enum import IntEnum, StrEnum
+from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal
 
 from attrs import field
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.culture import Culture
 
 
-class ContentType(IntEnum):
+class ContentType(Enum):
     Xml = 0
     Json = 1
 
@@ -34,7 +34,7 @@ class EntityDefinition(BaseValidation):
     Binding: EntityDefinitionBinding
 
 
-class TermSourceType(StrEnum):
+class TermSourceType(Enum):
     External = "External"
 
 
@@ -44,13 +44,13 @@ class TermSource(BaseValidation):
     Agent: str
 
 
-class TermDefinitionState(StrEnum):
+class TermDefinitionState(Enum):
     Suggested = "Suggested"
     Generated = "Generated"
     Deleted = "Deleted"
 
 
-class TermDefinitionType(StrEnum):
+class TermDefinitionType(Enum):
     Noun = "Noun"
 
 
@@ -63,11 +63,11 @@ class TermDefinition(BaseValidation):
     LastModified: datetime.datetime | None = None
 
 
-class VisibilityValue(StrEnum):
+class VisibilityValue(Enum):
     Hidden = "Hidden"
 
 
-class VisibilityState(StrEnum):
+class VisibilityState(Enum):
     Authored = "Authored"
 
 
@@ -77,7 +77,7 @@ class VisibilityType(BaseValidation):
     State: VisibilityState | None = None
 
 
-class NameTypeType(StrEnum):
+class NameTypeType(Enum):
     Identifier = "Identifier"
     Name = "Name"
 
@@ -106,7 +106,7 @@ class PhrasingAttributeRole(BaseValidation):
     Role: str
 
 
-class RelationshipPhrasingState(StrEnum):
+class RelationshipPhrasingState(Enum):
     Generated = "Generated"
 
 
@@ -156,7 +156,7 @@ class SemanticSlot(BaseValidation):
     When: PhrasingAttributeRole | None = None
 
 
-class ConditionOperator(StrEnum):
+class ConditionOperator(Enum):
     Equals = "Equals"
     GreaterThan = "GreaterThan"
 

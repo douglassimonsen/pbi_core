@@ -1,14 +1,14 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class Alignment(IntEnum):
+class Alignment(Enum):
     DEFAULT = 1
     LEFT = 2
     RIGHT = 3
     CENTER = 4
 
 
-class PropertyType(IntEnum):
+class PropertyType(Enum):
     """Source: https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b."""
 
     INVALID = -1
@@ -261,7 +261,7 @@ class PropertyType(IntEnum):
     EXTENDED_TYPE = 248
 
 
-class SummarizedBy(IntEnum):
+class SummarizedBy(Enum):
     DEFAULT = 1
     _NONE = 2
     SUM = 3
@@ -272,7 +272,7 @@ class SummarizedBy(IntEnum):
     COUNT_DISTINCT = 8
 
 
-class ColumnType(IntEnum):
+class ColumnType(Enum):
     DATA = 1
     """A standard column"""
 
@@ -285,7 +285,7 @@ class ColumnType(IntEnum):
     CALCULATED_TABLE_COLUMN = 4
 
 
-class EncodingHint(IntEnum):
+class EncodingHint(Enum):
     DEFAULT = 0
     HASH = 1
     VALUE = 2

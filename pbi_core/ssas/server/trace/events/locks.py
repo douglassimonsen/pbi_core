@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class DeadlockColumns(IntEnum):
+class DeadlockColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     DATABASENAME = 28  # Name of the database in which the statement of the user is running.
@@ -11,7 +11,7 @@ class DeadlockColumns(IntEnum):
     REQUESTID = 47
 
 
-class LockTimeoutColumns(IntEnum):
+class LockTimeoutColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -32,7 +32,7 @@ class LockTimeoutColumns(IntEnum):
     REQUESTID = 47
 
 
-class LockAcquiredColumns(IntEnum):
+class LockAcquiredColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     CONNECTIONID = 25  # Unique connection ID.
@@ -50,7 +50,7 @@ class LockAcquiredColumns(IntEnum):
     REQUESTID = 47
 
 
-class LockReleasedColumns(IntEnum):
+class LockReleasedColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     CONNECTIONID = 25  # Unique connection ID.
@@ -68,7 +68,7 @@ class LockReleasedColumns(IntEnum):
     REQUESTID = 47
 
 
-class LockWaitingColumns(IntEnum):
+class LockWaitingColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     CONNECTIONID = 25  # Unique connection ID.

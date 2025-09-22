@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class ModelPermission(IntEnum):
+class ModelPermission(Enum):
     _NONE = 1
     READ = 2
     READ_REFRESH = 3

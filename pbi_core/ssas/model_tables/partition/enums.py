@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class PartitionMode(IntEnum):
+class PartitionMode(Enum):
     """Source: [Microsoft](https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions)."""
 
     IMPORT = 0
@@ -10,7 +10,7 @@ class PartitionMode(IntEnum):
     PUSH = 3
 
 
-class PartitionType(IntEnum):
+class PartitionType(Enum):
     """Source: [Microsoft](https://learn.microsoft.com/en-us/analysis-services/tmsl/partitions-object-tmsl?view=asallproducts-allversions)."""
 
     QUERY = 1
@@ -21,7 +21,7 @@ class PartitionType(IntEnum):
     CALCULATION_GROUP = 7
 
 
-class DataView(IntEnum):
+class DataView(Enum):
     FULL = 0
     SAMPLE = 1
     DEFAULT = 3

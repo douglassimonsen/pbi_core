@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class FileLoadBeginColumns(IntEnum):
+class FileLoadBeginColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -21,7 +21,7 @@ class FileLoadBeginColumns(IntEnum):
     REQUESTID = 47
 
 
-class FileLoadEndColumns(IntEnum):
+class FileLoadEndColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -47,7 +47,7 @@ class FileLoadEndColumns(IntEnum):
     REQUESTID = 47
 
 
-class FileSaveBeginColumns(IntEnum):
+class FileSaveBeginColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -67,7 +67,7 @@ class FileSaveBeginColumns(IntEnum):
     REQUESTID = 47
 
 
-class FileSaveEndColumns(IntEnum):
+class FileSaveEndColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -93,7 +93,7 @@ class FileSaveEndColumns(IntEnum):
     REQUESTID = 47
 
 
-class PageOutBeginColumns(IntEnum):
+class PageOutBeginColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -113,7 +113,7 @@ class PageOutBeginColumns(IntEnum):
     REQUESTID = 47
 
 
-class PageOutEndColumns(IntEnum):
+class PageOutEndColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -139,7 +139,7 @@ class PageOutEndColumns(IntEnum):
     REQUESTID = 47
 
 
-class PageInBeginColumns(IntEnum):
+class PageInBeginColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -159,7 +159,7 @@ class PageInBeginColumns(IntEnum):
     REQUESTID = 47
 
 
-class PageInEndColumns(IntEnum):
+class PageInEndColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.

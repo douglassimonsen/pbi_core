@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class ErrorColumns(IntEnum):
+class ErrorColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     STARTTIME = 3  # Contains the time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     SESSIONTYPE = 8  # Contains the type of the entity that caused the error.

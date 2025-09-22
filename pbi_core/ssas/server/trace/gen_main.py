@@ -13,7 +13,7 @@ SEP = "\n" * 3
 
 def gen_trace_enums(class_name: str, url: str) -> str:
     logger.info("Processing Events")
-    ret = [f"class {class_name}(IntEnum):"]
+    ret = [f"class {class_name}(Enum):"]
     page = requests.get(BASE_URL + url, timeout=10)
     content = bs4.BeautifulSoup(page.content, features="lxml")
     for table in content.find_all("table"):
@@ -36,7 +36,7 @@ def gen_event_enums(url: str) -> str:
     tables = content.find_all("table")
     tables = tables[len(tables) - len(headers) :]
     for header, table in zip(headers, tables, strict=False):
-        ret2 = [f"class {header}(IntEnum):"]
+        ret2 = [f"class {header}(Enum):"]
         if table.find("tr").find("th").text != "Column Name":  # pyright: ignore reportAttributeAccessIssue
             continue
         for row in list(table.find_all("tr"))[1:]:  # pyright: ignore reportAttributeAccessIssue
@@ -48,7 +48,7 @@ def gen_event_enums(url: str) -> str:
 
 
 with (Path(__file__).parent / "trace_enums.py").open("w", encoding="utf-8") as f:
-    f.write("from enum import IntEnum" + SEP)
+    f.write("from enum import Enum" + SEP)
     f.write(gen_trace_enums("TraceEvents", "/analysis-services-trace-events"))
     # f.write(gen_event_enums("/command-events-data-columns"))
     f.write(gen_event_enums("/discover-events-data-columns"))

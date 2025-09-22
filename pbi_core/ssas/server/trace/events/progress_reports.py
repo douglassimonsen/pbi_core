@@ -1,17 +1,17 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class ProgressReportBeginColumns(IntEnum):
+class ProgressReportBeginColumns(Enum):
     pass
 
 
-class ProgressReportEndColumns(IntEnum):
+class ProgressReportEndColumns(Enum):
     pass
 
 
-class ProgressReportCurrentColumns(IntEnum):
+class ProgressReportCurrentColumns(Enum):
     pass
 
 
-class ProgressReportErrorColumns(IntEnum):
+class ProgressReportErrorColumns(Enum):
     pass

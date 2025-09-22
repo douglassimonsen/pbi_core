@@ -1,7 +1,7 @@
-from enum import Enum, IntEnum
+from enum import Enum
 
 
-class DataState(IntEnum):
+class DataState(Enum):
     """Source: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/93d1844f-a6c7-4dda-879b-2e26ed5cd297)."""
 
     READY = 1
@@ -46,7 +46,7 @@ class ObjectType(Enum):
     QUERY_GROUP = 51
 
 
-class DataType(IntEnum):
+class DataType(Enum):
     """Source: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b)."""
 
     AUTOMATIC = 1

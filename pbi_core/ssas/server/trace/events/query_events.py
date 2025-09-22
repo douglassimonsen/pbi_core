@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class QueryBeginColumns(IntEnum):
+class QueryBeginColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     EVENTSUBCLASS = 1  # Event Subclass provides additional information about each event class. 0: MDXQuery 1: DMXQuery 2: SQLQuery 3: DAXQuery
     CURRENTTIME = 2  # Contains the current time of the event, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
@@ -25,7 +25,7 @@ class QueryBeginColumns(IntEnum):
     REQUESTID = 47
 
 
-class QueryEndColumns(IntEnum):
+class QueryEndColumns(Enum):
     EVENTCLASS = 0  # Event Class is used to categorize events.
     EVENTSUBCLASS = 1  # Event Subclass provides additional information about each event class. 0: MDXQuery 1: DMXQuery 2: SQLQuery 3: DAXQuery
     CURRENTTIME = 2  # Contains the current time of the event, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.

@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class VertipaqSeQueryBeginColumns(IntEnum):
+class VertipaqSeQueryBeginColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
@@ -30,7 +30,7 @@ class VertipaqSeQueryBeginColumns(IntEnum):
     IDENTITY = 55
 
 
-class VertipaqSeQueryEndColumns(IntEnum):
+class VertipaqSeQueryEndColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
@@ -68,7 +68,7 @@ class VertipaqSeQueryEndColumns(IntEnum):
     IDENTITY = 55
 
 
-class VertipaqSeQueryCacheMissColumns(IntEnum):
+class VertipaqSeQueryCacheMissColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
@@ -96,7 +96,7 @@ class VertipaqSeQueryCacheMissColumns(IntEnum):
     IDENTITY = 55
 
 
-class VertipaqSeQueryCacheMatchColumns(IntEnum):
+class VertipaqSeQueryCacheMatchColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
@@ -124,7 +124,7 @@ class VertipaqSeQueryCacheMatchColumns(IntEnum):
     IDENTITY = 55
 
 
-class CalculationEvaluationColumns(IntEnum):
+class CalculationEvaluationColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
@@ -148,7 +148,7 @@ class CalculationEvaluationColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class CalculationEvaluationDetailedInformationColumns(IntEnum):
+class CalculationEvaluationDetailedInformationColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
@@ -172,7 +172,7 @@ class CalculationEvaluationDetailedInformationColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class DaxQueryPlanColumns(IntEnum):
+class DaxQueryPlanColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
@@ -196,7 +196,7 @@ class DaxQueryPlanColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class DaxExtensionExecutionBeginColumns(IntEnum):
+class DaxExtensionExecutionBeginColumns(Enum):
     EVENTCLASS = 0
     CURRENTTIME = 2
     INTEGERDATA = 10
@@ -209,7 +209,7 @@ class DaxExtensionExecutionBeginColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class DaxExtensionExecutionEndColumns(IntEnum):
+class DaxExtensionExecutionEndColumns(Enum):
     EVENTCLASS = 0
     CURRENTTIME = 2
     STARTTIME = 3
@@ -230,7 +230,7 @@ class DaxExtensionExecutionEndColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class DaxExtensionTraceErrorColumns(IntEnum):
+class DaxExtensionTraceErrorColumns(Enum):
     EVENTCLASS = 0
     CURRENTTIME = 2
     INTEGERDATA = 10
@@ -243,7 +243,7 @@ class DaxExtensionTraceErrorColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class DaxExtensionTraceInfoColumns(IntEnum):
+class DaxExtensionTraceInfoColumns(Enum):
     EVENTCLASS = 0
     CURRENTTIME = 2
     INTEGERDATA = 10
@@ -256,7 +256,7 @@ class DaxExtensionTraceInfoColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class DaxExtensionTraceVerboseColumns(IntEnum):
+class DaxExtensionTraceVerboseColumns(Enum):
     EVENTCLASS = 0
     CURRENTTIME = 2
     INTEGERDATA = 10
@@ -269,7 +269,7 @@ class DaxExtensionTraceVerboseColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class AggregateTableRewriteQueryColumns(IntEnum):
+class AggregateTableRewriteQueryColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
@@ -296,7 +296,7 @@ class AggregateTableRewriteQueryColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class AggregateTableRewriteInfoColumns(IntEnum):
+class AggregateTableRewriteInfoColumns(Enum):
     EVENTCLASS = 0
     CURRENTTIME = 2
     STARTTIME = 3
@@ -318,7 +318,7 @@ class AggregateTableRewriteInfoColumns(IntEnum):
     APPLICATIONCONTEXT = 52
 
 
-class QuerySubcubeColumns(IntEnum):
+class QuerySubcubeColumns(Enum):
     EVENTCLASS = 0
     EVENTSUBCLASS = 1
     CURRENTTIME = 2
@@ -341,7 +341,7 @@ class QuerySubcubeColumns(IntEnum):
     IDENTITY = 55
 
 
-class DirectQueryBeginColumns(IntEnum):
+class DirectQueryBeginColumns(Enum):
     EVENTCLASS = 0
     CURRENTIME = 2
     STARTTIME = 3
@@ -374,7 +374,7 @@ class DirectQueryBeginColumns(IntEnum):
     IDENTITY = 55
 
 
-class DirectQueryEndColumns(IntEnum):
+class DirectQueryEndColumns(Enum):
     EVENTCLASS = 0
     CURRENTIME = 2
     STARTTIME = 3
@@ -407,7 +407,7 @@ class DirectQueryEndColumns(IntEnum):
     IDENTITY = 55
 
 
-class ExecutionMetricsColumns(IntEnum):
+class ExecutionMetricsColumns(Enum):
     EVENTCLASS = 0
     DATABASENAME = 28
     APPLICATIONNAME = 37

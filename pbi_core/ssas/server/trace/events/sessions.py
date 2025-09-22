@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class ExistingConnectionColumns(IntEnum):
+class ExistingConnectionColumns(Enum):
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     CONNECTIONID = 25  # Unique connection ID.
@@ -16,7 +16,7 @@ class ExistingConnectionColumns(IntEnum):
     REQUESTID = 47
 
 
-class ExistingSessionColumns(IntEnum):
+class ExistingSessionColumns(Enum):
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     DURATION = 5  # Amount of time (in milliseconds) taken by the event.
@@ -37,7 +37,7 @@ class ExistingSessionColumns(IntEnum):
     REQUESTID = 47
 
 
-class SessionInitializeColumns(IntEnum):
+class SessionInitializeColumns(Enum):
     CURRENTTIME = 2  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     STARTTIME = 3  # Time at which the event started, when available. For filtering, expected formats are 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS'.
     CONNECTIONID = 25  # Unique connection ID.

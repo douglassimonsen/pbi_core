@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class Property(IntEnum):
+class Property(Enum):
     INVALID = -1
     CAPTION = 1
     DESCRIPTION = 2
