@@ -21,6 +21,7 @@ from .visuals.properties.base import Expression
 if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
 
+    from .section import Section
     from .visuals.base import BaseVisual
 
 
@@ -502,6 +503,8 @@ class VisualContainer(LayoutNode):
     queryHash: int | None = None
     filters: Json[list[VisualFilter]] = field(factory=list, repr=repr_len)
     config: Json[VisualConfig] = field(repr=False)
+
+    _section: "Section | None" = field(init=False, repr=False, hash=False, eq=False, default=None)
 
     id: int | None = None
 

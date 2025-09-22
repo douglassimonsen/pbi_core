@@ -143,6 +143,10 @@ class Layout(LayoutNode):
     pods: list[Pod] = field(factory=list, repr=repr_len)
     publicCustomVisuals: list[PublicCustomVisual] = field(factory=list, repr=repr_len)
 
+    def __attrs_post_init__(self) -> None:
+        for viz in self.sections:
+            viz._layout = self
+
     def pbi_core_name(self) -> str:  # noqa: PLR6301
         return "Layout"
 

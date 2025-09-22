@@ -22,6 +22,7 @@ from .enums import (
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
+    from pbi_core.static_files.layout.layout import Layout
 
 
 @define()
@@ -61,6 +62,12 @@ class Section(LayoutNode):
     """Additional information to be saved (for example comments, readme, etc) for this page."""
     howCreated: PageHowCreated | None = None
     """Source of creation of this page."""
+
+    _layout: "Layout | None" = field(init=False, repr=False, hash=False, eq=False, default=None)
+
+    def __attrs_post_init__(self) -> None:
+        for viz in self.visualContainers:
+            viz._section = self
 
     def pbi_core_name(self) -> str:
         return self.name
