@@ -1,7 +1,8 @@
 import json
-from typing import TYPE_CHECKING, Self, TypeVar
+from typing import TYPE_CHECKING, Any, Self, TypeVar
 
 from attrs import define as _define
+from attrs import field
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -23,6 +24,8 @@ def define(
 
 
 class BaseValidation:
+    _original_data: Any = field(init=False, repr=False, hash=False, eq=False)
+
     @classmethod
     def model_validate(cls, data: dict) -> Self:
         from pbi_core.pydantic.cattrs import converter  # noqa: PLC0415
