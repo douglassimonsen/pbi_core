@@ -100,14 +100,6 @@ class LayoutNode(BaseValidation):
                 ret.append(child_candidate)
         return ret
 
-    def __str__(self) -> str:
-        if self._name_field is not None:
-            name = getattr(self, self._name_field)
-            if callable(name):
-                name = name()
-            return f"{self.__class__.__name__}({name})"
-        return super().__str__()
-
     def get_lineage(
         self,
         lineage_type: Literal["children", "parents"],
@@ -158,12 +150,6 @@ class LayoutNode(BaseValidation):
             msg = f"Node {self.pbi_core_name()} not found in parent {parent.pbi_core_name()}"
             raise ValueError(msg)
         return ret
-
-    def pprint(self, indent: int = 4) -> None:
-        ret = self.model_dump_json(indent=indent)
-        ret = ret.replace('"', "").replace(":", "=").replace("{", "(").replace("}", ")")
-        ret = self.__class__.__name__ + ret
-        print(ret)
 
 
 def _get_xpath(  # noqa: C901  # too complex, but it's actually not that complex

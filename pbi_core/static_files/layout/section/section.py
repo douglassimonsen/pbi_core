@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID
 
+from attrs import field
 from pydantic import Json
 
 from pbi_core.lineage.main import LineageNode
@@ -31,11 +32,11 @@ class Section(LayoutNode):
     """Width of the page (in pixels) - optional only for 'DeprecatedDynamic' option, required otherwise."""
     displayOption: DisplayOption
     """Defines how the page is scaled."""
-    config: Json[SectionConfig]
+    config: Json[SectionConfig] = field(repr=False)
     objectId: UUID | None = None
-    visualContainers: list[VisualContainer]
+    visualContainers: list[VisualContainer] = field(repr=lambda x: str(len(x)))
     ordinal: int = 0
-    filters: Json[list[PageFilter]]
+    filters: Json[list[PageFilter]] = field(repr=lambda x: str(len(x)))
     """Filters that apply to all the visuals on this page - on top of the filters defined for the whole report."""
     displayName: str
     """A user facing name for this page."""
@@ -43,7 +44,7 @@ class Section(LayoutNode):
     name: str
     """A unique identifier for the page across the whole report."""
     id: int | None = None
-    pageBinding: PageBinding | None = None
+    pageBinding: PageBinding | None = field(repr=False, default=None)
     """Additional metadata defined for how this page is used (tooltip, drillthrough, etc)."""
     """Defines the formatting for different objects on a page."""
     type: PageType | None = None
@@ -56,7 +57,7 @@ class Section(LayoutNode):
     autoPageGenerationConfig: AutoPageGenerationConfig | None = None
     """Configuration that was used to automatically generate a page (for example using 'Auto create the report'
     option)."""
-    annotations: list[Annotation] | None = None
+    annotations: list[Annotation] | None = field(repr=lambda x: str(len(x or [])), default=None)
     """Additional information to be saved (for example comments, readme, etc) for this page."""
     howCreated: PageHowCreated | None = None
     """Source of creation of this page."""
