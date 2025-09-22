@@ -1,8 +1,9 @@
 import datetime
 from typing import TYPE_CHECKING, Literal
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.server._commands import RenameCommands
@@ -13,6 +14,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.model import Model
 
 
+@define()
 class Culture(SsasRenameRecord):
     """TBD.
 
@@ -26,7 +28,7 @@ class Culture(SsasRenameRecord):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.culture)
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.culture, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

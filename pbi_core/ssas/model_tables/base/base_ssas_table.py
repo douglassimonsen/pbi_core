@@ -1,11 +1,11 @@
-from typing import Any, ClassVar, Literal
+from typing import Any, ClassVar, Literal, Self
 
-import pydantic
+from attrs import field
 from bs4 import BeautifulSoup
 from structlog import get_logger
 
+from pbi_core.attrs import BaseValidation, define
 from pbi_core.lineage import LineageNode
-from pbi_core.attrs.pydantic import BaseValidation
 from pbi_core.ssas.model_tables._group import IdBase
 from pbi_core.ssas.server._commands import Command
 from pbi_core.ssas.server.tabular_model import BaseTabularModel
@@ -14,10 +14,12 @@ from pbi_core.ssas.server.utils import ROW_TEMPLATE, python_to_xml
 logger = get_logger()
 
 
+@define()
 class SsasTable(BaseValidation, IdBase):
-    id: int = pydantic.Field(frozen=True)
+    id: int
+    """Unique identifier of the object."""
 
-    tabular_model: BaseTabularModel
+    tabular_model: BaseTabularModel = field(repr=False, eq=False, hash=False, init=False)
     _read_only_fields: ClassVar[tuple[str, ...]] = ()
 
     _db_field_names: ClassVar[dict[str, str]] = {}
@@ -46,8 +48,8 @@ class SsasTable(BaseValidation, IdBase):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.id}: {self.pbi_core_name()})"
 
-    @pydantic.model_validator(mode="before")
-    def to_snake_case(cls: "SsasTable", raw_values: dict[str, Any]) -> dict[str, Any]:  # noqa: N805
+    @classmethod
+    def to_snake_case(cls: type[Self], raw_values: dict[str, Any]) -> dict[str, Any]:
         """Converts SnakeCase to snake_case.
 
         If a "special_cases" example appears, that transformation is applied.
@@ -78,6 +80,10 @@ class SsasTable(BaseValidation, IdBase):
                 cls._db_field_names[formatted_field_name] = field_name
             ret[formatted_field_name] = field_value
         return ret
+
+    @classmethod
+    def pre_attrs(cls, raw_values: dict[str, Any]) -> dict[str, Any]:
+        return cls.to_snake_case(raw_values)
 
     def query_dax(self, query: str, db_name: str | None = None) -> None:
         """Helper function to remove the ``.tabular_model.server`` required to run a DAX query from an SSAS element."""

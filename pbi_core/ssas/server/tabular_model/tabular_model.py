@@ -152,22 +152,22 @@ class BaseTabularModel:
         schema = discover_xml_to_dict(xml_schema)
         for field_name, type_instance in FIELD_TYPES.items():
             if field_name == "model":
+                formatted_row = type_instance.pre_attrs(schema[type_instance._db_type_name()][0])
                 obj = type_instance.model_validate({
-                    **schema[type_instance._db_type_name()][0],
-                    "_tabular_model": self,
+                    **formatted_row,
                 })
+                obj.tabular_model = self
                 setattr(self, field_name, obj)
             else:
-                objects = Group([
-                    type_instance.model_validate({**row, "_tabular_model": self})
-                    for row in schema[type_instance._db_type_name()]
-                ])
-                setattr(self, field_name, objects)
-
+                group = []
                 self._remote_state.setdefault(field_name, {})
-                for obj in objects:
-                    self._remote_state[field_name][obj.id] = obj.modification_hash()
-        logger.info("Completed sync from SSAS", fields=len(self._remote_state))
+                for row in schema[type_instance._db_type_name()]:
+                    formatted_row = type_instance.pre_attrs(row)
+                    e = type_instance.model_validate({**formatted_row})
+                    e.tabular_model = self
+                    self._remote_state[field_name][e.id] = e.modification_hash()
+                    group.append(e)
+                setattr(self, field_name, Group(group))
 
     def sync_to(self) -> Update:
         from pbi_core.ssas.model_tables.base.ssas_tables import SsasAlter  # noqa: PLC0415
@@ -267,18 +267,32 @@ class LocalTabularModel(BaseTabularModel):
         self.server.save_pbix(path, self.db_name)  # pyright: ignore reportAttributeAccessIssue  # the server is always a local server in this case
 
 
+def parse_schema(xml: bs4.BeautifulSoup) -> dict[str, str | int]:
+    schema = {}
+    for prop in xml.find("xsd:complexType", {"name": "row"}).find_all("xsd:element"):  # pyright: ignore[reportOptionalMemberAccess, reportAttributeAccessIssue]
+        if prop["type"] in {"xsd:unsignedLong", "xsd:int", "xsd:long"}:  # pyright: ignore[reportArgumentType, reportIndexIssue]
+            schema[prop["name"]] = int  # pyright: ignore[reportIndexIssue, reportArgumentType]
+        elif prop["type"] == "xsd:boolean":  # pyright: ignore[reportArgumentType, reportIndexIssue]
+            schema[prop["name"]] = lambda b: b == "true"  # pyright: ignore[reportIndexIssue, reportArgumentType]
+    return schema
+
+
 def discover_xml_to_dict(xml: bs4.BeautifulSoup) -> dict[str, list[dict[Any, Any]]]:
     """Converts the results of the Discover XML to a dictionary to make downstream transformations more convenient."""
     assert xml.results is not None
     results = cast("list[bs4.element.Tag]", list(xml.results))
     results[-1]["name"] = "CalcDependency"
-    ret = {
-        cast("str", table["name"]): [
-            {field.name: field.text for field in row if field.name is not None}  # pyright: ignore reportGeneralTypeIssues
+
+    ret = {}
+    for table in results:
+        schema = parse_schema(table)  # pyright: ignore[reportArgumentType]
+        name: str = table["name"]  # pyright: ignore[reportAssignmentType]
+        table_results = [
+            {field.name: schema.get(field.name, lambda x: x)(field.text) for field in row if field.name is not None}  # pyright: ignore reportGeneralTypeIssues
             for row in table.find_all("row")
         ]
-        for table in results
-    }
+
+        ret[name] = table_results
     for i, row in enumerate(ret["CalcDependency"]):
         row["id"] = i
     return ret

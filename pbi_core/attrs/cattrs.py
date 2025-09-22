@@ -1,5 +1,7 @@
+import datetime
 import json
 from collections.abc import Callable
+from enum import Enum
 from types import UnionType
 from typing import Any, TypeVar, Union, get_args, get_origin
 from uuid import UUID
@@ -88,6 +90,27 @@ def unstruct_uuid(obj: UUID) -> str:
     return str(obj)
 
 
+def struct_datetime(obj: Any, _: Any = None) -> datetime.datetime:
+    if isinstance(obj, datetime.datetime):
+        return obj
+    if isinstance(obj, str):
+        return datetime.datetime.fromisoformat(obj)
+    msg = f"Cannot convert {obj!r} to datetime"
+    raise TypeError(msg)
+
+
+def unstruct_datetime(obj: datetime.datetime) -> str:
+    return obj.isoformat()
+
+
+def struct_enum(obj: Any, enum_type: type[Enum]) -> Enum:
+    return enum_type(obj)
+
+
+def unstruct_enum(obj: Enum) -> str:
+    return obj.value
+
+
 class SubConverter(cattrs.Converter):
     @staticmethod
     def _add_original_data(new_obj: Any, old_obj: Any) -> None:
@@ -110,7 +133,7 @@ class SubConverter(cattrs.Converter):
             new_obj._original_data = old_obj
             for attr in new_obj.__attrs_attrs__:
                 SubConverter._add_original_data(
-                    getattr(new_obj, attr.name),
+                    getattr(new_obj, attr.name, None),
                     old_obj.get(attr.alias, None),
                 )
 
@@ -156,3 +179,9 @@ converter.register_unstructure_hook_func(_is_json, unstruct_json)
 
 converter.register_structure_hook(UUID, struct_uuid)
 converter.register_unstructure_hook(UUID, unstruct_uuid)
+
+converter.register_structure_hook(datetime.datetime, struct_datetime)
+converter.register_unstructure_hook(datetime.datetime, unstruct_datetime)
+
+converter.register_structure_hook(Enum, struct_enum)
+converter.register_unstructure_hook(Enum, unstruct_enum)

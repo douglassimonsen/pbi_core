@@ -2,8 +2,9 @@ import datetime
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.column import Column
@@ -26,6 +27,7 @@ if TYPE_CHECKING:
     from pbi_core.static_files.layout.layout import Layout
 
 
+@define()
 class Measure(SsasRenameRecord):
     """TBD.
 
@@ -65,7 +67,7 @@ class Measure(SsasRenameRecord):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.measure)
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.measure, init=False, repr=False)
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.

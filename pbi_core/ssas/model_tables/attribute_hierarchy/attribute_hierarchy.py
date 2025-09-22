@@ -1,6 +1,7 @@
 import datetime
 from typing import TYPE_CHECKING, Literal
 
+from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasReadonlyRecord
 from pbi_core.ssas.model_tables.enums import DataState
@@ -10,6 +11,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.level import Level
 
 
+@define()
 class AttributeHierarchy(SsasReadonlyRecord):
     """TBD.
 

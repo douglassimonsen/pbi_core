@@ -3,8 +3,9 @@ from enum import IntEnum
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -20,6 +21,7 @@ class Kind(IntEnum):
     M = 0
 
 
+@define()
 class Expression(SsasRenameRecord):
     """TBD.
 
@@ -39,7 +41,7 @@ class Expression(SsasRenameRecord):
 
     modified_time: datetime.datetime
 
-    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.expression)
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.expression, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

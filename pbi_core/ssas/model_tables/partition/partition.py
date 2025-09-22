@@ -1,9 +1,10 @@
 import datetime
 from typing import TYPE_CHECKING, Literal
 
+from attrs import field
 from bs4 import BeautifulSoup
-from pydantic import PrivateAttr
 
+from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables._group import RowNotFoundError
@@ -29,6 +30,7 @@ if TYPE_CHECKING:
 logger = get_logger()
 
 
+@define()
 class Partition(SsasRefreshRecord):
     """Partitions are a child of Tables. They contain the Power Query code.
 
@@ -39,7 +41,7 @@ class Partition(SsasRefreshRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/81badb81-31a8-482b-ae16-5fc9d8291d9e)
     """
 
-    _default_refresh_type = RefreshType.FULL
+    _default_refresh_type: RefreshType = field(default=RefreshType.FULL, init=False, repr=False)
 
     data_view: DataView
     data_source_id: int | None = None
@@ -62,7 +64,7 @@ class Partition(SsasRefreshRecord):
     modified_time: datetime.datetime
     refreshed_time: datetime.datetime
 
-    _commands: RefreshCommands = PrivateAttr(default_factory=lambda: SsasCommands.partition)
+    _commands: RefreshCommands = field(factory=lambda: SsasCommands.partition, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash(

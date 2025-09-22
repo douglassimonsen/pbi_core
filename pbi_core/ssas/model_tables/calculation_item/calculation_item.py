@@ -1,6 +1,9 @@
 import datetime
 from typing import TYPE_CHECKING
 
+from attrs import field
+
+from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server._commands import RenameCommands
@@ -9,9 +12,9 @@ from pbi_core.ssas.server.utils import SsasCommands
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
     from pbi_core.ssas.model_tables.format_string_definition import FormatStringDefinition
-from pydantic import PrivateAttr
 
 
+@define()
 class CalculationItem(SsasRenameRecord):
     """TBD.
 
@@ -28,7 +31,7 @@ class CalculationItem(SsasRenameRecord):
     state: DataState
 
     modified_time: datetime.datetime
-    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.calculation_item)
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.calculation_item, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

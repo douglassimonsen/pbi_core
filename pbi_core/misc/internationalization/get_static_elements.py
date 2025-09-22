@@ -1,5 +1,5 @@
+from pbi_core.attrs import BaseValidation
 from pbi_core.logging import get_logger
-from pbi_core.attrs.pydantic import BaseValidation
 from pbi_core.static_files import Layout
 from pbi_core.static_files.layout.filters import Filter
 from pbi_core.static_files.layout.sources.literal import LiteralSource
@@ -28,11 +28,11 @@ def _parse_viz_config(config: BaseValidation | dict | None) -> list[LiteralSourc
                     if isinstance(field_value, LiteralExpression) and isinstance(field_value.expr.value(), str)
                 )
     else:
-        for field_name in config.__pydantic_fields__:
-            value: list[BaseValidation] = getattr(config, field_name)
+        for field in config.__attrs_attrs__:
+            value: list[BaseValidation] = getattr(config, field.name)
             for element in value:
                 properties: BaseValidation = element.properties  # type: ignore reportAttributeAccessIssue
-                for prop_name in properties.__pydantic_fields__:
+                for prop_name in properties.__attrs_attrs__:
                     prop_value = getattr(properties, prop_name)
                     if isinstance(prop_value, LiteralExpression) and isinstance(prop_value.expr.value(), str):
                         ret.append(prop_value.expr)

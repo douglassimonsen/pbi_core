@@ -1,7 +1,8 @@
 import datetime
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import ObjectType
 from pbi_core.ssas.server._commands import BaseCommands
@@ -10,6 +11,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import Property
 
 
+@define()
 class ObjectTranslation(SsasEditableRecord):
     """TBD.
 
@@ -25,7 +27,7 @@ class ObjectTranslation(SsasEditableRecord):
 
     modified_time: datetime.datetime
 
-    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.object_translation)
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.object_translation, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

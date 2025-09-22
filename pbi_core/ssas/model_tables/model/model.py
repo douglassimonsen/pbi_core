@@ -1,10 +1,10 @@
 import datetime
 from typing import TYPE_CHECKING, Literal
 
-from pydantic import Json, PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import BaseValidation, Json, define
 from pbi_core.lineage import LineageNode
-from pbi_core.attrs.pydantic import BaseValidation
 from pbi_core.ssas.model_tables.base import RefreshType, SsasModelRecord
 from pbi_core.ssas.server._commands import ModelCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.table import Table
 
 
+@define()
 class DataAccessOptions(BaseValidation):
     fastCombine: bool = True
     legacyRedirects: bool = False
@@ -31,13 +32,14 @@ class DataAccessOptions(BaseValidation):
         ))
 
 
+@define()
 class Model(SsasModelRecord):
     """tbd.
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/60094cd5-1c7e-4353-9299-251bfa838cc6)
     """
 
-    _default_refresh_type = RefreshType.CALCULATE
+    _default_refresh_type: RefreshType = field(default=RefreshType.CALCULATE, init=False, repr=False)
 
     automatic_aggregation_options: str | None = None
     collation: str | None = None
@@ -65,7 +67,7 @@ class Model(SsasModelRecord):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    _commands: ModelCommands = PrivateAttr(default_factory=lambda: SsasCommands.model)
+    _commands: ModelCommands = field(factory=lambda: SsasCommands.model, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

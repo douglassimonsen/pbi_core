@@ -2,9 +2,10 @@ import datetime
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
+from attrs import field
 from bs4 import BeautifulSoup
-from pydantic import PrivateAttr
 
+from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord
 from pbi_core.ssas.model_tables.column import Column
@@ -27,13 +28,14 @@ if TYPE_CHECKING:
     from pbi_core.static_files.layout.layout import Layout
 
 
+@define()
 class Table(SsasRefreshRecord):
     """TBD.
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/6360ac84-0717-4170-bce0-284cbef419ca)
     """
 
-    _refresh_type = RefreshType.DATA_ONLY
+    _default_refresh_type: RefreshType = field(default=RefreshType.DATA_ONLY, init=False, repr=False)
 
     alternate_source_precedence: int
     calculation_group_id: int | None = None
@@ -63,7 +65,7 @@ class Table(SsasRefreshRecord):
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    _commands: RefreshCommands = PrivateAttr(default_factory=lambda: SsasCommands.table)
+    _commands: RefreshCommands = field(factory=lambda: SsasCommands.table, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

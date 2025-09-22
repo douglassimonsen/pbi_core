@@ -9,8 +9,10 @@ readme = "README.md"
 requires-python = ">=3.11.0"
 dynamic = ["version"]
 dependencies = [
+  "attrs>=25.3.0",
   "backoff>=2.2.1",
   "beautifulsoup4>=4.12.3",
+  "cattrs>=25.2.0",
   "python-dotenv>=1.0.1",
   "GitPython>=3.1",
   "inquirer>=3.4.0",
@@ -22,13 +24,12 @@ dependencies = [
   "pbi_prototype_query_translation>=1.1.5",
   "pbi_parsers>=0.9.5",
   "psutil>=6.0.0",
-  "pydantic>=2.11.9",
-  "pydantic-extra-types>=2.10.5",
   "pytest>=8.3.2",
   "pythonnet>=3.0.5",
   "semver>=3.0.4",
   "structlog>=24.4.0",
 ]
+
 
 [project.optional-dependencies]
 dev = [

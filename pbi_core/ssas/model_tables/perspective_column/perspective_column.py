@@ -1,8 +1,9 @@
 import datetime
 from typing import TYPE_CHECKING
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -12,6 +13,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.perspective_table import PerspectiveTable
 
 
+@define()
 class PerspectiveColumn(SsasEditableRecord):
     """TBD.
 
@@ -23,7 +25,7 @@ class PerspectiveColumn(SsasEditableRecord):
 
     modified_time: datetime.datetime
 
-    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.perspective_column)
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.perspective_column, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

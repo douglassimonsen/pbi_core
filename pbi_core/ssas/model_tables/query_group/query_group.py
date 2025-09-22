@@ -1,7 +1,8 @@
 from typing import TYPE_CHECKING, Literal
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.server._commands import BaseCommands
@@ -13,6 +14,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.partition import Partition
 
 
+@define()
 class QueryGroup(SsasEditableRecord):
     """TBD.
 
@@ -26,7 +28,7 @@ class QueryGroup(SsasEditableRecord):
     folder: str
     model_id: int
 
-    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.query_group)
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.query_group, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

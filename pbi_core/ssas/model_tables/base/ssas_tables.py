@@ -1,6 +1,8 @@
+from attrs import field
 from bs4 import BeautifulSoup
 from structlog import get_logger
 
+from pbi_core.attrs import define
 from pbi_core.ssas.server._commands import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 
 from .base_ssas_table import SsasTable
@@ -9,6 +11,7 @@ from .enums import RefreshType
 logger = get_logger()
 
 
+@define()
 class SsasAlter(SsasTable):
     """Class for SSAS records that implement alter functionality.
 
@@ -28,6 +31,7 @@ class SsasAlter(SsasTable):
         return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
+@define()
 class SsasRename(SsasTable):
     """Class for SSAS records that implement rename functionality.
 
@@ -48,6 +52,7 @@ class SsasRename(SsasTable):
         return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
+@define()
 class SsasCreate(SsasTable):
     """Class for SSAS records that implement create functionality.
 
@@ -67,6 +72,7 @@ class SsasCreate(SsasTable):
         return self.tabular_model.server.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
+@define()
 class SsasDelete(SsasTable):
     """Class for SSAS records that implement delete functionality.
 
@@ -89,6 +95,7 @@ class SsasDelete(SsasTable):
         return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
+@define()
 class SsasRefresh(SsasTable):
     """Class for SSAS records that implement refresh functionality.
 
@@ -109,24 +116,29 @@ class SsasRefresh(SsasTable):
         return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
 
 
+@define()
 class SsasReadonlyRecord(SsasTable):
     """Class for SSAS records that implement no command."""
 
-    _commands: NoCommands
+    _commands: NoCommands = field(init=False, repr=False)
 
 
+@define()
 class SsasEditableRecord(SsasCreate, SsasAlter, SsasDelete):
     _commands: BaseCommands
 
 
+@define()
 class SsasRenameRecord(SsasCreate, SsasAlter, SsasDelete, SsasRename):
     _commands: RenameCommands  # pyright: ignore reportIncompatibleVariableOverride
 
 
+@define()
 class SsasRefreshRecord(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefresh):
     _commands: RefreshCommands  # pyright: ignore reportIncompatibleVariableOverride
 
 
+@define()
 class SsasModelRecord(SsasAlter, SsasRefresh, SsasRename):
     """Solely used for the single Model record."""
 

@@ -2,9 +2,10 @@ import datetime
 from typing import TYPE_CHECKING, ClassVar
 from uuid import UUID, uuid4
 
-from pydantic import PrivateAttr
+from attrs import field
 from structlog import BoundLogger
 
+from pbi_core.attrs import define
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState, DataType
@@ -28,6 +29,7 @@ if TYPE_CHECKING:
 logger: BoundLogger = get_logger()
 
 
+@define()
 class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompatibleMethodOverride]
     """A column of an SSAS table.
 
@@ -81,7 +83,7 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
     refreshed_time: datetime.datetime
     structure_modified_time: datetime.datetime
 
-    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.column)
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.column, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

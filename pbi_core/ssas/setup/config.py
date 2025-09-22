@@ -4,8 +4,8 @@ from typing import Any
 
 import jinja2
 
-from pbi_core.logging import get_logger
 from pbi_core.attrs import BaseValidation
+from pbi_core.logging import get_logger
 
 logger = get_logger()
 
@@ -14,6 +14,7 @@ assert PACKAGE_DIR.name == "pbi_core"
 
 
 class PbiCoreStartupConfig(BaseValidation):
+    # TODO: update for attrs
     cert_dir: Path
     msmdsrv_ini: Path
     msmdsrv_exe: Path

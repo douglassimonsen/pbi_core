@@ -2,8 +2,9 @@ import datetime
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID, uuid4
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState
@@ -21,6 +22,7 @@ if TYPE_CHECKING:
     from pbi_core.static_files.layout.layout import Layout
 
 
+@define()
 class Hierarchy(SsasRenameRecord):
     """TBD.
 
@@ -45,7 +47,7 @@ class Hierarchy(SsasRenameRecord):
     """The last time the sources for this hierarchy were refreshed"""
     structure_modified_time: datetime.datetime
 
-    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.hierarchy)
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.hierarchy, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

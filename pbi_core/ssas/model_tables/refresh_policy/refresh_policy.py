@@ -1,5 +1,6 @@
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -7,6 +8,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import Granularity, PolicyType, RefreshMode
 
 
+@define()
 class RefreshPolicy(SsasEditableRecord):
     """TBD.
 
@@ -25,7 +27,7 @@ class RefreshPolicy(SsasEditableRecord):
     source_expression: str
     table_id: int
 
-    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.refresh_policy)
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.refresh_policy, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

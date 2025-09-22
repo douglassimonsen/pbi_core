@@ -1,9 +1,9 @@
 import datetime
 from typing import TYPE_CHECKING
 
-from pydantic import Json, PrivateAttr
+from attrs import field
 
-from pbi_core.attrs import BaseValidation
+from pbi_core.attrs import BaseValidation, Json, define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import ObjectType
 from pbi_core.ssas.server._commands import RenameCommands
@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
 
+@define()
 class BinSize(BaseValidation):
     value: float
     unit: int
@@ -22,6 +23,7 @@ class BinSize(BaseValidation):
         return hash((self.value, self.unit))
 
 
+@define()
 class BinningMetadata(BaseValidation):
     binSize: BinSize
 
@@ -29,6 +31,7 @@ class BinningMetadata(BaseValidation):
         return hash(self.binSize.modification_hash())
 
 
+@define()
 class ExtendedPropertyValue(BaseValidation):
     version: int
     daxTemplateName: str | None = None
@@ -44,6 +47,7 @@ class ExtendedPropertyValue(BaseValidation):
         ))
 
 
+@define()
 class ExtendedProperty(SsasRenameRecord):
     """TBD.
 
@@ -58,7 +62,7 @@ class ExtendedProperty(SsasRenameRecord):
 
     modified_time: datetime.datetime
 
-    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.extended_property)
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.extended_property, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

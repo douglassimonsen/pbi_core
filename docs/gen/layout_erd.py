@@ -1,11 +1,8 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import pydantic
-
+from pbi_core.attrs import BaseValidation
 from pbi_core.static_files.layout import Layout
-
-from ...pbi_core.attrs.attrs import BaseValidation  # noqa: TID252
 
 if TYPE_CHECKING:
     from pbi_mermaid import Link, Node
@@ -121,7 +118,7 @@ class ERD:
             if attr.type is None:
                 continue
             for child in unwrap(attr.type):
-                if issubclass(child, pydantic.BaseModel):
+                if issubclass(child, BaseValidation):
                     sub_head, sub_nodes, sub_links = self.helper(child)
                     nodes.update(sub_nodes)
                     links.update(sub_links)

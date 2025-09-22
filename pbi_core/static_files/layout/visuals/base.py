@@ -1,8 +1,8 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal
 
-from pbi_core.lineage import LineageNode
 from pbi_core.attrs import converter, define
+from pbi_core.lineage import LineageNode
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.expansion_state import ExpansionState
 from pbi_core.static_files.layout.filters import Filter, PrototypeQuery
@@ -114,7 +114,7 @@ class BaseVisual(LayoutNode):
     objects: Any = None
     """Objects contains the properties unique to the specific visual type.
 
-    Subclasses should specify a real pydantic model for this field"""
+    Subclasses should specify a real attrs model for this field"""
     visualType: str = "unknown"
     queryOptions: QueryOptions | None = None
     showAllRoles: list[str] | None = None

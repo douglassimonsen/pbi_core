@@ -1,8 +1,9 @@
 import datetime
 from typing import TYPE_CHECKING
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
 from pbi_core.ssas.server._commands import BaseCommands
@@ -14,6 +15,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables._group import Group
 
 
+@define()
 class FormatStringDefinition(SsasEditableRecord):
     """TBD.
 
@@ -30,7 +32,7 @@ class FormatStringDefinition(SsasEditableRecord):
 
     modified_time: datetime.datetime
 
-    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.format_string_definition)
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.format_string_definition, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

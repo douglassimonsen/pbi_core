@@ -2,10 +2,10 @@ import datetime
 from enum import IntEnum, StrEnum
 from typing import TYPE_CHECKING, Any, Literal
 
-import pydantic
+from attrs import field
 
+from pbi_core.attrs import BaseValidation, Json, define
 from pbi_core.lineage import LineageNode
-from pbi_core.attrs.pydantic import BaseValidation
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -19,6 +19,7 @@ class ContentType(IntEnum):
     Json = 1
 
 
+@define()
 class EntityDefinitionBinding(BaseValidation):
     ConceptualEntity: str
     ConceptualProperty: str | None = None
@@ -28,6 +29,7 @@ class EntityDefinitionBinding(BaseValidation):
     HierarchyLevel: str | None = None
 
 
+@define()
 class EntityDefinition(BaseValidation):
     Binding: EntityDefinitionBinding
 
@@ -36,6 +38,7 @@ class TermSourceType(StrEnum):
     External = "External"
 
 
+@define()
 class TermSource(BaseValidation):
     Type: TermSourceType | None = None
     Agent: str
@@ -51,6 +54,7 @@ class TermDefinitionType(StrEnum):
     Noun = "Noun"
 
 
+@define()
 class TermDefinition(BaseValidation):
     State: TermDefinitionState | None = None
     Source: TermSource | None = None
@@ -67,6 +71,7 @@ class VisibilityState(StrEnum):
     Authored = "Authored"
 
 
+@define()
 class VisibilityType(BaseValidation):
     Value: VisibilityValue
     State: VisibilityState | None = None
@@ -77,6 +82,7 @@ class NameTypeType(StrEnum):
     Name = "Name"
 
 
+@define()
 class LinguisticMetadataEntity(BaseValidation):
     Weight: float | None = None
     State: TermDefinitionState
@@ -90,10 +96,12 @@ class LinguisticMetadataEntity(BaseValidation):
     Units: list[str] = []
 
 
+@define()
 class RelationshipBinding(BaseValidation):
     ConceptualEntity: str
 
 
+@define()
 class PhrasingAttributeRole(BaseValidation):
     Role: str
 
@@ -103,6 +111,7 @@ class RelationshipPhrasingState(StrEnum):
 
 
 # TODO: Subtype
+@define()
 class PhrasingAttribute(BaseValidation):
     Adjective: PhrasingAttributeRole | None = None
     Measurement: PhrasingAttributeRole | None = None
@@ -118,6 +127,7 @@ class PhrasingAttribute(BaseValidation):
     Nouns: list[dict[str, TermDefinition]] = []
 
 
+@define()
 class RelationshipPhrasing(BaseValidation):
     Name: PhrasingAttribute | None = None
     Attribute: PhrasingAttribute | None = None
@@ -129,15 +139,18 @@ class RelationshipPhrasing(BaseValidation):
     Weight: float | None = None
 
 
+@define()
 class RelationshipRoleEntity(BaseValidation):
     Entity: str
 
 
+@define()
 class RelationshipRole(BaseValidation):
     Target: RelationshipRoleEntity
     Nouns: Any | None = None
 
 
+@define()
 class SemanticSlot(BaseValidation):
     Where: PhrasingAttributeRole | None = None
     When: PhrasingAttributeRole | None = None
@@ -148,12 +161,14 @@ class ConditionOperator(StrEnum):
     GreaterThan = "GreaterThan"
 
 
+@define()
 class Condition(BaseValidation):
     Target: PhrasingAttributeRole
     Operator: ConditionOperator
     Value: dict[str, list[int | str]]
 
 
+@define()
 class LinguisticMetadataRelationship(BaseValidation):
     Binding: RelationshipBinding
     Phrasings: list[RelationshipPhrasing] = []
@@ -163,6 +178,7 @@ class LinguisticMetadataRelationship(BaseValidation):
     Conditions: list[Condition] | None = None
 
 
+@define()
 class LinguisticMetadataContent(BaseValidation):
     Version: str  # SemanticVersion
     Language: str
@@ -172,19 +188,20 @@ class LinguisticMetadataContent(BaseValidation):
     Examples: list[dict[str, dict[str, str]]] | None = None
 
 
+@define()
 class LinguisticMetadata(SsasEditableRecord):
     """TBD.
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/f8924a45-70da-496a-947a-84b8d5beaae6)
     """
 
-    content: pydantic.Json[LinguisticMetadataContent]
+    content: Json[LinguisticMetadataContent]
     content_type: ContentType
     culture_id: int
 
     modified_time: datetime.datetime
 
-    _commands: BaseCommands = pydantic.PrivateAttr(default_factory=lambda: SsasCommands.linguistic_metadata)
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.linguistic_metadata, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

@@ -3,6 +3,8 @@ import dataclasses
 import bs4
 import jinja2
 
+from pbi_core.attrs import define
+
 BASE_ALTER_TEMPLATE = jinja2.Template(
     """
 <Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
@@ -77,6 +79,7 @@ class Command:
         return sorted(fields, key=lambda k: self.field_order.index(k[0]))
 
 
+@define(init=False)
 class NoCommands:
     def __init__(self, **kwargs: str) -> None:
         for field_name, template_text in kwargs.items():

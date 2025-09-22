@@ -1,7 +1,8 @@
 from typing import TYPE_CHECKING, Literal
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.server._commands import RenameCommands
@@ -13,6 +14,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.relationship import Relationship
 
 
+@define()
 class Variation(SsasRenameRecord):
     """TBD.
 
@@ -28,7 +30,7 @@ class Variation(SsasRenameRecord):
     name: str
     relationship_id: int
 
-    _commands: RenameCommands = PrivateAttr(default_factory=lambda: SsasCommands.variation)
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.variation, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

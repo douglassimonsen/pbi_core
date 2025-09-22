@@ -1,8 +1,9 @@
 import datetime
 from typing import TYPE_CHECKING
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -13,6 +14,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.role import Role
 
 
+@define()
 class RoleMembership(SsasEditableRecord):
     """TBD.
 
@@ -27,7 +29,7 @@ class RoleMembership(SsasEditableRecord):
 
     modified_time: datetime.datetime
 
-    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.role_membership)
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.role_membership, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

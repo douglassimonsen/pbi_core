@@ -1,8 +1,9 @@
 import datetime
 from typing import TYPE_CHECKING, Literal
 
-from pydantic import PrivateAttr
+from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.server._commands import BaseCommands
@@ -12,6 +13,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.measure import Measure
 
 
+@define()
 class KPI(SsasEditableRecord):
     """TBD.
 
@@ -31,7 +33,7 @@ class KPI(SsasEditableRecord):
 
     modified_time: datetime.datetime
 
-    _commands: BaseCommands = PrivateAttr(default_factory=lambda: SsasCommands.kpi)
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.kpi, init=False, repr=False)
 
     def modification_hash(self) -> int:
         return hash((

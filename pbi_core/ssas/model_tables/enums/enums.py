@@ -14,7 +14,7 @@ class DataState(IntEnum):
     SYNTAX_ERROR = 9
 
 
-class ObjectType(IntEnum):
+class ObjectType(Enum):
     """Source: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7a16a837-cb88-4cb2-a766-a97c4d0e1f43)."""
 
     MODEL = 1
