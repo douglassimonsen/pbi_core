@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import Enum
 
 from attrs import field
 
@@ -7,7 +7,7 @@ from pbi_core.pydantic import define
 from ._base_node import LayoutNode
 
 
-class ResourcePackageItemType(IntEnum):
+class ResourcePackageItemType(Enum):
     JS = 0
     CSS = 1
     PNG = 3
@@ -28,7 +28,7 @@ class ResourcePackageItem(LayoutNode):
     id: int | None = None
 
 
-class ResourcePackageDetailsType(IntEnum):
+class ResourcePackageDetailsType(Enum):
     JS = 0
     CUSTOM_THEME = 1
     BASE_THEME = 2

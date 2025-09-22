@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import Enum
 from typing import Any
 
 from attrs import field
@@ -59,7 +59,7 @@ def unparse_data_source_type(v: DataSource) -> dict[str, Any]:
     return converter.unstructure(v)
 
 
-class AggregationFunction(IntEnum):
+class AggregationFunction(Enum):
     SUM = 0
     AVERAGE = 1
     COUNT = 2

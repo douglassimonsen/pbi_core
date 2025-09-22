@@ -1,7 +1,7 @@
-from enum import Enum, IntEnum
+from enum import Enum
 
 
-class DisplayOption(IntEnum):
+class DisplayOption(Enum):
     DEPRECATED_DYNAMIC = -1
     """No dynamic page without width or height.
     Deprecated: Use other display options."""
@@ -16,7 +16,7 @@ class DisplayOption(IntEnum):
     Deprecated: Use ActualSize instead."""
 
 
-class SectionVisibility(IntEnum):
+class SectionVisibility(Enum):
     VISIBLE = 0
     HIDDEN = 1
 

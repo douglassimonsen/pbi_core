@@ -1,4 +1,4 @@
-from enum import Enum, IntEnum
+from enum import Enum
 from typing import TYPE_CHECKING, Any, cast
 
 import attrs
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
 
 
-class Direction(IntEnum):
+class Direction(Enum):
     ASCENDING = 1
     DESCENDING = 2
 
@@ -221,7 +221,7 @@ class _SubqueryHelper(LayoutNode):
     Subquery: _SubqueryHelper2
 
 
-class SubQueryType(IntEnum):
+class SubQueryType(Enum):
     NA = 2
 
 
@@ -255,7 +255,7 @@ def get_from(v: Any, _: type | None = None) -> From:
 attrs.resolve_types(PrototypeQuery)  # necessary for forward ref unions
 
 
-class HowCreated(IntEnum):
+class HowCreated(Enum):
     AUTO = 0
     """Created automatically when a field is used in the visual."""
     USER = 1

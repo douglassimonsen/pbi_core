@@ -1,11 +1,11 @@
-from enum import IntEnum
+from enum import Enum
 from typing import Any
 
 from pbi_core.pydantic import converter, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 
-class EntityType(IntEnum):
+class EntityType(Enum):
     NA = 1
     NA2 = 0
     NA3 = 2

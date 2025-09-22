@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import Enum
 from typing import Any
 
 from pbi_core.pydantic import converter, define
@@ -40,7 +40,7 @@ class ScopedEvalArith(LayoutNode):
     ScopedEval: ScopedEval2
 
 
-class ArithmeticOperator(IntEnum):
+class ArithmeticOperator(Enum):
     DIVIDE = 3
 
 

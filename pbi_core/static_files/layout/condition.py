@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import Enum
 from typing import Any
 
 from attrs import field
@@ -14,7 +14,7 @@ from .sources.group import GroupSource
 from .sources.proto import ProtoSourceRef
 
 
-class ExpressionVersion(IntEnum):
+class ExpressionVersion(Enum):
     VERSION_1 = 1
     VERSION_2 = 2
 
@@ -29,7 +29,7 @@ class AnyValue(LayoutNode):
     AnyValue: _AnyValueHelper
 
 
-class QueryConditionType(IntEnum):
+class QueryConditionType(Enum):
     """Names defined by myself, but based on query outputs from the query tester."""
 
     STANDARD = 0
@@ -37,7 +37,7 @@ class QueryConditionType(IntEnum):
     MEASURE = 3
 
 
-class ComparisonKind(IntEnum):
+class ComparisonKind(Enum):
     IS_EQUAL = 0
     IS_GREATER_THAN = 1
     IS_GREATER_THAN_OR_EQUAL_TO = 2
@@ -165,7 +165,7 @@ class InCondition(LayoutNode):
         return self.In.get_sources()
 
 
-class TimeUnit(IntEnum):
+class TimeUnit(Enum):
     SECOND = 1
     MINUTE = 2
     HOUR = 3

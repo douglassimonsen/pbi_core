@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import Enum
 from uuid import UUID
 
 from attrs import field
@@ -18,7 +18,7 @@ class Parameter(LayoutNode):
     asAggregation: bool | None = False
 
 
-class PodType(IntEnum):
+class PodType(Enum):
     NA1 = 1
     NA2 = 2
 

@@ -1,4 +1,4 @@
-from enum import Enum, IntEnum
+from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal
 
 from attrs import field
@@ -88,11 +88,11 @@ class VisualConfig(LayoutNode):
     howCreated: VisualHowCreated | None = None
 
 
-class ExecutionMetricsKindEnum(IntEnum):
+class ExecutionMetricsKindEnum(Enum):
     NA = 1
 
 
-class EntityType(IntEnum):
+class EntityType(Enum):
     TABLE = 0
 
 
@@ -151,7 +151,7 @@ class BindingPrimary(LayoutNode):
     Synchronization: list[Synch] | None = None
 
 
-class DataVolume(IntEnum):
+class DataVolume(Enum):
     NA1 = 1
     NA2 = 2
     NA3 = 3

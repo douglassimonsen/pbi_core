@@ -1,7 +1,7 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class RefreshType(IntEnum):
+class RefreshType(Enum):
     """From `[`Microsoft doc pages <https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet>_."""
 
     """
