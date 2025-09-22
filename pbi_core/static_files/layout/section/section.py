@@ -4,6 +4,7 @@ from uuid import UUID
 from attrs import field
 
 from pbi_core.attrs import Json, define
+from pbi_core.attrs.extra import repr_len
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.filters import PageFilter
@@ -33,9 +34,9 @@ class Section(LayoutNode):
     """Defines how the page is scaled."""
     config: Json[SectionConfig] = field(repr=False)
     objectId: UUID | None = None
-    visualContainers: list[VisualContainer] = field(repr=lambda x: str(len(x)))
+    visualContainers: list[VisualContainer] = field(repr=repr_len)
     ordinal: int = 0
-    filters: Json[list[PageFilter]] = field(repr=lambda x: str(len(x)))
+    filters: Json[list[PageFilter]] = field(repr=repr_len)
     """Filters that apply to all the visuals on this page - on top of the filters defined for the whole report."""
     displayName: str
     """A user facing name for this page."""
@@ -50,13 +51,13 @@ class Section(LayoutNode):
     """Specific usage of this page (for example drillthrough)."""
     visibility: PageVisibility | None = PageVisibility.ALWAYS_VISIBLE
     """Defines when this page should be visible - by default it is always visible."""
-    visualInteractions: list[VisualInteraction] | None = None
+    visualInteractions: list[VisualInteraction] | None = field(repr=repr_len, default=None)
     """Defines how data point selection on a specific visual flow (as filters) to other visuals on the page.
     By default it is up-to the visual to apply it either as a cross-highlight or as a filter."""
     autoPageGenerationConfig: AutoPageGenerationConfig | None = None
     """Configuration that was used to automatically generate a page (for example using 'Auto create the report'
     option)."""
-    annotations: list[Annotation] | None = field(repr=lambda x: str(len(x or [])), default=None)
+    annotations: list[Annotation] | None = field(repr=repr_len, default=None)
     """Additional information to be saved (for example comments, readme, etc) for this page."""
     howCreated: PageHowCreated | None = None
     """Source of creation of this page."""

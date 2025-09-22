@@ -139,9 +139,12 @@ class SsasTable(BaseValidation, IdBase):
         return hash(self.id)
 
     def xml_fields(self) -> dict[str, Any]:
-        return {
-            self._db_field_names.get(k, k): v for k, v in self.model_dump().items() if k not in self._read_only_fields
-        }
+        base = self.model_dump().items()
+        ret = {}
+        for k, v in base:
+            if k not in self._read_only_fields:
+                ret[self._db_field_names.get(k, k)] = v
+        return ret
 
     def modification_hash(self) -> int:
         """Returns a hash representing the current state of the object."""

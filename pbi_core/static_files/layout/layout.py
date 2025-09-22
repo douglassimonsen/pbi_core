@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Literal
 from attrs import field
 
 from pbi_core.attrs import Json, define
+from pbi_core.attrs.extra import repr_len
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
@@ -133,14 +134,14 @@ class Layout(LayoutNode):
 
     id: int = -3
     reportId: int = -1
-    filters: Json[list[GlobalFilter]] = field(factory=list)
-    resourcePackages: list[ResourcePackage]
-    sections: list[Section]
-    config: Json[LayoutConfig]
-    layoutOptimization: LayoutOptimization
+    filters: Json[list[GlobalFilter]] = field(factory=list, repr=repr_len)
+    resourcePackages: list[ResourcePackage] = field(repr=repr_len)
+    sections: list[Section] = field(repr=repr_len)
+    config: Json[LayoutConfig] = field(repr=False)
+    layoutOptimization: LayoutOptimization = field(repr=False)
     theme: str | None = None
-    pods: list[Pod] = field(factory=list)
-    publicCustomVisuals: list[PublicCustomVisual] = field(factory=list)
+    pods: list[Pod] = field(factory=list, repr=repr_len)
+    publicCustomVisuals: list[PublicCustomVisual] = field(factory=list, repr=repr_len)
 
     def pbi_core_name(self) -> str:  # noqa: PLR6301
         return "Layout"

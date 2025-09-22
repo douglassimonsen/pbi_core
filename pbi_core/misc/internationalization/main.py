@@ -1,6 +1,9 @@
 from pbi_core.logging import get_logger
 from pbi_core.report.local.main import LocalReport
+from pbi_core.ssas.model_tables.column.column import Column
 from pbi_core.ssas.model_tables.enums import DataType
+from pbi_core.ssas.model_tables.measure.measure import Measure
+from pbi_core.ssas.model_tables.table.table import Table
 from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 
 from .get_static_elements import get_static_elements
@@ -9,9 +12,9 @@ from .text_elements import TextElement, TextElements
 logger = get_logger()
 
 
-def get_ssas_elements(server: BaseTabularModel) -> TextElements:
+def get_measure_ssas_elements(measures: list[Measure]) -> list[TextElement]:
     text_elements = []
-    for m in server.measures:
+    for m in measures:
         text_elements.append(
             TextElement(
                 category="Measure",
@@ -51,7 +54,12 @@ def get_ssas_elements(server: BaseTabularModel) -> TextElements:
                     text=m.description,
                 ),
             )
-    for c in server.columns:
+    return text_elements
+
+
+def get_column_ssas_elements(columns: list[Column]) -> list[TextElement]:
+    text_elements = []
+    for c in columns:
         if (
             c.is_key or c.table().is_private or c.table().show_as_variations_only
         ):  # these are secret row-number columns, so we don't want to mess with them.
@@ -88,7 +96,12 @@ def get_ssas_elements(server: BaseTabularModel) -> TextElements:
                     text=c.expression,
                 ),
             )
-    for h in server.hierarchies:
+    return text_elements
+
+
+def get_hierarchy_ssas_elements(hierarchies: list) -> list[TextElement]:
+    text_elements = []
+    for h in hierarchies:
         text_elements.append(
             TextElement(
                 category="Hierarchy",
@@ -108,7 +121,12 @@ def get_ssas_elements(server: BaseTabularModel) -> TextElements:
                     text=h.description,
                 ),
             )
-    for t in server.tables:
+    return text_elements
+
+
+def get_table_ssas_elements(tables: list[Table]) -> list[TextElement]:
+    text_elements = []
+    for t in tables:
         if t.is_private or t.show_as_variations_only:
             continue
         if isinstance(t.description, str):
@@ -130,6 +148,17 @@ def get_ssas_elements(server: BaseTabularModel) -> TextElements:
                 text=t.name,
             ),
         )
+    return text_elements
+
+
+def get_ssas_elements(server: BaseTabularModel) -> TextElements:
+    text_elements = [
+        *get_measure_ssas_elements(server.measures),
+        *get_column_ssas_elements(server.columns),
+        *get_hierarchy_ssas_elements(server.hierarchies),
+        *get_table_ssas_elements(server.tables),
+    ]
+
     return TextElements(text_elements=text_elements)
 
 

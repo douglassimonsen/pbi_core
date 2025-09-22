@@ -5,6 +5,7 @@ import attrs
 from attrs import field
 
 from pbi_core.attrs import BaseValidation, converter, define
+from pbi_core.attrs.extra import repr_exists, repr_len
 from pbi_core.static_files.layout.sources.literal import LiteralSource
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
@@ -96,12 +97,12 @@ class TransformMeta(BaseValidation):
 @define()
 class PrototypeQuery(LayoutNode):
     Version: int
-    From: list["From"]
-    Select: list[Source] = field(factory=list)
-    Where: list[Condition] = field(factory=list)
-    OrderBy: list[Orderby] = field(factory=list)
-    Transform: list[TransformMeta] = field(factory=list)
-    Top: int | None = None
+    From: list["From"] = field(repr=repr_len)
+    Select: list[Source] = field(factory=list, repr=repr_len)
+    Where: list[Condition] = field(factory=list, repr=repr_len)
+    OrderBy: list[Orderby] = field(factory=list, repr=repr_len)
+    Transform: list[TransformMeta] = field(factory=list, repr=repr_len)
+    Top: int | None = field(default=None, repr=repr_exists)
 
     def table_mapping(self) -> dict[str, str]:
         ret: dict[str, str] = {}

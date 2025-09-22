@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Any, Literal
 
 from attrs import field
 
+from pbi_core.attrs.extra import repr_exists, repr_len
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
@@ -495,12 +496,12 @@ class VisualContainer(LayoutNode):
     z: float
     width: float
     height: float
-    tabOrder: int | None = None
-    dataTransforms: Json[DataTransform] | None = None
-    query: Json[Query] | None = None
+    tabOrder: int | None = field(default=None, repr=repr_exists)
+    dataTransforms: Json[DataTransform] | None = field(default=None, repr=repr_exists)
+    query: Json[Query] | None = field(default=None, repr=repr_exists)
     queryHash: int | None = None
-    filters: Json[list[VisualFilter]] = field(factory=list)
-    config: Json[VisualConfig]
+    filters: Json[list[VisualFilter]] = field(factory=list, repr=repr_len)
+    config: Json[VisualConfig] = field(repr=False)
 
     id: int | None = None
 

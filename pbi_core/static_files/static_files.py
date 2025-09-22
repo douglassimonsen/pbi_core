@@ -5,6 +5,9 @@ from typing import TYPE_CHECKING
 from zipfile import ZipFile
 
 import bs4
+from attrs import field
+
+from pbi_core.attrs.extra import repr_exists, repr_len
 
 from .file_classes import Connections, DiagramLayout, Metadata, Settings, parse_diagram_layout
 from .file_classes.theme import Theme
@@ -26,16 +29,16 @@ class Version:
 
 
 class StaticFiles:
-    content_types: bs4.BeautifulSoup
-    connections: Connections | None
+    content_types: bs4.BeautifulSoup = field(repr=False)
+    connections: Connections | None = field(repr=repr_exists)
     # no datamodel, that's handled by the ssas folder
-    diagram_layout: DiagramLayout
-    layout: Layout
-    metadata: Metadata
-    version: Version
-    security_bindings: bytes
-    settings: Settings
-    themes: dict[str, dict[str, Theme]]
+    diagram_layout: DiagramLayout = field(repr=False)
+    layout: Layout = field(repr=False)
+    metadata: Metadata = field(repr=False)
+    version: Version = field(repr=True)
+    security_bindings: bytes = field(repr=False)
+    settings: Settings = field(repr=False)
+    themes: dict[str, dict[str, Theme]] = field(repr=repr_len)
 
     def __init__(  # noqa: PLR0913, PLR0917
         self,
