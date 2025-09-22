@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Any
 
-from pbi_core.pydantic import converter, define
+from pbi_core.attrs import converter, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 

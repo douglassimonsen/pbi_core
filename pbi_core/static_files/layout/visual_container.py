@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from .visuals.base import BaseVisual
 
 
-from pbi_core.pydantic import Json, converter, define
+from pbi_core.attrs import Json, converter, define
 
 from .expansion_state import ExpansionState
 from .performance import Performance, get_performance

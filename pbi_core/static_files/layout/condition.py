@@ -3,7 +3,7 @@ from typing import Any
 
 from attrs import field
 
-from pbi_core.pydantic import converter, define
+from pbi_core.attrs import converter, define
 
 from ._base_node import LayoutNode
 from .sources import DataSource, LiteralSource, Source, SourceRef, TransformOutputRoleRef

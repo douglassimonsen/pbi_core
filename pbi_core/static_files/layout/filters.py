@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 import attrs
 
-from pbi_core.pydantic import BaseValidation, converter, define
+from pbi_core.attrs import BaseValidation, converter, define
 from pbi_core.static_files.layout.sources.literal import LiteralSource
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 

@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from pbi_core.pydantic import BaseValidation
+from pbi_core.attrs import BaseValidation
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Column, Measure, Table

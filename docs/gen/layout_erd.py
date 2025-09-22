@@ -5,7 +5,7 @@ import pydantic
 
 from pbi_core.static_files.layout import Layout
 
-from ...pbi_core.pydantic.attrs import BaseValidation  # noqa: TID252
+from ...pbi_core.attrs.attrs import BaseValidation  # noqa: TID252
 
 if TYPE_CHECKING:
     from pbi_mermaid import Link, Node

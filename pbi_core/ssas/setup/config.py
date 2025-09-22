@@ -5,7 +5,7 @@ from typing import Any
 import jinja2
 
 from pbi_core.logging import get_logger
-from pbi_core.pydantic import BaseValidation
+from pbi_core.attrs import BaseValidation
 
 logger = get_logger()
 

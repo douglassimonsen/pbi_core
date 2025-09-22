@@ -3,7 +3,7 @@ from uuid import UUID
 
 from attrs import field
 
-from pbi_core.pydantic import Json, define
+from pbi_core.attrs import Json, define
 
 from ._base_node import LayoutNode
 from .sources import ColumnSource

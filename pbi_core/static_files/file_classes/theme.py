@@ -2,8 +2,8 @@ from typing import Any
 
 from attrs import field
 
-from pbi_core.pydantic import BaseValidation, define
-from pbi_core.pydantic.extra import Color
+from pbi_core.attrs import BaseValidation, define
+from pbi_core.attrs.extra import Color
 
 base_val = bool | int | str
 

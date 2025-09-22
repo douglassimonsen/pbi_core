@@ -1,6 +1,6 @@
 from typing import Any
 
-from pbi_core.pydantic import BaseValidation, converter, define
+from pbi_core.attrs import BaseValidation, converter, define
 
 from .aggregation import AggregationSource, DataSource, SelectRef
 from .arithmetic import ArithmeticSource

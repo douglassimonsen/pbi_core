@@ -1,6 +1,6 @@
 from attrs import field
 
-from pbi_core.pydantic import BaseValidation, define
+from pbi_core.attrs import BaseValidation, define
 
 base_val = bool | int | str
 

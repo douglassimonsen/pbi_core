@@ -1,6 +1,6 @@
 from typing import Any
 
-from pbi_core.pydantic import converter
+from pbi_core.attrs import converter
 
 from .action_button import ActionButton
 from .bar_chart import BarChart

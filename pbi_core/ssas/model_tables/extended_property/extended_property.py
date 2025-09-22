@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from pydantic import Json, PrivateAttr
 
-from pbi_core.pydantic import BaseValidation
+from pbi_core.attrs import BaseValidation
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import ObjectType
 from pbi_core.ssas.server._commands import RenameCommands

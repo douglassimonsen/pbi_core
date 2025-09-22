@@ -1,7 +1,7 @@
 from typing import Any, Literal
 from uuid import UUID
 
-from pbi_core.pydantic import BaseValidation, converter, define
+from pbi_core.attrs import BaseValidation, converter, define
 
 base_val = bool | int | str
 

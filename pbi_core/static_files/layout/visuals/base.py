@@ -2,7 +2,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal
 
 from pbi_core.lineage import LineageNode
-from pbi_core.pydantic import converter, define
+from pbi_core.attrs import converter, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.expansion_state import ExpansionState
 from pbi_core.static_files.layout.filters import Filter, PrototypeQuery

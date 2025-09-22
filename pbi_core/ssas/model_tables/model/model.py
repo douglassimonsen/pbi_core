@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Literal
 from pydantic import Json, PrivateAttr
 
 from pbi_core.lineage import LineageNode
-from pbi_core.pydantic.pydantic import BaseValidation
+from pbi_core.attrs.pydantic import BaseValidation
 from pbi_core.ssas.model_tables.base import RefreshType, SsasModelRecord
 from pbi_core.ssas.server._commands import ModelCommands
 from pbi_core.ssas.server.utils import SsasCommands

@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Any
 
-from pbi_core.pydantic import converter, define
+from pbi_core.attrs import converter, define
 
 from ._base_node import LayoutNode
 from .expansion_state import ExpansionStateLevel, ExpansionStateRoot
