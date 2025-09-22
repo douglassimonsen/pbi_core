@@ -30,7 +30,7 @@ class BaseValidation:
 
     @classmethod
     def model_validate(cls, data: dict) -> Self:
-        from pbi_core.pydantic.cattrs import converter  # noqa: PLC0415
+        from .cattrs import converter  # noqa: PLC0415
 
         return converter.structure(data, cls)
 
@@ -39,7 +39,7 @@ class BaseValidation:
         return cls.model_validate(json.loads(data))
 
     def model_dump(self) -> dict:
-        from pbi_core.pydantic.cattrs import converter  # noqa: PLC0415
+        from .cattrs import converter  # noqa: PLC0415
 
         return converter.unstructure(self)
 

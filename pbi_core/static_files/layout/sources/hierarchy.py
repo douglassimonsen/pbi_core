@@ -1,8 +1,6 @@
-from typing import Annotated, Any
+from typing import Any
 
-from pydantic import Discriminator, Tag
-
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import converter, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .base import SourceExpression, SourceRef
@@ -31,24 +29,23 @@ class _PropertyVariationSourceHelper(LayoutNode):
         return self.PropertyVariationSource.column()
 
 
-def get_hierarchy_expression_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "PropertyVariationSource" in v:
-            return "_PropertyVariationSourceHelper"
-        if "SourceRef" in v:
-            return "SourceRef"
-        if "Property" in v:
-            return "SourceExpression"
-        raise ValueError
-    return v.__class__.__name__
+ConditionType = SourceExpression | _PropertyVariationSourceHelper | SourceRef
 
 
-ConditionType = Annotated[
-    Annotated[SourceExpression, Tag("SourceExpression")]
-    | Annotated[_PropertyVariationSourceHelper, Tag("_PropertyVariationSourceHelper")]
-    | Annotated[SourceRef, Tag("SourceRef")],
-    Discriminator(get_hierarchy_expression_type),
-]
+@converter.register_structure_hook
+def get_bookmark_type(v: dict[str, Any], _: type | None = None) -> ConditionType:
+    if "PropertyVariationSource" in v:
+        return _PropertyVariationSourceHelper.model_validate(v)
+    if "SourceRef" in v:
+        return SourceRef.model_validate(v)
+    if "Property" in v:
+        return SourceExpression.model_validate(v)
+    raise ValueError
+
+
+@converter.register_unstructure_hook
+def unparse_bookmark_type(v: ConditionType) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()

@@ -1,6 +1,6 @@
-from typing import Annotated, Any
+from typing import Any
 
-from pydantic import Discriminator, Tag
+from pbi_core.pydantic import converter
 
 from .action_button import ActionButton
 from .bar_chart import BarChart
@@ -20,54 +20,56 @@ from .slicer import Slicer
 from .table import TableChart
 from .text_box import TextBox
 
-
-def get_visual(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        assert "visualType" in v
-        assert isinstance(v["visualType"], str)
-
-        mapping = {
-            "actionButton": "ActionButton",
-            "barChart": "BarChart",
-            "basicShape": "BasicShape",
-            "card": "Card",
-            "clusteredColumnChart": "ClusteredColumnChart",
-            "columnChart": "ColumnChart",
-            "donutChart": "DonutChart",
-            "funnel": "Funnel",
-            "image": "Image",
-            "lineChart": "LineChart",
-            "lineStackedColumnComboChart": "LineStackedColumnComboChart",
-            "pieChart": "PieChart",
-            "scatterChart": "ScatterChart",
-            "slicer": "Slicer",
-            "tableEx": "TableChart",
-            "textbox": "TextBox",
-        }
-        return mapping.get(v["visualType"], "GenericVisual")
-    return v.__class__.__name__
+Visual = (
+    ActionButton
+    | BarChart
+    | GenericVisual
+    | BasicShape
+    | Card
+    | ColumnChart
+    | ClusteredColumnChart
+    | DonutChart
+    | Funnel
+    | Image
+    | LineChart
+    | LineStackedColumnComboChart
+    | PieChart
+    | ScatterChart
+    | Slicer
+    | TableChart
+    | TextBox
+)
 
 
-Visual = Annotated[
-    Annotated[ActionButton, Tag("ActionButton")]
-    | Annotated[BarChart, Tag("BarChart")]
-    | Annotated[GenericVisual, Tag("GenericVisual")]
-    | Annotated[BasicShape, Tag("BasicShape")]
-    | Annotated[Card, Tag("Card")]
-    | Annotated[ColumnChart, Tag("ColumnChart")]
-    | Annotated[ClusteredColumnChart, Tag("ClusteredColumnChart")]
-    | Annotated[DonutChart, Tag("DonutChart")]
-    | Annotated[Funnel, Tag("Funnel")]
-    | Annotated[Image, Tag("Image")]
-    | Annotated[LineChart, Tag("LineChart")]
-    | Annotated[LineStackedColumnComboChart, Tag("LineStackedColumnComboChart")]
-    | Annotated[PieChart, Tag("PieChart")]
-    | Annotated[ScatterChart, Tag("ScatterChart")]
-    | Annotated[Slicer, Tag("Slicer")]
-    | Annotated[TableChart, Tag("TableChart")]
-    | Annotated[TextBox, Tag("TextBox")],
-    Discriminator(get_visual),
-]
+@converter.register_structure_hook
+def get_visual_type(v: dict[str, Any], _: type | None = None) -> Visual:
+    assert "visualType" in v
+    assert isinstance(v["visualType"], str)
+
+    mapping = {
+        "actionButton": ActionButton,
+        "barChart": BarChart,
+        "basicShape": BasicShape,
+        "card": Card,
+        "clusteredColumnChart": ClusteredColumnChart,
+        "columnChart": ColumnChart,
+        "donutChart": DonutChart,
+        "funnel": Funnel,
+        "image": Image,
+        "lineChart": LineChart,
+        "lineStackedColumnComboChart": LineStackedColumnComboChart,
+        "pieChart": PieChart,
+        "scatterChart": ScatterChart,
+        "slicer": Slicer,
+        "tableEx": TableChart,
+        "textbox": TextBox,
+    }
+    return mapping.get(v["visualType"], GenericVisual).model_validate(v)
+
+
+@converter.register_unstructure_hook
+def unparse_visual_type(v: Visual) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 __all__ = ["GenericVisual", "Visual"]

@@ -1,6 +1,6 @@
 from attrs import field
 
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
@@ -100,4 +100,4 @@ class ActionButton(BaseVisual):
     visualType: str = "actionButton"
 
     drillFilterOtherVisuals: bool = True
-    objects: ActionButtonProperties = field(factory=ActionButtonProperties)
+    objects: ActionButtonProperties = field(factory=ActionButtonProperties, repr=False)

@@ -1,28 +1,26 @@
 from enum import IntEnum
-from typing import Annotated, Any
+from typing import Any
 
-from pydantic import Discriminator, Tag
-
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import converter, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
-from .aggregation import AggregationSource, DataSource
+from .aggregation import AggregationSource, DataSource, get_data_source_type
+
+Expression = DataSource | AggregationSource
 
 
-def get_expression_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "Aggregation" in v:
-            return "AggregationSource"
-        if any(c in v for c in ("Column", "Measure", "HierarchyLevel")):
-            return "DataSource"
-        raise TypeError(v)
-    return v.__class__.__name__
+@converter.register_structure_hook
+def get_expression_type(v: dict[str, Any], _: type | None = None) -> Expression:
+    if "Aggregation" in v:
+        return AggregationSource.model_validate(v)
+    if any(c in v for c in ("Column", "Measure", "HierarchyLevel")):
+        return get_data_source_type(v)
+    raise TypeError(v)
 
 
-Expression = Annotated[
-    Annotated[DataSource, Tag("DataSource")] | Annotated[AggregationSource, Tag("AggregationSource")],
-    Discriminator(get_expression_type),
-]
+@converter.register_unstructure_hook
+def unparse_expression_type(v: Expression) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()

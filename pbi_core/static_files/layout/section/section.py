@@ -2,10 +2,9 @@ from typing import TYPE_CHECKING, Literal
 from uuid import UUID
 
 from attrs import field
-from pydantic import Json
 
 from pbi_core.lineage.main import LineageNode
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import Json, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.filters import PageFilter
 from pbi_core.static_files.layout.performance import Performance, get_performance

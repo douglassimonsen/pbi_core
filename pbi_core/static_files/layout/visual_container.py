@@ -1,8 +1,7 @@
 from enum import Enum, IntEnum
-from typing import TYPE_CHECKING, Annotated, Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 from attrs import field
-from pydantic import Discriminator, Json, Tag
 
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
@@ -24,7 +23,7 @@ if TYPE_CHECKING:
     from .visuals.base import BaseVisual
 
 
-from pbi_core.pydantic import define
+from pbi_core.pydantic import Json, converter, define
 
 from .expansion_state import ExpansionState
 from .performance import Performance, get_performance
@@ -223,37 +222,39 @@ class BinnedLineSample(LayoutNode):
     BinnedLineSample: _BinnedLineSampleHelper
 
 
-def get_reduction(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        mapper = {
-            "Sample": "SampleDataReduction",
-            "Window": "WindowDataReduction",
-            "Top": "TopDataReduction",
-            "Bottom": "BottomDataReduction",
-            "OverlappingPointsSample": "OverlappingPointReduction",
-            "TopNPerLevel": "TopNPerLevelDataReduction",
-            "BinnedLineSample": "BinnedLineSample",
-        }
-
-        for key in v:
-            if key in mapper:
-                return mapper[key]
-        msg = f"Unknown Filter: {v.keys()}"
-        raise ValueError(msg)
-
-    return v.__class__.__name__
+PrimaryDataReduction = (
+    SampleDataReduction
+    | WindowDataReduction
+    | TopDataReduction
+    | BottomDataReduction
+    | OverlappingPointReduction
+    | TopNPerLevelDataReduction
+    | BinnedLineSample
+)
 
 
-PrimaryDataReduction = Annotated[
-    Annotated[SampleDataReduction, Tag("SampleDataReduction")]
-    | Annotated[WindowDataReduction, Tag("WindowDataReduction")]
-    | Annotated[TopDataReduction, Tag("TopDataReduction")]
-    | Annotated[BottomDataReduction, Tag("BottomDataReduction")]
-    | Annotated[OverlappingPointReduction, Tag("OverlappingPointReduction")]
-    | Annotated[TopNPerLevelDataReduction, Tag("TopNPerLevelDataReduction")]
-    | Annotated[BinnedLineSample, Tag("BinnedLineSample")],
-    Discriminator(get_reduction),
-]
+@converter.register_structure_hook
+def get_reduction_type(v: dict[str, Any], _: type | None = None) -> PrimaryDataReduction:
+    mapper = {
+        "Sample": SampleDataReduction,
+        "Window": WindowDataReduction,
+        "Top": TopDataReduction,
+        "Bottom": BottomDataReduction,
+        "OverlappingPointsSample": OverlappingPointReduction,
+        "TopNPerLevel": TopNPerLevelDataReduction,
+        "BinnedLineSample": BinnedLineSample,
+    }
+
+    for key in v:
+        if key in mapper:
+            return mapper[key].model_validate(v)
+    msg = f"Unknown Filter: {v.keys()}"
+    raise ValueError(msg)
+
+
+@converter.register_unstructure_hook
+def unparse_reduction_type(v: PrimaryDataReduction) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()
@@ -331,21 +332,22 @@ class QueryCommand2(LayoutNode):
     SemanticQueryDataShapeCommand: QueryCommand1
 
 
-def get_query_command(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "SemanticQueryDataShapeCommand" in v:
-            return "QueryCommand2"
-        if "ExecutionMetricsKind" in v:
-            return "QueryCommand1"
-        msg = f"Unknown Filter: {v.keys()}"
-        raise ValueError(msg)
-    return v.__class__.__name__
+QueryCommand = QueryCommand1 | QueryCommand2
 
 
-QueryCommand = Annotated[
-    Annotated[QueryCommand1, Tag("QueryCommand1")] | Annotated[QueryCommand2, Tag("QueryCommand2")],
-    Discriminator(get_query_command),
-]
+@converter.register_structure_hook
+def get_query_command_type(v: dict[str, Any], _: type | None = None) -> QueryCommand:
+    if "SemanticQueryDataShapeCommand" in v:
+        return QueryCommand2.model_validate(v)
+    if "ExecutionMetricsKind" in v:
+        return QueryCommand1.model_validate(v)
+    msg = f"Unknown Filter: {v.keys()}"
+    raise ValueError(msg)
+
+
+@converter.register_unstructure_hook
+def unparse_query_command(v: QueryCommand) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()

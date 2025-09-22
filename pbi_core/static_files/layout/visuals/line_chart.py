@@ -1,4 +1,4 @@
-from pydantic import Field
+from attrs import field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -18,7 +18,7 @@ class AnomalyDetectionProperties(LayoutNode):
         transform: Expression | None = None
         transparency: Expression | None = None
 
-    properties: _AnomalyDetectionPropertiesHelper = Field(default_factory=_AnomalyDetectionPropertiesHelper)
+    properties: _AnomalyDetectionPropertiesHelper = field(factory=_AnomalyDetectionPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -39,7 +39,7 @@ class CategoryAxisProperties(LayoutNode):
         titleFontFamily: Expression | None = None
         titleFontSize: Expression | None = None
 
-    properties: _CategoryAxisPropertiesHelper = Field(default_factory=_CategoryAxisPropertiesHelper)
+    properties: _CategoryAxisPropertiesHelper = field(factory=_CategoryAxisPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -48,7 +48,7 @@ class DataPointProperties(LayoutNode):
         fill: Expression | None = None
         showAllDataPoints: Expression | None = None
 
-    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
+    properties: _DataPointPropertiesHelper = field(factory=_DataPointPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -59,7 +59,7 @@ class ForecastProperties(LayoutNode):
         lineColor: Expression | None = None
         transform: Expression | None = None
 
-    properties: _ForecastPropertiesHelper = Field(default_factory=_ForecastPropertiesHelper)
+    properties: _ForecastPropertiesHelper = field(factory=_ForecastPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -67,7 +67,7 @@ class GeneralProperties(LayoutNode):
     class _GeneralPropertiesHelper(LayoutNode):
         responsive: Expression | None = None
 
-    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
+    properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
 class LabelsProperties(LayoutNode):
@@ -81,7 +81,7 @@ class LabelsProperties(LayoutNode):
         showAll: Expression | None = None
         showSeries: Expression | None = None
 
-    properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
+    properties: _LabelsPropertiesHelper = field(factory=_LabelsPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -96,7 +96,7 @@ class LegendProperties(LayoutNode):
         showTitle: Expression | None = None
         titleText: Expression | None = None
 
-    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
+    properties: _LegendPropertiesHelper = field(factory=_LegendPropertiesHelper)
 
 
 class LineStylesProperties(LayoutNode):
@@ -111,7 +111,7 @@ class LineStylesProperties(LayoutNode):
         strokeLineJoin: Expression | None = None
         strokeWidth: Expression | None = None
 
-    properties: _LineStylesPropertiesHelper = Field(default_factory=_LineStylesPropertiesHelper)
+    properties: _LineStylesPropertiesHelper = field(factory=_LineStylesPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -119,7 +119,7 @@ class PlotAreaProperties(LayoutNode):
     class _PlotAreaPropertiesHelper(LayoutNode):
         transparency: Expression | None = None
 
-    properties: _PlotAreaPropertiesHelper = Field(default_factory=_PlotAreaPropertiesHelper)
+    properties: _PlotAreaPropertiesHelper = field(factory=_PlotAreaPropertiesHelper)
 
 
 class TrendProperties(LayoutNode):
@@ -128,7 +128,7 @@ class TrendProperties(LayoutNode):
         lineColor: Expression | None = None
         show: Expression | None = None
 
-    properties: _TrendPropertiesHelper = Field(default_factory=_TrendPropertiesHelper)
+    properties: _TrendPropertiesHelper = field(factory=_TrendPropertiesHelper)
 
 
 class ValueAxisProperties(LayoutNode):
@@ -151,7 +151,7 @@ class ValueAxisProperties(LayoutNode):
         titleFontFamily: Expression | None = None
         titleText: Expression | None = None
 
-    properties: _ValueAxisPropertiesHelper = Field(default_factory=_ValueAxisPropertiesHelper)
+    properties: _ValueAxisPropertiesHelper = field(factory=_ValueAxisPropertiesHelper)
 
 
 class Y1AxisReferenceLineProperties(LayoutNode):
@@ -161,7 +161,7 @@ class Y1AxisReferenceLineProperties(LayoutNode):
         show: Expression | None = None
         style: Expression | None = None
 
-    properties: _Y1AxisReferenceLinePropertiesHelper = Field(default_factory=_Y1AxisReferenceLinePropertiesHelper)
+    properties: _Y1AxisReferenceLinePropertiesHelper = field(factory=_Y1AxisReferenceLinePropertiesHelper)
     selector: Selector | None = None
 
 
@@ -169,7 +169,7 @@ class Y2AxisProperties(LayoutNode):
     class _Y2AxisPropertiesHelper(LayoutNode):
         show: Expression | None = None
 
-    properties: _Y2AxisPropertiesHelper = Field(default_factory=_Y2AxisPropertiesHelper)
+    properties: _Y2AxisPropertiesHelper = field(factory=_Y2AxisPropertiesHelper)
 
 
 class ZoomProperties(LayoutNode):
@@ -180,32 +180,32 @@ class ZoomProperties(LayoutNode):
         valueMax: Expression | None = None
         valueMin: Expression | None = None
 
-    properties: _ZoomPropertiesHelper = Field(default_factory=_ZoomPropertiesHelper)
+    properties: _ZoomPropertiesHelper = field(factory=_ZoomPropertiesHelper)
 
 
 class LineChartProperties(LayoutNode):
-    anomalyDetection: list[AnomalyDetectionProperties] = Field(
-        default_factory=lambda: [AnomalyDetectionProperties()],
+    anomalyDetection: list[AnomalyDetectionProperties] = field(
+        factory=lambda: [AnomalyDetectionProperties()],
     )
-    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
-    forecast: list[ForecastProperties] = Field(default_factory=lambda: [ForecastProperties()])
-    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
-    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
-    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
-    lineStyles: list[LineStylesProperties] = Field(default_factory=lambda: [LineStylesProperties()])
-    plotArea: list[PlotAreaProperties] = Field(default_factory=lambda: [PlotAreaProperties()])
-    trend: list[TrendProperties] = Field(default_factory=lambda: [TrendProperties()])
-    valueAxis: list[ValueAxisProperties] = Field(default_factory=lambda: [ValueAxisProperties()])
-    zoom: list[ZoomProperties] = Field(default_factory=lambda: [ZoomProperties()])
-    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] = Field(
-        default_factory=lambda: [Y1AxisReferenceLineProperties()],
+    categoryAxis: list[CategoryAxisProperties] = field(factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
+    forecast: list[ForecastProperties] = field(factory=lambda: [ForecastProperties()])
+    general: list[GeneralProperties] = field(factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] = field(factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = field(factory=lambda: [LegendProperties()])
+    lineStyles: list[LineStylesProperties] = field(factory=lambda: [LineStylesProperties()])
+    plotArea: list[PlotAreaProperties] = field(factory=lambda: [PlotAreaProperties()])
+    trend: list[TrendProperties] = field(factory=lambda: [TrendProperties()])
+    valueAxis: list[ValueAxisProperties] = field(factory=lambda: [ValueAxisProperties()])
+    zoom: list[ZoomProperties] = field(factory=lambda: [ZoomProperties()])
+    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] = field(
+        factory=lambda: [Y1AxisReferenceLineProperties()],
     )
-    y2Axis: list[Y2AxisProperties] = Field(default_factory=lambda: [Y2AxisProperties()])
+    y2Axis: list[Y2AxisProperties] = field(factory=lambda: [Y2AxisProperties()])
 
 
 class LineChart(BaseVisual):
     visualType: str = "lineChart"
 
     drillFilterOtherVisuals: bool = True
-    objects: LineChartProperties = Field(default_factory=LineChartProperties)
+    objects: LineChartProperties = field(factory=LineChartProperties, repr=False)

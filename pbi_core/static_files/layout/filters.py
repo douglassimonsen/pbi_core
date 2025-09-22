@@ -1,8 +1,7 @@
 from enum import Enum, IntEnum
-from typing import TYPE_CHECKING, Annotated, Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import attrs
-from pydantic import Discriminator, Tag
 
 from pbi_core.pydantic import BaseValidation, converter, define
 from pbi_core.static_files.layout.sources.literal import LiteralSource
@@ -411,21 +410,21 @@ class DecomposedFilterExpressionMetadata(LayoutNode):
     """Json filter metadata."""
 
 
-def get_filter_expression(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "decomposedIdentities" in v:
-            return "DecomposedFilterExpressionMetadata"
-        if "cachedValueItems" in v:
-            return "FilterExpressionMetadata"
-        raise TypeError(v)
-    return v.__class__.__name__
+FilterExpression = FilterExpressionMetadata | DecomposedFilterExpressionMetadata
 
 
-FilterExpression = Annotated[
-    Annotated[FilterExpressionMetadata, Tag("FilterExpressionMetadata")]
-    | Annotated[DecomposedFilterExpressionMetadata, Tag("DecomposedFilterExpressionMetadata")],
-    Discriminator(get_filter_expression),
-]
+@converter.register_structure_hook
+def get_filter_expression_type(v: dict[str, Any], _: type | None = None) -> FilterExpression:
+    if "decomposedIdentities" in v:
+        return DecomposedFilterExpressionMetadata.model_validate(v)
+    if "cachedValueItems" in v:
+        return FilterExpressionMetadata.model_validate(v)
+    raise TypeError(v)
+
+
+@converter.register_unstructure_hook
+def unparse_filter_expression_layout(v: FilterExpression) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()

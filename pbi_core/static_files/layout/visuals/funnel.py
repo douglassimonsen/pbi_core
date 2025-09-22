@@ -1,4 +1,4 @@
-from pydantic import Field
+from attrs import field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -12,7 +12,7 @@ class CategoryAxisProperties(LayoutNode):
         color: Expression | None = None
         show: Expression | None = None
 
-    properties: _CategoryAxisPropertiesHelper = Field(default_factory=_CategoryAxisPropertiesHelper)
+    properties: _CategoryAxisPropertiesHelper = field(factory=_CategoryAxisPropertiesHelper)
 
 
 class DataPointProperties(LayoutNode):
@@ -20,7 +20,7 @@ class DataPointProperties(LayoutNode):
         fill: Expression | None = None
         showAllDataPoints: Expression | None = None
 
-    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
+    properties: _DataPointPropertiesHelper = field(factory=_DataPointPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -33,7 +33,7 @@ class LabelsProperties(LayoutNode):
         percentageLabelPrecision: Expression | None = None
         show: Expression | None = None
 
-    properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
+    properties: _LabelsPropertiesHelper = field(factory=_LabelsPropertiesHelper)
 
 
 class PercentBarLabelProperties(LayoutNode):
@@ -41,19 +41,19 @@ class PercentBarLabelProperties(LayoutNode):
         color: Expression | None = None
         show: Expression | None = None
 
-    properties: _PercentBarLabelPropertiesHelper = Field(default_factory=_PercentBarLabelPropertiesHelper)
+    properties: _PercentBarLabelPropertiesHelper = field(factory=_PercentBarLabelPropertiesHelper)
 
 
 class FunnelProperties(LayoutNode):
-    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
-    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
-    percentBarLabel: list[PercentBarLabelProperties] = Field(
-        default_factory=lambda: [PercentBarLabelProperties()],
+    categoryAxis: list[CategoryAxisProperties] = field(factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
+    labels: list[LabelsProperties] = field(factory=lambda: [LabelsProperties()])
+    percentBarLabel: list[PercentBarLabelProperties] = field(
+        factory=lambda: [PercentBarLabelProperties()],
     )
 
 
 class Funnel(BaseVisual):
     visualType: str = "funnel"
     drillFilterOtherVisuals: bool = True
-    objects: FunnelProperties = Field(default_factory=FunnelProperties)
+    objects: FunnelProperties = field(factory=FunnelProperties, repr=False)

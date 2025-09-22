@@ -1,4 +1,4 @@
-from pydantic import Field
+from attrs import field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -25,7 +25,7 @@ class ColumnFormattingProperties(LayoutNode):
         styleHeader: Expression | None = None
         styleValues: Expression | None = None
 
-    properties: _ColumnFormattingPropertiesHelper = Field(default_factory=_ColumnFormattingPropertiesHelper)
+    properties: _ColumnFormattingPropertiesHelper = field(factory=_ColumnFormattingPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -43,7 +43,7 @@ class ColumnHeadersProperties(LayoutNode):
         underline: Expression | None = None
         wordWrap: Expression | None = None
 
-    properties: _ColumnHeadersPropertiesHelper = Field(default_factory=_ColumnHeadersPropertiesHelper)
+    properties: _ColumnHeadersPropertiesHelper = field(factory=_ColumnHeadersPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -51,7 +51,7 @@ class ColumnWidthProperties(LayoutNode):
     class _ColumnWidthPropertiesHelper(LayoutNode):
         value: Expression | None = None
 
-    properties: _ColumnWidthPropertiesHelper = Field(default_factory=_ColumnWidthPropertiesHelper)
+    properties: _ColumnWidthPropertiesHelper = field(factory=_ColumnWidthPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -59,7 +59,7 @@ class GeneralProperties(LayoutNode):
     class _GeneralPropertiesHelper(LayoutNode):
         pass
 
-    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
+    properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
 class GridProperties(LayoutNode):
@@ -76,7 +76,7 @@ class GridProperties(LayoutNode):
         rowPadding: Expression | None = None
         textSize: Expression | None = None
 
-    properties: _GridPropertiesHelper = Field(default_factory=_GridPropertiesHelper)
+    properties: _GridPropertiesHelper = field(factory=_GridPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -88,7 +88,7 @@ class TotalProperties(LayoutNode):
         outline: Expression | None = None
         totals: Expression | None = None
 
-    properties: _TotalPropertiesHelper = Field(default_factory=_TotalPropertiesHelper)
+    properties: _TotalPropertiesHelper = field(factory=_TotalPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -106,22 +106,22 @@ class ValuesProperties(LayoutNode):
         urlIcon: Expression | None = None
         wordWrap: Expression | None = None
 
-    properties: _ValuesPropertiesHelper = Field(default_factory=_ValuesPropertiesHelper)
+    properties: _ValuesPropertiesHelper = field(factory=_ValuesPropertiesHelper)
     selector: Selector | None = None
 
 
 class TableChartColumnProperties(LayoutNode):
-    columnFormatting: list[ColumnFormattingProperties] = Field(
-        default_factory=lambda: [ColumnFormattingProperties()],
+    columnFormatting: list[ColumnFormattingProperties] = field(
+        factory=lambda: [ColumnFormattingProperties()],
     )
-    columnHeaders: list[ColumnHeadersProperties] = Field(default_factory=lambda: [ColumnHeadersProperties()])
-    columnWidth: list[ColumnWidthProperties] = Field(default_factory=lambda: [ColumnWidthProperties()])
-    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
-    grid: list[GridProperties] = Field(default_factory=lambda: [GridProperties()])
-    total: list[TotalProperties] = Field(default_factory=lambda: [TotalProperties()])
-    values: list[ValuesProperties] = Field(default_factory=lambda: [ValuesProperties()])
+    columnHeaders: list[ColumnHeadersProperties] = field(factory=lambda: [ColumnHeadersProperties()])
+    columnWidth: list[ColumnWidthProperties] = field(factory=lambda: [ColumnWidthProperties()])
+    general: list[GeneralProperties] = field(factory=lambda: [GeneralProperties()])
+    grid: list[GridProperties] = field(factory=lambda: [GridProperties()])
+    total: list[TotalProperties] = field(factory=lambda: [TotalProperties()])
+    values: list[ValuesProperties] = field(factory=lambda: [ValuesProperties()])
 
 
 class TableChart(BaseVisual):
     visualType: str = "tableEx"
-    objects: TableChartColumnProperties = Field(default_factory=TableChartColumnProperties)
+    objects: TableChartColumnProperties = field(factory=TableChartColumnProperties)

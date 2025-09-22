@@ -1,10 +1,9 @@
 from enum import IntEnum
-from typing import Annotated, Any
+from typing import Any
 
 from attrs import field
-from pydantic import Discriminator, Tag
 
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import converter, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .column import ColumnSource
@@ -20,18 +19,6 @@ class ExpressionName(LayoutNode):
 @define()
 class SelectRef(LayoutNode):
     SelectRef: ExpressionName
-
-
-def get_expression_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "Aggregation" in v:
-            return "AggregationSource"
-        if any(c in v for c in ("Column", "Measure", "HierarchyLevel")):
-            return "DataSource"
-        if "SelectRef" in v:
-            return "SelectRef"
-        raise TypeError(v)
-    return v.__class__.__name__
 
 
 @define()
@@ -51,27 +38,25 @@ class ScopedEvalAgg(LayoutNode):  # copied from arithmetic.py to avoid circular 
     ScopedEval: ScopedEval2
 
 
-def get_data_source_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "Column" in v:
-            return "ColumnSource"
-        if "Measure" in v:
-            return "MeasureSource"
-        if "HierarchyLevel" in v:
-            return "HierarchyLevelSource"
-        if "ScopedEval" in v:  # Consider subclassing? This only happens for color gradient properties IME
-            return "ScopedEvalAgg"
-        raise TypeError(v)
-    return v.__class__.__name__
+DataSource = ColumnSource | MeasureSource | HierarchyLevelSource | ScopedEvalAgg
 
 
-DataSource = Annotated[
-    Annotated[ColumnSource, Tag("ColumnSource")]
-    | Annotated[MeasureSource, Tag("MeasureSource")]
-    | Annotated[HierarchyLevelSource, Tag("HierarchyLevelSource")]
-    | Annotated[ScopedEvalAgg, Tag("ScopedEvalAgg")],
-    Discriminator(get_data_source_type),
-]
+@converter.register_structure_hook
+def get_data_source_type(v: dict[str, Any], _: type | None = None) -> DataSource:
+    if "Column" in v:
+        return ColumnSource.model_validate(v)
+    if "Measure" in v:
+        return MeasureSource.model_validate(v)
+    if "HierarchyLevel" in v:
+        return HierarchyLevelSource.model_validate(v)
+    if "ScopedEval" in v:  # Consider subclassing? This only happens for color gradient properties IME
+        return ScopedEvalAgg.model_validate(v)
+    raise TypeError(v)
+
+
+@converter.register_unstructure_hook
+def unparse_data_source_type(v: DataSource) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 class AggregationFunction(IntEnum):
@@ -102,9 +87,20 @@ class AggregationSource(LayoutNode):
         return [self.Aggregation.Expression]
 
 
-ScopedEvalExpression = Annotated[
-    Annotated[DataSource, Tag("DataSource")]
-    | Annotated[AggregationSource, Tag("AggregationSource")]
-    | Annotated[SelectRef, Tag("SelectRef")],
-    Discriminator(get_expression_type),
-]
+ScopedEvalExpression = DataSource | AggregationSource | SelectRef
+
+
+@converter.register_structure_hook
+def get_scoped_eval_type(v: dict[str, Any], _: type | None = None) -> ScopedEvalExpression:
+    if "Aggregation" in v:
+        return AggregationSource.model_validate(v)
+    if any(c in v for c in ("Column", "Measure", "HierarchyLevel")):
+        return get_data_source_type(v)
+    if "SelectRef" in v:
+        return SelectRef.model_validate(v)
+    raise TypeError(v)
+
+
+@converter.register_unstructure_hook
+def unparse_scoped_eval_type(v: ScopedEvalExpression) -> dict[str, Any]:
+    return converter.unstructure(v)

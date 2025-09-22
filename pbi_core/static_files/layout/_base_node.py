@@ -3,7 +3,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
 from pbi_core.lineage import LineageNode
-from pbi_core.pydantic.attrs import BaseValidation
+from pbi_core.pydantic import BaseValidation
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
@@ -157,7 +157,7 @@ def _get_xpath(  # noqa: C901  # too complex, but it's actually not that complex
     child: LayoutNode,
     xpath: list[str | int] | None = None,
 ) -> list[str | int] | None:
-    def _xpath_pydantic(parent: LayoutNode, child: LayoutNode, xpath: list[str | int]) -> list[str | int] | None:
+    def _xpath_attrs(parent: LayoutNode, child: LayoutNode, xpath: list[str | int]) -> list[str | int] | None:
         for attr in parent.__attrs_attrs__:
             val = getattr(parent, attr.name)
             ret = _get_xpath(val, child, xpath=[*xpath, attr.name])
@@ -185,7 +185,7 @@ def _get_xpath(  # noqa: C901  # too complex, but it's actually not that complex
         return xpath
 
     if isinstance(parent, LayoutNode):
-        return _xpath_pydantic(parent, child, xpath)
+        return _xpath_attrs(parent, child, xpath)
     if isinstance(parent, list):
         return _xpath_list(parent, child, xpath)
     if isinstance(parent, dict):

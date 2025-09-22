@@ -1,9 +1,7 @@
 from enum import IntEnum
-from typing import Annotated, Any
+from typing import Any
 
-from pydantic import Discriminator, Tag
-
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import converter, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 
@@ -43,20 +41,21 @@ class Source(LayoutNode):
         return self.Source
 
 
-def get_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "Source" in v:
-            return "Source"
-        if "Entity" in v:
-            return "Entity"
-        raise TypeError(v)
-    return v.__class__.__name__
+SourceRefSource = Entity | Source
 
 
-SourceRefSource = Annotated[
-    Annotated[Entity, Tag("Entity")] | Annotated[Source, Tag("Source")],
-    Discriminator(get_type),
-]
+@converter.register_structure_hook
+def get_source_ref_type(v: dict[str, Any], _: type | None = None) -> SourceRefSource:
+    if "Source" in v:
+        return Source.model_validate(v)
+    if "Entity" in v:
+        return Entity.model_validate(v)
+    raise TypeError(v)
+
+
+@converter.register_unstructure_hook
+def unparse_source_ref_type(v: SourceRefSource) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()
@@ -87,20 +86,21 @@ class SourceRef(LayoutNode):
         return self.SourceRef.table()
 
 
-def get_source_expression_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "SourceRef" in v:
-            return "SourceRef"
-        if "TransformTableRef" in v:
-            return "TransformTableRef"
-        raise TypeError(v)
-    return v.__class__.__name__
+SourceExpressionUnion = TransformTableRef | SourceRef
 
 
-SourceExpressionUnion = Annotated[
-    Annotated[TransformTableRef, Tag("TransformTableRef")] | Annotated[SourceRef, Tag("SourceRef")],
-    Discriminator(get_source_expression_type),
-]
+@converter.register_structure_hook
+def get_source_expression_type(v: dict[str, Any], _: type | None = None) -> SourceExpressionUnion:
+    if "SourceRef" in v:
+        return SourceRef.model_validate(v)
+    if "TransformTableRef" in v:
+        return TransformTableRef.model_validate(v)
+    raise TypeError(v)
+
+
+@converter.register_unstructure_hook
+def unparse_source_expression_type(v: SourceExpressionUnion) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()

@@ -1,4 +1,4 @@
-from pydantic import Field
+from attrs import field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -11,7 +11,7 @@ class CategoryAxisProperties(LayoutNode):
     class _CategoryAxisPropertiesHelper(LayoutNode):
         axisType: Expression | None = None
 
-    properties: _CategoryAxisPropertiesHelper = Field(default_factory=_CategoryAxisPropertiesHelper)
+    properties: _CategoryAxisPropertiesHelper = field(factory=_CategoryAxisPropertiesHelper)
 
 
 class DataPointProperties(LayoutNode):
@@ -20,7 +20,7 @@ class DataPointProperties(LayoutNode):
         fillRule: Expression | None = None
         showAllDataPoints: Expression | None = None
 
-    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
+    properties: _DataPointPropertiesHelper = field(factory=_DataPointPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -37,7 +37,7 @@ class LabelsProperties(LayoutNode):
         show: Expression | None = None
         showAll: Expression | None = None
 
-    properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
+    properties: _LabelsPropertiesHelper = field(factory=_LabelsPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -47,7 +47,7 @@ class LegendProperties(LayoutNode):
         position: Expression | None = None
         show: Expression | None = None
 
-    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
+    properties: _LegendPropertiesHelper = field(factory=_LegendPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -61,7 +61,7 @@ class LineStylesProperties(LayoutNode):
         stepped: Expression | None = None
         strokeWidth: Expression | None = None
 
-    properties: _LineStylesPropertiesHelper = Field(default_factory=_LineStylesPropertiesHelper)
+    properties: _LineStylesPropertiesHelper = field(factory=_LineStylesPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -73,14 +73,14 @@ class SmallMultiplesLayoutProperties(LayoutNode):
         gridPadding: Expression | None = None
         rowCount: Expression | None = None
 
-    properties: _SmallMultiplesLayoutPropertiesHelper = Field(default_factory=_SmallMultiplesLayoutPropertiesHelper)
+    properties: _SmallMultiplesLayoutPropertiesHelper = field(factory=_SmallMultiplesLayoutPropertiesHelper)
 
 
 class SubheaderProperties(LayoutNode):
     class _SubheaderPropertiesHelper(LayoutNode):
         fontSize: Expression | None = None
 
-    properties: _SubheaderPropertiesHelper = Field(default_factory=_SubheaderPropertiesHelper)
+    properties: _SubheaderPropertiesHelper = field(factory=_SubheaderPropertiesHelper)
 
 
 class ValueAxisProperties(LayoutNode):
@@ -94,25 +94,28 @@ class ValueAxisProperties(LayoutNode):
         start: Expression | None = None
         show: Expression | None = None
 
-    properties: _ValueAxisPropertiesHelper = Field(default_factory=_ValueAxisPropertiesHelper)
+    properties: _ValueAxisPropertiesHelper = field(factory=_ValueAxisPropertiesHelper)
     selector: Selector | None = None
 
 
 class LineStackedColumnComboChartProperties(LayoutNode):
-    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
-    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
-    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
-    lineStyles: list[LineStylesProperties] = Field(default_factory=lambda: [LineStylesProperties()])
-    smallMultiplesLayout: list[SmallMultiplesLayoutProperties] = Field(
-        default_factory=lambda: [SmallMultiplesLayoutProperties()],
+    categoryAxis: list[CategoryAxisProperties] = field(factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
+    labels: list[LabelsProperties] = field(factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = field(factory=lambda: [LegendProperties()])
+    lineStyles: list[LineStylesProperties] = field(factory=lambda: [LineStylesProperties()])
+    smallMultiplesLayout: list[SmallMultiplesLayoutProperties] = field(
+        factory=lambda: [SmallMultiplesLayoutProperties()],
     )
-    subheader: list[SubheaderProperties] = Field(default_factory=lambda: [SubheaderProperties()])
-    valueAxis: list[ValueAxisProperties] = Field(default_factory=lambda: [ValueAxisProperties()])
+    subheader: list[SubheaderProperties] = field(factory=lambda: [SubheaderProperties()])
+    valueAxis: list[ValueAxisProperties] = field(factory=lambda: [ValueAxisProperties()])
 
 
 class LineStackedColumnComboChart(BaseVisual):
     visualType: str = "lineStackedColumnComboChart"
 
     drillFilterOtherVisuals: bool = True
-    objects: LineStackedColumnComboChartProperties = Field(default_factory=LineStackedColumnComboChartProperties)
+    objects: LineStackedColumnComboChartProperties = field(
+        factory=LineStackedColumnComboChartProperties,
+        repr=False,
+    )

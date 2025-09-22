@@ -1,6 +1,6 @@
 from attrs import field
 
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 
 from .base import BaseVisual
@@ -61,4 +61,4 @@ class BasicShape(BaseVisual):
     visualType: str = "basicShape"
 
     drillFilterOtherVisuals: bool = True
-    objects: BasicShapeProperties = field(factory=BasicShapeProperties)
+    objects: BasicShapeProperties = field(factory=BasicShapeProperties, repr=False)

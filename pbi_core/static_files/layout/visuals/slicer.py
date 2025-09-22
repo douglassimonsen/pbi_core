@@ -1,4 +1,4 @@
-from pydantic import Field
+from attrs import field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.filters import Filter
@@ -28,7 +28,7 @@ class DataProperties(LayoutNode):
         numericStart: Expression | None = None
         startDate: Expression | None = None
 
-    properties: _DataPropertiesHelper = Field(default_factory=_DataPropertiesHelper)
+    properties: _DataPropertiesHelper = field(factory=_DataPropertiesHelper)
 
 
 class DateProperties(LayoutNode):
@@ -38,7 +38,7 @@ class DateProperties(LayoutNode):
         fontFamily: Expression | None = None
         textSize: Expression | None = None
 
-    properties: _DatePropertiesHelper = Field(default_factory=_DatePropertiesHelper)
+    properties: _DatePropertiesHelper = field(factory=_DatePropertiesHelper)
 
 
 class GeneralProperties(LayoutNode):
@@ -51,7 +51,7 @@ class GeneralProperties(LayoutNode):
         outlineColor: Expression | None = None
         outlineWeight: Expression | None = None
 
-    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
+    properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
 class HeaderProperties(LayoutNode):
@@ -66,7 +66,7 @@ class HeaderProperties(LayoutNode):
         textSize: Expression | None = None
         underline: Expression | None = None
 
-    properties: _HeaderPropertiesHelper = Field(default_factory=_HeaderPropertiesHelper)
+    properties: _HeaderPropertiesHelper = field(factory=_HeaderPropertiesHelper)
 
 
 class NumericInputStyleProperties(LayoutNode):
@@ -76,7 +76,7 @@ class NumericInputStyleProperties(LayoutNode):
         fontFamily: Expression | None = None
         textSize: Expression | None = None
 
-    properties: _NumericInputStylePropertiesHelper = Field(default_factory=_NumericInputStylePropertiesHelper)
+    properties: _NumericInputStylePropertiesHelper = field(factory=_NumericInputStylePropertiesHelper)
 
 
 class ItemProperties(LayoutNode):
@@ -93,7 +93,7 @@ class ItemProperties(LayoutNode):
         steppedLayoutIndentation: Expression | None = None
         textSize: Expression | None = None
 
-    properties: _ItemPropertiesHelper = Field(default_factory=_ItemPropertiesHelper)
+    properties: _ItemPropertiesHelper = field(factory=_ItemPropertiesHelper)
 
 
 class PendingChangeIconProperties(LayoutNode):
@@ -104,7 +104,7 @@ class PendingChangeIconProperties(LayoutNode):
         tooltipText: Expression | None = None
         transparency: Expression | None = None
 
-    properties: _PendingChangeIconPropertiesHelper = Field(default_factory=_PendingChangeIconPropertiesHelper)
+    properties: _PendingChangeIconPropertiesHelper = field(factory=_PendingChangeIconPropertiesHelper)
 
 
 class SelectionProperties(LayoutNode):
@@ -113,7 +113,7 @@ class SelectionProperties(LayoutNode):
         singleSelect: Expression | None = None
         strictSingleSelect: Expression | None = None
 
-    properties: _SelectionPropertiesHelper = Field(default_factory=_SelectionPropertiesHelper)
+    properties: _SelectionPropertiesHelper = field(factory=_SelectionPropertiesHelper)
 
 
 class SliderProperties(LayoutNode):
@@ -121,27 +121,27 @@ class SliderProperties(LayoutNode):
         color: Expression | None = None
         show: Expression | None = None
 
-    properties: _SliderPropertiesHelper = Field(default_factory=_SliderPropertiesHelper)
+    properties: _SliderPropertiesHelper = field(factory=_SliderPropertiesHelper)
 
 
 class SlicerProperties(LayoutNode):
-    date: list[DateProperties] = Field(default_factory=lambda: [DateProperties()])
-    data: list[DataProperties] = Field(default_factory=lambda: [DataProperties()])
-    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
-    header: list[HeaderProperties] = Field(default_factory=lambda: [HeaderProperties()])
-    items: list[ItemProperties] = Field(default_factory=lambda: [ItemProperties()])
-    numericInputStyle: list[NumericInputStyleProperties] = Field(
-        default_factory=lambda: [NumericInputStyleProperties()],
+    date: list[DateProperties] = field(factory=lambda: [DateProperties()])
+    data: list[DataProperties] = field(factory=lambda: [DataProperties()])
+    general: list[GeneralProperties] = field(factory=lambda: [GeneralProperties()])
+    header: list[HeaderProperties] = field(factory=lambda: [HeaderProperties()])
+    items: list[ItemProperties] = field(factory=lambda: [ItemProperties()])
+    numericInputStyle: list[NumericInputStyleProperties] = field(
+        factory=lambda: [NumericInputStyleProperties()],
     )
-    pendingChangesIcon: list[PendingChangeIconProperties] = Field(
-        default_factory=lambda: [PendingChangeIconProperties()],
+    pendingChangesIcon: list[PendingChangeIconProperties] = field(
+        factory=lambda: [PendingChangeIconProperties()],
     )
-    selection: list[SelectionProperties] = Field(default_factory=lambda: [SelectionProperties()])
-    slider: list[SliderProperties] = Field(default_factory=lambda: [SliderProperties()])
+    selection: list[SelectionProperties] = field(factory=lambda: [SelectionProperties()])
+    slider: list[SliderProperties] = field(factory=lambda: [SliderProperties()])
 
 
 class Slicer(BaseVisual):
     visualType: str = "slicer"
     syncGroup: SyncGroup | None = None
     cachedFilterDisplayItems: list[CachedFilterDisplayItems] | None = None
-    objects: SlicerProperties = Field(default_factory=SlicerProperties)
+    objects: SlicerProperties = field(factory=SlicerProperties)

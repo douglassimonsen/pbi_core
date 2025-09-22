@@ -1,6 +1,6 @@
 from typing import Any
 
-from pydantic import Field
+from attrs import field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -15,7 +15,7 @@ class GeneralProperties(LayoutNode):
         paragraphs: list[Paragraph] | None = None
         responsive: Expression | None = None
 
-    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
+    properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
 class ValueProperties(LayoutNode):
@@ -26,20 +26,20 @@ class ValueProperties(LayoutNode):
             value: Any | None = None  # TODO: should be Source, but causes circular import issues with Subquery
             propertyDefinitionKind: str | None = None
 
-        expr: _ValuePropertiesExpr = Field(default_factory=_ValuePropertiesExpr)
+        expr: _ValuePropertiesExpr = field(factory=_ValuePropertiesExpr)
         formatString: Expression | None = None
 
-    properties: _ValuePropertiesHelper = Field(default_factory=_ValuePropertiesHelper)
+    properties: _ValuePropertiesHelper = field(factory=_ValuePropertiesHelper)
     selector: Selector | None = None
 
 
 class TextBoxProperties(LayoutNode):
-    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
-    values: list[ValueProperties] = Field(default_factory=lambda: [ValueProperties()])
+    general: list[GeneralProperties] = field(factory=lambda: [GeneralProperties()])
+    values: list[ValueProperties] = field(factory=lambda: [ValueProperties()])
 
 
 class TextBox(BaseVisual):
     visualType: str = "textbox"
 
     drillFilterOtherVisuals: bool = True
-    objects: TextBoxProperties = Field(default_factory=TextBoxProperties)
+    objects: TextBoxProperties = field(factory=TextBoxProperties)

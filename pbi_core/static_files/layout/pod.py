@@ -1,9 +1,9 @@
 from enum import IntEnum
 from uuid import UUID
 
-from pydantic import Json
+from attrs import field
 
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import Json, define
 
 from ._base_node import LayoutNode
 from .sources import ColumnSource
@@ -34,7 +34,7 @@ class Pod(LayoutNode):
     name: str
     boundSection: str
     config: Json[PodConfig]
-    parameters: Json[list[Parameter]] = []
+    parameters: Json[list[Parameter]] = field(factory=list)
     type: PodType | None = None
     referenceScope: int | None = None
     cortanaEnabled: bool | None = None

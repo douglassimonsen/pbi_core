@@ -1,8 +1,6 @@
-from typing import Annotated, Any
+from typing import Any
 
-from pydantic import Discriminator, Tag
-
-from pbi_core.pydantic.pydantic import BaseValidation
+from pbi_core.pydantic import BaseValidation, converter, define
 
 from .aggregation import AggregationSource, DataSource, SelectRef
 from .arithmetic import ArithmeticSource
@@ -15,51 +13,56 @@ from .measure import MeasureSource
 from .proto import ProtoSourceRef
 
 
+@define()
 class RoleRef(BaseValidation):
     Role: str
 
 
+@define()
 class TransformOutputRoleRef(BaseValidation):
     TransformOutputRoleRef: RoleRef
     Name: str | None = None
 
 
-def get_source(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        mapper = {
-            "Column": "ColumnSource",
-            "HierarchyLevel": "HierarchyLevelSource",
-            "GroupRef": "GroupSource",
-            "Aggregation": "AggregationSource",
-            "Measure": "MeasureSource",
-            "Arithmetic": "ArithmeticSource",
-            "SourceRef": "ProtoSourceRef",
-            "TransformOutputRoleRef": "TransformOutputRoleRef",
-            "Literal": "LiteralSource",
-            "SelectRef": "SelectRef",
-        }
-        for key in v:
-            if key in mapper:
-                return mapper[key]
-        msg = f"Unknown Filter: {v.keys()}"
-        raise TypeError(msg)
-    return v.__class__.__name__
+Source = (
+    HierarchyLevelSource
+    | ColumnSource
+    | GroupSource
+    | AggregationSource
+    | MeasureSource
+    | ArithmeticSource
+    | ProtoSourceRef
+    | TransformOutputRoleRef
+    | LiteralSource
+    | SelectRef
+)
 
 
-Source = Annotated[
-    Annotated[HierarchyLevelSource, Tag("HierarchyLevelSource")]
-    | Annotated[ColumnSource, Tag("ColumnSource")]
-    | Annotated[GroupSource, Tag("GroupSource")]
-    | Annotated[AggregationSource, Tag("AggregationSource")]
-    | Annotated[MeasureSource, Tag("MeasureSource")]
-    | Annotated[ArithmeticSource, Tag("ArithmeticSource")]
-    | Annotated[ProtoSourceRef, Tag("ProtoSourceRef")]
-    | Annotated[TransformOutputRoleRef, Tag("TransformOutputRoleRef")]
-    | Annotated[LiteralSource, Tag("LiteralSource")]
-    | Annotated[SelectRef, Tag("SelectRef")],
-    # Discriminator is used to determine the type based on the content of the object
-    Discriminator(get_source),
-]
+@converter.register_structure_hook
+def get_bookmark_type(v: dict[str, Any], _: type | None = None) -> Source:
+    mapper = {
+        "Column": ColumnSource,
+        "HierarchyLevel": HierarchyLevelSource,
+        "GroupRef": GroupSource,
+        "Aggregation": AggregationSource,
+        "Measure": MeasureSource,
+        "Arithmetic": ArithmeticSource,
+        "SourceRef": ProtoSourceRef,
+        "TransformOutputRoleRef": TransformOutputRoleRef,
+        "Literal": LiteralSource,
+        "SelectRef": SelectRef,
+    }
+    for key in v:
+        if key in mapper:
+            return mapper[key].model_validate(v)
+    msg = f"Unknown Filter: {v.keys()}"
+    raise TypeError(msg)
+
+
+@converter.register_unstructure_hook
+def unparse_bookmark_type(v: Source) -> dict[str, Any]:
+    return converter.unstructure(v)
+
 
 __all__ = [
     "AggregationSource",
@@ -73,4 +76,5 @@ __all__ = [
     "MeasureSource",
     "Source",
     "SourceRef",
+    "define",
 ]

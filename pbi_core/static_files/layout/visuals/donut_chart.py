@@ -1,4 +1,4 @@
-from pydantic import Field
+from attrs import field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -12,14 +12,14 @@ class BackgroundProperties(LayoutNode):
         show: Expression | None = None
         transparency: Expression | None = None
 
-    properties: _BackgroundPropertiesHelper = Field(default_factory=_BackgroundPropertiesHelper)
+    properties: _BackgroundPropertiesHelper = field(factory=_BackgroundPropertiesHelper)
 
 
 class DataPointProperties(LayoutNode):
     class _DataPointPropertiesHelper(LayoutNode):
         fill: Expression | None = None
 
-    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
+    properties: _DataPointPropertiesHelper = field(factory=_DataPointPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -27,7 +27,7 @@ class GeneralProperties(LayoutNode):
     class _GeneralPropertiesHelper(LayoutNode):
         altText: Expression | None = None
 
-    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
+    properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
 class LabelsProperties(LayoutNode):
@@ -43,7 +43,7 @@ class LabelsProperties(LayoutNode):
         position: Expression | None = None
         show: Expression | None = None
 
-    properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
+    properties: _LabelsPropertiesHelper = field(factory=_LabelsPropertiesHelper)
 
 
 class LegendProperties(LayoutNode):
@@ -54,14 +54,14 @@ class LegendProperties(LayoutNode):
         show: Expression | None = None
         showTitle: Expression | None = None
 
-    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
+    properties: _LegendPropertiesHelper = field(factory=_LegendPropertiesHelper)
 
 
 class SlicesProperties(LayoutNode):
     class _SlicesPropertiesHelper(LayoutNode):
         innerRadiusRatio: Expression | None = None
 
-    properties: _SlicesPropertiesHelper = Field(default_factory=_SlicesPropertiesHelper)
+    properties: _SlicesPropertiesHelper = field(factory=_SlicesPropertiesHelper)
 
 
 class TitleProperties(LayoutNode):
@@ -72,21 +72,21 @@ class TitleProperties(LayoutNode):
         show: Expression | None = None
         text: Expression | None = None
 
-    properties: _TitlePropertiesHelper = Field(default_factory=_TitlePropertiesHelper)
+    properties: _TitlePropertiesHelper = field(factory=_TitlePropertiesHelper)
 
 
 class DonutChartProperties(LayoutNode):
-    background: list[BackgroundProperties] = Field(default_factory=lambda: [BackgroundProperties()])
-    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
-    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
-    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
-    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
-    slices: list[SlicesProperties] = Field(default_factory=lambda: [SlicesProperties()])
-    title: list[TitleProperties] = Field(default_factory=lambda: [TitleProperties()])
+    background: list[BackgroundProperties] = field(factory=lambda: [BackgroundProperties()])
+    dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
+    general: list[GeneralProperties] = field(factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] = field(factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = field(factory=lambda: [LegendProperties()])
+    slices: list[SlicesProperties] = field(factory=lambda: [SlicesProperties()])
+    title: list[TitleProperties] = field(factory=lambda: [TitleProperties()])
 
 
 class DonutChart(BaseVisual):
     visualType: str = "donutChart"
 
     drillFilterOtherVisuals: bool = True
-    objects: DonutChartProperties = Field(default_factory=DonutChartProperties)
+    objects: DonutChartProperties = field(factory=DonutChartProperties, repr=False)

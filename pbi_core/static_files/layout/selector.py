@@ -1,4 +1,4 @@
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import define
 
 from ._base_node import LayoutNode
 from .condition import ConditionType

@@ -1,8 +1,7 @@
 from enum import IntEnum
-from typing import Annotated, Any
+from typing import Any
 
 from attrs import field
-from pydantic import Discriminator, Tag
 
 from pbi_core.pydantic import converter, define
 
@@ -121,21 +120,21 @@ class InTopNExpressionHelper(LayoutNode):
         return self.Expressions
 
 
-def get_in_union_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "Table" in v:
-            return "InTopNExpressionHelper"
-        if "Values" in v:
-            return "InExpressionHelper"
-        raise TypeError(v)
-    return v.__class__.__name__
+InUnion = InExpressionHelper | InTopNExpressionHelper
 
 
-InUnion = Annotated[
-    Annotated[InExpressionHelper, Tag("InExpressionHelper")]
-    | Annotated[InTopNExpressionHelper, Tag("InTopNExpressionHelper")],
-    Discriminator(get_in_union_type),
-]
+@converter.register_structure_hook
+def get_in_union_type(v: dict[str, Any], _: type | None = None) -> InUnion:
+    if "Table" in v:
+        return InTopNExpressionHelper.model_validate(v)
+    if "Values" in v:
+        return InExpressionHelper.model_validate(v)
+    raise TypeError(v)
+
+
+@converter.register_unstructure_hook
+def unparse_in_union_type(v: InUnion) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 def natural_language_source(d: Source | SourceRef | ScopedEvalExpression) -> str:
@@ -192,10 +191,21 @@ def get_date_span_union_type(v: object | dict[str, Any]) -> str:
     return v.__class__.__name__
 
 
-DateSpanUnion = Annotated[
-    Annotated[LiteralSource, Tag("LiteralSource")] | Annotated[_NowHelper, Tag("_NowHelper")],
-    Discriminator(get_date_span_union_type),
-]
+DateSpanUnion = LiteralSource | _NowHelper
+
+
+@converter.register_structure_hook
+def get_bookmark_type(v: dict[str, Any], _: type | None = None) -> DateSpanUnion:
+    if "Literal" in v:
+        return LiteralSource.model_validate(v)
+    if "Now" in v:
+        return _NowHelper.model_validate(v)
+    raise TypeError(v)
+
+
+@converter.register_unstructure_hook
+def unparse_bookmark_type(v: DateSpanUnion) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()
@@ -221,27 +231,25 @@ class RangePercent(LayoutNode):
     RangePercent: RangePercentHelper
 
 
-def get_comparison_right_union_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "Literal" in v:
-            return "LiteralSource"
-        if "AnyValue" in v:
-            return "AnyValue"
-        if "DateSpan" in v:
-            return "DateSpan"
-        if "RangePercent" in v:
-            return "RangePercent"
-        raise TypeError(v)
-    return v.__class__.__name__
+ComparisonRightUnion = LiteralSource | AnyValue | DateSpan | RangePercent
 
 
-ComparisonRightUnion = Annotated[
-    Annotated[LiteralSource, Tag("LiteralSource")]
-    | Annotated[AnyValue, Tag("AnyValue")]
-    | Annotated[DateSpan, Tag("DateSpan")]
-    | Annotated[RangePercent, Tag("RangePercent")],
-    Discriminator(get_comparison_right_union_type),
-]
+@converter.register_structure_hook
+def get_comparison_right_union_type(v: dict[str, Any], _: type | None = None) -> ComparisonRightUnion:
+    if "Literal" in v:
+        return LiteralSource.model_validate(v)
+    if "AnyValue" in v:
+        return AnyValue.model_validate(v)
+    if "DateSpan" in v:
+        return DateSpan.model_validate(v)
+    if "RangePercent" in v:
+        return RangePercent.model_validate(v)
+    raise TypeError(v)
+
+
+@converter.register_unstructure_hook
+def unparse_comparison_right_union_type(v: ComparisonRightUnion) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()

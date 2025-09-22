@@ -1,6 +1,6 @@
 from attrs import field
 
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
@@ -141,4 +141,4 @@ class ClusteredColumnChart(BaseVisual):
     visualType: str = "clusteredColumnChart"
 
     drillFilterOtherVisuals: bool = True
-    objects: ClusteredColumnChartProperties = field(factory=ClusteredColumnChartProperties)
+    objects: ClusteredColumnChartProperties = field(factory=ClusteredColumnChartProperties, repr=False)

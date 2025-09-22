@@ -1,9 +1,8 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Annotated, Any
+from typing import TYPE_CHECKING, Any
 
-from pydantic import Discriminator, Tag
+from pbi_core.pydantic import converter, define
 
-from ...pydantic.attrs import define
 from ._base_node import LayoutNode
 from .expansion_state import ExpansionStateLevel, ExpansionStateRoot
 from .filters import BookmarkFilter, CachedDisplayNames, Direction, FilterExpressionMetadata, HighlightScope, Orderby
@@ -259,15 +258,16 @@ class BookmarkFolder(LayoutNode):
     children: list[Bookmark]
 
 
-def get_bookmark_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "explorationState" in v:
-            return "Bookmark"
-        return "BookmarkFolder"
-    return v.__class__.__name__
+LayoutBookmarkChild = Bookmark | BookmarkFolder
 
 
-LayoutBookmarkChild = Annotated[
-    Annotated[Bookmark, Tag("Bookmark")] | Annotated[BookmarkFolder, Tag("BookmarkFolder")],
-    Discriminator(get_bookmark_type),
-]
+@converter.register_structure_hook
+def get_bookmark_type(v: dict[str, Any], _: type | None = None) -> LayoutBookmarkChild:
+    if "explorationState" in v:
+        return Bookmark.model_validate(v)
+    return BookmarkFolder.model_validate(v)
+
+
+@converter.register_unstructure_hook
+def unparse_bookmark_type(v: LayoutBookmarkChild) -> dict[str, Any]:
+    return converter.unstructure(v)

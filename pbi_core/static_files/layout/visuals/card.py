@@ -1,6 +1,6 @@
 from attrs import field
 
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
@@ -67,4 +67,4 @@ class Card(BaseVisual):
     visualType: str = "card"
 
     drillFilterOtherVisuals: bool = True
-    objects: CardProperties = field(factory=CardProperties)
+    objects: CardProperties = field(factory=CardProperties, repr=False)

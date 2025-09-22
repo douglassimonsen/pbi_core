@@ -1,8 +1,6 @@
-from typing import Annotated, Any
+from typing import Any
 
-from pydantic import Discriminator, Tag
-
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import converter, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 from pbi_core.static_files.layout.sources import Source
@@ -53,18 +51,22 @@ class TextRunExpression(LayoutNode):
     selector: Selector | None = None
 
 
-def get_text_run_type(v: object | str | dict[str, Any]) -> str:
+TextRunValue = str | PropertyIdentifier
+
+
+@converter.register_structure_hook
+def get_bookmark_type(v: dict[str, Any], _: type | None = None) -> TextRunValue:
     if isinstance(v, str):
-        return "str"
+        return converter.structure(v, str)
     if isinstance(v, dict) and "propertyIdentifier" in v:
-        return "PropertyIdentifier"
-    return v.__class__.__name__
+        return PropertyIdentifier.model_validate(v)
+    msg = f"Unknown class: {v.keys()}"
+    raise TypeError(msg)
 
 
-TextRunValue = Annotated[
-    Annotated[str, Tag("str")] | Annotated[PropertyIdentifier, Tag("PropertyIdentifier")],
-    Discriminator(get_text_run_type),
-]
+@converter.register_unstructure_hook
+def unparse_bookmark_type(v: TextRunValue) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()

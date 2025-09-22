@@ -1,8 +1,6 @@
-from typing import Annotated, Any, Literal
+from typing import Any, Literal
 
-from pydantic import Discriminator, Tag
-
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import converter, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.condition import ConditionType
 from pbi_core.static_files.layout.sources import LiteralSource, MeasureSource, Source
@@ -67,34 +65,32 @@ class ConditionalExpression(LayoutNode):
     expr: ConditionalSource
 
 
-def get_subexpr_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        keys = list(v.keys())
-        assert len(keys) == 1, f"Expected single key, got {keys}"
-        mapper = {
-            "ThemeDataColor": "ThemeExpression",
-            "Aggregation": "AggregationSource",
-            "Literal": "LiteralSource",
-            "Measure": "MeasureSource",
-            "FillRule": "FillRuleExpression",
-            "Conditional": "ConditionalSource",
-        }
-        if keys[0] in mapper:
-            return mapper[keys[0]]
-        msg = f"Unknown type: {v.keys()}"
-        raise TypeError(msg)
-    return v.__class__.__name__
+ColorSubExpression = (
+    ThemeExpression | LiteralSource | MeasureSource | FillRuleExpression | AggregationSource | ConditionalSource
+)
 
 
-ColorSubExpression = Annotated[
-    Annotated[ThemeExpression, Tag("ThemeExpression")]
-    | Annotated[LiteralSource, Tag("LiteralSource")]
-    | Annotated[MeasureSource, Tag("MeasureSource")]
-    | Annotated[FillRuleExpression, Tag("FillRuleExpression")]
-    | Annotated[AggregationSource, Tag("AggregationSource")]
-    | Annotated[ConditionalSource, Tag("ConditionalSource")],
-    Discriminator(get_subexpr_type),
-]
+@converter.register_structure_hook
+def get_color_sub_expression_type(v: dict[str, Any], _: type | None = None) -> ColorSubExpression:
+    keys = list(v.keys())
+    assert len(keys) == 1, f"Expected single key, got {keys}"
+    mapper = {
+        "ThemeDataColor": ThemeExpression,
+        "Aggregation": AggregationSource,
+        "Literal": LiteralSource,
+        "Measure": MeasureSource,
+        "FillRule": FillRuleExpression,
+        "Conditional": ConditionalSource,
+    }
+    if keys[0] in mapper:
+        return mapper[keys[0]].model_validate(v)
+    msg = f"Unknown type: {v.keys()}"
+    raise TypeError(msg)
+
+
+@converter.register_unstructure_hook
+def unparse_color_sub_expression_type(v: ColorSubExpression) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()
@@ -102,21 +98,22 @@ class ColorExpression(LayoutNode):
     expr: ColorSubExpression
 
 
-def get_color_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "expr" in v:
-            return "ColorExpression"
-        if "Literal" in v:
-            return "LiteralSource"
-        msg = f"Unknown Color Type: {v.keys()}"
-        raise TypeError(msg)
-    return v.__class__.__name__
+Color = ColorExpression | LiteralSource
 
 
-Color = Annotated[
-    Annotated[ColorExpression, Tag("ColorExpression")] | Annotated[LiteralSource, Tag("LiteralSource")],
-    Discriminator(get_color_type),
-]
+@converter.register_structure_hook
+def get_color_type(v: dict[str, Any], _: type | None = None) -> Color:
+    if "expr" in v:
+        return ColorExpression.model_validate(v)
+    if "Literal" in v:
+        return LiteralSource.model_validate(v)
+    msg = f"Unknown Color Type: {v.keys()}"
+    raise TypeError(msg)
+
+
+@converter.register_unstructure_hook
+def unparse_color_type(v: Color) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()
@@ -151,22 +148,23 @@ class ExtremeColor(LayoutNode):
     value: LiteralSource
 
 
-def get_color_helper_type(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        if "solid" in v:
-            return "SolidExpression"
-        if "color" in v:
-            return "ExtremeColor"
-        msg = f"Unknown class: {v.keys()}"
-        breakpoint()
-        raise TypeError(msg)
-    return v.__class__.__name__
+LinearGradient2HelperExtreme = SolidExpression | ExtremeColor
 
 
-LinearGradient2HelperExtreme = Annotated[
-    Annotated[SolidExpression, Tag("SolidExpression")] | Annotated[ExtremeColor, Tag("ExtremeColor")],
-    Discriminator(get_color_helper_type),
-]
+@converter.register_structure_hook
+def get_linear_gradient_type(v: dict[str, Any], _: type | None = None) -> LinearGradient2HelperExtreme:
+    if "solid" in v:
+        return SolidExpression.model_validate(v)
+    if "color" in v:
+        return ExtremeColor.model_validate(v)
+    msg = f"Unknown class: {v.keys()}"
+    breakpoint()
+    raise TypeError(msg)
+
+
+@converter.register_unstructure_hook
+def unparse_linear_gradient_type(v: LinearGradient2HelperExtreme) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()
@@ -267,65 +265,65 @@ class ColumnExpression(LayoutNode):
     expr: ColumnSource
 
 
-def get_expression(v: object | dict[str, Any]) -> str:
-    if isinstance(v, dict):
-        mapper = {
-            "solid": "SolidColorExpression",
-            "linearGradient2": "LinearGradient2Expression",
-            "linearGradient3": "LinearGradient3Expression",
-            "image": "ImageExpression",
-            "geoJson": "GeoJsonExpression",
-            "algorithm": "AlgorithmExpression",
-        }
-        kind_mapper = {
-            "Icon": "ImageKindExpression",
-            "ExprList": "ExpressionList",
-        }
-        expr_mapper = {
-            "Column": "ColumnExpression",
-            "Measure": "MeasureExpression",
-            "Literal": "LiteralExpression",
-            "Aggregation": "AggregationExpression",
-            "ResourcePackageItem": "ResourcePackageAccess",
-            "SelectRef": "SelectRefExpression",
-        }
-        if "kind" in v:
-            if v["kind"] in kind_mapper:
-                return kind_mapper[v["kind"]]
-            msg = f"Unknown kind: {v['kind']}"
-            raise ValueError(msg)
-
-        if "expr" in v:
-            # Column has multiple keys, so we need to check them
-            for k in v["expr"]:
-                if k in expr_mapper:
-                    return expr_mapper[k]
-            msg = f"Unknown expression type: {v['expr']}"
-            raise ValueError(msg)
-
-        for key in v:
-            if key in mapper:
-                return mapper[key]
-
-        msg = f"Unknown class: {v.keys()}"
-        raise TypeError(msg)
-    return v.__class__.__name__
+Expression = (
+    LiteralExpression
+    | AlgorithmExpression
+    | ColumnExpression
+    | MeasureExpression
+    | AggregationExpression
+    | SolidColorExpression
+    | LinearGradient2Expression
+    | LinearGradient3Expression
+    | ResourcePackageAccess
+    | ImageKindExpression
+    | ImageExpression
+    | ExpressionList
+    | GeoJsonExpression
+    | SelectRefExpression
+)
 
 
-Expression = Annotated[
-    Annotated[LiteralExpression, Tag("LiteralExpression")]
-    | Annotated[AlgorithmExpression, Tag("AlgorithmExpression")]
-    | Annotated[ColumnExpression, Tag("ColumnExpression")]
-    | Annotated[MeasureExpression, Tag("MeasureExpression")]
-    | Annotated[AggregationExpression, Tag("AggregationExpression")]
-    | Annotated[SolidColorExpression, Tag("SolidColorExpression")]
-    | Annotated[LinearGradient2Expression, Tag("LinearGradient2Expression")]
-    | Annotated[LinearGradient3Expression, Tag("LinearGradient3Expression")]
-    | Annotated[ResourcePackageAccess, Tag("ResourcePackageAccess")]
-    | Annotated[ImageKindExpression, Tag("ImageKindExpression")]
-    | Annotated[ImageExpression, Tag("ImageExpression")]
-    | Annotated[ExpressionList, Tag("ExpressionList")]
-    | Annotated[GeoJsonExpression, Tag("GeoJsonExpression")]
-    | Annotated[SelectRefExpression, Tag("SelectRefExpression")],
-    Discriminator(get_expression),
-]
+@converter.register_structure_hook
+def get_expression_type(v: dict[str, Any], _: type | None = None) -> Expression:
+    mapper = {
+        "solid": SolidColorExpression,
+        "linearGradient2": LinearGradient2Expression,
+        "linearGradient3": LinearGradient3Expression,
+        "image": ImageExpression,
+        "geoJson": GeoJsonExpression,
+        "algorithm": AlgorithmExpression,
+    }
+    kind_mapper = {
+        "Icon": ImageKindExpression,
+        "ExprList": ExpressionList,
+    }
+    expr_mapper = {
+        "Column": ColumnExpression,
+        "Measure": MeasureExpression,
+        "Literal": LiteralExpression,
+        "Aggregation": AggregationExpression,
+        "ResourcePackageItem": ResourcePackageAccess,
+        "SelectRef": SelectRefExpression,
+    }
+    if "kind" in v:
+        if v["kind"] in kind_mapper:
+            return kind_mapper[v["kind"]].model_validate(v)
+        msg = f"Unknown kind: {v['kind']}"
+        raise ValueError(msg)
+
+    if "expr" in v:
+        # Column has multiple keys, so we need to check them
+        for k in v["expr"]:
+            if k in expr_mapper:
+                return expr_mapper[k].model_validate(v)
+    for key in v:
+        if key in mapper:
+            return mapper[key].model_validate(v)
+
+    msg = f"Unknown expression type: {v['expr']}"
+    raise ValueError(msg)
+
+
+@converter.register_unstructure_hook
+def unparse_expression_type(v: Expression) -> dict[str, Any]:
+    return converter.unstructure(v)

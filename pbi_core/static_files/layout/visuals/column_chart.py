@@ -1,4 +1,4 @@
-from pydantic import Field
+from attrs import field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -25,7 +25,7 @@ class CategoryAxisProperties(LayoutNode):
         titleFontSize: Expression | None = None
         titleText: Expression | None = None
 
-    properties: _CategoryAxisPropertiesHelper = Field(default_factory=_CategoryAxisPropertiesHelper)
+    properties: _CategoryAxisPropertiesHelper = field(factory=_CategoryAxisPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -35,7 +35,7 @@ class DataPointProperties(LayoutNode):
         fillRule: Expression | None = None
         showAllDataPoints: Expression | None = None
 
-    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
+    properties: _DataPointPropertiesHelper = field(factory=_DataPointPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -43,7 +43,7 @@ class GeneralProperties(LayoutNode):
     class _GeneralPropertiesHelper(LayoutNode):
         responsive: Expression | None = None
 
-    properties: _GeneralPropertiesHelper = Field(default_factory=_GeneralPropertiesHelper)
+    properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
 class LabelsProperties(LayoutNode):
@@ -60,7 +60,7 @@ class LabelsProperties(LayoutNode):
         show: Expression | None = None
         showAll: Expression | None = None
 
-    properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
+    properties: _LabelsPropertiesHelper = field(factory=_LabelsPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -72,7 +72,7 @@ class LegendProperties(LayoutNode):
         show: Expression | None = None
         showTitle: Expression | None = None
 
-    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
+    properties: _LegendPropertiesHelper = field(factory=_LegendPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -80,7 +80,7 @@ class TotalProperties(LayoutNode):
     class _TotalPropertiesHelper(LayoutNode):
         show: Expression | None = None
 
-    properties: _TotalPropertiesHelper = Field(default_factory=_TotalPropertiesHelper)
+    properties: _TotalPropertiesHelper = field(factory=_TotalPropertiesHelper)
 
 
 class ValueAxisProperties(LayoutNode):
@@ -94,7 +94,7 @@ class ValueAxisProperties(LayoutNode):
         start: Expression | None = None
         titleFontFamily: Expression | None = None
 
-    properties: _ValueAxisPropertiesHelper = Field(default_factory=_ValueAxisPropertiesHelper)
+    properties: _ValueAxisPropertiesHelper = field(factory=_ValueAxisPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -107,7 +107,7 @@ class Y1AxisReferenceLineProperties(LayoutNode):
         transparency: Expression | None = None
         value: Expression | None = None
 
-    properties: _Y1AxisReferenceLinePropertiesHelper = Field(default_factory=_Y1AxisReferenceLinePropertiesHelper)
+    properties: _Y1AxisReferenceLinePropertiesHelper = field(factory=_Y1AxisReferenceLinePropertiesHelper)
     selector: Selector | None = None
 
 
@@ -115,26 +115,26 @@ class ZoomProperties(LayoutNode):
     class _ZoomPropertiesHelper(LayoutNode):
         show: Expression | None = None
 
-    properties: _ZoomPropertiesHelper = Field(default_factory=_ZoomPropertiesHelper)
+    properties: _ZoomPropertiesHelper = field(factory=_ZoomPropertiesHelper)
 
 
 class ColumnChartColumnProperties(LayoutNode):
-    categoryAxis: list[CategoryAxisProperties] = Field(default_factory=lambda: [CategoryAxisProperties()])
-    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
-    general: list[GeneralProperties] = Field(default_factory=lambda: [GeneralProperties()])
-    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
-    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
-    valueAxis: list[ValueAxisProperties] = Field(default_factory=lambda: [ValueAxisProperties()])
-    totals: list[TotalProperties] = Field(default_factory=lambda: [TotalProperties()])
-    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] = Field(
-        default_factory=lambda: [Y1AxisReferenceLineProperties()],
+    categoryAxis: list[CategoryAxisProperties] = field(factory=lambda: [CategoryAxisProperties()])
+    dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
+    general: list[GeneralProperties] = field(factory=lambda: [GeneralProperties()])
+    labels: list[LabelsProperties] = field(factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = field(factory=lambda: [LegendProperties()])
+    valueAxis: list[ValueAxisProperties] = field(factory=lambda: [ValueAxisProperties()])
+    totals: list[TotalProperties] = field(factory=lambda: [TotalProperties()])
+    y1AxisReferenceLine: list[Y1AxisReferenceLineProperties] = field(
+        factory=lambda: [Y1AxisReferenceLineProperties()],
     )
-    zoom: list[ZoomProperties] = Field(default_factory=lambda: [ZoomProperties()])
+    zoom: list[ZoomProperties] = field(factory=lambda: [ZoomProperties()])
 
 
 class ColumnChart(BaseVisual):
     visualType: str = "columnChart"
 
-    objects: ColumnChartColumnProperties = Field(default_factory=ColumnChartColumnProperties)
+    objects: ColumnChartColumnProperties = field(factory=ColumnChartColumnProperties, repr=False)
     selector: Selector | None = None
     columnCount: Expression | None = None

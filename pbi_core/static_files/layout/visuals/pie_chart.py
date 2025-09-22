@@ -1,4 +1,4 @@
-from pydantic import Field
+from attrs import field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -12,7 +12,7 @@ class DataPointProperties(LayoutNode):
         fill: Expression | None = None
         showAllDataPoints: Expression | None = None
 
-    properties: _DataPointPropertiesHelper = Field(default_factory=_DataPointPropertiesHelper)
+    properties: _DataPointPropertiesHelper = field(factory=_DataPointPropertiesHelper)
     selector: Selector | None = None
 
 
@@ -25,7 +25,7 @@ class LabelsProperties(LayoutNode):
         percentageLabelPrecision: Expression | None = None
         show: Expression | None = None
 
-    properties: _LabelsPropertiesHelper = Field(default_factory=_LabelsPropertiesHelper)
+    properties: _LabelsPropertiesHelper = field(factory=_LabelsPropertiesHelper)
 
 
 class LegendProperties(LayoutNode):
@@ -33,15 +33,15 @@ class LegendProperties(LayoutNode):
         position: Expression | None = None
         show: Expression | None = None
 
-    properties: _LegendPropertiesHelper = Field(default_factory=_LegendPropertiesHelper)
+    properties: _LegendPropertiesHelper = field(factory=_LegendPropertiesHelper)
 
 
 class PieChartProperties(LayoutNode):
-    dataPoint: list[DataPointProperties] = Field(default_factory=lambda: [DataPointProperties()])
-    labels: list[LabelsProperties] = Field(default_factory=lambda: [LabelsProperties()])
-    legend: list[LegendProperties] = Field(default_factory=lambda: [LegendProperties()])
+    dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
+    labels: list[LabelsProperties] = field(factory=lambda: [LabelsProperties()])
+    legend: list[LegendProperties] = field(factory=lambda: [LegendProperties()])
 
 
 class PieChart(BaseVisual):
     visualType: str = "pieChart"
-    objects: PieChartProperties = Field(default_factory=PieChartProperties)
+    objects: PieChartProperties = field(factory=PieChartProperties)

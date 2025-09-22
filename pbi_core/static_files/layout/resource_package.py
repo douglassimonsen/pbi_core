@@ -1,6 +1,8 @@
 from enum import IntEnum
 
-from pbi_core.pydantic.attrs import define
+from attrs import field
+
+from pbi_core.pydantic import define
 
 from ._base_node import LayoutNode
 
@@ -35,7 +37,7 @@ class ResourcePackageDetailsType(IntEnum):
 @define()
 class ResourcePackageDetails(LayoutNode):
     disabled: bool = False
-    items: list[ResourcePackageItem] = []
+    items: list[ResourcePackageItem] = field(factory=list)
     type: ResourcePackageDetailsType
     name: str
     id: int | None = None

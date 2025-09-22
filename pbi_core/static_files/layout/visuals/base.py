@@ -1,10 +1,8 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Annotated, Any, Literal
-
-from pydantic import Discriminator, Tag
+from typing import TYPE_CHECKING, Any, Literal
 
 from pbi_core.lineage import LineageNode
-from pbi_core.pydantic.attrs import define
+from pbi_core.pydantic import converter, define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.expansion_state import ExpansionState
 from pbi_core.static_files.layout.filters import Filter, PrototypeQuery
@@ -12,7 +10,7 @@ from pbi_core.static_files.layout.selector import Selector
 from pbi_core.static_files.layout.sources.column import ColumnSource
 from pbi_core.static_files.layout.sources.measure import MeasureSource
 from pbi_core.static_files.layout.sources.paragraphs import Paragraph
-from pbi_core.static_files.layout.visuals.properties import Expression
+from pbi_core.static_files.layout.visuals.properties import Expression, get_expression_type
 
 from .properties.vc_properties import VCProperties
 
@@ -54,25 +52,26 @@ class ColorRule1(LayoutNode):
     hideText: Expression | None = None
 
 
-def get_property_expression(v: object | dict[str, Any]) -> str:
+PropertyExpression = Expression | Filter | ColorRule1 | list[Paragraph]
+
+
+@converter.register_structure_hook
+def get_property_expression_type(v: dict[str, Any] | list[dict[str, Any]], _: type | None = None) -> PropertyExpression:
     if isinstance(v, dict):
         if "positiveColor" in v:
-            return "ColorRule1"
+            return ColorRule1.model_validate(v)
         if "filter" in v:
-            return "Filter"
-        return "Expression"
+            return Filter.model_validate(v)
+        return get_expression_type(v)
     if isinstance(v, list):
-        return "Paragraph"
-    return v.__class__.__name__
+        return [Paragraph.model_validate(x) for x in v]
+    msg = f"Unknown expression type: {v['expr']}"
+    raise TypeError(msg)
 
 
-PropertyExpression = Annotated[
-    Annotated[Expression, Tag("Expression")]
-    | Annotated[Filter, Tag("Filter")]
-    | Annotated[ColorRule1, Tag("ColorRule1")]
-    | Annotated[list[Paragraph], Tag("Paragraph")],
-    Discriminator(get_property_expression),
-]
+@converter.register_unstructure_hook
+def unparse_property_expression_type(v: PropertyExpression) -> dict[str, Any]:
+    return converter.unstructure(v)
 
 
 @define()
