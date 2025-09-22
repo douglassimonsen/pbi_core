@@ -2,6 +2,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, cast
 
 import attrs
+from attrs import field
 
 from pbi_core.attrs import BaseValidation, converter, define
 from pbi_core.static_files.layout.sources.literal import LiteralSource
@@ -96,10 +97,10 @@ class TransformMeta(BaseValidation):
 class PrototypeQuery(LayoutNode):
     Version: int
     From: list["From"]
-    Select: list[Source] = []
-    Where: list[Condition] = []
-    OrderBy: list[Orderby] = []
-    Transform: list[TransformMeta] = []
+    Select: list[Source] = field(factory=list)
+    Where: list[Condition] = field(factory=list)
+    OrderBy: list[Orderby] = field(factory=list)
+    Transform: list[TransformMeta] = field(factory=list)
     Top: int | None = None
 
     def table_mapping(self) -> dict[str, str]:

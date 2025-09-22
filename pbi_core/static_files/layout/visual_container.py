@@ -312,7 +312,7 @@ class QueryBinding(LayoutNode):
     IncludeEmptyGroups: bool = False
     Primary: BindingPrimary
     Secondary: BindingPrimary | None = None
-    Projections: list[int] = []
+    Projections: list[int] = field(factory=list)
     DataReduction: DataReductionType | None = None
     Aggregates: list[QueryBindingAggregates] | None = None
     SuppressedJoinPredicates: list[int] | None = None
@@ -499,7 +499,7 @@ class VisualContainer(LayoutNode):
     dataTransforms: Json[DataTransform] | None = None
     query: Json[Query] | None = None
     queryHash: int | None = None
-    filters: Json[list[VisualFilter]] = []
+    filters: Json[list[VisualFilter]] = field(factory=list)
     config: Json[VisualConfig]
 
     id: int | None = None

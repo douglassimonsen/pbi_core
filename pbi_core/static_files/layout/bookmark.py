@@ -1,6 +1,8 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Any
 
+from attrs import field
+
 from pbi_core.attrs import converter, define
 
 from ._base_node import LayoutNode
@@ -18,13 +20,13 @@ if TYPE_CHECKING:
 
 @define()
 class BookmarkFilters(LayoutNode):
-    byExpr: list[BookmarkFilter] = []
+    byExpr: list[BookmarkFilter] = field(factory=list)
     """Filter containers that will be identified by expression."""
-    byType: list[BookmarkFilter] = []
+    byType: list[BookmarkFilter] = field(factory=list)
     """Filter containers that will be identified by type."""
-    byName: dict[str, BookmarkFilter] = {}
+    byName: dict[str, BookmarkFilter] = field(factory=dict)
     """Filter containers that will be identified by name."""
-    byTransientState: list[BookmarkFilter] = []
+    byTransientState: list[BookmarkFilter] = field(factory=list)
     """Filter containers that are transient"""
 
 

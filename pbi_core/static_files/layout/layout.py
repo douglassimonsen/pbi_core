@@ -3,8 +3,8 @@ from typing import TYPE_CHECKING, Literal
 
 from attrs import field
 
-from pbi_core.lineage.main import LineageNode
 from pbi_core.attrs import Json, define
+from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 from ._base_node import LayoutNode

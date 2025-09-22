@@ -93,7 +93,7 @@ class LinguisticMetadataEntity(BaseValidation):
     Visibility: VisibilityType | None = None
     Hidden: bool = False
     NameType: NameTypeType | None = None
-    Units: list[str] = []
+    Units: list[str] = field(factory=list)
 
 
 @define()
@@ -119,12 +119,12 @@ class PhrasingAttribute(BaseValidation):
     Subject: PhrasingAttributeRole | None = None
     Name: PhrasingAttributeRole | None = None
 
-    PrepositionalPhrases: list[dict[str, Any]] = []
-    Adjectives: list[dict[str, TermDefinition]] = []
-    Antonyms: list[dict[str, TermDefinition]] = []
-    Prepositions: list[dict[str, TermDefinition]] = []
-    Verbs: list[dict[str, TermDefinition]] = []
-    Nouns: list[dict[str, TermDefinition]] = []
+    PrepositionalPhrases: list[dict[str, Any]] = field(factory=list)
+    Adjectives: list[dict[str, TermDefinition]] = field(factory=list)
+    Antonyms: list[dict[str, TermDefinition]] = field(factory=list)
+    Prepositions: list[dict[str, TermDefinition]] = field(factory=list)
+    Verbs: list[dict[str, TermDefinition]] = field(factory=list)
+    Nouns: list[dict[str, TermDefinition]] = field(factory=list)
 
 
 @define()
@@ -171,7 +171,7 @@ class Condition(BaseValidation):
 @define()
 class LinguisticMetadataRelationship(BaseValidation):
     Binding: RelationshipBinding
-    Phrasings: list[RelationshipPhrasing] = []
+    Phrasings: list[RelationshipPhrasing] = field(factory=list)
     Roles: dict[str, RelationshipRole | int]
     State: str | None = None
     SemanticSlots: SemanticSlot | None = None

@@ -2,8 +2,8 @@ from collections.abc import Callable
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
-from pbi_core.lineage import LineageNode
 from pbi_core.attrs import BaseValidation
+from pbi_core.lineage import LineageNode
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
