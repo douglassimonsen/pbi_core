@@ -185,7 +185,9 @@ class XAxisReferenceLineProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class ZoomProperties(LayoutNode):
+    @define()
     class _ZoomPropertiesHelper(LayoutNode):
         show: Expression | None = None
         showLabels: Expression | None = None

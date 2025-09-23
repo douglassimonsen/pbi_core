@@ -1,5 +1,6 @@
 from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
@@ -7,14 +8,18 @@ from .base import BaseVisual
 from .properties.base import Expression
 
 
+@define()
 class CategoryAxisProperties(LayoutNode):
+    @define()
     class _CategoryAxisPropertiesHelper(LayoutNode):
         axisType: Expression | None = None
 
     properties: _CategoryAxisPropertiesHelper = field(factory=_CategoryAxisPropertiesHelper)
 
 
+@define()
 class DataPointProperties(LayoutNode):
+    @define()
     class _DataPointPropertiesHelper(LayoutNode):
         fill: Expression | None = None
         fillRule: Expression | None = None
@@ -24,7 +29,9 @@ class DataPointProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class LabelsProperties(LayoutNode):
+    @define()
     class _LabelsPropertiesHelper(LayoutNode):
         backgroundColor: Expression | None = None
         backgroundTransparency: Expression | None = None
@@ -41,7 +48,9 @@ class LabelsProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class LegendProperties(LayoutNode):
+    @define()
     class _LegendPropertiesHelper(LayoutNode):
         legendMarkerRendering: Expression | None = None
         position: Expression | None = None
@@ -51,7 +60,9 @@ class LegendProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class LineStylesProperties(LayoutNode):
+    @define()
     class _LineStylesPropertiesHelper(LayoutNode):
         lineStyle: Expression | None = None
         markerShape: Expression | None = None
@@ -65,7 +76,9 @@ class LineStylesProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class SmallMultiplesLayoutProperties(LayoutNode):
+    @define()
     class _SmallMultiplesLayoutPropertiesHelper(LayoutNode):
         gridLineColor: Expression | None = None
         gridLineStyle: Expression | None = None
@@ -76,14 +89,18 @@ class SmallMultiplesLayoutProperties(LayoutNode):
     properties: _SmallMultiplesLayoutPropertiesHelper = field(factory=_SmallMultiplesLayoutPropertiesHelper)
 
 
+@define()
 class SubheaderProperties(LayoutNode):
+    @define()
     class _SubheaderPropertiesHelper(LayoutNode):
         fontSize: Expression | None = None
 
     properties: _SubheaderPropertiesHelper = field(factory=_SubheaderPropertiesHelper)
 
 
+@define()
 class ValueAxisProperties(LayoutNode):
+    @define()
     class _ValueAxisPropertiesHelper(LayoutNode):
         alignZeros: Expression | None = None
         end: Expression | None = None
@@ -98,6 +115,7 @@ class ValueAxisProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class LineStackedColumnComboChartProperties(LayoutNode):
     categoryAxis: list[CategoryAxisProperties] = field(factory=lambda: [CategoryAxisProperties()])
     dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
@@ -111,6 +129,7 @@ class LineStackedColumnComboChartProperties(LayoutNode):
     valueAxis: list[ValueAxisProperties] = field(factory=lambda: [ValueAxisProperties()])
 
 
+@define()
 class LineStackedColumnComboChart(BaseVisual):
     visualType: str = "lineStackedColumnComboChart"
 

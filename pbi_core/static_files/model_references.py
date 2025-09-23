@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 
 
-@define
+@define()
 class ModelColumnReference(BaseValidation):
     column: str
     table: str
@@ -24,7 +24,7 @@ class ModelColumnReference(BaseValidation):
         return hash((self.column, self.table))
 
 
-@define
+@define()
 class ModelTableReference(BaseValidation):
     table: str
 
@@ -40,7 +40,7 @@ class ModelTableReference(BaseValidation):
         return hash(self.table)
 
 
-@define
+@define()
 class ModelMeasureReference(BaseValidation):
     measure: str
     table: str

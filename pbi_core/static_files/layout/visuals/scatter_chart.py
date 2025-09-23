@@ -1,5 +1,6 @@
 from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
@@ -7,7 +8,9 @@ from .base import BaseVisual
 from .properties.base import Expression
 
 
+@define()
 class BubblesProperties(LayoutNode):
+    @define()
     class _BubblesPropertiesHelper(LayoutNode):
         bubbleSize: Expression | None = None
         markerShape: Expression | None = None
@@ -17,7 +20,9 @@ class BubblesProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class CategoryAxisProperties(LayoutNode):
+    @define()
     class _CategoryAxisPropertiesHelper(LayoutNode):
         axisScale: Expression | None = None
         end: Expression | None = None
@@ -42,7 +47,9 @@ class CategoryAxisProperties(LayoutNode):
     properties: _CategoryAxisPropertiesHelper = field(factory=_CategoryAxisPropertiesHelper)
 
 
+@define()
 class CategoryLabelsProperties(LayoutNode):
+    @define()
     class _CategoryLabelsPropertiesHelper(LayoutNode):
         color: Expression | None = None
         enableBackground: Expression | None = None
@@ -53,14 +60,18 @@ class CategoryLabelsProperties(LayoutNode):
     properties: _CategoryLabelsPropertiesHelper = field(factory=_CategoryLabelsPropertiesHelper)
 
 
+@define()
 class ColorBorderProperties(LayoutNode):
+    @define()
     class _ColorBorderPropertiesHelper(LayoutNode):
         show: Expression | None = None
 
     properties: _ColorBorderPropertiesHelper = field(factory=_ColorBorderPropertiesHelper)
 
 
+@define()
 class DataPointProperties(LayoutNode):
+    @define()
     class _DataPointPropertiesHelper(LayoutNode):
         fill: Expression | None = None
         fillRule: Expression | None = None
@@ -72,7 +83,9 @@ class DataPointProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class FillPointProperties(LayoutNode):
+    @define()
     class _FillPointPropertiesHelper(LayoutNode):
         show: Expression | None = None
         style: Expression | None = None
@@ -80,14 +93,18 @@ class FillPointProperties(LayoutNode):
     properties: _FillPointPropertiesHelper = field(factory=_FillPointPropertiesHelper)
 
 
+@define()
 class GeneralProperties(LayoutNode):
+    @define()
     class _GeneralPropertiesHelper(LayoutNode):
         responsive: Expression | None = None
 
     properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
+@define()
 class LegendProperties(LayoutNode):
+    @define()
     class _LegendPropertiesHelper(LayoutNode):
         fontSize: Expression | None = None
         labelColor: Expression | None = None
@@ -100,14 +117,18 @@ class LegendProperties(LayoutNode):
     properties: _LegendPropertiesHelper = field(factory=_LegendPropertiesHelper)
 
 
+@define()
 class PlotAreaProperties(LayoutNode):
+    @define()
     class _PlotAreaPropertiesHelper(LayoutNode):
         transparency: Expression | None = None
 
     properties: _PlotAreaPropertiesHelper = field(factory=_PlotAreaPropertiesHelper)
 
 
+@define()
 class ValueAxisProperties(LayoutNode):
+    @define()
     class _ValueAxisPropertiesHelper(LayoutNode):
         alignZeros: Expression | None = None
         axisScale: Expression | None = None
@@ -130,7 +151,9 @@ class ValueAxisProperties(LayoutNode):
     properties: _ValueAxisPropertiesHelper = field(factory=_ValueAxisPropertiesHelper)
 
 
+@define()
 class Y1AxisReferenceLineProperties(LayoutNode):
+    @define()
     class _Y1AxisReferenceLinePropertiesHelper(LayoutNode):
         displayName: Expression | None = None
         lineColor: Expression | None = None
@@ -141,6 +164,7 @@ class Y1AxisReferenceLineProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class ScatterChartProperties(LayoutNode):
     bubbles: list[BubblesProperties] = field(factory=lambda: [BubblesProperties()])
     categoryAxis: list[CategoryAxisProperties] = field(factory=lambda: [CategoryAxisProperties()])
@@ -157,6 +181,7 @@ class ScatterChartProperties(LayoutNode):
     )
 
 
+@define()
 class ScatterChart(BaseVisual):
     visualType: str = "scatterChart"
 

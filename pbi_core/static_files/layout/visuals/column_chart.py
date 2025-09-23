@@ -1,5 +1,6 @@
 from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
@@ -7,7 +8,9 @@ from .base import BaseVisual
 from .properties.base import Expression
 
 
+@define()
 class CategoryAxisProperties(LayoutNode):
+    @define()
     class _CategoryAxisPropertiesHelper(LayoutNode):
         axisType: Expression | None = None
         concatenateLabels: Expression | None = None
@@ -29,7 +32,9 @@ class CategoryAxisProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class DataPointProperties(LayoutNode):
+    @define()
     class _DataPointPropertiesHelper(LayoutNode):
         fill: Expression | None = None
         fillRule: Expression | None = None
@@ -39,14 +44,18 @@ class DataPointProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class GeneralProperties(LayoutNode):
+    @define()
     class _GeneralPropertiesHelper(LayoutNode):
         responsive: Expression | None = None
 
     properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
+@define()
 class LabelsProperties(LayoutNode):
+    @define()
     class _LabelsPropertiesHelper(LayoutNode):
         backgroundColor: Expression | None = None
         backgroundTransparency: Expression | None = None
@@ -64,7 +73,9 @@ class LabelsProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class LegendProperties(LayoutNode):
+    @define()
     class _LegendPropertiesHelper(LayoutNode):
         fontSize: Expression | None = None
         labelColor: Expression | None = None
@@ -76,14 +87,18 @@ class LegendProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class TotalProperties(LayoutNode):
+    @define()
     class _TotalPropertiesHelper(LayoutNode):
         show: Expression | None = None
 
     properties: _TotalPropertiesHelper = field(factory=_TotalPropertiesHelper)
 
 
+@define()
 class ValueAxisProperties(LayoutNode):
+    @define()
     class _ValueAxisPropertiesHelper(LayoutNode):
         axisScale: Expression | None = None
         fontSize: Expression | None = None
@@ -98,7 +113,9 @@ class ValueAxisProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class Y1AxisReferenceLineProperties(LayoutNode):
+    @define()
     class _Y1AxisReferenceLinePropertiesHelper(LayoutNode):
         displayName: Expression | None = None
         lineColor: Expression | None = None
@@ -111,13 +128,16 @@ class Y1AxisReferenceLineProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class ZoomProperties(LayoutNode):
+    @define()
     class _ZoomPropertiesHelper(LayoutNode):
         show: Expression | None = None
 
     properties: _ZoomPropertiesHelper = field(factory=_ZoomPropertiesHelper)
 
 
+@define()
 class ColumnChartColumnProperties(LayoutNode):
     categoryAxis: list[CategoryAxisProperties] = field(factory=lambda: [CategoryAxisProperties()])
     dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
@@ -132,6 +152,7 @@ class ColumnChartColumnProperties(LayoutNode):
     zoom: list[ZoomProperties] = field(factory=lambda: [ZoomProperties()])
 
 
+@define()
 class ColumnChart(BaseVisual):
     visualType: str = "columnChart"
 

@@ -1,5 +1,6 @@
 from attrs import field
 
+from pbi_core.attrs import define
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 
@@ -7,7 +8,9 @@ from .base import BaseVisual
 from .properties.base import Expression
 
 
+@define()
 class AnomalyDetectionProperties(LayoutNode):
+    @define()
     class _AnomalyDetectionPropertiesHelper(LayoutNode):
         confidenceBandColor: Expression | None = None
         displayName: Expression | None = None
@@ -22,7 +25,9 @@ class AnomalyDetectionProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class CategoryAxisProperties(LayoutNode):
+    @define()
     class _CategoryAxisPropertiesHelper(LayoutNode):
         axisType: Expression | None = None
         concatenateLabels: Expression | None = None
@@ -43,7 +48,9 @@ class CategoryAxisProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class DataPointProperties(LayoutNode):
+    @define()
     class _DataPointPropertiesHelper(LayoutNode):
         fill: Expression | None = None
         showAllDataPoints: Expression | None = None
@@ -52,7 +59,9 @@ class DataPointProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class ForecastProperties(LayoutNode):
+    @define()
     class _ForecastPropertiesHelper(LayoutNode):
         show: Expression | None = None
         displayName: Expression | None = None
@@ -63,14 +72,18 @@ class ForecastProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class GeneralProperties(LayoutNode):
+    @define()
     class _GeneralPropertiesHelper(LayoutNode):
         responsive: Expression | None = None
 
     properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
+@define()
 class LabelsProperties(LayoutNode):
+    @define()
     class _LabelsPropertiesHelper(LayoutNode):
         color: Expression | None = None
         labelPosition: Expression | None = None
@@ -85,7 +98,9 @@ class LabelsProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class LegendProperties(LayoutNode):
+    @define()
     class _LegendPropertiesHelper(LayoutNode):
         defaultToCircle: Expression | None = None
         fontSize: Expression | None = None
@@ -99,7 +114,9 @@ class LegendProperties(LayoutNode):
     properties: _LegendPropertiesHelper = field(factory=_LegendPropertiesHelper)
 
 
+@define()
 class LineStylesProperties(LayoutNode):
+    @define()
     class _LineStylesPropertiesHelper(LayoutNode):
         lineStyle: Expression | None = None
         markerColor: Expression | None = None
@@ -115,14 +132,18 @@ class LineStylesProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class PlotAreaProperties(LayoutNode):
+    @define()
     class _PlotAreaPropertiesHelper(LayoutNode):
         transparency: Expression | None = None
 
     properties: _PlotAreaPropertiesHelper = field(factory=_PlotAreaPropertiesHelper)
 
 
+@define()
 class TrendProperties(LayoutNode):
+    @define()
     class _TrendPropertiesHelper(LayoutNode):
         displayName: Expression | None = None
         lineColor: Expression | None = None
@@ -131,7 +152,9 @@ class TrendProperties(LayoutNode):
     properties: _TrendPropertiesHelper = field(factory=_TrendPropertiesHelper)
 
 
+@define()
 class ValueAxisProperties(LayoutNode):
+    @define()
     class _ValueAxisPropertiesHelper(LayoutNode):
         axisScale: Expression | None = None
         end: Expression | None = None
@@ -154,7 +177,9 @@ class ValueAxisProperties(LayoutNode):
     properties: _ValueAxisPropertiesHelper = field(factory=_ValueAxisPropertiesHelper)
 
 
+@define()
 class Y1AxisReferenceLineProperties(LayoutNode):
+    @define()
     class _Y1AxisReferenceLinePropertiesHelper(LayoutNode):
         displayName: Expression | None = None
         position: Expression | None = None
@@ -165,14 +190,18 @@ class Y1AxisReferenceLineProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class Y2AxisProperties(LayoutNode):
+    @define()
     class _Y2AxisPropertiesHelper(LayoutNode):
         show: Expression | None = None
 
     properties: _Y2AxisPropertiesHelper = field(factory=_Y2AxisPropertiesHelper)
 
 
+@define()
 class ZoomProperties(LayoutNode):
+    @define()
     class _ZoomPropertiesHelper(LayoutNode):
         show: Expression | None = None
         categoryMax: Expression | None = None
@@ -183,6 +212,7 @@ class ZoomProperties(LayoutNode):
     properties: _ZoomPropertiesHelper = field(factory=_ZoomPropertiesHelper)
 
 
+@define()
 class LineChartProperties(LayoutNode):
     anomalyDetection: list[AnomalyDetectionProperties] = field(
         factory=lambda: [AnomalyDetectionProperties()],
@@ -204,6 +234,7 @@ class LineChartProperties(LayoutNode):
     y2Axis: list[Y2AxisProperties] = field(factory=lambda: [Y2AxisProperties()])
 
 
+@define()
 class LineChart(BaseVisual):
     visualType: str = "lineChart"
 

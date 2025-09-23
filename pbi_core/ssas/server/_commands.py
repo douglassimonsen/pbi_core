@@ -105,6 +105,7 @@ class NoCommands:
         return ret
 
 
+@define()
 class BaseCommands(NoCommands):
     alter: Command
     create: Command
@@ -122,6 +123,7 @@ class BaseCommands(NoCommands):
         )
 
 
+@define()
 class RenameCommands(BaseCommands):
     rename: Command
 
@@ -138,6 +140,7 @@ class RenameCommands(BaseCommands):
         )
 
 
+@define()
 class RefreshCommands(RenameCommands):
     refresh: Command
 
@@ -155,6 +158,7 @@ class RefreshCommands(RenameCommands):
         )
 
 
+@define()
 class ModelCommands(NoCommands):
     alter: Command
     refresh: Command

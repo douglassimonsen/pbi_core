@@ -4,7 +4,7 @@ from typing import Any
 
 import jinja2
 
-from pbi_core.attrs import BaseValidation
+from pbi_core.attrs import BaseValidation, define
 from pbi_core.logging import get_logger
 
 logger = get_logger()
@@ -13,6 +13,7 @@ PACKAGE_DIR = Path(__file__).parents[2]
 assert PACKAGE_DIR.name == "pbi_core"
 
 
+@define()
 class PbiCoreStartupConfig(BaseValidation):
     # TODO: update for attrs
     cert_dir: Path

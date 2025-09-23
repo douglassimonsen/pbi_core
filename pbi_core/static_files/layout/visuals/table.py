@@ -1,3 +1,4 @@
+from attr import define
 from attrs import field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
@@ -7,8 +8,11 @@ from .base import BaseVisual
 from .properties.base import Expression
 
 
+@define()
 class ColumnFormattingProperties(LayoutNode):
+    @define()
     class _ColumnFormattingPropertiesHelper(LayoutNode):
+        @define()
         class _DataBarsProperties(LayoutNode):
             axisColor: Expression | None = None
             hideText: Expression | None = None
@@ -29,7 +33,9 @@ class ColumnFormattingProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class ColumnHeadersProperties(LayoutNode):
+    @define()
     class _ColumnHeadersPropertiesHelper(LayoutNode):
         alignment: Expression | None = None
         autoSizeColumnWidth: Expression | None = None
@@ -47,7 +53,9 @@ class ColumnHeadersProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class ColumnWidthProperties(LayoutNode):
+    @define()
     class _ColumnWidthPropertiesHelper(LayoutNode):
         value: Expression | None = None
 
@@ -55,14 +63,18 @@ class ColumnWidthProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class GeneralProperties(LayoutNode):
+    @define()
     class _GeneralPropertiesHelper(LayoutNode):
         pass
 
     properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
+@define()
 class GridProperties(LayoutNode):
+    @define()
     class _GridPropertiesHelper(LayoutNode):
         gridHorizontal: Expression | None = None
         gridHorizontalColor: Expression | None = None
@@ -80,7 +92,9 @@ class GridProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class TotalProperties(LayoutNode):
+    @define()
     class _TotalPropertiesHelper(LayoutNode):
         fontColor: Expression | None = None
         fontFamily: Expression | None = None
@@ -92,7 +106,9 @@ class TotalProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class ValuesProperties(LayoutNode):
+    @define()
     class _ValuesPropertiesHelper(LayoutNode):
         backColor: Expression | None = None
         backColorPrimary: Expression | None = None
@@ -110,6 +126,7 @@ class ValuesProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class TableChartColumnProperties(LayoutNode):
     columnFormatting: list[ColumnFormattingProperties] = field(
         factory=lambda: [ColumnFormattingProperties()],
@@ -122,6 +139,7 @@ class TableChartColumnProperties(LayoutNode):
     values: list[ValuesProperties] = field(factory=lambda: [ValuesProperties()])
 
 
+@define()
 class TableChart(BaseVisual):
     visualType: str = "tableEx"
     objects: TableChartColumnProperties = field(factory=TableChartColumnProperties)

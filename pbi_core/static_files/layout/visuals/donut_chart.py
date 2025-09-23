@@ -1,4 +1,4 @@
-from attrs import field
+from attrs import define, field
 
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
@@ -7,7 +7,9 @@ from .base import BaseVisual
 from .properties.base import Expression
 
 
+@define()
 class BackgroundProperties(LayoutNode):
+    @define()
     class _BackgroundPropertiesHelper(LayoutNode):
         show: Expression | None = None
         transparency: Expression | None = None
@@ -15,7 +17,9 @@ class BackgroundProperties(LayoutNode):
     properties: _BackgroundPropertiesHelper = field(factory=_BackgroundPropertiesHelper)
 
 
+@define()
 class DataPointProperties(LayoutNode):
+    @define()
     class _DataPointPropertiesHelper(LayoutNode):
         fill: Expression | None = None
 
@@ -23,14 +27,18 @@ class DataPointProperties(LayoutNode):
     selector: Selector | None = None
 
 
+@define()
 class GeneralProperties(LayoutNode):
+    @define()
     class _GeneralPropertiesHelper(LayoutNode):
         altText: Expression | None = None
 
     properties: _GeneralPropertiesHelper = field(factory=_GeneralPropertiesHelper)
 
 
+@define()
 class LabelsProperties(LayoutNode):
+    @define()
     class _LabelsPropertiesHelper(LayoutNode):
         background: Expression | None = None
         color: Expression | None = None
@@ -46,7 +54,9 @@ class LabelsProperties(LayoutNode):
     properties: _LabelsPropertiesHelper = field(factory=_LabelsPropertiesHelper)
 
 
+@define()
 class LegendProperties(LayoutNode):
+    @define()
     class _LegendPropertiesHelper(LayoutNode):
         fontSize: Expression | None = None
         labelColor: Expression | None = None
@@ -57,14 +67,18 @@ class LegendProperties(LayoutNode):
     properties: _LegendPropertiesHelper = field(factory=_LegendPropertiesHelper)
 
 
+@define()
 class SlicesProperties(LayoutNode):
+    @define()
     class _SlicesPropertiesHelper(LayoutNode):
         innerRadiusRatio: Expression | None = None
 
     properties: _SlicesPropertiesHelper = field(factory=_SlicesPropertiesHelper)
 
 
+@define()
 class TitleProperties(LayoutNode):
+    @define()
     class _TitlePropertiesHelper(LayoutNode):
         alignment: Expression | None = None
         fontColor: Expression | None = None
@@ -75,6 +89,7 @@ class TitleProperties(LayoutNode):
     properties: _TitlePropertiesHelper = field(factory=_TitlePropertiesHelper)
 
 
+@define()
 class DonutChartProperties(LayoutNode):
     background: list[BackgroundProperties] = field(factory=lambda: [BackgroundProperties()])
     dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
@@ -85,6 +100,7 @@ class DonutChartProperties(LayoutNode):
     title: list[TitleProperties] = field(factory=lambda: [TitleProperties()])
 
 
+@define()
 class DonutChart(BaseVisual):
     visualType: str = "donutChart"
 
