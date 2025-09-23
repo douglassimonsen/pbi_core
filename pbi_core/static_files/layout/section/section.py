@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID
 
-from attrs import field
+from attrs import field, validators
 
 from pbi_core.attrs import Json, define
 from pbi_core.attrs.extra import repr_len
@@ -41,8 +41,7 @@ class Section(LayoutNode):
     """Filters that apply to all the visuals on this page - on top of the filters defined for the whole report."""
     displayName: str
     """A user facing name for this page."""
-    # TODO: make a constraint of <=50 characters
-    name: str
+    name: str = field(validator=validators.max_len(50))
     """A unique identifier for the page across the whole report."""
     id: int | None = None
     pageBinding: PageBinding | None = field(repr=False, default=None)
