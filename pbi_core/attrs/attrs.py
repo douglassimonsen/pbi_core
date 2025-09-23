@@ -1,18 +1,18 @@
 import json
-from typing import TYPE_CHECKING, Any, Self, TypeVar
+from typing import TYPE_CHECKING, Any, Self, TypeVar, dataclass_transform
 
 from attr._make import Attribute
+from attrs import _C, field
 from attrs import define as _define
-from attrs import field
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-    from attrs import _C
 
 T = TypeVar("T")
 
 
+@dataclass_transform(kw_only_default=True)
 def define(
     *,
     kw_only: bool = True,

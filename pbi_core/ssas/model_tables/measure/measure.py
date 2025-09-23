@@ -61,8 +61,8 @@ class Measure(SsasRenameRecord):
     state: DataState
     table_id: int
 
-    lineage_tag: UUID = uuid4()
-    source_lineage_tag: UUID = uuid4()
+    lineage_tag: UUID = field(factory=uuid4)
+    source_lineage_tag: UUID = field(factory=uuid4)
 
     modified_time: datetime.datetime
     structure_modified_time: datetime.datetime

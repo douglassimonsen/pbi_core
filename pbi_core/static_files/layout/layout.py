@@ -38,7 +38,6 @@ class ThemeVersionInfo(LayoutNode):
     report: str
 
 
-@define()
 class ThemeResourcePackageType(Enum):
     REGISTERED_RESOURCES = 1
     SHARED_RESOURCES = 2
