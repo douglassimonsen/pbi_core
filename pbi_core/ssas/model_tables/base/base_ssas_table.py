@@ -19,7 +19,7 @@ class SsasTable(BaseValidation, IdBase):
     id: int = field(eq=True, repr=True, on_setattr=setters.frozen)
     """Unique identifier of the object."""
 
-    tabular_model: BaseTabularModel = field(repr=False, eq=False, init=False)
+    _tabular_model: BaseTabularModel = field(repr=False, eq=False, init=False)
 
     _db_field_names: ClassVar[dict[str, str]] = {}
     """Mapping of python attribute names to database field names.
@@ -104,14 +104,14 @@ class SsasTable(BaseValidation, IdBase):
         return cls.to_snake_case(raw_values)
 
     def query_dax(self, query: str, db_name: str | None = None) -> None:
-        """Helper function to remove the ``.tabular_model.server`` required to run a DAX query from an SSAS element."""
+        """Helper function to remove the ``._tabular_model.server`` required to run a DAX query from an SSAS element."""
         logger.debug("Executing DAX query", query=query, db_name=db_name)
-        self.tabular_model.server.query_dax(query, db_name=db_name)
+        self._tabular_model.server.query_dax(query, db_name=db_name)
 
     def query_xml(self, query: str, db_name: str | None = None) -> BeautifulSoup:
-        """Helper function to remove the ``.tabular_model.server`` required to run an XML query from an SSAS element."""
+        """Helper function to remove the ``._tabular_model.server`` required to run an XML query from an SSAS element."""
         logger.debug("Executing XML query", query=query, db_name=db_name)
-        return self.tabular_model.server.query_xml(query, db_name)
+        return self._tabular_model.server.query_xml(query, db_name)
 
     @staticmethod
     def _get_row_xml(values: dict[str, Any], command: Command) -> str:
@@ -163,7 +163,7 @@ class SsasTable(BaseValidation, IdBase):
             db_name = self._db_field_names.get(p_name, p_name)
             if p_name != "id" and f.on_setattr is setters.frozen:
                 continue
-            if p_name == "tabular_model" or p_name.startswith("_"):
+            if p_name.startswith("_"):
                 continue
             ret[db_name] = base.get(p_name)
         return ret

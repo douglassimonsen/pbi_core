@@ -39,14 +39,14 @@ class DependencyMixin(HelpersMixin):
     def child_measures(self, *, recursive: bool = False) -> set["Measure"]:
         """Returns measures dependent on this Column."""
         object_type = self._column_type()
-        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+        dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "referenced_object_type": object_type,
             "referenced_table": self.table().name,
             "referenced_object": self.explicit_name,
             "object_type": "MEASURE",
         })
         child_keys: list[tuple[str | None, str]] = [(m.table, m.object) for m in dependent_measures]
-        full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in child_keys]
+        full_dependencies = [m for m in self._tabular_model.measures if (m.table().name, m.name) in child_keys]
 
         if recursive:
             recursive_dependencies: set[Measure] = set()
@@ -66,14 +66,14 @@ class DependencyMixin(HelpersMixin):
 
         """
         object_type = self._column_type()
-        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+        dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "object_type": object_type,
             "table": self.table().name,
             "object": self.explicit_name,
             "referenced_object_type": "MEASURE",
         })
         parent_keys = [(m.referenced_table, m.referenced_object) for m in dependent_measures]
-        full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in parent_keys]
+        full_dependencies = [m for m in self._tabular_model.measures if (m.table().name, m.name) in parent_keys]
 
         if recursive:
             recursive_dependencies: set[Measure] = set()
@@ -93,7 +93,7 @@ class DependencyMixin(HelpersMixin):
 
         """
         object_type = self._column_type()
-        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+        dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "referenced_object_type": object_type,
             "referenced_table": self.table().name,
             "referenced_object": self.explicit_name,
@@ -102,7 +102,7 @@ class DependencyMixin(HelpersMixin):
         child_keys: list[tuple[str, str]] = [  # pyright: ignore reportAssignmentType
             (m.table, m.object) for m in dependent_measures if m.object_type in {"CALC_COLUMN", "COLUMN"}
         ]
-        full_dependencies = [m for m in self.tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
+        full_dependencies = [m for m in self._tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
 
         if recursive:
             recursive_dependencies: set[Column] = set()
@@ -125,7 +125,7 @@ class DependencyMixin(HelpersMixin):
         object_type = self._column_type()
         if object_type == "COLUMN":
             return set()
-        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+        dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "object_type": object_type,
             "table": self.table().name,
             "object": self.explicit_name,
@@ -135,7 +135,7 @@ class DependencyMixin(HelpersMixin):
             for m in dependent_measures
             if m.referenced_object_type in {"CALC_COLUMN", "COLUMN"}
         }
-        full_dependencies = [c for c in self.tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
+        full_dependencies = [c for c in self._tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
 
         if recursive:
             recursive_dependencies: set[Column] = set()
@@ -150,7 +150,7 @@ class DependencyMixin(HelpersMixin):
     def child_table_permissions(self) -> set["TablePermission"]:
         """Returns table permissions dependent via DAX on this Column."""
         object_type = self._column_type()
-        dependent_permissions = self.tabular_model.calc_dependencies.find_all({
+        dependent_permissions = self._tabular_model.calc_dependencies.find_all({
             "referenced_object_type": object_type,
             "referenced_table": self.table().name,
             "referenced_object": self.explicit_name,
@@ -160,7 +160,7 @@ class DependencyMixin(HelpersMixin):
         full_dependencies: list[TablePermission] = []
         for dp in dependent_permissions:
             table, rls_name = dp.table, dp.object
-            role = self.tabular_model.roles.find({"name": rls_name})
+            role = self._tabular_model.roles.find({"name": rls_name})
             full_dependencies.extend(
                 tp
                 for tp in role.table_permissions()

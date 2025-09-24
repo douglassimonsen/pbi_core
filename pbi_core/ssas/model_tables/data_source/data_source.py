@@ -42,4 +42,4 @@ class DataSource(SsasRenameRecord):
     _commands: RenameCommands = field(factory=lambda: SsasCommands.data_source, init=False, repr=False, eq=False)
 
     def model(self) -> "Model":
-        return self.tabular_model.model
+        return self._tabular_model.model

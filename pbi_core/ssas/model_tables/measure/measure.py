@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.format_string_definition import FormatStringDefinition
     from pbi_core.ssas.model_tables.kpi import KPI
     from pbi_core.ssas.model_tables.table import Table
-    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
+    from pbi_core.ssas.server._tabular_model._tabular_model import BaseTabularModel
     from pbi_core.static_files.layout.layout import Layout
 
 
@@ -105,21 +105,21 @@ class Measure(SsasRenameRecord):
     def detail_rows_definition(self) -> "DetailRowDefinition | None":
         if self.detail_rows_definition_id is None:
             return None
-        return self.tabular_model.detail_row_definitions.find(self.detail_rows_definition_id)
+        return self._tabular_model.detail_row_definitions.find(self.detail_rows_definition_id)
 
     def format_string_definition(self) -> "FormatStringDefinition | None":
         if self.format_string_definition_id is None:
             return None
-        return self.tabular_model.format_string_definitions.find(self.format_string_definition_id)
+        return self._tabular_model.format_string_definitions.find(self.format_string_definition_id)
 
     def KPI(self) -> "KPI | None":  # noqa: N802
         if self.kpi_id is not None:
-            return self.tabular_model.kpis.find({"id": self.kpi_id})
+            return self._tabular_model.kpis.find({"id": self.kpi_id})
         return None
 
     def table(self) -> "Table":
         """The Table object the measure is saved under."""
-        return self.tabular_model.tables.find({"id": self.table_id})
+        return self._tabular_model.tables.find({"id": self.table_id})
 
     def full_name(self) -> str:
         """Returns the fully qualified name for DAX queries."""
@@ -139,20 +139,20 @@ class Measure(SsasRenameRecord):
             "measure", {self.full_name()}
         ))
         """
-        return self.tabular_model.server.query_dax(command)
+        return self._tabular_model.server.query_dax(command)
 
     def __repr__(self) -> str:
         return f"Measure({self.id}: {self.full_name()})"
 
     def child_measures(self, *, recursive: bool = False) -> set["Measure"]:
-        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+        dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "referenced_object_type": "MEASURE",
             "referenced_table": self.table().name,
             "referenced_object": self.name,
             "object_type": "MEASURE",
         })
         child_keys: list[tuple[str | None, str]] = [(m.table, m.object) for m in dependent_measures]
-        full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in child_keys]
+        full_dependencies = [m for m in self._tabular_model.measures if (m.table().name, m.name) in child_keys]
 
         if recursive:
             recursive_dependencies: set[Measure] = set()
@@ -166,14 +166,14 @@ class Measure(SsasRenameRecord):
 
     def parent_measures(self, *, recursive: bool = False) -> set["Measure"]:
         """Calculated columns can use Measures too :(."""
-        dependent_measures: set[CalcDependency] = self.tabular_model.calc_dependencies.find_all({
+        dependent_measures: set[CalcDependency] = self._tabular_model.calc_dependencies.find_all({
             "object_type": "MEASURE",
             "table": self.table().name,
             "object": self.name,
             "referenced_object_type": "MEASURE",
         })
         parent_keys = [(m.referenced_table, m.referenced_object) for m in dependent_measures]
-        full_dependencies = [m for m in self.tabular_model.measures if (m.table().name, m.name) in parent_keys]
+        full_dependencies = [m for m in self._tabular_model.measures if (m.table().name, m.name) in parent_keys]
 
         if recursive:
             recursive_dependencies: set[Measure] = set()
@@ -187,13 +187,13 @@ class Measure(SsasRenameRecord):
 
     def child_columns(self, *, recursive: bool = False) -> set["Column"]:
         """Only occurs when the dependent column is calculated (expression is not None)."""
-        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+        dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "referenced_object_type": "MEASURE",
             "referenced_table": self.table().name,
             "referenced_object": self.name,
         })
         child_keys = [(m.table, m.object) for m in dependent_measures if m.object_type in {"CALC_COLUMN", "COLUMN"}]
-        full_dependencies = [m for m in self.tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
+        full_dependencies = [m for m in self._tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
 
         if recursive:
             recursive_dependencies: set[Column] = set()
@@ -207,7 +207,7 @@ class Measure(SsasRenameRecord):
 
     def parent_columns(self, *, recursive: bool = False) -> set["Column"]:
         """Only occurs when column is calculated."""
-        dependent_measures = self.tabular_model.calc_dependencies.find_all({
+        dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "object_type": "MEASURE",
             "table": self.table().name,
             "object": self.name,
@@ -217,7 +217,7 @@ class Measure(SsasRenameRecord):
             for m in dependent_measures
             if m.referenced_object_type in {"CALC_COLUMN", "COLUMN"}
         }
-        full_dependencies = [c for c in self.tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
+        full_dependencies = [c for c in self._tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
 
         if recursive:
             recursive_dependencies: set[Column] = set()
@@ -287,6 +287,6 @@ class Measure(SsasRenameRecord):
             structure_modified_time=datetime.datetime.now(tz=datetime.UTC),
             expression=expression,
             table_id=table_id,
-            tabular_model=ssas,
+            _tabular_model=ssas,
             id=-1,
         )

@@ -29,7 +29,7 @@ class ColumnPermission(SsasEditableRecord):
     _commands: BaseCommands = field(factory=lambda: SsasCommands.column_permission, init=False, repr=False, eq=False)
 
     def table_permission(self) -> TablePermission:
-        return self.tabular_model.table_permissions.find(self.table_permission_id)
+        return self._tabular_model.table_permissions.find(self.table_permission_id)
 
     def column(self) -> "Column":
-        return self.tabular_model.columns.find(self.column_id)
+        return self._tabular_model.columns.find(self.column_id)

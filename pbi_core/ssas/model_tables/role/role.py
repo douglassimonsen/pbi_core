@@ -32,7 +32,7 @@ class Role(SsasRenameRecord):
     _commands: RenameCommands = field(factory=lambda: SsasCommands.role, init=False, repr=False, eq=False)
 
     def model(self) -> "Model":
-        return self.tabular_model.model
+        return self._tabular_model.model
 
     def table_permissions(self) -> list["TablePermission"]:
-        return [tp for tp in self.tabular_model.table_permissions if tp.role_id == self.id]
+        return [tp for tp in self._tabular_model.table_permissions if tp.role_id == self.id]

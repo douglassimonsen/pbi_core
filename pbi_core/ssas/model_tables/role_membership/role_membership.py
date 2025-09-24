@@ -32,4 +32,4 @@ class RoleMembership(SsasEditableRecord):
     _commands: BaseCommands = field(factory=lambda: SsasCommands.role_membership, init=False, repr=False, eq=False)
 
     def role(self) -> "Role":
-        return self.tabular_model.roles.find(self.role_id)
+        return self._tabular_model.roles.find(self.role_id)

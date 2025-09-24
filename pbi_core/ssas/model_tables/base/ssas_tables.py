@@ -25,10 +25,10 @@ class SsasAlter(SsasTable):
         xml_command = self.render_xml_command(
             self.xml_fields(),
             self._commands.alter,
-            self.tabular_model.db_name,
+            self._tabular_model.db_name,
         )
         logger.info("Syncing Alter Changes to SSAS", obj=self._db_type_name())
-        return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+        return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
 
 @define()
@@ -45,10 +45,10 @@ class SsasRename(SsasTable):
         xml_command = self.render_xml_command(
             self.xml_fields(),
             self._commands.rename,
-            self.tabular_model.db_name,
+            self._tabular_model.db_name,
         )
         logger.info("Syncing Rename Changes to SSAS", obj=self._db_type_name())
-        return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+        return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
 
 @define()
@@ -65,10 +65,10 @@ class SsasCreate(SsasTable):
         xml_command = self.render_xml_command(
             self.xml_fields(),
             self._commands.create,
-            self.tabular_model.db_name,
+            self._tabular_model.db_name,
         )
         logger.info("Syncing Create Changes to SSAS", obj=self._db_type_name())
-        return self.tabular_model.server.query_xml(xml_command, db_name=self.tabular_model.db_name)
+        return self._tabular_model.server.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
 
 @define()
@@ -87,10 +87,10 @@ class SsasDelete(SsasTable):
         xml_command = self.render_xml_command(
             data,
             self._commands.delete,
-            self.tabular_model.db_name,
+            self._tabular_model.db_name,
         )
         logger.info("Syncing Delete Changes to SSAS", obj=self._db_type_name())
-        return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+        return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
 
 @define()
@@ -107,10 +107,10 @@ class SsasRefresh(SsasTable):
         xml_command = self.render_xml_command(
             self.xml_fields() | {"RefreshType": (refresh_type or self._default_refresh_type).value},
             self._commands.refresh,
-            self.tabular_model.db_name,
+            self._tabular_model.db_name,
         )
         logger.info("Syncing Refresh Changes to SSAS", obj=self)
-        return self.query_xml(xml_command, db_name=self.tabular_model.db_name)
+        return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
 
 @define()

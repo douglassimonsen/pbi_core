@@ -38,7 +38,7 @@ class TablePermission(SsasEditableRecord):
         return f"TablePermission(id: {self.id}, role: {self.role().pbi_core_name()}, table: {self.table().pbi_core_name()})"
 
     def role(self) -> "Role":
-        return self.tabular_model.roles.find(self.role_id)
+        return self._tabular_modell.roles.find(self.role_id)
 
     def table(self) -> "Table":
-        return self.tabular_model.tables.find(self.table_id)
+        return self._tabular_modell.tables.find(self.table_id)

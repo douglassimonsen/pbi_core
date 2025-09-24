@@ -65,8 +65,8 @@ class HelpersMixin(RelationshipMixin):
 
     def data(self, head: int = 100) -> list[int | float | str]:
         table_name = self.table().name
-        ret = self.tabular_model.server.query_dax(
+        ret = self._tabular_model.server.query_dax(
             f"EVALUATE TOPN({head}, SELECTCOLUMNS(ALL('{table_name}'), {self.full_name()}))",
-            db_name=self.tabular_model.db_name,
+            db_name=self._tabular_model.db_name,
         )
         return [next(iter(row.values())) for row in ret]

@@ -83,12 +83,12 @@ class Table(SsasRefreshRecord):
     def calculation_group(self) -> "CalculationGroup | None":
         if self.calculation_group_id is None:
             return None
-        return self.tabular_model.calculation_groups.find(self.calculation_group_id)
+        return self._tabular_modell.calculation_groups.find(self.calculation_group_id)
 
     def refresh_policy(self) -> "RefreshPolicy | None":
         if self.refresh_policy_id is None:
             return None
-        return self.tabular_model.refresh_policies.find(self.refresh_policy_id)
+        return self._tabular_modell.refresh_policies.find(self.refresh_policy_id)
 
     def is_system_table(self) -> bool:
         return bool(self.system_flags >> 1 % 2)
@@ -107,9 +107,9 @@ class Table(SsasRefreshRecord):
                 The keys are the field names and the values are the record values
 
         """
-        return self.tabular_model.server.query_dax(
+        return self._tabular_modell.server.query_dax(
             f"EVALUATE TOPN({head}, ALL('{self.name}'))",
-            db_name=self.tabular_model.db_name,
+            db_name=self._tabular_modell.db_name,
         )
 
     def partitions(self) -> set[Partition]:
@@ -119,7 +119,7 @@ class Table(SsasRefreshRecord):
             (set[Partition]): A list of the partitions containing data for this table
 
         """
-        return self.tabular_model.partitions.find_all({"table_id": self.id})
+        return self._tabular_modell.partitions.find_all({"table_id": self.id})
 
     def columns(self) -> set[Column]:
         """Get associated dependent partitions.
@@ -128,12 +128,12 @@ class Table(SsasRefreshRecord):
             (set[Column]): A list of the columns in this table
 
         """
-        return self.tabular_model.columns.find_all({"table_id": self.id})
+        return self._tabular_modell.columns.find_all({"table_id": self.id})
 
     def default_row_definition(self) -> "DetailRowDefinition | None":
         if self.default_detail_rows_defintion_id is None:
             return None
-        return self.tabular_model.detail_row_definitions.find(self.default_detail_rows_defintion_id)
+        return self._tabular_modell.detail_row_definitions.find(self.default_detail_rows_defintion_id)
 
     def table_measures(self) -> set[Measure]:
         """Get measures saved to this table.
@@ -146,7 +146,7 @@ class Table(SsasRefreshRecord):
                 For that use `table.measures()`
 
         """
-        return self.tabular_model.measures.find_all({"table_id": self.id})
+        return self._tabular_modell.measures.find_all({"table_id": self.id})
 
     def measures(self, *, recursive: bool = False) -> set[Measure]:
         """Get measures that logically depend on this table.
@@ -175,7 +175,7 @@ class Table(SsasRefreshRecord):
         return ret
 
     def model(self) -> "Model":
-        return self.tabular_model.model
+        return self._tabular_modell.model
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

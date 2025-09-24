@@ -159,7 +159,7 @@ class BaseTabularModel:
                 obj = type_instance.model_validate({
                     **formatted_row,
                 })
-                obj.tabular_model = self
+                obj._tabular_model = self
                 setattr(self, field_name, obj)
             else:
                 group = []
@@ -167,7 +167,7 @@ class BaseTabularModel:
                 for row in schema[type_instance._db_type_name()]:
                     formatted_row = type_instance.pre_attrs(row)
                     e = type_instance.model_validate({**formatted_row})
-                    e.tabular_model = self
+                    e._tabular_model = self
                     self._remote_state[field_name][e.id] = hash(e)
                     group.append(e)
                 setattr(self, field_name, Group(group))

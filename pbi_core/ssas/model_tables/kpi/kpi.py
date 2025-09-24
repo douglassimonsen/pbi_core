@@ -40,7 +40,7 @@ class KPI(SsasEditableRecord):
         return self.measure().pbi_core_name()
 
     def measure(self) -> "Measure":
-        return self.tabular_model.measures.find({"id": self.measure_id})
+        return self.__tabular_model.measures.find({"id": self.measure_id})
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

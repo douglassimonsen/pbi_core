@@ -45,9 +45,9 @@ class DetailRowDefinition(SsasEditableRecord):
     def object(self) -> "Table | Measure":
         match self.object_type:
             case ObjectType.MEASURE:
-                return self.tabular_model.measures.find(self.object_id)
+                return self._tabular_model.measures.find(self.object_id)
             case ObjectType.TABLE:
-                return self.tabular_model.tables.find(self.object_id)
+                return self._tabular_model.tables.find(self.object_id)
             case _:
                 msg = f"No logic for object type: {self.object_type}"
                 raise TypeError(msg)

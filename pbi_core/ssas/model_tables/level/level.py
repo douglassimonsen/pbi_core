@@ -38,10 +38,10 @@ class Level(SsasRenameRecord):
     _commands: RenameCommands = field(factory=lambda: SsasCommands.level, init=False, repr=False, eq=False)
 
     def column(self) -> "Column":
-        return self.tabular_model.columns.find({"id": self.column_id})
+        return self._tabular_model.columns.find({"id": self.column_id})
 
     def hierarchy(self) -> "Hierarchy":
-        return self.tabular_model.hierarchies.find({"id": self.hierarchy_id})
+        return self._tabular_model.hierarchies.find({"id": self.hierarchy_id})
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

@@ -209,7 +209,7 @@ class LinguisticMetadata(SsasEditableRecord):
     )
 
     def culture(self) -> "Culture":
-        return self.tabular_model.cultures.find({"id": self.culture_id})
+        return self._tabular_model.cultures.find({"id": self.culture_id})
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""

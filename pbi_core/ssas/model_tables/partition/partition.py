@@ -86,7 +86,7 @@ class Partition(SsasRefreshRecord):
     def expression_source(self) -> "Expression | None":
         if self.expression_source_id is None:
             return None
-        return self.tabular_model.expressions.find(self.expression_source_id)
+        return self._tabular_model.expressions.find(self.expression_source_id)
 
     def is_system_table(self) -> bool:
         return bool(self.system_flags >> 1 % 2)
@@ -96,12 +96,12 @@ class Partition(SsasRefreshRecord):
 
     def query_group(self) -> "QueryGroup | None":
         try:
-            return self.tabular_model.query_groups.find({"id": self.table_id})
+            return self._tabular_model.query_groups.find({"id": self.table_id})
         except RowNotFoundError:
             return None
 
     def table(self) -> "Table":
-        return self.tabular_model.tables.find({"id": self.table_id})
+        return self._tabular_model.tables.find({"id": self.table_id})
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

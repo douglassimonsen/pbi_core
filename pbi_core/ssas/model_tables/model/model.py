@@ -73,16 +73,16 @@ class Model(SsasModelRecord):
     def default_measure(self) -> "Measure | None":
         if self.default_measure_id is None:
             return None
-        return self.tabular_model.measures.find(self.default_measure_id)
+        return self._tabular_model.measures.find(self.default_measure_id)
 
     def cultures(self) -> set["Culture"]:
-        return self.tabular_model.cultures.find_all({"model_id": self.id})
+        return self._tabular_model.cultures.find_all({"model_id": self.id})
 
     def tables(self) -> set["Table"]:
-        return self.tabular_model.tables.find_all({"model_id": self.id})
+        return self._tabular_model.tables.find_all({"model_id": self.id})
 
     def query_groups(self) -> set["QueryGroup"]:
-        return self.tabular_model.query_groups.find_all({"model_id": self.id})
+        return self._tabular_model.query_groups.find_all({"model_id": self.id})
 
     @classmethod
     def _db_command_obj_name(cls) -> str:

@@ -32,10 +32,10 @@ class AttributeHierarchy(SsasReadonlyRecord):
         return self.column().pbi_core_name()
 
     def column(self) -> "Column":
-        return self.tabular_model.columns.find({"id": self.column_id})
+        return self._tabular_model.columns.find({"id": self.column_id})
 
     def levels(self) -> set["Level"]:
-        return self.tabular_model.levels.find_all({"hierarchy_id": self.id})
+        return self._tabular_model.levels.find_all({"hierarchy_id": self.id})
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

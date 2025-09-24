@@ -31,10 +31,10 @@ class Culture(SsasRenameRecord):
     _commands: RenameCommands = field(factory=lambda: SsasCommands.culture, init=False, repr=False, eq=False)
 
     def linguistic_metdata(self) -> "LinguisticMetadata":
-        return self.tabular_model.linguistic_metadata.find({"id": self.linguistic_metadata_id})
+        return self._tabular_model.linguistic_metadata.find({"id": self.linguistic_metadata_id})
 
     def model(self) -> "Model":
-        return self.tabular_model.model
+        return self._tabular_model.model
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

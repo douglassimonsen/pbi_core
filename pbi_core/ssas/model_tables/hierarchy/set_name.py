@@ -30,15 +30,15 @@ def fix_dax(hierarchy: "Hierarchy", new_name: str) -> None:
         new_name (str): The new name for the hierarchy.
 
     """
-    for p in hierarchy.tabular_model.partitions.find_all({"type": PartitionType.CALCULATED}):
+    for p in hierarchy._tabular_model.partitions.find_all({"type": PartitionType.CALCULATED}):
         new_query = update_hierarchy_references(p.query_definition, hierarchy.name, new_name)
         if new_query is not None and new_query != p.query_definition:
             p.query_definition = new_query
-    for m in hierarchy.tabular_model.measures:
+    for m in hierarchy._tabular_model.measures:
         if isinstance(m.expression, str):
             m.expression = update_hierarchy_references(m.expression, hierarchy.name, new_name) or m.expression
         if f := m.format_string_definition():
             f.expression = update_hierarchy_references(f.expression, hierarchy.name, new_name) or f.expression
-    for c in hierarchy.tabular_model.columns:
+    for c in hierarchy._tabular_model.columns:
         if isinstance(c.expression, str):
             c.expression = update_hierarchy_references(c.expression, hierarchy.name, new_name) or c.expression

@@ -31,13 +31,13 @@ class QueryGroup(SsasEditableRecord):
     _commands: BaseCommands = field(factory=lambda: SsasCommands.query_group, init=False, repr=False, eq=False)
 
     def expressions(self) -> set["Expression"]:
-        return self.tabular_model.expressions.find_all({"query_group_id": self.id})
+        return self._tabular_model.expressions.find_all({"query_group_id": self.id})
 
     def partitions(self) -> set["Partition"]:
-        return self.tabular_model.partitions.find_all({"query_group_id": self.id})
+        return self._tabular_model.partitions.find_all({"query_group_id": self.id})
 
     def model(self) -> "Model":
-        return self.tabular_model.model
+        return self._tabular_model.model
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

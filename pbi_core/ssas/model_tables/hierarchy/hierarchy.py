@@ -65,13 +65,13 @@ class Hierarchy(SsasRenameRecord):
         self.name = new_name
 
     def table(self) -> "Table":
-        return self.tabular_model.tables.find({"id": self.table_id})
+        return self._tabular_model.tables.find({"id": self.table_id})
 
     def levels(self) -> set["Level"]:
-        return self.tabular_model.levels.find_all({"hierarchy_id": self.id})
+        return self._tabular_model.levels.find_all({"hierarchy_id": self.id})
 
     def variations(self) -> set["Variation"]:
-        return self.tabular_model.variations.find_all({"default_hierarchy_id": self.id})
+        return self._tabular_model.variations.find_all({"default_hierarchy_id": self.id})
 
     @classmethod
     def _db_command_obj_name(cls) -> str:

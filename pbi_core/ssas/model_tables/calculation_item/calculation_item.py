@@ -34,7 +34,7 @@ class CalculationItem(SsasRenameRecord):
     _commands: RenameCommands = field(factory=lambda: SsasCommands.calculation_item, init=False, repr=False, eq=False)
 
     def format_string_definition(self) -> "FormatStringDefinition":
-        return self.tabular_model.format_string_definitions.find(self.format_string_definition_id)
+        return self._tabular_model.format_string_definitions.find(self.format_string_definition_id)
 
     def calculation_group(self) -> "CalculationGroup":
-        return self.tabular_model.calculation_groups.find(self.calculation_group_id)
+        return self._tabular_model.calculation_groups.find(self.calculation_group_id)

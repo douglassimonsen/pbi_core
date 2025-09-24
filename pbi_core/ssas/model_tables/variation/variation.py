@@ -34,18 +34,18 @@ class Variation(SsasRenameRecord):
 
     def get_column(self) -> "Column":
         """Name is bad to not consistent with other methods because the column field in this entity :(."""
-        return self.tabular_model.columns.find(self.column_id)
+        return self._tabular_modell.columns.find(self.column_id)
 
     def default_column(self) -> "Column | None":
         if self.default_column_id is None:
             return None
-        return self.tabular_model.columns.find(self.default_column_id)
+        return self._tabular_modell.columns.find(self.default_column_id)
 
     def default_hierarchy(self) -> "Hierarchy":
-        return self.tabular_model.hierarchies.find(self.default_hierarchy_id)
+        return self._tabular_modell.hierarchies.find(self.default_hierarchy_id)
 
     def relationship(self) -> "Relationship":
-        return self.tabular_model.relationships.find(self.relationship_id)
+        return self._tabular_modell.relationships.find(self.relationship_id)
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":
