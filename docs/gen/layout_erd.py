@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pbi_core.attrs import BaseValidation
+from pbi_core.attrs import BaseValidation, fields
 from pbi_core.static_files.layout import Layout
 
 if TYPE_CHECKING:
@@ -114,7 +114,7 @@ class ERD:
             return head, nodes, links
         self.visited_nodes.add(head)
 
-        for attr in m.__attrs_attrs__:
+        for attr in fields(m):
             if attr.type is None:
                 continue
             for child in unwrap(attr.type):

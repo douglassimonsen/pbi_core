@@ -1,14 +1,18 @@
 import json
 from typing import TYPE_CHECKING, Any, Self, dataclass_transform
 
-from attr._make import Attribute
+from attrs import Attribute, field
 from attrs import define as _define
-from attrs import field
+from attrs import fields as _fields
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
     from attrs import _C
+
+
+def fields(cls: type) -> tuple[Attribute]:
+    return _fields(cls)
 
 
 @dataclass_transform(kw_only_default=True, order_default=True, eq_default=True)
@@ -28,7 +32,7 @@ def define(  # noqa: PLR0913
 
 class BaseValidation:
     _original_data: Any = field(init=False, repr=False, eq=False)
-    __attrs_attrs__: tuple[Attribute, ...]
+    """Holds the data of the SSAS entity as it was in the SSAS instance when it was pulled by pbi_core."""
 
     @classmethod
     def model_validate(cls, data: dict) -> Self:

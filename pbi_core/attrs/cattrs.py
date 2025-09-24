@@ -8,7 +8,7 @@ from uuid import UUID
 
 import cattrs
 
-from .attrs import BaseValidation
+from .attrs import BaseValidation, fields
 
 T = TypeVar("T")
 # cursed, but I don't know how else to identify annotated unions
@@ -131,7 +131,7 @@ class SubConverter(cattrs.Converter):
 
         elif isinstance(new_obj, BaseValidation):
             new_obj._original_data = old_obj
-            for attr in new_obj.__attrs_attrs__:
+            for attr in fields(new_obj.__class__):
                 SubConverter._add_original_data(
                     getattr(new_obj, attr.name, None),
                     old_obj.get(attr.alias, None),
@@ -152,7 +152,7 @@ class SubConverter(cattrs.Converter):
             return super().unstructure(obj, unstructure_as)
 
         base = {}
-        for attr in obj.__attrs_attrs__:
+        for attr in fields(obj.__class__):
             if attr.init is True:
                 base_val = self.unstructure(getattr(obj, attr.name), unstructure_as)
                 if _is_json(attr.type):

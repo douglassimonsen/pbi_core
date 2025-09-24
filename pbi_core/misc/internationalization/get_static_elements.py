@@ -1,4 +1,4 @@
-from pbi_core.attrs import BaseValidation
+from pbi_core.attrs import BaseValidation, fields
 from pbi_core.logging import get_logger
 from pbi_core.static_files import Layout
 from pbi_core.static_files.layout.filters import Filter
@@ -28,12 +28,12 @@ def _parse_viz_config(config: BaseValidation | dict | None) -> list[LiteralSourc
                     if isinstance(field_value, LiteralExpression) and isinstance(field_value.expr.value(), str)
                 )
     else:
-        for field in config.__attrs_attrs__:
+        for field in fields(config.__class__):
             value: list[BaseValidation] = getattr(config, field.name)
             for element in value:
                 properties: BaseValidation = element.properties  # type: ignore reportAttributeAccessIssue
-                for prop_name in properties.__attrs_attrs__:
-                    prop_value = getattr(properties, prop_name)
+                for prop in fields(properties.__class__):
+                    prop_value = getattr(properties, prop.name)
                     if isinstance(prop_value, LiteralExpression) and isinstance(prop_value.expr.value(), str):
                         ret.append(prop_value.expr)
     return ret

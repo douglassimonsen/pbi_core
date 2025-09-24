@@ -2,7 +2,7 @@ from collections.abc import Callable
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
-from pbi_core.attrs import BaseValidation
+from pbi_core.attrs import BaseValidation, fields
 from pbi_core.lineage import LineageNode
 
 if TYPE_CHECKING:
@@ -40,7 +40,7 @@ class LayoutNode(BaseValidation):
         Differs from the model_dump_json method in that it does not convert the JSON models back to strings.
         """
         ret = {}
-        for field in self.__attrs_attrs__:
+        for field in fields(self.__class__):
             ret[field.name] = self.serialize_helper(getattr(self, field.name))
         return ret
 
@@ -158,7 +158,7 @@ def _get_xpath(  # noqa: C901  # too complex, but it's actually not that complex
     xpath: list[str | int] | None = None,
 ) -> list[str | int] | None:
     def _xpath_attrs(parent: LayoutNode, child: LayoutNode, xpath: list[str | int]) -> list[str | int] | None:
-        for attr in parent.__attrs_attrs__:
+        for attr in fields(parent.__class__):
             val = getattr(parent, attr.name)
             ret = _get_xpath(val, child, xpath=[*xpath, attr.name])
             if ret is not None:
