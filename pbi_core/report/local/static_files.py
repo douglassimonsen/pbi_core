@@ -2,7 +2,7 @@ import shutil
 from typing import TYPE_CHECKING
 
 from pbi_core.logging import get_logger
-from pbi_core.report.base import BaseReport
+from pbi_core.report.base import BaseStaticReport
 from pbi_core.static_files import StaticFiles
 
 logger = get_logger()
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from _typeshed import StrPath
 
 
-class LocalStaticReport(BaseReport):
+class LocalStaticReport(BaseStaticReport):
     """An instance of a PowerBI report from a local PBIX file.
 
     Args:
@@ -27,14 +27,9 @@ class LocalStaticReport(BaseReport):
 
     """
 
+    # Redefining here to add docstring
     _source_path: "StrPath"
     """Since this class doesn't load the full PBIX, we need to keep track of the source path for saving later"""
-    static_files: StaticFiles
-    """Classes representing the static design portions of the PBIX report"""
-
-    def __init__(self, static_files: StaticFiles, source_path: "StrPath") -> None:
-        self.static_files = static_files
-        self._source_path = source_path
 
     @staticmethod
     def load_pbix(path: "StrPath") -> "LocalStaticReport":

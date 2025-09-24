@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Literal, overload
 
 from pbi_core.logging import get_logger
+from pbi_core.report.base.main import BaseReport
 from pbi_core.ssas.model_tables import Column, Measure
 from pbi_core.ssas.server import LocalTabularModel
 from pbi_core.static_files import StaticFiles
@@ -16,7 +17,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Table
 
 
-class LocalReport(LocalSsasReport, LocalStaticReport):
+class LocalReport(LocalSsasReport, LocalStaticReport, BaseReport):  # pyright: ignore[reportIncompatibleVariableOverride]
     """An instance of a PowerBI report from a local PBIX file.
 
     Args:

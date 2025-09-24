@@ -9,14 +9,16 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import jinja2
 from pbi_pyadomd import Connection, Reader
 
 from pbi_core.logging import get_logger
-from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 from pbi_core.ssas.server.trace.trace_enums import TraceEvents
+
+if TYPE_CHECKING:
+    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 
 logger = get_logger()
 TRACE_DIR = Path(__file__).parent / "templates"
@@ -202,7 +204,7 @@ class Subscriber:
 
 class PerformanceTrace:
     events: Iterable[TraceEvents]
-    db: BaseTabularModel
+    db: "BaseTabularModel"
     commands: list[str]
     trace_create_command: str
     subscription_create_command: str
@@ -211,7 +213,7 @@ class PerformanceTrace:
 
     def __init__(
         self,
-        db: BaseTabularModel,
+        db: "BaseTabularModel",
         commands: list[str],
         events: Iterable[TraceEvents] = TRACE_DEFAULT_EVENTS,
     ) -> None:

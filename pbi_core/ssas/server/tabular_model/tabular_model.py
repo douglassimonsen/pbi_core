@@ -8,7 +8,6 @@ import bs4
 from attrs import define, fields
 from structlog import get_logger
 
-from pbi_core.ssas.model_tables.base.batch import AlterCommand, Batch
 from pbi_core.ssas.server.utils import COMMAND_TEMPLATES
 
 logger = get_logger()
@@ -165,6 +164,7 @@ class BaseTabularModel:
                 setattr(self, field_name, Group(group))
 
     def sync_to(self) -> Update:
+        from pbi_core.ssas.model_tables.base.batch import AlterCommand, Batch  # noqa: PLC0415
         from pbi_core.ssas.model_tables.base.ssas_tables import SsasAlter, SsasTable  # noqa: PLC0415
 
         logger.info("Syncing to SSAS", db_name=self.db_name)

@@ -1,5 +1,5 @@
 from pbi_core.logging import get_logger
-from pbi_core.report.local.main import LocalReport
+from pbi_core.report.base.main import BaseReport
 from pbi_core.ssas.model_tables.column.column import Column
 from pbi_core.ssas.model_tables.enums import DataType
 from pbi_core.ssas.model_tables.measure.measure import Measure
@@ -162,7 +162,7 @@ def get_ssas_elements(server: BaseTabularModel) -> TextElements:
     return TextElements(text_elements=text_elements)
 
 
-def get_source_text_elements(report: LocalReport) -> TextElements:
+def get_source_text_elements(report: BaseReport) -> TextElements:
     static_elements = get_static_elements(report.static_files.layout)
     ssas_elements = get_ssas_elements(report.ssas)
     return TextElements(text_elements=static_elements.text_elements + ssas_elements.text_elements)

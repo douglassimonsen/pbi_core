@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from pbi_core.logging import get_logger
-from pbi_core.report.base import BaseReport
+from pbi_core.report.base import BaseSsasReport
 from pbi_core.ssas.server import LocalTabularModel, get_or_create_local_server
 
 logger = get_logger()
@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from _typeshed import StrPath
 
 
-class LocalSsasReport(BaseReport):
+class LocalSsasReport(BaseSsasReport):
     """An instance of the SSAS-based components in a PowerBI report from a local PBIX file.
 
     Examples:
@@ -23,14 +23,11 @@ class LocalSsasReport(BaseReport):
 
     """
 
+    # Redefining here to add docstring
     _source_path: "StrPath"
     """Since this class doesn't load the full PBIX, we need to keep track of the source path for saving later"""
-    ssas: LocalTabularModel
+    ssas: LocalTabularModel  # pyright: ignore[reportIncompatibleVariableOverride]
     """An instance of a local SSAS Server"""
-
-    def __init__(self, ssas: LocalTabularModel, source_path: "StrPath") -> None:
-        self.ssas = ssas
-        self._source_path = source_path
 
     @staticmethod
     def load_pbix(path: "StrPath", *, kill_ssas_on_exit: bool = True) -> "LocalSsasReport":

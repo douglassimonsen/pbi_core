@@ -1,9 +1,12 @@
-from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
+from typing import TYPE_CHECKING
 
 from .performance_trace import Performance, PerformanceTrace
 
+if TYPE_CHECKING:
+    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 
-def get_performance(model: BaseTabularModel, commands: list[str], *, clear_cache: bool = False) -> list[Performance]:
+
+def get_performance(model: "BaseTabularModel", commands: list[str], *, clear_cache: bool = False) -> list[Performance]:
     """Calculates performance of a DAX query using a Trace.
 
     Args:

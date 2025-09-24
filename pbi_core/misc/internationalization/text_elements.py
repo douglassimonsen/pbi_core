@@ -5,12 +5,13 @@ from typing import TYPE_CHECKING, Literal
 import openpyxl
 
 from pbi_core.logging import get_logger
-from pbi_core.report.local.main import LocalReport
 from pbi_core.ssas.model_tables import Column, Hierarchy, Measure, Table
 from pbi_core.static_files.layout.sources.literal import LiteralSource, serialize_literal
 
 if TYPE_CHECKING:
     from _typeshed import StrPath
+
+    from pbi_core.report.base.main import BaseReport
 logger = get_logger()
 
 
@@ -44,7 +45,7 @@ class TextElements:
             grouped.setdefault(element.category, []).append(element)
         return grouped
 
-    def set_elements(self, report: LocalReport) -> None:
+    def set_elements(self, report: "BaseReport") -> None:
         """Updates the text elements."""
         for text_element in self.text_elements:
             if text_element.source == "layout":
