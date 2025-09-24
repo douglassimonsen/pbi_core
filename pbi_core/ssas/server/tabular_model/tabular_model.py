@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, cast
 
 import bs4
+from attrs import define
 from structlog import get_logger
 
 from pbi_core.ssas.model_tables.base.batch import AlterCommand, Batch
@@ -67,6 +68,8 @@ class Update:
     deleted: list[int] = field(default_factory=list)
 
 
+# TODO: make this fully an attrs class like everything else
+@define(init=False)
 class BaseTabularModel:
     db_name: str
     server: "BaseServer"

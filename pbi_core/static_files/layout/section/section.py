@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Literal
 from uuid import UUID
 
+import attrs
 from attrs import field, validators
 
 from pbi_core.attrs import Json, define
@@ -128,3 +129,6 @@ class Section(LayoutNode):
             msg = "Cannot get performance for a page without any querying visuals"
             raise ValueError(msg)
         return get_performance(model, commands, clear_cache=clear_cache)
+
+
+attrs.resolve_types(VisualContainer, {"Section": Section})

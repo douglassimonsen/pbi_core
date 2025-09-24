@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Literal
 
+import attrs
 from attrs import field
 
 from pbi_core.attrs import Json, define
@@ -178,3 +179,6 @@ class Layout(LayoutNode):
 
         children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
         return LineageNode(self, lineage_type, children_lineage)
+
+
+attrs.resolve_types(Section, {"Layout": Layout})

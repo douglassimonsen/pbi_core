@@ -1,5 +1,5 @@
 import json
-from typing import TYPE_CHECKING, Any, Self, TypeVar, dataclass_transform
+from typing import TYPE_CHECKING, Any, Self, dataclass_transform
 
 from attr._make import Attribute
 from attrs import define as _define
@@ -11,19 +11,17 @@ if TYPE_CHECKING:
     from attrs import _C
 
 
-T = TypeVar("T")
-
-
-@dataclass_transform(kw_only_default=True)
-def define(
+@dataclass_transform(kw_only_default=True, order_default=True, eq_default=True)
+def define(  # noqa: PLR0913
     *,
     kw_only: bool = True,
     eq: bool = True,
     hash: bool = True,  # noqa: A002
     slots: bool = False,
     init: bool = True,
+    order: bool = True,
 ) -> "Callable[[_C], _C]":
-    return _define(slots=slots, kw_only=kw_only, hash=hash, eq=eq, init=init)
+    return _define(slots=slots, kw_only=kw_only, hash=hash, eq=eq, init=init, order=order)
 
 
 class BaseValidation:
