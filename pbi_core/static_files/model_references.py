@@ -15,14 +15,6 @@ class ModelColumnReference(BaseValidation):
     def to_model(self, tabular_model: "BaseTabularModel") -> "Column":
         return tabular_model.columns.find(lambda c: (c.explicit_name == self.column) and (c.table().name == self.table))
 
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, ModelColumnReference):
-            return False
-        return (self.column == other.column) and (self.table == other.table)
-
-    def __hash__(self) -> int:
-        return hash((self.column, self.table))
-
 
 @define()
 class ModelTableReference(BaseValidation):
@@ -30,14 +22,6 @@ class ModelTableReference(BaseValidation):
 
     def to_model(self, tabular_model: "BaseTabularModel") -> "Table":
         return tabular_model.tables.find(lambda t: (t.name == self.table))
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, ModelTableReference):
-            return False
-        return self.table == other.table
-
-    def __hash__(self) -> int:
-        return hash(self.table)
 
 
 @define()
@@ -47,11 +31,3 @@ class ModelMeasureReference(BaseValidation):
 
     def to_model(self, tabular_model: "BaseTabularModel") -> "Measure":
         return tabular_model.measures.find(lambda m: (m.name == self.measure) and (m.table().name == self.table))
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, ModelMeasureReference):
-            return False
-        return (self.measure == other.measure) and (self.table == other.table)
-
-    def __hash__(self) -> int:
-        return hash((self.measure, self.table))

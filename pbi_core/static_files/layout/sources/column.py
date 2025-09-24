@@ -15,11 +15,3 @@ class ColumnSource(LayoutNode):
 
     def filter_name(self) -> str:
         return self.Column.Property
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, ColumnSource):
-            return False
-        return (self.Column.column() == other.Column.column()) and (self.Column.table() == other.Column.table())
-
-    def __hash__(self) -> int:
-        return hash((self.Column.column(), self.Column.table()))
