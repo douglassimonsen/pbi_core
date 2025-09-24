@@ -2,7 +2,7 @@ import datetime
 from typing import TYPE_CHECKING, ClassVar, Final
 from uuid import UUID, uuid4
 
-from attrs import field
+from attrs import field, setters
 from structlog import BoundLogger
 
 from pbi_core.attrs import define
@@ -44,7 +44,6 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
     }
     _db_name_field: str = field(default="ExplicitName", eq=False)
     _repr_name_field: str = field(default="explicit_name", eq=False)
-    _read_only_fields = field(default=("table_id",), eq=False)
 
     alignment: Alignment = field(eq=True)
     attribute_hierarchy_id: int = field(eq=True)
@@ -79,7 +78,7 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
     state: Final[DataState] = field(eq=False)
     summarize_by: SummarizedBy = field(eq=True)
     system_flags: int = field(eq=True)
-    table_id: int = field(eq=True)
+    table_id: Final[int] = field(eq=True, on_setattr=setters.frozen)  # pyright: ignore[reportIncompatibleVariableOverride]
     table_detail_position: int = field(eq=True)
     type: ColumnType = field(eq=True)
 

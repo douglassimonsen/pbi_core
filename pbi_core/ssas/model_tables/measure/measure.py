@@ -138,7 +138,7 @@ class Measure(SsasRenameRecord):
         return self.tabular_model.server.query_dax(command)
 
     def __repr__(self) -> str:
-        return f"Measure({self.table().name}.{self.name})"
+        return f"Measure({self.id}: {self.full_name()})"
 
     def child_measures(self, *, recursive: bool = False) -> set["Measure"]:
         dependent_measures = self.tabular_model.calc_dependencies.find_all({

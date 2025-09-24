@@ -1,6 +1,6 @@
 from typing import Any, ClassVar, Literal, Self
 
-from attrs import field, setters
+from attrs import field, fields, setters
 from bs4 import BeautifulSoup
 from structlog import get_logger
 
@@ -16,14 +16,13 @@ logger = get_logger()
 
 @define()
 class SsasTable(BaseValidation, IdBase):
-    id: int = field(eq=True, on_setattr=setters.frozen)
+    id: int = field(eq=True, repr=True, on_setattr=setters.frozen)
     """Unique identifier of the object."""
 
     tabular_model: BaseTabularModel = field(repr=False, eq=False, init=False)
-    _read_only_fields: ClassVar[tuple[str, ...]] = ()
 
-    _db_field_names: ClassVar[dict[str, str]] = {}
-    _repr_name_field: str = "name"
+    _db_field_names: ClassVar[dict[str, str]] = {}  # field(factory=dict, repr=False, eq=False)
+    _repr_name_field: str = field(default="name", repr=False, eq=False)
 
     @classmethod
     def _db_type_name(cls) -> str:
@@ -44,6 +43,10 @@ class SsasTable(BaseValidation, IdBase):
         Defaults to self.name
         """
         return str(getattr(self, self._repr_name_field))
+
+    def __str__(self) -> str:
+        field_text = ", ".join(f"{f.name}={getattr(self, f.name)}" for f in fields(self.__class__) if f.repr)
+        return f"{self.__class__.__name__}({field_text})"
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.id}: {self.pbi_core_name()})"
@@ -138,7 +141,11 @@ class SsasTable(BaseValidation, IdBase):
     def xml_fields(self) -> dict[str, Any]:
         base = self.model_dump().items()
         ret = {}
-        for k, v in base:
-            if k not in self._read_only_fields:
-                ret[self._db_field_names.get(k, k)] = v
+        for f in fields(self.__class__):
+            # This is our current way of marking read-only fields. (Read-only as defined by the SSAS API)
+            # Although "id" is also read-only, it's needed to identify the record for updates/deletes, so we include it.
+            if f.name != "id" and f.on_setattr is setters.frozen:
+                continue
+            k = f.name
+            ret[self._db_field_names.get(k, k)] = getattr(self, k)
         return ret

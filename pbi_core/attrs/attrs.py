@@ -20,8 +20,10 @@ def define(  # noqa: PLR0913
     slots: bool = False,
     init: bool = True,
     order: bool = True,
+    repr: bool = False,  # noqa: A002
+    str: bool = False,  # noqa: A002
 ) -> "Callable[[_C], _C]":
-    return _define(slots=slots, kw_only=kw_only, hash=hash, eq=eq, init=init, order=order)
+    return _define(slots=slots, kw_only=kw_only, hash=hash, eq=eq, init=init, order=order, str=str, repr=repr)
 
 
 class BaseValidation:
