@@ -70,6 +70,3 @@ class Annotation(SsasRenameRecord):
         if lineage_type == "children":
             return LineageNode(self, lineage_type)
         return LineageNode(self, lineage_type, [self.object().get_lineage(lineage_type)])
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.id}, on: {self.object()!r}, name: {self.name}, value: {self.value})"

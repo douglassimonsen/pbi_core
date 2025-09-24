@@ -35,7 +35,7 @@ class TablePermission(SsasEditableRecord):
     _commands: BaseCommands = field(factory=lambda: SsasCommands.table_permission, init=False, repr=False, eq=False)
 
     def __repr__(self) -> str:
-        return f"TablePermission(id={self.id}, role={self.role().name}, table={self.table()})"
+        return f"TablePermission(id: {self.id}, role: {self.role().pbi_core_name()}, table: {self.table().pbi_core_name()})"
 
     def role(self) -> "Role":
         return self.tabular_model.roles.find(self.role_id)

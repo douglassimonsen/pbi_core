@@ -21,7 +21,13 @@ class SsasTable(BaseValidation, IdBase):
 
     tabular_model: BaseTabularModel = field(repr=False, eq=False, init=False)
 
-    _db_field_names: ClassVar[dict[str, str]] = {}  # field(factory=dict, repr=False, eq=False)
+    _db_field_names: ClassVar[dict[str, str]] = {}
+    """Mapping of python attribute names to database field names.
+
+    Example:
+        For the Column class:
+        {"ExplicitName": "explicit_name"...}
+    """
     _repr_name_field: str = field(default="name", repr=False, eq=False)
 
     @classmethod
@@ -139,13 +145,16 @@ class SsasTable(BaseValidation, IdBase):
         return LineageNode(self, lineage_type)
 
     def xml_fields(self) -> dict[str, Any]:
-        base = self.model_dump().items()
+        base = self.model_dump()
         ret = {}
         for f in fields(self.__class__):
             # This is our current way of marking read-only fields. (Read-only as defined by the SSAS API)
             # Although "id" is also read-only, it's needed to identify the record for updates/deletes, so we include it.
-            if f.name != "id" and f.on_setattr is setters.frozen:
+            p_name = f.name
+            db_name = self._db_field_names.get(p_name, p_name)
+            if p_name != "id" and f.on_setattr is setters.frozen:
                 continue
-            k = f.name
-            ret[self._db_field_names.get(k, k)] = getattr(self, k)
+            if p_name == "tabular_model" or p_name.startswith("_"):
+                continue
+            ret[db_name] = base.get(p_name)
         return ret

@@ -42,7 +42,6 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
     _field_mapping: ClassVar[dict[str, str]] = {
         "description": "Description",
     }
-    _db_name_field: str = field(default="ExplicitName", eq=False)
     _repr_name_field: str = field(default="explicit_name", eq=False)
 
     alignment: Alignment = field(eq=True)
@@ -89,7 +88,7 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
     _commands: RenameCommands = field(factory=lambda: SsasCommands.column, init=False, repr=False)
 
     def __repr__(self) -> str:
-        return f"Column({self.table().name}.{self.pbi_core_name()})"
+        return f"Column({self.id}: {self.full_name()})"
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the column and update any dependent expressions to use the new name.

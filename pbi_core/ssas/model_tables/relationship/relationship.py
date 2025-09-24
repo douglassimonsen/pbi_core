@@ -105,4 +105,4 @@ class Relationship(SsasRenameRecord):
         )
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.id}, from: {self.from_table()!r}, to: {self.to_table()!r})"
+        return f"{self.__class__.__name__}({self.id}, from: {self.pbi_core_name()}, to: {self.pbi_core_name()})"

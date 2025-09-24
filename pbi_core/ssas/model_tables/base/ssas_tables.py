@@ -38,7 +38,6 @@ class SsasRename(SsasTable):
     The `rename <https://learn.microsoft.com/en-us/analysis-services/tmsl/rename-command-tmsl?view=asallproducts-allversions>`_ spec
     """  # noqa: E501
 
-    _db_name_field: str = "not_defined"
     _commands: RenameCommands
 
     def rename(self) -> BeautifulSoup:
@@ -79,12 +78,11 @@ class SsasDelete(SsasTable):
     The `delete <https://learn.microsoft.com/en-us/analysis-services/tmsl/delete-command-tmsl?view=asallproducts-allversions>`_ spec
     """  # noqa: E501
 
-    _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
     _commands: BaseCommands
 
     def delete(self) -> BeautifulSoup:
         data = {
-            self._db_id_field: getattr(self, self._db_id_field),
+            "id": self.id,
         }
         xml_command = self.render_xml_command(
             data,
@@ -102,7 +100,6 @@ class SsasRefresh(SsasTable):
     The `refresh <https://learn.microsoft.com/en-us/analysis-services/tmsl/refresh-command-tmsl?view=asallproducts-allversions>`_ spec
     """  # noqa: E501
 
-    _db_id_field: str = "id"  # we're comparing the name before the translation back to SSAS casing
     _default_refresh_type: RefreshType
     _commands: RefreshCommands
 

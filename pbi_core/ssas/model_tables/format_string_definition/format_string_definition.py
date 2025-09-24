@@ -96,4 +96,4 @@ class FormatStringDefinition(SsasEditableRecord):
         return ret
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.id}, on: {self.object()!r})"
+        return f"{self.__class__.__name__}({self.id}: {self.object():!r})"
