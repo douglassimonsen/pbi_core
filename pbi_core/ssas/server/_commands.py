@@ -3,8 +3,6 @@ import dataclasses
 import bs4
 import jinja2
 
-from pbi_core.attrs import define
-
 BASE_ALTER_TEMPLATE = jinja2.Template(
     """
 <Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
@@ -79,7 +77,6 @@ class Command:
         return sorted(fields, key=lambda k: self.field_order.index(k[0]))
 
 
-@define(init=False)
 class NoCommands:
     def __init__(self, **kwargs: str) -> None:
         for field_name, template_text in kwargs.items():
@@ -105,7 +102,6 @@ class NoCommands:
         return ret
 
 
-@define()
 class BaseCommands(NoCommands):
     alter: Command
     create: Command
@@ -123,7 +119,6 @@ class BaseCommands(NoCommands):
         )
 
 
-@define()
 class RenameCommands(BaseCommands):
     rename: Command
 
@@ -140,7 +135,6 @@ class RenameCommands(BaseCommands):
         )
 
 
-@define()
 class RefreshCommands(RenameCommands):
     refresh: Command
 
@@ -158,7 +152,6 @@ class RefreshCommands(RenameCommands):
         )
 
 
-@define()
 class ModelCommands(NoCommands):
     alter: Command
     refresh: Command
@@ -169,6 +162,7 @@ class ModelCommands(NoCommands):
 
     @staticmethod
     def new(data: dict[str, str]) -> "ModelCommands":
+        breakpoint()
         return ModelCommands(
             alter=data["alter.xml"],
             refresh=data["refresh.xml"],
