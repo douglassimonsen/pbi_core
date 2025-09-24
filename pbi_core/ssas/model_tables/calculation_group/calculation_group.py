@@ -25,7 +25,7 @@ class CalculationGroup(SsasEditableRecord):
 
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.calculation_group, init=False, repr=False, eq=False)
+    _commands: BaseCommands = field(default=SsasCommands.calculation_group, init=False, repr=False, eq=False)
 
     def table(self) -> "Table":
         return self._tabular_model.tables.find(self.table_id)

@@ -32,7 +32,7 @@ class TablePermission(SsasEditableRecord):
 
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.table_permission, init=False, repr=False, eq=False)
+    _commands: BaseCommands = field(default=SsasCommands.table_permission, init=False, repr=False, eq=False)
 
     def __repr__(self) -> str:
         return f"TablePermission(id: {self.id}, role: {self.role().pbi_core_name()}, table: {self.table().pbi_core_name()})"

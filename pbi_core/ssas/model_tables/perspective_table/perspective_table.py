@@ -26,7 +26,7 @@ class PerspectiveTable(SsasEditableRecord):
 
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.perspective_table, init=False, repr=False, eq=False)
+    _commands: BaseCommands = field(default=SsasCommands.perspective_table, init=False, repr=False, eq=False)
 
     def perspective(self) -> "Perspective":
         return self._tabular_model.perspectives.find(self.perspective_id)

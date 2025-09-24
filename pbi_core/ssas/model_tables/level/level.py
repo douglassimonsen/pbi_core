@@ -35,7 +35,7 @@ class Level(SsasRenameRecord):
 
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.level, init=False, repr=False, eq=False)
+    _commands: RenameCommands = field(default=SsasCommands.level, init=False, repr=False, eq=False)
 
     def column(self) -> "Column":
         return self._tabular_model.columns.find({"id": self.column_id})

@@ -28,7 +28,7 @@ class ObjectTranslation(SsasEditableRecord):
 
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.object_translation, init=False, repr=False, eq=False)
+    _commands: BaseCommands = field(default=SsasCommands.object_translation, init=False, repr=False, eq=False)
 
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.

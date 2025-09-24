@@ -47,7 +47,7 @@ class Hierarchy(SsasRenameRecord):
     """The last time the sources for this hierarchy were refreshed"""
     structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.hierarchy, init=False, repr=False, eq=False)
+    _commands: RenameCommands = field(default=SsasCommands.hierarchy, init=False, repr=False, eq=False)
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.

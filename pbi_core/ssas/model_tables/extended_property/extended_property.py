@@ -49,7 +49,7 @@ class ExtendedProperty(SsasRenameRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(
-        factory=lambda: SsasCommands.extended_property,
+        default=SsasCommands.extended_property,
         init=False,
         repr=False,
         eq=False,

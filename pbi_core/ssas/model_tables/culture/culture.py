@@ -28,7 +28,7 @@ class Culture(SsasRenameRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
     structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.culture, init=False, repr=False, eq=False)
+    _commands: RenameCommands = field(default=SsasCommands.culture, init=False, repr=False, eq=False)
 
     def linguistic_metdata(self) -> "LinguisticMetadata":
         return self._tabular_model.linguistic_metadata.find({"id": self.linguistic_metadata_id})

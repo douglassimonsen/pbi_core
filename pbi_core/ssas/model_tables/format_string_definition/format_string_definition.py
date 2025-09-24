@@ -33,7 +33,7 @@ class FormatStringDefinition(SsasEditableRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(
-        factory=lambda: SsasCommands.format_string_definition,
+        default=SsasCommands.format_string_definition,
         init=False,
         repr=False,
         eq=False,

@@ -39,7 +39,7 @@ class DataSource(SsasRenameRecord):
 
     modified_time: Final[datetime.datetime] = field(eq=False, repr=False)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.data_source, init=False, repr=False, eq=False)
+    _commands: RenameCommands = field(default=SsasCommands.data_source, init=False, repr=False, eq=False)
 
     def model(self) -> "Model":
         return self._tabular_model.model

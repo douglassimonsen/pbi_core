@@ -30,7 +30,7 @@ class Variation(SsasRenameRecord):
     name: str = field(eq=True)
     relationship_id: int = field(eq=True)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.variation, init=False, repr=False)
+    _commands: RenameCommands = field(default=SsasCommands.variation, init=False, repr=False)
 
     def get_column(self) -> "Column":
         """Name is bad to not consistent with other methods because the column field in this entity :(."""

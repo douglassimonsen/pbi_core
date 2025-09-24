@@ -68,7 +68,7 @@ class Model(SsasModelRecord):
         repr=False,
     )
 
-    _commands: ModelCommands = field(factory=lambda: SsasCommands.model, init=False, repr=False, eq=False)
+    _commands: ModelCommands = field(default=SsasCommands.model, init=False, repr=False, eq=False)
 
     def default_measure(self) -> "Measure | None":
         if self.default_measure_id is None:

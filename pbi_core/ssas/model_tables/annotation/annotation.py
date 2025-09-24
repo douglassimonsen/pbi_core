@@ -25,7 +25,7 @@ class Annotation(SsasRenameRecord):
 
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.annotation, init=False, repr=False)
+    _commands: RenameCommands = field(default=SsasCommands.annotation, init=False, repr=False)
 
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.

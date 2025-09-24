@@ -85,7 +85,7 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
     refreshed_time: Final[datetime.datetime] = field(eq=False, repr=False)
     structure_modified_time: Final[datetime.datetime] = field(eq=False, repr=False)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.column, init=False, repr=False)
+    _commands: RenameCommands = field(default=SsasCommands.column, init=False, repr=False)
 
     def __repr__(self) -> str:
         return f"Column({self.id}: {self.full_name()})"

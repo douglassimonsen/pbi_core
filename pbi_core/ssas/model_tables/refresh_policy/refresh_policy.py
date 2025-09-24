@@ -27,4 +27,4 @@ class RefreshPolicy(SsasEditableRecord):
     source_expression: str = field(eq=True)
     table_id: int = field(eq=True)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.refresh_policy, init=False, repr=False, eq=False)
+    _commands: BaseCommands = field(default=SsasCommands.refresh_policy, init=False, repr=False, eq=False)

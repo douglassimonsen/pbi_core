@@ -29,7 +29,7 @@ class RoleMembership(SsasEditableRecord):
 
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.role_membership, init=False, repr=False, eq=False)
+    _commands: BaseCommands = field(default=SsasCommands.role_membership, init=False, repr=False, eq=False)
 
     def role(self) -> "Role":
         return self._tabular_model.roles.find(self.role_id)

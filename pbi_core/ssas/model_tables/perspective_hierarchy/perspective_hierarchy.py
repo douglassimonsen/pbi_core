@@ -26,7 +26,7 @@ class PerspectiveHierarchy(SsasEditableRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(
-        factory=lambda: SsasCommands.perspective_hierarchy,
+        default=SsasCommands.perspective_hierarchy,
         init=False,
         repr=False,
         eq=False,

@@ -75,7 +75,7 @@ class Measure(SsasRenameRecord):
         repr=False,
     )
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.measure, init=False, repr=False, eq=False)
+    _commands: RenameCommands = field(default=SsasCommands.measure, init=False, repr=False, eq=False)
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.

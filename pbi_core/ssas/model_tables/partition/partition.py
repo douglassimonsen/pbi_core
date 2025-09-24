@@ -64,7 +64,7 @@ class Partition(SsasRefreshRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
     refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
-    _commands: RefreshCommands = field(factory=lambda: SsasCommands.partition, init=False, repr=False, eq=False)
+    _commands: RefreshCommands = field(default=SsasCommands.partition, init=False, repr=False, eq=False)
 
     def expression_ast(self) -> "dax.Expression | pq.Expression | None":
         from pbi_parsers import dax, pq  # noqa: PLC0415
