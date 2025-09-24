@@ -2,7 +2,7 @@ import datetime
 import json
 from collections.abc import Callable
 from enum import Enum
-from types import UnionType
+from types import NoneType, UnionType
 from typing import Any, TypeVar, Union, get_args, get_origin
 from uuid import UUID
 
@@ -35,12 +35,15 @@ def _structure_union(val: Any, tp: Any) -> Any:
                 return val
         except TypeError:
             pass
+
+    last_error = None
     for a in args:
         try:
             return converter.structure(val, a)
-        except (cattrs.ClassValidationError, cattrs.StructureHandlerNotFoundError):
-            continue
-    raise ValueError(val, tp)
+        except (cattrs.ClassValidationError, cattrs.StructureHandlerNotFoundError, AttributeError) as e:
+            last_error = e
+    msg = f"Could not match union type {tp} for value {val!r}"
+    raise ValueError(msg) from last_error
 
 
 def _is_json(tp: Any) -> bool:
@@ -179,6 +182,9 @@ converter.register_unstructure_hook_func(_is_json, unstruct_json)
 
 converter.register_structure_hook(UUID, struct_uuid)
 converter.register_unstructure_hook(UUID, unstruct_uuid)
+
+converter.register_structure_hook(NoneType, lambda _v, _: None)
+converter.register_unstructure_hook(NoneType, lambda _v, _: None)
 
 converter.register_structure_hook(datetime.datetime, struct_datetime)
 converter.register_unstructure_hook(datetime.datetime, unstruct_datetime)

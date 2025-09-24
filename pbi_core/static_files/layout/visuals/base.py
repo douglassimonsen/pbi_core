@@ -56,7 +56,7 @@ PropertyExpression = Expression | Filter | ColorRule1 | list[Paragraph]
 
 
 @converter.register_structure_hook
-def get_property_expression_type(v: dict[str, Any] | list[dict[str, Any]], _: type | None = None) -> PropertyExpression:
+def get_property_expression_type(v: Any, _: type | None = None) -> PropertyExpression:
     if isinstance(v, dict):
         if "positiveColor" in v:
             return ColorRule1.model_validate(v)
@@ -78,6 +78,16 @@ def unparse_property_expression_type(v: PropertyExpression) -> dict[str, Any]:
 class PropertyDef(LayoutNode):
     properties: dict[str, PropertyExpression]
     selector: Selector | None = None
+
+
+@converter.register_structure_hook
+def get_property_def_type(v: dict[str, Any], _: type | None = None) -> PropertyDef:
+    try:
+        properties = {k: get_property_expression_type(e) for k, e in v.get("properties", {}).items()}
+    except Exception:
+        properties = v.get("properties", {})
+    selector = Selector.model_validate(v["selector"]) if "selector" in v else None
+    return PropertyDef(properties=properties, selector=selector)
 
 
 @define()

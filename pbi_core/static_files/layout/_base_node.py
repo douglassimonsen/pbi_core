@@ -1,3 +1,4 @@
+import json
 from collections.abc import Callable
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
@@ -16,6 +17,9 @@ T = TypeVar("T", bound="LayoutNode")
 
 class LayoutNode(BaseValidation):
     _name_field: str | None = None  # name of the field used to populate __repr__
+
+    def __repr__(self) -> str:
+        return json.dumps(self.serialize(), indent=2)
 
     @staticmethod
     def serialize_helper(value: Any) -> Any:
