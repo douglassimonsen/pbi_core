@@ -107,8 +107,8 @@ class ERD:
         else:
             content = m.__name__
         head = Node(id=m.__name__, content=content)
-        nodes = {head}
-        links = set()
+        nodes: set[Node] = {head}
+        links: set[Link] = set()
 
         if head in self.visited_nodes:
             return head, nodes, links

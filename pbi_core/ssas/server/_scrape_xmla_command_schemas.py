@@ -74,10 +74,10 @@ def save_entity(entity: dict[str, str], command: str) -> None:
     row = command_text.find("xs:complexType", {"name": "row"})
     assert isinstance(row, bs4.element.Tag)
     fields = row.find_all("xs:element")
-    fields = "\n".join(" " * 8 + str(x) for x in fields)
+    field_str = "\n".join(" " * 8 + str(x) for x in fields)
     (BASE_PATH / component).mkdir(parents=True, exist_ok=True)
     (BASE_PATH / component / f"{command}.xml").write_text(
-        command_template.render(PREFIX=PREFIX, fields=fields, SUFFIX=SUFFIX, component=component),
+        command_template.render(PREFIX=PREFIX, fields=field_str, SUFFIX=SUFFIX, component=component),
     )
 
 

@@ -19,6 +19,9 @@ class SsasTable(BaseValidation, IdBase):
     id: int = field(eq=True, repr=True, on_setattr=setters.frozen)
     """Unique identifier of the object."""
 
+    _delete_on_next_sync: bool = field(default=False, eq=False, repr=False)
+    """Marks the object to be deleted on the next sync to SSAS."""
+
     _tabular_model: BaseTabularModel = field(repr=False, eq=False, init=False)
 
     _db_field_names: ClassVar[dict[str, str]] = {}
@@ -33,6 +36,12 @@ class SsasTable(BaseValidation, IdBase):
     @classmethod
     def _db_type_name(cls) -> str:
         return cls.__name__
+
+    @classmethod
+    def model_validate(cls, data: dict) -> Self:  # pyright: ignore[reportIncompatibleMethodOverride]
+        formatted_data = cls.to_snake_case(data)
+
+        return super().model_validate(formatted_data)
 
     @classmethod
     def _db_command_obj_name(cls) -> str:
@@ -53,12 +62,13 @@ class SsasTable(BaseValidation, IdBase):
     def __str__(self) -> str:
         display_fields = []
         for f in cast("list[Attribute]", fields(self.__class__)):
-            val = getattr(self, f.name)
-            if f.repr and val != f.default:
-                if f.repr is True:
-                    display_fields.append(f"{f.name}={val}")
-                else:
-                    display_fields.append(f"{f.name}={f.repr(val)}")
+            if f.repr:
+                val = getattr(self, f.name)
+                if val != f.default:
+                    if f.repr is True:
+                        display_fields.append(f"{f.name}={val}")
+                    else:
+                        display_fields.append(f"{f.name}={f.repr(val)}")
 
         field_text = ", ".join(display_fields)
         return f"{self.__class__.__name__}({field_text})"
@@ -99,17 +109,13 @@ class SsasTable(BaseValidation, IdBase):
             ret[formatted_field_name] = field_value
         return ret
 
-    @classmethod
-    def pre_attrs(cls, raw_values: dict[str, Any]) -> dict[str, Any]:
-        return cls.to_snake_case(raw_values)
-
     def query_dax(self, query: str, db_name: str | None = None) -> None:
         """Helper function to remove the ``._tabular_model.server`` required to run a DAX query from an SSAS element."""
         logger.debug("Executing DAX query", query=query, db_name=db_name)
         self._tabular_model.server.query_dax(query, db_name=db_name)
 
     def query_xml(self, query: str, db_name: str | None = None) -> BeautifulSoup:
-        """Helper function to remove the ``._tabular_model.server`` required to run an XML query from an SSAS element."""
+        """Helper function to remove the ``._tabular_model.server`` required to run an XML query in SSAS."""
         logger.debug("Executing XML query", query=query, db_name=db_name)
         return self._tabular_model.server.query_xml(query, db_name)
 
@@ -153,17 +159,31 @@ class SsasTable(BaseValidation, IdBase):
         """Creates a lineage node tracking the data parents/children of a record."""
         return LineageNode(self, lineage_type)
 
+    def get_altered_fields(self) -> list[Attribute]:
+        """Returns a list of fields that have been altered since the last sync from SSAS."""
+        ret = []
+        for f in fields(self.__class__):
+            if f.on_setattr is setters.frozen or f.name.startswith("_"):
+                continue
+
+            if self._original_data is None:
+                ret.append(f)
+                continue
+
+            old_val = getattr(self._original_data, f.name)
+            new_val = getattr(self, f.name)
+            if old_val != new_val:
+                ret.append(f)
+        return ret
+
     def xml_fields(self) -> dict[str, Any]:
         base = self.model_dump()
-        ret = {}
-        for f in fields(self.__class__):
-            # This is our current way of marking read-only fields. (Read-only as defined by the SSAS API)
-            # Although "id" is also read-only, it's needed to identify the record for updates/deletes, so we include it.
-            p_name = f.name
-            db_name = self._db_field_names.get(p_name, p_name)
-            if p_name != "id" and f.on_setattr is setters.frozen:
-                continue
-            if p_name.startswith("_"):
-                continue
-            ret[db_name] = base.get(p_name)
+
+        # All update/create commands require the ID field
+        ret: dict[str, Any] = {
+            "ID": self.id,
+        }
+        for f in self.get_altered_fields():
+            db_name = self._db_field_names.get(f.name, f.name)
+            ret[db_name] = base.get(f.name)
         return ret

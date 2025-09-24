@@ -1,10 +1,11 @@
+import copy
 import pathlib
 import shutil
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, cast
 
 import bs4
-from attrs import define
+from attrs import define, fields
 from structlog import get_logger
 
 from pbi_core.ssas.model_tables.base.batch import AlterCommand, Batch
@@ -122,14 +123,9 @@ class BaseTabularModel:
     table_permissions: "Group[TablePermission]"
     variations: "Group[Variation]"
 
-    # need to include changes to the model object itself
-    # For each table of entities, maps the entity ID to it's remote "modified hash" value
-    _remote_state: dict[str, dict[int, int]]
-
     def __init__(self, db_name: str, server: "BaseServer") -> None:
         self.db_name = db_name
         self.server = server
-        self._remote_state = {}
 
     def save_pbix(self, path: "StrPath") -> None:
         raise NotImplementedError
@@ -154,41 +150,40 @@ class BaseTabularModel:
         xml_schema = self.server.query_xml(COMMAND_TEMPLATES["discover_schema.xml"].render(db_name=self.db_name))
         schema = discover_xml_to_dict(xml_schema)
         for field_name, type_instance in FIELD_TYPES.items():
+            field_data = schema[type_instance._db_type_name()]
+
+            group = []
+            for row in field_data:
+                e = type_instance.model_validate(row)
+                e._original_data = copy.copy(e)
+                e._tabular_model = self
+                group.append(e)
+
             if field_name == "model":
-                formatted_row = type_instance.pre_attrs(schema[type_instance._db_type_name()][0])
-                obj = type_instance.model_validate({
-                    **formatted_row,
-                })
-                obj._tabular_model = self
-                setattr(self, field_name, obj)
+                setattr(self, field_name, group[0])
             else:
-                group = []
-                self._remote_state.setdefault(field_name, {})
-                for row in schema[type_instance._db_type_name()]:
-                    formatted_row = type_instance.pre_attrs(row)
-                    e = type_instance.model_validate({**formatted_row})
-                    e._tabular_model = self
-                    self._remote_state[field_name][e.id] = hash(e)
-                    group.append(e)
                 setattr(self, field_name, Group(group))
 
     def sync_to(self) -> Update:
-        from pbi_core.ssas.model_tables.base.ssas_tables import SsasAlter  # noqa: PLC0415
+        from pbi_core.ssas.model_tables.base.ssas_tables import SsasAlter, SsasTable  # noqa: PLC0415
 
         logger.info("Syncing to SSAS", db_name=self.db_name)
         updated_objects: dict[str, Update] = {}
-        for field_name, remote_objects in self._remote_state.items():
+        for f in fields(self.__class__):
             field_updates: Update = Update()
-            current_objects: Group[SsasTable] = getattr(self, field_name)
-            field_updates.deleted = [obj.id for obj in current_objects if obj.id not in remote_objects]
+
+            current_objects: Any = getattr(self, f.name)
+            if isinstance(current_objects, SsasTable):
+                current_objects = [current_objects]
+            elif not isinstance(current_objects, list):
+                continue
+
+            field_updates.deleted = [obj.id for obj in current_objects if obj._delete_on_next_sync]
             for obj in current_objects:
-                if obj.id not in self._remote_state[field_name]:
-                    field_updates.added.append(obj)
-                if hash(obj) != self._remote_state[field_name][obj.id] and isinstance(obj, SsasAlter):
+                if obj.get_altered_fields() and isinstance(obj, SsasAlter):
                     field_updates.updated.append(obj)
             if field_updates.added or field_updates.updated or field_updates.deleted:
-                updated_objects[field_name] = field_updates
-
+                updated_objects[f.name] = field_updates
         commands = [
             AlterCommand(
                 self.db_name,

@@ -18,8 +18,8 @@ def _parse_viz_config(config: BaseValidation | dict | None) -> list[LiteralSourc
         return []
     ret: list[LiteralSource] = []
     if isinstance(config, dict):
-        for value in config.values():
-            for element in value:
+        for dict_value in config.values():
+            for element in dict_value:
                 assert isinstance(element, PropertyDef)
                 assert isinstance(element.properties, dict)
                 ret.extend(
@@ -31,7 +31,7 @@ def _parse_viz_config(config: BaseValidation | dict | None) -> list[LiteralSourc
         for field in fields(config.__class__):
             value: list[BaseValidation] = getattr(config, field.name)
             for element in value:
-                properties: BaseValidation = element.properties  # type: ignore reportAttributeAccessIssue
+                properties: BaseValidation = element.properties  # pyright: ignore[reportAttributeAccessIssue]
                 for prop in fields(properties.__class__):
                     prop_value = getattr(properties, prop.name)
                     if isinstance(prop_value, LiteralExpression) and isinstance(prop_value.expr.value(), str):
@@ -40,7 +40,7 @@ def _parse_viz_config(config: BaseValidation | dict | None) -> list[LiteralSourc
 
 
 def _get_text_runs(viz: TextBox) -> list[TextRun]:
-    ret = []
+    ret: list[TextRun] = []
     for property_list in viz.objects.general:
         for paragraph in property_list.properties.paragraphs or []:
             ret.extend(run for run in paragraph.textRuns)
@@ -55,7 +55,7 @@ def get_static_elements(layout: Layout) -> TextElements:
     2. Filter names
     3. Visual config names such as title, header, etc.
     """
-    elements = []
+    elements: list[TextElement] = []
 
     elements.extend(
         TextElement(

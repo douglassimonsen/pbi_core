@@ -1,3 +1,4 @@
+# type: ignore  # noqa: PGH003
 import os
 import shutil
 from pathlib import Path

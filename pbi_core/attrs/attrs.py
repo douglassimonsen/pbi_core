@@ -1,5 +1,5 @@
 import json
-from typing import TYPE_CHECKING, Any, Self, dataclass_transform
+from typing import TYPE_CHECKING, Self, dataclass_transform
 
 from attrs import Attribute, field
 from attrs import define as _define
@@ -31,8 +31,8 @@ def define(  # noqa: PLR0913
 
 
 class BaseValidation:
-    _original_data: Any = field(init=False, repr=False, eq=False)
-    """Holds the data of the SSAS entity as it was in the SSAS instance when it was pulled by pbi_core."""
+    _original_data: Self | None = field(default=None, init=False, repr=False, eq=False)
+    """Holds the data of the SSAS/Layout entity as it was in the SSAS instance of Layout file when it was pulled."""
 
     @classmethod
     def model_validate(cls, data: dict) -> Self:

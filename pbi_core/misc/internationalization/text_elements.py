@@ -106,10 +106,12 @@ class TextElements:
                 for i, lang in enumerate(languages):
                     text = row[4 + i]
                     assert isinstance(text, str)
+                    source = row[0]
+                    assert source in {"layout", "ssas"}
                     static_elements.setdefault(lang, []).append(
                         TextElement(
                             category=ws.title,
-                            source=row[0],
+                            source=source,
                             xpath=xpath,
                             field=field,
                             text=text,

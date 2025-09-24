@@ -285,7 +285,7 @@ Expression = (
 
 @converter.register_structure_hook
 def get_expression_type(v: dict[str, Any], _: type | None = None) -> Expression:
-    mapper = {
+    mapper: dict[str, type[Expression]] = {
         "solid": SolidColorExpression,
         "linearGradient2": LinearGradient2Expression,
         "linearGradient3": LinearGradient3Expression,
@@ -293,11 +293,11 @@ def get_expression_type(v: dict[str, Any], _: type | None = None) -> Expression:
         "geoJson": GeoJsonExpression,
         "algorithm": AlgorithmExpression,
     }
-    kind_mapper = {
+    kind_mapper: dict[str, type[Expression]] = {
         "Icon": ImageKindExpression,
         "ExprList": ExpressionList,
     }
-    expr_mapper = {
+    expr_mapper: dict[str, type[Expression]] = {
         "Column": ColumnExpression,
         "Measure": MeasureExpression,
         "Literal": LiteralExpression,

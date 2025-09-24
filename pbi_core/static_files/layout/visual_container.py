@@ -237,7 +237,7 @@ PrimaryDataReduction = (
 
 @converter.register_structure_hook
 def get_reduction_type(v: dict[str, Any], _: type | None = None) -> PrimaryDataReduction:
-    mapper = {
+    mapper: dict[str, type[PrimaryDataReduction]] = {
         "Sample": SampleDataReduction,
         "Window": WindowDataReduction,
         "Top": TopDataReduction,
