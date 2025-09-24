@@ -35,17 +35,17 @@ class Hierarchy(SsasRenameRecord):
     hierarchy_storage_id: int = field(eq=True)
     is_hidden: bool = field(eq=True)
     name: str = field(eq=True)
-    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
     table_id: int = field(eq=True)
     """A foreign key to the Table object the hierarchy is stored under"""
 
-    lineage_tag: UUID = field(factory=uuid4, eq=True)
-    source_lineage_tag: UUID = field(factory=uuid4, eq=True)
+    lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
+    source_lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
-    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
+    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
     """The last time the sources for this hierarchy were refreshed"""
-    structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.hierarchy, init=False, repr=False, eq=False)
 

@@ -1,6 +1,6 @@
-from typing import Any, ClassVar, Literal, Self
+from typing import Any, ClassVar, Literal, Self, cast
 
-from attrs import field, fields, setters
+from attrs import Attribute, field, fields, setters
 from bs4 import BeautifulSoup
 from structlog import get_logger
 
@@ -51,7 +51,16 @@ class SsasTable(BaseValidation, IdBase):
         return str(getattr(self, self._repr_name_field))
 
     def __str__(self) -> str:
-        field_text = ", ".join(f"{f.name}={getattr(self, f.name)}" for f in fields(self.__class__) if f.repr)
+        display_fields = []
+        for f in cast("list[Attribute]", fields(self.__class__)):
+            val = getattr(self, f.name)
+            if f.repr and val != f.default:
+                if f.repr is True:
+                    display_fields.append(f"{f.name}={val}")
+                else:
+                    display_fields.append(f"{f.name}={f.repr(val)}")
+
+        field_text = ", ".join(display_fields)
         return f"{self.__class__.__name__}({field_text})"
 
     def __repr__(self) -> str:

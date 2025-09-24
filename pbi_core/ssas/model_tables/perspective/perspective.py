@@ -23,7 +23,7 @@ class Perspective(SsasRenameRecord):
     model_id: int = field(eq=True)
     name: str = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.perspective, init=False, repr=False, eq=False)
 

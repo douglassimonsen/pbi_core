@@ -43,7 +43,7 @@ class Measure(SsasRenameRecord):
     display_folder: str | None = field(default=None, eq=True)
     error_message: Final[str | None] = field(default=None, eq=False, on_setattr=setters.frozen)
     expression: str | int | float | None = field(default=None, eq=True)
-    format_string: str | int | None = field(default=None, eq=True)
+    format_string: str | int | None = field(default="0", eq=True)
     """A static definition for the formatting of the measure"""
 
     format_string_definition_id: int | None = field(default=None, eq=True)
@@ -54,21 +54,25 @@ class Measure(SsasRenameRecord):
     """
     is_hidden: bool = field(eq=True, default=False)
     """Controls whether the measure appears in the edit mode of the report"""
-    is_simple_measure: bool = field(eq=True, default=True)
+    is_simple_measure: bool = field(eq=True, default=False)
     kpi_id: int | None = field(default=None, eq=True)
     name: str = field(eq=True)
     """The name of the measure"""
-    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
     table_id: int = field(eq=True)
 
-    lineage_tag: UUID = field(factory=uuid4, eq=True)
-    source_lineage_tag: UUID = field(factory=uuid4, eq=True)
+    lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
+    source_lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
 
-    modified_time: Final[datetime.datetime] = field(factory=datetime.datetime.now, eq=False, on_setattr=setters.frozen)
-    structure_modified_time: Final[datetime.datetime] = field(
-        factory=datetime.datetime.now,
+    modified_time: Final[datetime.datetime] = field(
         eq=False,
         on_setattr=setters.frozen,
+        repr=False,
+    )
+    structure_modified_time: Final[datetime.datetime] = field(
+        eq=False,
+        on_setattr=setters.frozen,
+        repr=False,
     )
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.measure, init=False, repr=False, eq=False)

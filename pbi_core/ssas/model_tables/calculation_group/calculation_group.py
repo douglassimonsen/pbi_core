@@ -19,11 +19,11 @@ class CalculationGroup(SsasEditableRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ed9dcbcf-9910-455f-abc4-13c575157cfb)
     """
 
-    description: str = field(eq=True)
+    description: str = field(eq=True, default="")
     precedence: int = field(eq=True)
     table_id: int = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(factory=lambda: SsasCommands.calculation_group, init=False, repr=False, eq=False)
 

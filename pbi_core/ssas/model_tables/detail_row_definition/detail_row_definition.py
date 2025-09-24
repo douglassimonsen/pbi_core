@@ -32,9 +32,9 @@ class DetailRowDefinition(SsasEditableRecord):
     expression: str = field(eq=True)
     object_id: int = field(eq=True)
     object_type: ObjectType = field(eq=True)
-    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(factory=lambda: SsasCommands.detail_row_definition, init=False, repr=False)
 

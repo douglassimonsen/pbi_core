@@ -31,7 +31,7 @@ class KPI(SsasEditableRecord):
     trend_description: str | None = field(default=None, eq=True)
     trend_expression: str | None = field(default=None, eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(factory=lambda: SsasCommands.kpi, init=False, repr=False, eq=False)
 

@@ -30,10 +30,10 @@ class Level(SsasRenameRecord):
     """The name of the level, e.g. "Year", "Quarter", "Month", "Day" in a Date hierarchy."""
     ordinal: int = field(eq=True)
 
-    lineage_tag: UUID = field(factory=uuid4, eq=True)
-    source_lineage_tag: UUID = field(factory=uuid4, eq=True)
+    lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
+    source_lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.level, init=False, repr=False, eq=False)
 

@@ -46,7 +46,7 @@ class ExtendedProperty(SsasRenameRecord):
     type: ObjectType = field(eq=True)
     value: Json[ExtendedPropertyValue] = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(
         factory=lambda: SsasCommands.extended_property,

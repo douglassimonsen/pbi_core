@@ -26,7 +26,7 @@ class ObjectTranslation(SsasEditableRecord):
     property: Property = field(eq=True)
     value: str = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(factory=lambda: SsasCommands.object_translation, init=False, repr=False, eq=False)
 

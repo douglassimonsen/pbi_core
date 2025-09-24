@@ -28,9 +28,9 @@ class FormatStringDefinition(SsasEditableRecord):
     """When no issue exists, this field is blank"""
     expression: str = field(eq=True)
     """The DAX expression defining the format string."""
-    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(
         factory=lambda: SsasCommands.format_string_definition,

@@ -23,7 +23,7 @@ class Annotation(SsasRenameRecord):
     name: str = field(eq=True)
     value: str | None = field(eq=True, default=None)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.annotation, init=False, repr=False)
 

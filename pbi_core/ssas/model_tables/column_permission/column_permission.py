@@ -24,7 +24,7 @@ class ColumnPermission(SsasEditableRecord):
     metadata_permission: MetadataPermission = field(eq=True)
     table_permission_id: int = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(factory=lambda: SsasCommands.column_permission, init=False, repr=False, eq=False)
 

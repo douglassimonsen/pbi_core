@@ -27,10 +27,10 @@ class TablePermission(SsasEditableRecord):
     filter_expression: str | None = field(default=None, eq=True)
     metadata_permission: MetadataPermission = field(eq=True)
     role_id: int = field(eq=True)
-    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
     table_id: int = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(factory=lambda: SsasCommands.table_permission, init=False, repr=False, eq=False)
 

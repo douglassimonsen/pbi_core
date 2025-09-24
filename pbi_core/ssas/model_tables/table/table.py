@@ -49,7 +49,7 @@ class Table(SsasRefreshRecord):
     is_hidden: bool = field(default=False, eq=True)
     """Controls whether the table appears in the edit mode of the report"""
     is_private: bool = field(default=False, eq=True)
-    model_id: int = field(eq=True)
+    model_id: int = field(eq=True, repr=False)
     """The ID of the model this table belongs to"""
     name: str = field(eq=True)
     """The name of the table as it appears in the report"""
@@ -59,11 +59,11 @@ class Table(SsasRefreshRecord):
     system_managed: bool | None = field(default=None, eq=True)
     table_storage_id: int | None = field(default=None, eq=True)
 
-    lineage_tag: UUID = field(factory=uuid4, eq=True)
-    source_lineage_tag: UUID = field(factory=uuid4, eq=True)
+    lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
+    source_lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
-    structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
+    structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RefreshCommands = field(factory=lambda: SsasCommands.table, init=False, repr=False, eq=False)
 

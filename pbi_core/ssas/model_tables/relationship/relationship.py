@@ -42,14 +42,14 @@ class Relationship(SsasRenameRecord):
     """wtf these are two different fields in the json??!!??"""
     rely_on_referential_integrity: bool = field(eq=True)
     security_filtering_behavior: SecurityFilteringBehavior = field(eq=True)
-    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
     to_cardinality: int = field(eq=True)
     to_column_id: int = field(eq=True)
     to_table_id: int = field(eq=True)
     type: RelationshipType = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
-    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
+    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.relationship, init=False, repr=False, eq=False)
 

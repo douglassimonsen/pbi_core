@@ -56,13 +56,13 @@ class Partition(SsasRefreshRecord):
     query_group_id: int | None = field(default=None, eq=True)
     range_granularity: int = field(eq=True)
     retain_data_till_force_calculate: bool = field(eq=True)
-    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
     system_flags: int = field(eq=True)
     table_id: int = field(eq=True)
     type: PartitionType = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
-    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
+    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RefreshCommands = field(factory=lambda: SsasCommands.partition, init=False, repr=False, eq=False)
 

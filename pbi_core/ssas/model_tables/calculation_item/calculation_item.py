@@ -22,7 +22,7 @@ class CalculationItem(SsasRenameRecord):
     """
 
     calculation_group_id: int = field(eq=True)
-    description: str = field(eq=True)
+    description: str = field(eq=True, default="")
     error_message: Final[str] = field(eq=False)  # error message is read-only, so should not be edited
     expression: str = field(eq=True)
     format_string_definition_id: int = field(eq=True)
@@ -30,7 +30,7 @@ class CalculationItem(SsasRenameRecord):
     ordinal: int = field(eq=True)
     state: Final[DataState] = field(eq=False)
 
-    modified_time: Final[datetime.datetime] = field(eq=False)
+    modified_time: Final[datetime.datetime] = field(eq=False, repr=False)
     _commands: RenameCommands = field(factory=lambda: SsasCommands.calculation_item, init=False, repr=False, eq=False)
 
     def format_string_definition(self) -> "FormatStringDefinition":

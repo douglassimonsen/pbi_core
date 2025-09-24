@@ -23,7 +23,7 @@ class PerspectiveMeasure(SsasEditableRecord):
     measure_id: int = field(eq=True)
     perspective_table_id: int = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(factory=lambda: SsasCommands.perspective_measure, init=False, repr=False, eq=False)
 

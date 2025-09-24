@@ -23,11 +23,11 @@ class Role(SsasRenameRecord):
     """
 
     description: str | None = field(default=None, eq=True)
-    model_id: int = field(eq=True)
+    model_id: int = field(eq=True, repr=False)
     model_permission: ModelPermission = field(eq=True)
     name: str = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.role, init=False, repr=False, eq=False)
 

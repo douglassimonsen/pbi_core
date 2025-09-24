@@ -22,10 +22,10 @@ class AttributeHierarchy(SsasReadonlyRecord):
 
     attribute_hierarchy_storage_id: int = field(eq=True)
     column_id: int = field(eq=True)
-    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
-    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
+    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""

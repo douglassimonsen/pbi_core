@@ -57,11 +57,15 @@ class Model(SsasModelRecord):
     storage_location: str | None = field(default=None, eq=True)
     version: int = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(factory=datetime.datetime.now, eq=False, on_setattr=setters.frozen)
-    structure_modified_time: Final[datetime.datetime] = field(
-        factory=datetime.datetime.now,
+    modified_time: Final[datetime.datetime] = field(
         eq=False,
         on_setattr=setters.frozen,
+        repr=False,
+    )
+    structure_modified_time: Final[datetime.datetime] = field(
+        eq=False,
+        on_setattr=setters.frozen,
+        repr=False,
     )
 
     _commands: ModelCommands = field(factory=lambda: SsasCommands.model, init=False, repr=False, eq=False)

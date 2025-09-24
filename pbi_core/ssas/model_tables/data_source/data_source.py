@@ -29,7 +29,7 @@ class DataSource(SsasRenameRecord):
     impersonation_mode: ImpersonationMode = field(eq=True)
     isolation: Isolation = field(eq=True)
     max_connections: int = field(eq=True)
-    model_id: int = field(eq=True)
+    model_id: int = field(eq=True, repr=False)
     name: str = field(eq=True)
     options: str | None = field(default=None, eq=True)
     password: str | None = field(default=None, eq=True)
@@ -37,7 +37,7 @@ class DataSource(SsasRenameRecord):
     timeout: int = field(eq=True)
     type: DataSourceType = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False)
+    modified_time: Final[datetime.datetime] = field(eq=False, repr=False)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.data_source, init=False, repr=False, eq=False)
 

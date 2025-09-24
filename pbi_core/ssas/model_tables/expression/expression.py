@@ -30,16 +30,16 @@ class Expression(SsasRenameRecord):
 
     description: str | None = field(default=None, eq=True)
     expression: str = field(eq=True)
-    kind: Kind = field(eq=True)
+    kind: Kind = field(eq=True, default=Kind.M)
     model_id: Final[int] = field(eq=False)
     name: str = field(eq=True)
     parameter_values_column_id: int | None = field(default=None, eq=True)
     query_group_id: int | None = field(default=None, eq=True)
 
-    lineage_tag: UUID = field(factory=uuid4, eq=True)
-    source_lineage_tag: UUID = field(factory=uuid4, eq=True)
+    lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
+    source_lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.expression, init=False, repr=False, eq=False)
 

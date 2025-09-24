@@ -71,19 +71,19 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
     is_nullable: bool = field(eq=True)
     is_unique: bool = field(eq=True)
     keep_unique_rows: bool = field(eq=True)
-    lineage_tag: UUID = field(factory=uuid4, eq=True)
+    lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
     sort_by_column_id: int | None = field(eq=True, default=None)
     source_column: str | None = field(eq=True, default=None)
-    state: Final[DataState] = field(eq=False)
+    state: Final[DataState] = field(eq=False, default=DataState.READY, on_setattr=setters.frozen)
     summarize_by: SummarizedBy = field(eq=True)
     system_flags: int = field(eq=True)
     table_id: Final[int] = field(eq=True, on_setattr=setters.frozen)  # pyright: ignore[reportIncompatibleVariableOverride]
     table_detail_position: int = field(eq=True)
     type: ColumnType = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False)
-    refreshed_time: Final[datetime.datetime] = field(eq=False)
-    structure_modified_time: Final[datetime.datetime] = field(eq=False)
+    modified_time: Final[datetime.datetime] = field(eq=False, repr=False)
+    refreshed_time: Final[datetime.datetime] = field(eq=False, repr=False)
+    structure_modified_time: Final[datetime.datetime] = field(eq=False, repr=False)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.column, init=False, repr=False)
 

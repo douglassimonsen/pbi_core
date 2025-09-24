@@ -199,7 +199,7 @@ class LinguisticMetadata(SsasEditableRecord):
     content_type: ContentType = field(eq=True)
     culture_id: int = field(eq=True)
 
-    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(
         factory=lambda: SsasCommands.linguistic_metadata,
