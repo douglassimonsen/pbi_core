@@ -33,7 +33,7 @@ class PerspectiveHierarchy(SsasEditableRecord):
     )
 
     def perspective_table(self) -> "PerspectiveTable":
-        return self._tabular_modell.perspective_tables.find(self.perspective_table_id)
+        return self._tabular_model.perspective_tables.find(self.perspective_table_id)
 
     def hierarchy(self) -> "Hierarchy":
-        return self._tabular_modell.hierarchies.find(self.hierarchy_id)
+        return self._tabular_model.hierarchies.find(self.hierarchy_id)

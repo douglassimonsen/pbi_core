@@ -32,19 +32,19 @@ def fix_dax(column: "Column", new_name: str) -> None:
     """
     if column.explicit_name is None:
         return
-    for p in column._tabular_modell.partitions.find_all({"type": PartitionType.CALCULATED}):
+    for p in column._tabular_model.partitions.find_all({"type": PartitionType.CALCULATED}):
         p.query_definition = (
             update_column_references(p.query_definition, column.explicit_name, new_name) or p.query_definition
         )
-    for m in column._tabular_modell.measures:
+    for m in column._tabular_model.measures:
         if isinstance(m.expression, str):
             m.expression = update_column_references(m.expression, column.explicit_name, new_name) or m.expression
         if f := m.format_string_definition():
             f.expression = update_column_references(f.expression, column.explicit_name, new_name) or f.expression
-    for c in column._tabular_modell.columns:
+    for c in column._tabular_model.columns:
         if isinstance(c.expression, str):
             c.expression = update_column_references(c.expression, column.explicit_name, new_name) or c.expression
-    for tp in column._tabular_modell.table_permissions:
+    for tp in column._tabular_model.table_permissions:
         if tp.filter_expression:
             tp.filter_expression = (
                 update_column_references(tp.filter_expression, column.explicit_name, new_name) or tp.filter_expression

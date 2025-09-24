@@ -43,15 +43,15 @@ def fix_dax(table: "Table", new_name: str) -> None:
         new_name (str): The new name for the table.
 
     """
-    for p in table._tabular_modell.partitions.find_all({"type": PartitionType.CALCULATED}):
+    for p in table._tabular_model.partitions.find_all({"type": PartitionType.CALCULATED}):
         new_query = update_table_references(p.query_definition, table.name, new_name)
         if new_query is not None and new_query != p.query_definition:
             p.query_definition = new_query
-    for m in table._tabular_modell.measures:
+    for m in table._tabular_model.measures:
         if isinstance(m.expression, str):
             m.expression = update_table_references(m.expression, table.name, new_name) or m.expression
         if f := m.format_string_definition():
             f.expression = update_table_references(f.expression, table.name, new_name) or f.expression
-    for c in table._tabular_modell.columns:
+    for c in table._tabular_model.columns:
         if isinstance(c.expression, str):
             c.expression = update_table_references(c.expression, table.name, new_name) or c.expression

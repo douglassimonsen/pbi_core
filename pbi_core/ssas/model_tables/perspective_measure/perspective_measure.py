@@ -28,7 +28,7 @@ class PerspectiveMeasure(SsasEditableRecord):
     _commands: BaseCommands = field(factory=lambda: SsasCommands.perspective_measure, init=False, repr=False, eq=False)
 
     def perspective_table(self) -> "PerspectiveTable":
-        return self._tabular_modell.perspective_tables.find(self.perspective_table_id)
+        return self._tabular_model.perspective_tables.find(self.perspective_table_id)
 
     def measure(self) -> "Measure":
-        return self._tabular_modell.measures.find(self.measure_id)
+        return self._tabular_model.measures.find(self.measure_id)

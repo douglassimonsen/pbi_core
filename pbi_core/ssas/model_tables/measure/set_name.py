@@ -30,15 +30,15 @@ def fix_dax(measure: "Measure", new_name: str) -> None:
         new_name (str): The new name for the measure.
 
     """
-    for p in measure.__tabular_model.partitions.find_all({"type": PartitionType.CALCULATED}):
+    for p in measure._tabular_model.partitions.find_all({"type": PartitionType.CALCULATED}):
         new_query = update_measure_references(p.query_definition, measure.name, new_name)
         if new_query is not None and new_query != p.query_definition:
             p.query_definition = new_query
-    for m in measure.__tabular_model.measures:
+    for m in measure._tabular_model.measures:
         if isinstance(m.expression, str):
             m.expression = update_measure_references(m.expression, measure.name, new_name) or m.expression
         if f := m.format_string_definition():
             f.expression = update_measure_references(f.expression, measure.name, new_name) or f.expression
-    for c in measure.__tabular_model.columns:
+    for c in measure._tabular_model.columns:
         if isinstance(c.expression, str):
             c.expression = update_measure_references(c.expression, measure.name, new_name) or c.expression

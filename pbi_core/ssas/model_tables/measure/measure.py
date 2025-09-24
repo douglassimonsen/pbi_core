@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.format_string_definition import FormatStringDefinition
     from pbi_core.ssas.model_tables.kpi import KPI
     from pbi_core.ssas.model_tables.table import Table
-    from pbi_core.ssas.server._tabular_model._tabular_model import BaseTabularModel
+    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
     from pbi_core.static_files.layout.layout import Layout
 
 

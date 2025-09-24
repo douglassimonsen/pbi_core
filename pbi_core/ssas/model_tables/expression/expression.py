@@ -44,15 +44,15 @@ class Expression(SsasRenameRecord):
     _commands: RenameCommands = field(factory=lambda: SsasCommands.expression, init=False, repr=False, eq=False)
 
     def model(self) -> "Model":
-        return self.__tabular_model.model
+        return self._tabular_model.model
 
     def parameter_values_column(self) -> "Column | None":
         if self.parameter_values_column_id is None:
             return None
-        return self.__tabular_model.columns.find(self.parameter_values_column_id)
+        return self._tabular_model.columns.find(self.parameter_values_column_id)
 
     def query_group(self) -> "QueryGroup | None":
-        return self.__tabular_model.query_groups.find({"id": self.query_group_id})
+        return self._tabular_model.query_groups.find({"id": self.query_group_id})
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

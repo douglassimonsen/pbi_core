@@ -60,7 +60,7 @@ class Relationship(SsasRenameRecord):
             In the bi-directional case, this table is also filtered
 
         """
-        return self._tabular_modell.tables.find({"id": self.from_table_id})
+        return self._tabular_model.tables.find({"id": self.from_table_id})
 
     def to_table(self) -> "Table":
         """Returns the table the relationship is being filtered.
@@ -69,22 +69,22 @@ class Relationship(SsasRenameRecord):
             In the bi-directional case, this table is also used as a filter
 
         """
-        return self._tabular_modell.tables.find({"id": self.to_table_id})
+        return self._tabular_model.tables.find({"id": self.to_table_id})
 
     def from_column(self) -> "Column":
         """The column in the from_table used to join with the to_table."""
-        return self._tabular_modell.columns.find({"id": self.from_column_id})
+        return self._tabular_model.columns.find({"id": self.from_column_id})
 
     def to_column(self) -> "Column":
         """The column in the to_table used to join with the from_table."""
-        return self._tabular_modell.columns.find({"id": self.to_column_id})
+        return self._tabular_model.columns.find({"id": self.to_column_id})
 
     def model(self) -> "Model":
         """The DB model this entity exists in."""
-        return self._tabular_modell.model
+        return self._tabular_model.model
 
     def variations(self) -> set["Variation"]:
-        return self._tabular_modell.variations.find_all({"relationship_id": self.id})
+        return self._tabular_model.variations.find_all({"relationship_id": self.id})
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

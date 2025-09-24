@@ -28,7 +28,7 @@ class PerspectiveColumn(SsasEditableRecord):
     _commands: BaseCommands = field(factory=lambda: SsasCommands.perspective_column, init=False, repr=False, eq=False)
 
     def perspective_table(self) -> "PerspectiveTable":
-        return self._tabular_modell.perspective_tables.find(self.perspective_table_id)
+        return self._tabular_model.perspective_tables.find(self.perspective_table_id)
 
     def column(self) -> "Column":
-        return self._tabular_modell.columns.find(self.column_id)
+        return self._tabular_model.columns.find(self.column_id)
