@@ -1,8 +1,8 @@
 import datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Any, Final, Literal
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import BaseValidation, Json, define
 from pbi_core.lineage import LineageNode
@@ -170,22 +170,22 @@ class Condition(BaseValidation):
 
 @define()
 class LinguisticMetadataRelationship(BaseValidation):
-    Binding: RelationshipBinding
-    Phrasings: list[RelationshipPhrasing] = field(factory=list)
-    Roles: dict[str, RelationshipRole | int]
-    State: str | None = None
-    SemanticSlots: SemanticSlot | None = None
-    Conditions: list[Condition] | None = None
+    Binding: RelationshipBinding = field(eq=True)
+    Phrasings: list[RelationshipPhrasing] = field(factory=list, eq=True)
+    Roles: dict[str, RelationshipRole | int] = field(eq=True)
+    State: str | None = field(eq=True, default=None)  # TODO: Enum
+    SemanticSlots: SemanticSlot | None = field(eq=True, default=None)
+    Conditions: list[Condition] | None = field(eq=True, default=None)
 
 
 @define()
 class LinguisticMetadataContent(BaseValidation):
-    Version: str  # SemanticVersion
-    Language: str
-    DynamicImprovement: str | None = None
-    Relationships: dict[str, LinguisticMetadataRelationship] | None = None
-    Entities: dict[str, LinguisticMetadataEntity] | None = None
-    Examples: list[dict[str, dict[str, str]]] | None = None
+    Version: str = field(eq=True)  # SemanticVersion
+    Language: str = field(eq=True)
+    DynamicImprovement: str | None = field(default=None, eq=True)
+    Relationships: dict[str, LinguisticMetadataRelationship] | None = field(default=None, eq=str)
+    Entities: dict[str, LinguisticMetadataEntity] | None = field(default=None, eq=str)
+    Examples: list[dict[str, dict[str, str]]] | None = field(default=None, eq=str)
 
 
 @define()
@@ -195,20 +195,18 @@ class LinguisticMetadata(SsasEditableRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/f8924a45-70da-496a-947a-84b8d5beaae6)
     """
 
-    content: Json[LinguisticMetadataContent]
-    content_type: ContentType
-    culture_id: int
+    content: Json[LinguisticMetadataContent] = field(eq=True)
+    content_type: ContentType = field(eq=True)
+    culture_id: int = field(eq=True)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.linguistic_metadata, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.content.model_dump_json(),
-            self.content_type,
-            self.culture_id,
-        ))
+    _commands: BaseCommands = field(
+        factory=lambda: SsasCommands.linguistic_metadata,
+        init=False,
+        repr=False,
+        eq=False,
+    )
 
     def culture(self) -> "Culture":
         return self.tabular_model.cultures.find({"id": self.culture_id})

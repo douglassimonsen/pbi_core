@@ -1,3 +1,5 @@
+from attrs import field
+
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasReadonlyRecord
 
@@ -15,19 +17,15 @@ class CalcDependency(SsasReadonlyRecord):
     SSAS spec:
     """
 
-    database_name: str
-    object_type: str
-    table: str | None = None
-    object: str
-    expression: str | None = None
-    referenced_object_type: str
-    referenced_table: str | None = None
-    referenced_object: str
-    referenced_expression: str | None = None
-
-    def modification_hash(self) -> int:
-        """CalcDependency is a readonly entity, so we just return a constant."""
-        return 1
+    database_name: str = field(eq=True)
+    object_type: str = field(eq=True)
+    table: str | None = field(eq=True, default=None)
+    object: str = field(eq=True)
+    expression: str | None = field(eq=True, default=None)
+    referenced_object_type: str = field(eq=True)
+    referenced_table: str | None = field(eq=True, default=None)
+    referenced_object: str = field(eq=True)
+    referenced_expression: str | None = field(eq=True, default=None)
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""

@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
 from attrs import field
 
@@ -21,44 +21,25 @@ class DataSource(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ee12dcb7-096e-4e4e-99a4-47caeb9390f5)
     """
 
-    account: str | None = None
-    connection_string: str
-    context_expression: str | None = None
-    credential: str | None = None
-    description: str | None = None
-    impersonation_mode: ImpersonationMode
-    isolation: Isolation
-    max_connections: int
-    model_id: int
-    name: str
-    options: str | None = None
-    password: str | None = None
-    provider: str | None = None
-    timeout: int
-    type: DataSourceType
+    account: str | None = field(default=None, eq=True)
+    connection_string: str = field(eq=True)
+    context_expression: str | None = field(default=None, eq=True)
+    credential: str | None = field(default=None, eq=True)
+    description: str | None = field(default=None, eq=True)
+    impersonation_mode: ImpersonationMode = field(eq=True)
+    isolation: Isolation = field(eq=True)
+    max_connections: int = field(eq=True)
+    model_id: int = field(eq=True)
+    name: str = field(eq=True)
+    options: str | None = field(default=None, eq=True)
+    password: str | None = field(default=None, eq=True)
+    provider: str | None = field(default=None, eq=True)
+    timeout: int = field(eq=True)
+    type: DataSourceType = field(eq=True)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.data_source, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.account,
-            self.connection_string,
-            self.context_expression,
-            self.credential,
-            self.description,
-            self.impersonation_mode,
-            self.isolation,
-            self.max_connections,
-            self.model_id,
-            self.name,
-            self.options,
-            self.password,
-            self.provider,
-            self.timeout,
-            self.type,
-        ))
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.data_source, init=False, repr=False, eq=False)
 
     def model(self) -> "Model":
         return self.tabular_model.model

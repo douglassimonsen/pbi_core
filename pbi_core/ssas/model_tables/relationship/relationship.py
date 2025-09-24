@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
@@ -27,52 +27,31 @@ class Relationship(SsasRenameRecord):
     This class represents a relationship between two tables in a Tabular model.
     """
 
-    cross_filtering_behavior: CrossFilteringBehavior
-    from_column_id: int
-    from_cardinality: int
-    from_table_id: int
-    is_active: bool
-    join_on_date_behavior: JoinOnDateBehavior
-    model_id: int
-    name: str
-    relationship_storage_id: int | None = None
-    relationship_storage2_id: int | None = None
+    cross_filtering_behavior: CrossFilteringBehavior = field(eq=True)
+    from_column_id: int = field(eq=True)
+    from_cardinality: int = field(eq=True)
+    from_table_id: int = field(eq=True)
+    is_active: bool = field(eq=True)
+    join_on_date_behavior: JoinOnDateBehavior = field(eq=True)
+    model_id: int = field(eq=True)
+    name: str = field(eq=True)
+    relationship_storage_id: int | None = field(eq=True, default=None)
+    relationship_storage2_id: int | None = field(eq=True, default=None)
     """wtf these are two different fields in the json??!!??"""
-    relationship_storage2id: int | None = None
+    relationship_storage2id: int | None = field(eq=True, default=None)
     """wtf these are two different fields in the json??!!??"""
-    rely_on_referential_integrity: bool
-    security_filtering_behavior: SecurityFilteringBehavior
-    state: DataState
-    to_cardinality: int
-    to_column_id: int
-    to_table_id: int
-    type: RelationshipType
+    rely_on_referential_integrity: bool = field(eq=True)
+    security_filtering_behavior: SecurityFilteringBehavior = field(eq=True)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    to_cardinality: int = field(eq=True)
+    to_column_id: int = field(eq=True)
+    to_table_id: int = field(eq=True)
+    type: RelationshipType = field(eq=True)
 
-    modified_time: datetime.datetime
-    refreshed_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.relationship, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.cross_filtering_behavior,
-            self.from_column_id,
-            self.from_cardinality,
-            self.from_table_id,
-            self.is_active,
-            self.join_on_date_behavior,
-            self.model_id,
-            self.name,
-            self.relationship_storage_id,
-            self.relationship_storage2_id,
-            self.rely_on_referential_integrity,
-            self.security_filtering_behavior,
-            self.state,
-            self.to_cardinality,
-            self.to_column_id,
-            self.to_table_id,
-            self.type,
-        ))
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.relationship, init=False, repr=False, eq=False)
 
     def from_table(self) -> "Table":
         """Returns the table the relationship is using as a filter.

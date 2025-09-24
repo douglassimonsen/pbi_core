@@ -53,14 +53,6 @@ class HelpersMixin(RelationshipMixin):
             return "COLUMN"
         return "CALC_COLUMN"
 
-    def modification_hash(self) -> int:
-        return hash((
-            self.alignment,
-            self.explicit_name,
-            self.sort_by_column_id,
-            self.table_id,
-        ))
-
     def full_name(self) -> str:
         """Returns the fully qualified name for DAX queries.
 

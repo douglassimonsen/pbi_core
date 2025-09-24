@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import BaseValidation, Json, define
 from pbi_core.lineage import LineageNode
@@ -20,16 +20,9 @@ if TYPE_CHECKING:
 
 @define()
 class DataAccessOptions(BaseValidation):
-    fastCombine: bool = True
-    legacyRedirects: bool = False
-    returnErrorValuesAsNull: bool = False
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.fastCombine,
-            self.legacyRedirects,
-            self.returnErrorValuesAsNull,
-        ))
+    fastCombine: bool = field(default=True, eq=True)
+    legacyRedirects: bool = field(default=False, eq=True)
+    returnErrorValuesAsNull: bool = field(default=False, eq=True)
 
 
 @define()
@@ -39,60 +32,39 @@ class Model(SsasModelRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/60094cd5-1c7e-4353-9299-251bfa838cc6)
     """
 
-    _default_refresh_type: RefreshType = field(default=RefreshType.CALCULATE, init=False, repr=False)
+    _default_refresh_type: RefreshType = field(default=RefreshType.CALCULATE, init=False, repr=False, eq=False)
 
-    automatic_aggregation_options: str | None = None
-    collation: str | None = None
-    culture: str
-    data_access_options: Json[DataAccessOptions] = DataAccessOptions()
-    data_source_default_max_connections: int
-    data_source_variables_override_behavior: int
-    default_data_view: DefaultDataView
-    default_measure_id: int | None = None
-    default_mode: int
-    default_powerbi_data_source_version: int
-    description: str | None = None
-    discourage_composite_models: bool = True
-    discourage_implicit_measures: bool
-    disable_auto_exists: int | None = None
-    force_unique_names: bool
-    m_attributes: str | None = None
-    max_parallelism_per_refresh: int | None = None
-    max_parallelism_per_query: int | None = None
-    name: str
-    source_query_culture: str = "en-US"
-    storage_location: str | None = None
-    version: int
+    automatic_aggregation_options: str | None = field(default=None, eq=True)
+    collation: str | None = field(default=None, eq=True)
+    culture: str = field(eq=True)
+    data_access_options: Json[DataAccessOptions] = field(factory=DataAccessOptions, eq=True)
+    data_source_default_max_connections: int = field(eq=True)
+    data_source_variables_override_behavior: int = field(eq=True)
+    default_data_view: DefaultDataView = field(eq=True)
+    default_measure_id: int | None = field(default=None, eq=True)
+    default_mode: int = field(eq=True)
+    default_powerbi_data_source_version: int = field(eq=True)
+    description: str | None = field(default=None, eq=True)
+    discourage_composite_models: bool = field(default=True, eq=True)
+    discourage_implicit_measures: bool = field(default=False, eq=True)
+    disable_auto_exists: int | None = field(default=None, eq=True)
+    force_unique_names: bool = field(default=False, eq=True)
+    m_attributes: str | None = field(default=None, eq=True)
+    max_parallelism_per_refresh: int | None = field(default=None, eq=True)
+    max_parallelism_per_query: int | None = field(default=None, eq=True)
+    name: str = field(eq=True)
+    source_query_culture: str = field(default="en-US", eq=True)
+    storage_location: str | None = field(default=None, eq=True)
+    version: int = field(eq=True)
 
-    modified_time: datetime.datetime
-    structure_modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(factory=datetime.datetime.now, eq=False, on_setattr=setters.frozen)
+    structure_modified_time: Final[datetime.datetime] = field(
+        factory=datetime.datetime.now,
+        eq=False,
+        on_setattr=setters.frozen,
+    )
 
-    _commands: ModelCommands = field(factory=lambda: SsasCommands.model, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.automatic_aggregation_options,
-            self.collation,
-            self.culture,
-            self.data_access_options.modification_hash(),
-            self.data_source_default_max_connections,
-            self.data_source_variables_override_behavior,
-            self.default_data_view,
-            self.default_measure_id,
-            self.default_mode,
-            self.default_powerbi_data_source_version,
-            self.description,
-            self.discourage_composite_models,
-            self.discourage_implicit_measures,
-            self.disable_auto_exists,
-            self.force_unique_names,
-            self.m_attributes,
-            self.max_parallelism_per_refresh,
-            self.max_parallelism_per_query,
-            self.name,
-            self.source_query_culture,
-            self.storage_location,
-        ))
+    _commands: ModelCommands = field(factory=lambda: SsasCommands.model, init=False, repr=False, eq=False)
 
     def default_measure(self) -> "Measure | None":
         if self.default_measure_id is None:

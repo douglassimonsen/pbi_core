@@ -1,8 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
 from uuid import UUID, uuid4
 
-from attrs import field
+from attrs import field, setters
 from bs4 import BeautifulSoup
 
 from pbi_core.attrs import define
@@ -35,59 +35,37 @@ class Table(SsasRefreshRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/6360ac84-0717-4170-bce0-284cbef419ca)
     """
 
-    _default_refresh_type: RefreshType = field(default=RefreshType.DATA_ONLY, init=False, repr=False)
+    _default_refresh_type: RefreshType = field(default=RefreshType.DATA_ONLY, init=False, repr=False, eq=False)
 
-    alternate_source_precedence: int
-    calculation_group_id: int | None = None
-    data_category: DataCategory | None = None
-    default_detail_rows_defintion_id: int | None = None
-    description: str | None = None
+    alternate_source_precedence: int = field(eq=True)
+    calculation_group_id: int | None = field(default=None, eq=True)
+    data_category: DataCategory | None = field(default=None, eq=True)
+    default_detail_rows_defintion_id: int | None = field(default=None, eq=True)
+    description: str | None = field(default=None, eq=True)
     """A description of the table, which may be used in the hover tooltip in edit mode"""
     exclude_from_automatic_aggregations: bool = False
-    exclude_from_model_refresh: bool
+    exclude_from_model_refresh: bool = field(default=False, eq=True)
     """Controls whether this table is included in the model-wide refresh process"""
-    is_hidden: bool
+    is_hidden: bool = field(default=False, eq=True)
     """Controls whether the table appears in the edit mode of the report"""
-    is_private: bool
-    model_id: int
+    is_private: bool = field(default=False, eq=True)
+    model_id: int = field(eq=True)
     """The ID of the model this table belongs to"""
-    name: str
+    name: str = field(eq=True)
     """The name of the table as it appears in the report"""
-    refresh_policy_id: int | None = None
-    show_as_variations_only: bool
-    system_flags: int
-    system_managed: bool | None = None
-    table_storage_id: int | None = None
+    refresh_policy_id: int | None = field(default=None, eq=True)
+    show_as_variations_only: bool = field(default=False, eq=True)
+    system_flags: int = field(eq=True)
+    system_managed: bool | None = field(default=None, eq=True)
+    table_storage_id: int | None = field(default=None, eq=True)
 
-    lineage_tag: UUID = uuid4()
-    source_lineage_tag: UUID = uuid4()
+    lineage_tag: UUID = field(factory=uuid4, eq=True)
+    source_lineage_tag: UUID = field(factory=uuid4, eq=True)
 
-    modified_time: datetime.datetime
-    structure_modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: RefreshCommands = field(factory=lambda: SsasCommands.table, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.alternate_source_precedence,
-            self.calculation_group_id,
-            self.data_category,
-            self.default_detail_rows_defintion_id,
-            self.description,
-            self.exclude_from_automatic_aggregations,
-            self.exclude_from_model_refresh,
-            self.is_hidden,
-            self.is_private,
-            self.model_id,
-            self.name,
-            self.refresh_policy_id,
-            self.show_as_variations_only,
-            # self.system_flags,
-            # self.system_managed,
-            self.table_storage_id,
-            self.lineage_tag,
-            self.source_lineage_tag,
-        ))
+    _commands: RefreshCommands = field(factory=lambda: SsasCommands.table, init=False, repr=False, eq=False)
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.

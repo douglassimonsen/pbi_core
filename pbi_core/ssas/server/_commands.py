@@ -162,7 +162,6 @@ class ModelCommands(NoCommands):
 
     @staticmethod
     def new(data: dict[str, str]) -> "ModelCommands":
-        breakpoint()
         return ModelCommands(
             alter=data["alter.xml"],
             refresh=data["refresh.xml"],

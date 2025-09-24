@@ -1,6 +1,7 @@
 import datetime
+from typing import Final
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
@@ -18,26 +19,16 @@ class ObjectTranslation(SsasEditableRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/1eade819-5599-4ddd-9bf5-7d365806069d)
     """
 
-    altered: bool
-    culture_id: int
-    object_id: int
-    object_type: ObjectType
-    property: Property
-    value: str
+    altered: bool = field(eq=True)
+    culture_id: int = field(eq=True)
+    object_id: int = field(eq=True)
+    object_type: ObjectType = field(eq=True)
+    property: Property = field(eq=True)
+    value: str = field(eq=True)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.object_translation, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.altered,
-            self.culture_id,
-            self.object_id,
-            self.object_type,
-            self.property,
-            self.value,
-        ))
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.object_translation, init=False, repr=False, eq=False)
 
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.

@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
@@ -22,24 +22,22 @@ class FormatStringDefinition(SsasEditableRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/b756b0c1-c912-4218-80dc-7ff09d0968ff)
     """
 
-    object_type: ObjectType
-    object_id: int
-    error_message: str | None = None
+    object_type: ObjectType = field(eq=True)
+    object_id: int = field(eq=True, on_setattr=setters.frozen)
+    error_message: Final[str | None] = field(eq=False, default=None, on_setattr=setters.frozen)
     """When no issue exists, this field is blank"""
-    expression: str
+    expression: str = field(eq=True)
     """The DAX expression defining the format string."""
-    state: DataState
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.format_string_definition, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.object_type,
-            self.object_id,
-            self.expression,
-        ))
+    _commands: BaseCommands = field(
+        factory=lambda: SsasCommands.format_string_definition,
+        init=False,
+        repr=False,
+        eq=False,
+    )
 
     def pbi_core_name(self) -> str:
         return str(self.object_id)

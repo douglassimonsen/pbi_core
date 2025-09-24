@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
@@ -25,22 +25,18 @@ class DetailRowDefinition(SsasEditableRecord):
 
     """
 
-    error_message: str
-    expression: str
-    object_id: int
-    object_type: ObjectType
-    state: DataState
+    error_message: Final[str | None] = field(
+        eq=False,
+        on_setattr=setters.frozen,
+    )  # error message is read-only, so should not be edited
+    expression: str = field(eq=True)
+    object_id: int = field(eq=True)
+    object_type: ObjectType = field(eq=True)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
     _commands: BaseCommands = field(factory=lambda: SsasCommands.detail_row_definition, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.expression,
-            self.object_id,
-            self.object_type,
-        ))
 
     @classmethod
     def _db_type_name(cls) -> str:

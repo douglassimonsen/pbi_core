@@ -120,26 +120,26 @@ class SsasRefresh(SsasTable):
 class SsasReadonlyRecord(SsasTable):
     """Class for SSAS records that implement no command."""
 
-    _commands: NoCommands = field(init=False, repr=False)
+    _commands: NoCommands = field(init=False, repr=False, eq=False)
 
 
 @define()
 class SsasEditableRecord(SsasCreate, SsasAlter, SsasDelete):
-    _commands: BaseCommands
+    _commands: BaseCommands = field(init=False, repr=False, eq=False)
 
 
 @define()
 class SsasRenameRecord(SsasCreate, SsasAlter, SsasDelete, SsasRename):
-    _commands: RenameCommands  # pyright: ignore reportIncompatibleVariableOverride
+    _commands: RenameCommands = field(init=False, repr=False, eq=False)  # pyright: ignore reportIncompatibleVariableOverride
 
 
 @define()
 class SsasRefreshRecord(SsasCreate, SsasAlter, SsasDelete, SsasRename, SsasRefresh):
-    _commands: RefreshCommands  # pyright: ignore reportIncompatibleVariableOverride
+    _commands: RefreshCommands = field(init=False, repr=False, eq=False)  # pyright: ignore reportIncompatibleVariableOverride
 
 
 @define()
 class SsasModelRecord(SsasAlter, SsasRefresh, SsasRename):
     """Solely used for the single Model record."""
 
-    _commands: ModelCommands  # pyright: ignore reportIncompatibleVariableOverride
+    _commands: ModelCommands = field(init=False, repr=False, eq=False)  # pyright: ignore reportIncompatibleVariableOverride

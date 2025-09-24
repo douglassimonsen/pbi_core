@@ -62,7 +62,7 @@ class Section(LayoutNode):
     howCreated: PageHowCreated | None = None
     """Source of creation of this page."""
 
-    _layout: "Layout | None" = field(init=False, repr=False, hash=False, eq=False, default=None)
+    _layout: "Layout | None" = field(init=False, repr=False, eq=False, default=None)
 
     def __attrs_post_init__(self) -> None:
         for viz in self.visualContainers:

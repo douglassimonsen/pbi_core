@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
 from attrs import field
 
@@ -21,29 +21,17 @@ class CalculationItem(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/f5a398a7-ff65-45f0-a865-b561416f1cb4)
     """
 
-    calculation_group_id: int
-    description: str
-    error_message: str
-    expression: str
-    format_string_definition_id: int
-    name: str
-    ordinal: int
-    state: DataState
+    calculation_group_id: int = field(eq=True)
+    description: str = field(eq=True)
+    error_message: Final[str] = field(eq=False)  # error message is read-only, so should not be edited
+    expression: str = field(eq=True)
+    format_string_definition_id: int = field(eq=True)
+    name: str = field(eq=True)
+    ordinal: int = field(eq=True)
+    state: Final[DataState] = field(eq=False)
 
-    modified_time: datetime.datetime
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.calculation_item, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.calculation_group_id,
-            self.description,
-            # self.error_message,  I'm assuming this is read-only
-            self.expression,
-            self.format_string_definition_id,
-            self.name,
-            self.ordinal,
-            self.state,
-        ))
+    modified_time: Final[datetime.datetime] = field(eq=False)
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.calculation_item, init=False, repr=False, eq=False)
 
     def format_string_definition(self) -> "FormatStringDefinition":
         return self.tabular_model.format_string_definitions.find(self.format_string_definition_id)

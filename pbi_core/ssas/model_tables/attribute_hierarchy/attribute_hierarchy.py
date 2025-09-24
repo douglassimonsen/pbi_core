@@ -1,5 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
+
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
@@ -18,19 +20,12 @@ class AttributeHierarchy(SsasReadonlyRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/93d1844f-a6c7-4dda-879b-2e26ed5cd297)
     """
 
-    attribute_hierarchy_storage_id: int
-    column_id: int
-    state: DataState
+    attribute_hierarchy_storage_id: int = field(eq=True)
+    column_id: int = field(eq=True)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
 
-    modified_time: datetime.datetime
-    refreshed_time: datetime.datetime
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.attribute_hierarchy_storage_id,
-            self.column_id,
-            self.state,
-        ))
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""

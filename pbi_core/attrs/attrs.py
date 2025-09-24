@@ -27,7 +27,7 @@ def define(
 
 
 class BaseValidation:
-    _original_data: Any = field(init=False, repr=False, hash=False, eq=False)
+    _original_data: Any = field(init=False, repr=False, eq=False)
     __attrs_attrs__: tuple[Attribute, ...]
 
     @classmethod

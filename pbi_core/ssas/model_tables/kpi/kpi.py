@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
@@ -20,34 +20,20 @@ class KPI(SsasEditableRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/1289ceca-8113-4019-8f90-8132a91117cf)
     """
 
-    description: str | None = None
-    measure_id: int
-    status_description: str | None = None
-    status_expression: str
-    status_graphic: str
-    target_description: str | None = None
-    target_expression: str
-    target_format_string: str
-    trend_description: str | None = None
-    trend_expression: str | None = None
+    description: str | None = field(default=None, eq=True)
+    measure_id: int = field(eq=True)
+    status_description: str | None = field(default=None, eq=True)
+    status_expression: str = field(eq=True)
+    status_graphic: str = field(eq=True)
+    target_description: str | None = field(default=None, eq=True)
+    target_expression: str = field(eq=True)
+    target_format_string: str = field(eq=True)
+    trend_description: str | None = field(default=None, eq=True)
+    trend_expression: str | None = field(default=None, eq=True)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.kpi, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.description,
-            self.measure_id,
-            self.status_description,
-            self.status_expression,
-            self.status_graphic,
-            self.target_description,
-            self.target_expression,
-            self.target_format_string,
-            self.trend_description,
-            self.trend_expression,
-        ))
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.kpi, init=False, repr=False, eq=False)
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""

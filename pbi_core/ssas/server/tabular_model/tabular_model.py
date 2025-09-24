@@ -165,7 +165,7 @@ class BaseTabularModel:
                     formatted_row = type_instance.pre_attrs(row)
                     e = type_instance.model_validate({**formatted_row})
                     e.tabular_model = self
-                    self._remote_state[field_name][e.id] = e.modification_hash()
+                    self._remote_state[field_name][e.id] = hash(e)
                     group.append(e)
                 setattr(self, field_name, Group(group))
 
@@ -181,7 +181,7 @@ class BaseTabularModel:
             for obj in current_objects:
                 if obj.id not in self._remote_state[field_name]:
                     field_updates.added.append(obj)
-                if obj.modification_hash() != self._remote_state[field_name][obj.id] and isinstance(obj, SsasAlter):
+                if hash(obj) != self._remote_state[field_name][obj.id] and isinstance(obj, SsasAlter):
                     field_updates.updated.append(obj)
             if field_updates.added or field_updates.updated or field_updates.deleted:
                 updated_objects[field_name] = field_updates

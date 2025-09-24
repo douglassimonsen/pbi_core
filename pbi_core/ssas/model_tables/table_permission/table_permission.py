@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
@@ -23,29 +23,19 @@ class TablePermission(SsasEditableRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ac2ceeb3-a54e-4bf5-85b0-a770d4b1716e)
     """
 
-    error_message: str | None = None
-    filter_expression: str | None = None
-    metadata_permission: MetadataPermission
-    role_id: int
-    state: DataState
-    table_id: int
+    error_message: Final[str | None] = field(default=None, eq=False, on_setattr=setters.frozen)
+    filter_expression: str | None = field(default=None, eq=True)
+    metadata_permission: MetadataPermission = field(eq=True)
+    role_id: int = field(eq=True)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    table_id: int = field(eq=True)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.table_permission, init=False, repr=False)
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.table_permission, init=False, repr=False, eq=False)
 
     def __repr__(self) -> str:
         return f"TablePermission(id={self.id}, role={self.role().name}, table={self.table()})"
-
-    def modification_hash(self) -> int:
-        return hash((
-            # self.error_message,
-            self.filter_expression,
-            self.metadata_permission,
-            self.role_id,
-            # self.state,
-            self.table_id,
-        ))
 
     def role(self) -> "Role":
         return self.tabular_model.roles.find(self.role_id)

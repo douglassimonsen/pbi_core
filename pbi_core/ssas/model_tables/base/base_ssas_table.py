@@ -1,6 +1,6 @@
 from typing import Any, ClassVar, Literal, Self
 
-from attrs import field
+from attrs import field, setters
 from bs4 import BeautifulSoup
 from structlog import get_logger
 
@@ -16,10 +16,10 @@ logger = get_logger()
 
 @define()
 class SsasTable(BaseValidation, IdBase):
-    id: int
+    id: int = field(eq=True, on_setattr=setters.frozen)
     """Unique identifier of the object."""
 
-    tabular_model: BaseTabularModel = field(repr=False, eq=False, hash=False, init=False)
+    tabular_model: BaseTabularModel = field(repr=False, eq=False, init=False)
     _read_only_fields: ClassVar[tuple[str, ...]] = ()
 
     _db_field_names: ClassVar[dict[str, str]] = {}
@@ -135,9 +135,6 @@ class SsasTable(BaseValidation, IdBase):
         """Creates a lineage node tracking the data parents/children of a record."""
         return LineageNode(self, lineage_type)
 
-    def __hash__(self) -> int:
-        return hash(self.id)
-
     def xml_fields(self) -> dict[str, Any]:
         base = self.model_dump().items()
         ret = {}
@@ -145,8 +142,3 @@ class SsasTable(BaseValidation, IdBase):
             if k not in self._read_only_fields:
                 ret[self._db_field_names.get(k, k)] = v
         return ret
-
-    def modification_hash(self) -> int:
-        """Returns a hash representing the current state of the object."""
-        msg = "Subclasses must implement modification_hash()"
-        raise NotImplementedError(msg)

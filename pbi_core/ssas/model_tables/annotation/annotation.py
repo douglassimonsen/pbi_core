@@ -1,7 +1,7 @@
 import datetime
-from typing import Literal
+from typing import Final, Literal
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
@@ -18,20 +18,14 @@ class Annotation(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7a16a837-cb88-4cb2-a766-a97c4d0e1f43)
     """
 
-    object_id: int
-    object_type: ObjectType
-    name: str
-    value: str | None = None
+    object_id: int = field(eq=True)
+    object_type: ObjectType = field(eq=True)
+    name: str = field(eq=True)
+    value: str | None = field(eq=True, default=None)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+
     _commands: RenameCommands = field(factory=lambda: SsasCommands.annotation, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.object_type,
-            self.name,
-            self.value,
-        ))
 
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.

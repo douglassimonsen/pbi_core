@@ -1,9 +1,9 @@
 import datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
 from uuid import UUID, uuid4
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
@@ -28,33 +28,20 @@ class Expression(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/61f98e45-d5e3-4435-b829-2f2f043839c1)
     """
 
-    description: str | None = None
-    expression: str
-    kind: Kind
-    model_id: int
-    name: str
-    parameter_values_column_id: int | None = None
-    query_group_id: int | None = None
+    description: str | None = field(default=None, eq=True)
+    expression: str = field(eq=True)
+    kind: Kind = field(eq=True)
+    model_id: Final[int] = field(eq=False)
+    name: str = field(eq=True)
+    parameter_values_column_id: int | None = field(default=None, eq=True)
+    query_group_id: int | None = field(default=None, eq=True)
 
-    lineage_tag: UUID = uuid4()
-    source_lineage_tag: UUID = uuid4()
+    lineage_tag: UUID = field(factory=uuid4, eq=True)
+    source_lineage_tag: UUID = field(factory=uuid4, eq=True)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.expression, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.description,
-            self.expression,
-            self.kind,
-            self.model_id,
-            self.name,
-            self.parameter_values_column_id,
-            self.query_group_id,
-            self.lineage_tag,
-            self.source_lineage_tag,
-        ))
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.expression, init=False, repr=False, eq=False)
 
     def model(self) -> "Model":
         return self.tabular_model.model

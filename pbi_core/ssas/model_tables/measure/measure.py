@@ -1,8 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
 from uuid import UUID, uuid4
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
@@ -34,40 +34,44 @@ class Measure(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ab331e04-78f7-49f0-861f-3f155b8b4c5b)
     """
 
-    data_category: str | None = None
-    data_type: DataType
-    description: str | None = None
+    data_category: str | None = field(default=None, eq=True)
+    data_type: DataType = field(eq=True)
+    description: str | None = field(default=None, eq=True)
     """This description will appear in the hover-over for the measure in the edit mode of the report"""
 
-    detail_rows_definition_id: int | None = None
-    display_folder: str | None = None
-    error_message: str | None = None
-    expression: str | int | float | None = None
-    format_string: str | int | None = None
+    detail_rows_definition_id: int | None = field(default=None, eq=True)
+    display_folder: str | None = field(default=None, eq=True)
+    error_message: Final[str | None] = field(default=None, eq=False, on_setattr=setters.frozen)
+    expression: str | int | float | None = field(default=None, eq=True)
+    format_string: str | int | None = field(default=None, eq=True)
     """A static definition for the formatting of the measure"""
 
-    format_string_definition_id: int | None = None
+    format_string_definition_id: int | None = field(default=None, eq=True)
     """A foreign key to a FormatStringDefinition object. Used for dynamic-type measure formatting.
 
     Note:
         Mutually exclusive with format_string
     """
-    is_hidden: bool = False
+    is_hidden: bool = field(eq=True, default=False)
     """Controls whether the measure appears in the edit mode of the report"""
-    is_simple_measure: bool
-    kpi_id: int | None = None
-    name: str
+    is_simple_measure: bool = field(eq=True, default=True)
+    kpi_id: int | None = field(default=None, eq=True)
+    name: str = field(eq=True)
     """The name of the measure"""
-    state: DataState
-    table_id: int
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    table_id: int = field(eq=True)
 
-    lineage_tag: UUID = field(factory=uuid4)
-    source_lineage_tag: UUID = field(factory=uuid4)
+    lineage_tag: UUID = field(factory=uuid4, eq=True)
+    source_lineage_tag: UUID = field(factory=uuid4, eq=True)
 
-    modified_time: datetime.datetime
-    structure_modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(factory=datetime.datetime.now, eq=False, on_setattr=setters.frozen)
+    structure_modified_time: Final[datetime.datetime] = field(
+        factory=datetime.datetime.now,
+        eq=False,
+        on_setattr=setters.frozen,
+    )
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.measure, init=False, repr=False)
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.measure, init=False, repr=False, eq=False)
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.
@@ -82,29 +86,6 @@ class Measure(SsasRenameRecord):
                 m.NativeReferenceName = new_name
         set_name.fix_dax(self, new_name)
         self.name = new_name
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.data_category,
-            self.data_type,
-            self.description,
-            self.detail_rows_definition_id,
-            self.display_folder,
-            # self.error_message,
-            self.expression,
-            self.format_string,
-            self.format_string_definition_id,
-            self.is_hidden,
-            self.is_simple_measure,
-            self.kpi_id,
-            self.name,
-            self.state,
-            self.table_id,
-            self.lineage_tag,
-            self.source_lineage_tag,
-            # self.modified_time,
-            # self.structure_modified_time,
-        ))
 
     def expression_ast(self) -> "dax.Expression | None":
         from pbi_parsers import dax  # noqa: PLC0415

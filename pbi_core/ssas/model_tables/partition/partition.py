@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
 
-from attrs import field
+from attrs import field, setters
 from bs4 import BeautifulSoup
 
 from pbi_core.attrs import define
@@ -41,53 +41,30 @@ class Partition(SsasRefreshRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/81badb81-31a8-482b-ae16-5fc9d8291d9e)
     """
 
-    _default_refresh_type: RefreshType = field(default=RefreshType.FULL, init=False, repr=False)
+    _default_refresh_type: RefreshType = field(default=RefreshType.FULL, init=False, repr=False, eq=False)
 
-    data_view: DataView
-    data_source_id: int | None = None
-    description: str | None = None
-    error_message: str | None = None
-    expression_source_id: int | None = None
-    m_attributes: str | None = None
-    mode: PartitionMode
-    name: str
-    partition_storage_id: int
-    query_definition: str
-    query_group_id: int | None = None
-    range_granularity: int
-    retain_data_till_force_calculate: bool
-    state: DataState
-    system_flags: int
-    table_id: int
-    type: PartitionType
+    data_view: DataView = field(eq=True)
+    data_source_id: int | None = field(default=None, eq=True)
+    description: str | None = field(default=None, eq=True)
+    error_message: Final[str | None] = field(default=None, eq=False, on_setattr=setters.frozen)
+    expression_source_id: int | None = field(default=None, eq=True)
+    m_attributes: str | None = field(default=None, eq=True)
+    mode: PartitionMode = field(eq=True)
+    name: str = field(eq=True)
+    partition_storage_id: int = field(eq=True)
+    query_definition: str = field(eq=True)
+    query_group_id: int | None = field(default=None, eq=True)
+    range_granularity: int = field(eq=True)
+    retain_data_till_force_calculate: bool = field(eq=True)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    system_flags: int = field(eq=True)
+    table_id: int = field(eq=True)
+    type: PartitionType = field(eq=True)
 
-    modified_time: datetime.datetime
-    refreshed_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: RefreshCommands = field(factory=lambda: SsasCommands.partition, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash(
-            (
-                self.data_view,
-                self.data_source_id,
-                self.description,
-                # self.error_message,
-                self.expression_source_id,
-                self.m_attributes,
-                self.mode,
-                self.name,
-                self.partition_storage_id,
-                self.query_definition,
-                self.query_group_id,
-                self.range_granularity,
-                self.retain_data_till_force_calculate,
-                # self.state,
-                # self.system_flags,
-                self.table_id,
-                self.type,
-            ),
-        )
+    _commands: RefreshCommands = field(factory=lambda: SsasCommands.partition, init=False, repr=False, eq=False)
 
     def expression_ast(self) -> "dax.Expression | pq.Expression | None":
         from pbi_parsers import dax, pq  # noqa: PLC0415

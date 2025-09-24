@@ -1,8 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
 from uuid import UUID, uuid4
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
@@ -29,38 +29,25 @@ class Hierarchy(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/4eff6661-1458-4c5a-9875-07218f1458e5)
     """
 
-    description: str | None = None
-    display_folder: str | None = None
-    hide_members: HideMembers
-    hierarchy_storage_id: int
-    is_hidden: bool
-    name: str
-    state: DataState
-    table_id: int
+    description: str | None = field(default=None, eq=True)
+    display_folder: str | None = field(default=None, eq=True)
+    hide_members: HideMembers = field(eq=True)
+    hierarchy_storage_id: int = field(eq=True)
+    is_hidden: bool = field(eq=True)
+    name: str = field(eq=True)
+    state: Final[DataState] = field(eq=False, on_setattr=setters.frozen)
+    table_id: int = field(eq=True)
     """A foreign key to the Table object the hierarchy is stored under"""
 
-    lineage_tag: UUID = uuid4()
-    source_lineage_tag: UUID = uuid4()
+    lineage_tag: UUID = field(factory=uuid4, eq=True)
+    source_lineage_tag: UUID = field(factory=uuid4, eq=True)
 
-    modified_time: datetime.datetime
-    refreshed_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
     """The last time the sources for this hierarchy were refreshed"""
-    structure_modified_time: datetime.datetime
+    structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.hierarchy, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.description,
-            self.display_folder,
-            self.hide_members,
-            self.hierarchy_storage_id,
-            self.is_hidden,
-            self.name,
-            self.table_id,
-            self.lineage_tag,
-            self.source_lineage_tag,
-        ))
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.hierarchy, init=False, repr=False, eq=False)
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.

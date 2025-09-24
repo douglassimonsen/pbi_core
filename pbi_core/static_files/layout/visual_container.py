@@ -504,7 +504,7 @@ class VisualContainer(LayoutNode):
     filters: Json[list[VisualFilter]] = field(factory=list, repr=repr_len)
     config: Json[VisualConfig] = field(repr=False)
 
-    _section: "Section | None" = field(init=False, repr=False, hash=False, eq=False, default=None)
+    _section: "Section | None" = field(init=False, repr=False, eq=False, default=None)
 
     id: int | None = None
 

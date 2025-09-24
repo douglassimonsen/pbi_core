@@ -24,18 +24,11 @@ class QueryGroup(SsasEditableRecord):
 
     _repr_name_field = "folder"
 
-    description: str | None = None
-    folder: str
-    model_id: int
+    description: str | None = field(default=None, eq=True)
+    folder: str = field(eq=True)
+    model_id: int = field(eq=True)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.query_group, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.description,
-            self.folder,
-            self.model_id,
-        ))
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.query_group, init=False, repr=False, eq=False)
 
     def expressions(self) -> set["Expression"]:
         return self.tabular_model.expressions.find_all({"query_group_id": self.id})

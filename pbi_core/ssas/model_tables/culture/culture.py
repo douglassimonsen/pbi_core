@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
@@ -21,21 +21,14 @@ class Culture(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/d3770118-47bf-4304-9edf-8025f4820c45)
     """
 
-    linguistic_metadata_id: int
-    model_id: int
-    name: str
+    linguistic_metadata_id: int = field(eq=True)
+    model_id: int = field(eq=True)
+    name: str = field(eq=True)
 
-    modified_time: datetime.datetime
-    structure_modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
+    structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.culture, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.linguistic_metadata_id,
-            self.model_id,
-            self.name,
-        ))
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.culture, init=False, repr=False, eq=False)
 
     def linguistic_metdata(self) -> "LinguisticMetadata":
         return self.tabular_model.linguistic_metadata.find({"id": self.linguistic_metadata_id})

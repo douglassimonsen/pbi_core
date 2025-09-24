@@ -1,8 +1,8 @@
 import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Final, Literal
 from uuid import UUID, uuid4
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.lineage import LineageNode
@@ -22,31 +22,20 @@ class Level(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/a010d75e-3b68-4825-898f-62fdeab4557f)
     """
 
-    column_id: int
-    description: str | None = None
+    column_id: int = field(eq=True)
+    description: str | None = field(default=None, eq=True)
     """A description of the level, which may be used in the hover tooltip in edit mode"""
-    hierarchy_id: int
-    name: str
+    hierarchy_id: int = field(eq=True)
+    name: str = field(eq=True)
     """The name of the level, e.g. "Year", "Quarter", "Month", "Day" in a Date hierarchy."""
-    ordinal: int
+    ordinal: int = field(eq=True)
 
-    lineage_tag: UUID = uuid4()
-    source_lineage_tag: UUID = uuid4()
+    lineage_tag: UUID = field(factory=uuid4, eq=True)
+    source_lineage_tag: UUID = field(factory=uuid4, eq=True)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.level, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.column_id,
-            self.description,
-            self.hierarchy_id,
-            self.name,
-            self.ordinal,
-            self.lineage_tag,
-            self.source_lineage_tag,
-        ))
+    _commands: RenameCommands = field(factory=lambda: SsasCommands.level, init=False, repr=False, eq=False)
 
     def column(self) -> "Column":
         return self.tabular_model.columns.find({"id": self.column_id})

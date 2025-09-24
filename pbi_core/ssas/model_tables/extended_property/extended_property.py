@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import BaseValidation, Json, define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
@@ -16,35 +16,21 @@ if TYPE_CHECKING:
 
 @define()
 class BinSize(BaseValidation):
-    value: float
-    unit: int
-
-    def modification_hash(self) -> int:
-        return hash((self.value, self.unit))
+    value: float = field(eq=True)
+    unit: int = field(eq=True)
 
 
 @define()
 class BinningMetadata(BaseValidation):
-    binSize: BinSize
-
-    def modification_hash(self) -> int:
-        return hash(self.binSize.modification_hash())
+    binSize: BinSize = field(eq=True)
 
 
 @define()
 class ExtendedPropertyValue(BaseValidation):
-    version: int
-    daxTemplateName: str | None = None
-    groupedColumns: list[ColumnSource] | None = None
-    binningMetadata: BinningMetadata | None = None
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.version,
-            self.daxTemplateName,
-            tuple(self.groupedColumns) if self.groupedColumns else None,
-            self.binningMetadata.modification_hash() if self.binningMetadata else None,
-        ))
+    version: int = field(eq=True)
+    daxTemplateName: str | None = field(default=None, eq=True)
+    groupedColumns: list[ColumnSource] | None = field(default=None, eq=True)
+    binningMetadata: BinningMetadata | None = field(default=None, eq=True)
 
 
 @define()
@@ -54,24 +40,20 @@ class ExtendedProperty(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/5c1521e5-defe-4ba2-9558-b67457e94569)
     """
 
-    object_id: int
-    object_type: ObjectType
-    name: str
-    type: ObjectType
-    value: Json[ExtendedPropertyValue]
+    object_id: int = field(eq=True)
+    object_type: ObjectType = field(eq=True)
+    name: str = field(eq=True)
+    type: ObjectType = field(eq=True)
+    value: Json[ExtendedPropertyValue] = field(eq=True)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: RenameCommands = field(factory=lambda: SsasCommands.extended_property, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.object_id,
-            self.object_type,
-            self.name,
-            self.type,
-            self.value.modification_hash(),
-        ))
+    _commands: RenameCommands = field(
+        factory=lambda: SsasCommands.extended_property,
+        init=False,
+        repr=False,
+        eq=False,
+    )
 
     def object(self) -> "SsasTable":
         """Returns the object the property is describing."""

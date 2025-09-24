@@ -1,7 +1,7 @@
 import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
-from attrs import field
+from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
@@ -21,24 +21,15 @@ class RoleMembership(SsasEditableRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/dbecc1f4-142b-4765-8374-a4d4dc51313b)
     """
 
-    identity_provider: str
-    member_id: str
-    member_name: str
-    member_type: MemberType
-    role_id: int
+    identity_provider: str = field(eq=True)
+    member_id: str = field(eq=True)
+    member_name: str = field(eq=True)
+    member_type: MemberType = field(eq=True)
+    role_id: int = field(eq=True)
 
-    modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.role_membership, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.identity_provider,
-            self.member_id,
-            self.member_name,
-            self.member_type,
-            self.role_id,
-        ))
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.role_membership, init=False, repr=False, eq=False)
 
     def role(self) -> "Role":
         return self.tabular_model.roles.find(self.role_id)

@@ -16,29 +16,15 @@ class RefreshPolicy(SsasEditableRecord):
     This class represents the refresh policy for a partition in a Tabular model.
     """
 
-    incremental_granularity: Granularity
-    incremental_periods: int
-    incremental_periods_offset: int
-    mode: RefreshMode
-    policy_type: PolicyType
-    polling_expression: str
-    rolling_window_granularity: Granularity
-    rolling_window_periods: int
-    source_expression: str
-    table_id: int
+    incremental_granularity: Granularity = field(eq=True)
+    incremental_periods: int = field(eq=True)
+    incremental_periods_offset: int = field(eq=True)
+    mode: RefreshMode = field(eq=True)
+    policy_type: PolicyType = field(eq=True)
+    polling_expression: str = field(eq=True)
+    rolling_window_granularity: Granularity = field(eq=True)
+    rolling_window_periods: int = field(eq=True)
+    source_expression: str = field(eq=True)
+    table_id: int = field(eq=True)
 
-    _commands: BaseCommands = field(factory=lambda: SsasCommands.refresh_policy, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.incremental_granularity,
-            self.incremental_periods,
-            self.incremental_periods_offset,
-            self.mode,
-            self.policy_type,
-            self.polling_expression,
-            self.rolling_window_granularity,
-            self.rolling_window_periods,
-            self.source_expression,
-            self.table_id,
-        ))
+    _commands: BaseCommands = field(factory=lambda: SsasCommands.refresh_policy, init=False, repr=False, eq=False)

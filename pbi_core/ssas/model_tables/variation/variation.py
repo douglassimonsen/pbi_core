@@ -21,28 +21,16 @@ class Variation(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/b9dfeb51-cbb6-4eab-91bd-fa2b23f51ca3)
     """
 
-    column: int | None = None  # TODO: pbi says this shouldn't exist
-    column_id: int
-    default_column_id: int | None = None
-    default_hierarchy_id: int
-    description: str | None = None
-    is_default: bool
-    name: str
-    relationship_id: int
+    column: int | None = field(default=None, eq=True)  # TODO: pbi says this shouldn't exist
+    column_id: int = field(eq=True)
+    default_column_id: int | None = field(default=None, eq=True)
+    default_hierarchy_id: int = field(eq=True)
+    description: str | None = field(default=None, eq=True)
+    is_default: bool = field(eq=True)
+    name: str = field(eq=True)
+    relationship_id: int = field(eq=True)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.variation, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.column,
-            self.column_id,
-            self.default_column_id,
-            self.default_hierarchy_id,
-            self.description,
-            self.is_default,
-            self.name,
-            self.relationship_id,
-        ))
 
     def get_column(self) -> "Column":
         """Name is bad to not consistent with other methods because the column field in this entity :(."""

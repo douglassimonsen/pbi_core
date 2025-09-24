@@ -1,5 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, ClassVar, Final
 from uuid import UUID, uuid4
 
 from attrs import field
@@ -38,89 +38,56 @@ class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompati
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b)
     """
 
+    # TODO: record the meaning of the various common methods and private attrs
     _field_mapping: ClassVar[dict[str, str]] = {
         "description": "Description",
     }
-    _db_name_field: str = "ExplicitName"
-    _repr_name_field: str = "explicit_name"
-    _read_only_fields = ("table_id",)
+    _db_name_field: str = field(default="ExplicitName", eq=False)
+    _repr_name_field: str = field(default="explicit_name", eq=False)
+    _read_only_fields = field(default=("table_id",), eq=False)
 
-    alignment: Alignment
-    attribute_hierarchy_id: int
-    column_origin_id: int | None = None
-    column_storage_id: int
-    data_category: str | None = None
-    description: str | None = None
-    display_folder: str | None = None
-    display_ordinal: int
-    encoding_hint: EncodingHint
-    error_message: str | None = None
-    explicit_data_type: DataType  # enum
-    explicit_name: str | None = None
-    expression: str | int | None = None
-    format_string: int | str | None = None
-    inferred_data_type: int  # enum
-    inferred_name: str | None = None
-    is_available_in_mdx: bool
-    is_default_image: bool
-    is_default_label: bool
-    is_hidden: bool
-    is_key: bool
-    is_nullable: bool
-    is_unique: bool
-    keep_unique_rows: bool
-    lineage_tag: UUID = uuid4()
-    sort_by_column_id: int | None = None
-    source_column: str | None = None
-    state: DataState
-    summarize_by: SummarizedBy
-    system_flags: int
-    table_id: int
-    table_detail_position: int
-    type: ColumnType
+    alignment: Alignment = field(eq=True)
+    attribute_hierarchy_id: int = field(eq=True)
+    column_origin_id: int | None = field(eq=True, default=None)
+    column_storage_id: int = field(eq=True)
+    data_category: str | None = field(eq=True, default=None)
+    description: str | None = field(eq=True, default=None)
+    display_folder: str | None = field(eq=True, default=None)
+    display_ordinal: int = field(eq=True)
+    encoding_hint: EncodingHint = field(eq=True)
+    error_message: Final[str | None] = field(
+        eq=False,
+        default=None,
+    )  # error message is read-only, so should not be edited
+    explicit_data_type: DataType = field(eq=True)
+    explicit_name: str | None = field(eq=True, default=None)
+    expression: str | int | None = field(eq=True, default=None)
+    format_string: int | str | None = field(eq=True, default=None)
+    inferred_data_type: int = field(eq=True)
+    inferred_name: str | None = field(eq=True, default=None)
+    is_available_in_mdx: bool = field(eq=True)
+    is_default_image: bool = field(eq=True)
+    is_default_label: bool = field(eq=True)
+    is_hidden: bool = field(eq=True)
+    is_key: bool = field(eq=True)
+    is_nullable: bool = field(eq=True)
+    is_unique: bool = field(eq=True)
+    keep_unique_rows: bool = field(eq=True)
+    lineage_tag: UUID = field(factory=uuid4, eq=True)
+    sort_by_column_id: int | None = field(eq=True, default=None)
+    source_column: str | None = field(eq=True, default=None)
+    state: Final[DataState] = field(eq=False)
+    summarize_by: SummarizedBy = field(eq=True)
+    system_flags: int = field(eq=True)
+    table_id: int = field(eq=True)
+    table_detail_position: int = field(eq=True)
+    type: ColumnType = field(eq=True)
 
-    modified_time: datetime.datetime
-    refreshed_time: datetime.datetime
-    structure_modified_time: datetime.datetime
+    modified_time: Final[datetime.datetime] = field(eq=False)
+    refreshed_time: Final[datetime.datetime] = field(eq=False)
+    structure_modified_time: Final[datetime.datetime] = field(eq=False)
 
     _commands: RenameCommands = field(factory=lambda: SsasCommands.column, init=False, repr=False)
-
-    def modification_hash(self) -> int:
-        return hash((
-            self.alignment,
-            self.attribute_hierarchy_id,
-            self.column_origin_id,
-            self.column_storage_id,
-            self.data_category,
-            self.description,
-            self.display_folder,
-            self.display_ordinal,
-            self.encoding_hint,
-            # self.error_message,  I'm assuming this is read-only
-            self.explicit_data_type,
-            self.explicit_name,
-            self.expression,
-            self.format_string,
-            self.inferred_data_type,
-            self.inferred_name,
-            self.is_available_in_mdx,
-            self.is_default_image,
-            self.is_default_label,
-            self.is_hidden,
-            self.is_key,
-            self.is_nullable,
-            self.is_unique,
-            self.keep_unique_rows,
-            self.lineage_tag,
-            self.sort_by_column_id,
-            self.source_column,
-            self.state,
-            self.summarize_by,
-            self.system_flags,
-            self.table_id,
-            self.table_detail_position,
-            self.type,
-        ))
 
     def __repr__(self) -> str:
         return f"Column({self.table().name}.{self.pbi_core_name()})"
