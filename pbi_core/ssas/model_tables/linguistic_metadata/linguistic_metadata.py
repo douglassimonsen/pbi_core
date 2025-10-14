@@ -19,7 +19,7 @@ class ContentType(Enum):
     Json = 1
 
 
-@define()
+@define(repr=True)
 class EntityDefinitionBinding(BaseValidation):
     ConceptualEntity: str
     ConceptualProperty: str | None = None
@@ -29,7 +29,7 @@ class EntityDefinitionBinding(BaseValidation):
     HierarchyLevel: str | None = None
 
 
-@define()
+@define(repr=True)
 class EntityDefinition(BaseValidation):
     Binding: EntityDefinitionBinding
 
@@ -38,7 +38,7 @@ class TermSourceType(Enum):
     External = "External"
 
 
-@define()
+@define(repr=True)
 class TermSource(BaseValidation):
     Type: TermSourceType | None = None
     Agent: str
@@ -54,7 +54,7 @@ class TermDefinitionType(Enum):
     Noun = "Noun"
 
 
-@define()
+@define(repr=True)
 class TermDefinition(BaseValidation):
     State: TermDefinitionState | None = None
     Source: TermSource | None = None
@@ -71,7 +71,7 @@ class VisibilityState(Enum):
     Authored = "Authored"
 
 
-@define()
+@define(repr=True)
 class VisibilityType(BaseValidation):
     Value: VisibilityValue
     State: VisibilityState | None = None
@@ -82,7 +82,7 @@ class NameTypeType(Enum):
     Name = "Name"
 
 
-@define()
+@define(repr=True)
 class LinguisticMetadataEntity(BaseValidation):
     Weight: float | None = None
     State: TermDefinitionState
@@ -96,12 +96,12 @@ class LinguisticMetadataEntity(BaseValidation):
     Units: list[str] = field(factory=list)
 
 
-@define()
+@define(repr=True)
 class RelationshipBinding(BaseValidation):
     ConceptualEntity: str
 
 
-@define()
+@define(repr=True)
 class PhrasingAttributeRole(BaseValidation):
     Role: str
 
@@ -111,7 +111,7 @@ class RelationshipPhrasingState(Enum):
 
 
 # TODO: Subtype
-@define()
+@define(repr=True)
 class PhrasingAttribute(BaseValidation):
     Adjective: PhrasingAttributeRole | None = None
     Measurement: PhrasingAttributeRole | None = None
@@ -127,7 +127,7 @@ class PhrasingAttribute(BaseValidation):
     Nouns: list[dict[str, TermDefinition]] = field(factory=list)
 
 
-@define()
+@define(repr=True)
 class RelationshipPhrasing(BaseValidation):
     Name: PhrasingAttribute | None = None
     Attribute: PhrasingAttribute | None = None
@@ -139,18 +139,18 @@ class RelationshipPhrasing(BaseValidation):
     Weight: float | None = None
 
 
-@define()
+@define(repr=True)
 class RelationshipRoleEntity(BaseValidation):
     Entity: str
 
 
-@define()
+@define(repr=True)
 class RelationshipRole(BaseValidation):
     Target: RelationshipRoleEntity
     Nouns: Any | None = None
 
 
-@define()
+@define(repr=True)
 class SemanticSlot(BaseValidation):
     Where: PhrasingAttributeRole | None = None
     When: PhrasingAttributeRole | None = None
@@ -161,14 +161,14 @@ class ConditionOperator(Enum):
     GreaterThan = "GreaterThan"
 
 
-@define()
+@define(repr=True)
 class Condition(BaseValidation):
     Target: PhrasingAttributeRole
     Operator: ConditionOperator
     Value: dict[str, list[int | str]]
 
 
-@define()
+@define(repr=True)
 class LinguisticMetadataRelationship(BaseValidation):
     Binding: RelationshipBinding = field(eq=True)
     Phrasings: list[RelationshipPhrasing] = field(factory=list, eq=True)
@@ -178,7 +178,7 @@ class LinguisticMetadataRelationship(BaseValidation):
     Conditions: list[Condition] | None = field(eq=True, default=None)
 
 
-@define()
+@define(repr=True)
 class LinguisticMetadataContent(BaseValidation):
     Version: str = field(eq=True)  # SemanticVersion
     Language: str = field(eq=True)
