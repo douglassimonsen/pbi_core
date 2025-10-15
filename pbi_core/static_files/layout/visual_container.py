@@ -92,6 +92,7 @@ class VisualConfig(LayoutNode):
 
 class ExecutionMetricsKindEnum(Enum):
     NA = 1
+    NA3 = 3
 
 
 class EntityType(Enum):

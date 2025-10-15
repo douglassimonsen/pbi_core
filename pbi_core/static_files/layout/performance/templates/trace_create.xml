@@ -19,10 +19,10 @@
             <Events>
                 {% for event in events -%}
                     <Event>
-                        <EventID>{{event}}</EventID>
+                        <EventID>{{event.value}}</EventID>
                         <Columns>
                             {% for column in event.get_columns() -%}
-                                <ColumnID>{{column}}</ColumnID>
+                                <ColumnID>{{column.value}}</ColumnID>
                             {% endfor %}
                         </Columns>
                     </Event>
