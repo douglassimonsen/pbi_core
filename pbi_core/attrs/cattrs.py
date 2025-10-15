@@ -184,7 +184,7 @@ converter.register_structure_hook(UUID, struct_uuid)
 converter.register_unstructure_hook(UUID, unstruct_uuid)
 
 converter.register_structure_hook(NoneType, lambda _v, _: None)
-converter.register_unstructure_hook(NoneType, lambda _v, _: None)
+converter.register_unstructure_hook(NoneType, lambda _: None)
 
 converter.register_structure_hook(datetime.datetime, struct_datetime)
 converter.register_unstructure_hook(datetime.datetime, unstruct_datetime)
