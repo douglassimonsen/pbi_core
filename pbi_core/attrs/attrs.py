@@ -12,6 +12,12 @@ if TYPE_CHECKING:
 
 
 def fields(cls: type) -> tuple[Attribute]:
+    """Returns a tuple of attrs Attributes for the class.
+
+    Note:
+        This is a thin wrapper around `attrs.fields` to avoid name conflicts and simplify imports.
+
+    """
     return _fields(cls)
 
 

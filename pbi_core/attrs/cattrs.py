@@ -47,6 +47,10 @@ def _structure_union(val: Any, tp: Any) -> Any:
 
 
 def _is_json(tp: Any) -> bool:
+    """Identifies if a type is annotated with Json.
+
+    Used to structure and unstructure JSON strings to/from objects.
+    """
     o = get_origin(tp)
     if o is Union or o is UnionType:
         for a in get_args(tp):
