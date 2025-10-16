@@ -7,9 +7,9 @@ from attrs import field, validators
 from pbi_core.attrs import Json, define
 from pbi_core.attrs.extra import repr_len
 from pbi_core.lineage.main import LineageNode
+from pbi_core.ssas.trace import Performance, get_performance
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.filters import PageFilter
-from pbi_core.static_files.layout.performance import Performance, get_performance
 from pbi_core.static_files.layout.visual_container import VisualContainer
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 

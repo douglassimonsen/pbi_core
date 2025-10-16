@@ -3,15 +3,17 @@ from typing import TYPE_CHECKING, Any, Literal
 
 from attrs import field
 
+from pbi_core.attrs import Json, converter, define
 from pbi_core.attrs.extra import repr_exists, repr_len
 from pbi_core.lineage.main import LineageNode
+from pbi_core.ssas.trace import NoQueryError, Performance, get_performance
 from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
 
 from ._base_node import LayoutNode
 from .condition import Condition
+from .expansion_state import ExpansionState
 from .filters import From as FromType
 from .filters import PrototypeQuery, PrototypeQueryResult, VisualFilter
-from .performance import NoQueryError
 from .selector import Selector
 from .sources import Source
 from .visuals.base import FilterSortOrder, ProjectionConfig, PropertyDef
@@ -23,12 +25,6 @@ if TYPE_CHECKING:
 
     from .section import Section
     from .visuals.base import BaseVisual
-
-
-from pbi_core.attrs import Json, converter, define
-
-from .expansion_state import ExpansionState
-from .performance import Performance, get_performance
 
 
 @define()
