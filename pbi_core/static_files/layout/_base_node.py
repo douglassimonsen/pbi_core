@@ -45,6 +45,8 @@ class LayoutNode(BaseValidation):
         """
         ret = {}
         for field in fields(self.__class__):
+            if field.init is False:
+                continue
             ret[field.name] = self.serialize_helper(getattr(self, field.name))
         return ret
 

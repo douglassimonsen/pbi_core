@@ -26,7 +26,7 @@ if TYPE_CHECKING:
     from pbi_core.static_files.layout.layout import Layout
 
 
-@define()
+@define(repr=True)
 class Section(LayoutNode):
     height: int
     """Height of the page (in pixels) - optional only for 'DeprecatedDynamic' option, required otherwise."""

@@ -483,7 +483,7 @@ class DataTransform(LayoutNode):
     expansionStates: list[ExpansionState] | None = None
 
 
-@define()
+@define(repr=True)
 class VisualContainer(LayoutNode):
     """A Container for visuals in a report page.
 
