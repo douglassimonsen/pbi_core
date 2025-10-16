@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from .performance_trace import Performance, PerformanceTrace
+from .performance_trace import Performance
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
@@ -20,5 +20,5 @@ def get_performance(model: "BaseTabularModel", commands: list[str], *, clear_cac
 
 
     """
-    with PerformanceTrace(model) as perf_trace:
+    with model.get_performance_trace() as perf_trace:
         return perf_trace.get_performance(commands, clear_cache=clear_cache)

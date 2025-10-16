@@ -8,6 +8,7 @@ from attrs import define, field, fields
 from structlog import get_logger
 
 from pbi_core.ssas.server.utils import COMMAND_TEMPLATES
+from pbi_core.ssas.trace import PerformanceTrace
 
 logger = get_logger()
 if TYPE_CHECKING:
@@ -249,6 +250,22 @@ class BaseTabularModel:
             "tables",
             "variations",
         )
+
+    def get_performance_trace(self) -> PerformanceTrace:
+        """Calculates performance of a DAX query using a Trace.
+
+        Args:
+            model (BaseTabularModel): the SSAS instance the DAX should be run against
+            commands (list[str]): A list of DAX queries to run against the SSAS model
+            clear_cache (bool): Whether to clear the SSAS cache before running the queries.
+                Useful to test cold start times for users
+
+        Returns:
+            Performance: contains memory and time usage of the DAX query
+
+
+        """
+        return PerformanceTrace(self)
 
 
 class LocalTabularModel(BaseTabularModel):

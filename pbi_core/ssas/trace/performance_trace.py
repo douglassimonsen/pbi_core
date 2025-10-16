@@ -74,7 +74,8 @@ class ThreadResult:
         total_duration = execution_metrics["durationMs"]
         total_cpu_time = execution_metrics["totalCpuTimeMs"]
         query_cpu_time = execution_metrics["queryProcessingCpuTimeMs"]
-        vertipaq_cpu_time = execution_metrics["vertipaqJobCpuTimeMs"]
+        # Trivial DAX commands like EVALUATE {1} don't have vertipaqJobCpuTimeMs since they don't touch any tables
+        vertipaq_cpu_time = execution_metrics.get("vertipaqJobCpuTimeMs", 0)
         execution_delay = execution_metrics["executionDelayMs"]
         approximate_peak_consumption_kb = execution_metrics["approximatePeakMemConsumptionKB"]
 
@@ -294,7 +295,7 @@ class PerformanceTrace:
     @staticmethod
     def _normalize_command(command: str) -> str:
         """Normalize commands to ensure that we can match them to trace records."""
-        return command.replace("\r\n", "\n")
+        return command.replace("\r\n", "\n").strip()
 
     def get_performance(self, commands: str | list[str], *, clear_cache: bool = False) -> list[Performance]:
         def thread_func(command: str) -> ThreadResult:

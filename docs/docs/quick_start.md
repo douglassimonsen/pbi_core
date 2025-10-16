@@ -118,7 +118,7 @@ This example shows how to analyze the performance of a Power BI report's visual:
 
 !!! warning
 
-    In the current implementation, the performance trace occassionally hangs. If this happens, you can kill the process and restart it. This is a known issue that will be fixed in a future release.
+    In the previous implementations, the performance trace occassionally hangs for 2-5 minutes. The library has solved this by pinging the SSAS server during the trace with a trivial `EVALUATE {1}` command. Although this seems to have fixed the issue, it clearly doesn't touch the root issue. Therefore, if the trace hangs, you may need to kill and restart the process.
 
 
 ```python linenums="1"
@@ -127,10 +127,10 @@ from pbi_core import LocalReport
 
 report = LocalReport.load_pbix("example_pbis/example_section_visibility.pbix")
 # x = report.static_files.layout.sections[0].visualContainers[0].get_performance(report.ssas)
-x = report.static_files.layout.sections[0].get_performance(report.ssas)
-print(x)
+perf = report.static_files.layout.sections[0].get_performance(report.ssas)
+print(perf)
 print("=================")
-print(x[0].pprint())
+print(perf[0].pprint())
 ```
 
 Which generates the following output.
@@ -164,6 +164,38 @@ Performance(
     Rows Returned: 5
 )
 
+```
+
+### Custom DAX Commands
+
+You can also trace custom DAX commands like so:
+
+
+```python linenums="1"
+import pbi_core
+
+command = "EVALUATE {1}"
+report = pbi_core.LocalReport.load_pbix("example_pbis/api.pbix")
+with report.ssas.get_performance_trace() as perf_trace:
+    perf = perf_trace.get_performance(command)
+print(perf[0])
+```   
+
+Which generates the following output:
+
+```shell
+2025-10-16 16:02:44 [info     ] Loading PBIX report            load_ssas=True load_static_files=True path=example_pbis/api.pbix
+2025-10-16 16:02:44 [info     ] Loading PBIX SSAS              path=example_pbis/api.pbix
+2025-10-16 16:02:44 [info     ] Re-using existing local SSAS instance port=52125
+2025-10-16 16:02:44 [warning  ] Removing old version of PBIX data model for new version db_name=api
+2025-10-16 16:02:44 [info     ] Tabular Model load complete   
+2025-10-16 16:02:44 [info     ] Syncing from SSAS              db_name=api
+2025-10-16 16:02:44 [info     ] Loading PBIX Static Files      path=example_pbis/api.pbix
+2025-10-16 16:02:44 [info     ] Loaded PBIX report             components=ssas+static
+2025-10-16 16:02:44 [info     ] Beginning trace               
+2025-10-16 16:02:46 [info     ] Running DAX commands          
+2025-10-16 16:02:47 [info     ] Terminating trace             
+[Performance(rows=1, total_duration=0.0, total_cpu_time=0.0, peak_consumption=0.0 B]
 ```
 
 ## Styling Layout Elements
