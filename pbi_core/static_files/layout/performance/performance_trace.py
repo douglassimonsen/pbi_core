@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
+from types import TracebackType
 from typing import TYPE_CHECKING, Any
 
 import jinja2
@@ -63,8 +64,11 @@ class ThreadResult:
         for record in trace_records:
             event_info[record["EventClass"]] = record
 
-        execution_metrics = json.loads(event_info["EXECUTION_METRICS"]["TextData"])
         command_text = event_info["QUERY_END"]["TextData"]
+        server_name = event_info["QUERY_END"]["ServerName"]
+        database_name = event_info["QUERY_END"]["DatabaseName"]
+
+        execution_metrics = json.loads(event_info["EXECUTION_METRICS"]["TextData"])
         start_datetime = datetime.datetime.strptime(execution_metrics["timeStart"], "%Y-%m-%dT%H:%M:%S.%f%z")
         end_datetime = datetime.datetime.strptime(execution_metrics["timeEnd"], "%Y-%m-%dT%H:%M:%S.%f%z")
         total_duration = execution_metrics["durationMs"]
@@ -78,6 +82,8 @@ class ThreadResult:
             if record.get("EventClass") == "QUERY_END":
                 return Performance(
                     command_text=command_text,
+                    server_name=server_name,
+                    database_name=database_name,
                     start_datetime=start_datetime,
                     end_datetime=end_datetime,
                     total_duration=total_duration,
@@ -97,6 +103,13 @@ class ThreadResult:
 class Performance:
     command_text: str
     """The text of the command being executed"""
+    server_name: str
+    """The name of the server where the command was executed"""
+    database_name: str
+    """The name of the database where the command was executed
+
+    Note:
+        When the pbyx was loaded by this library, the database name will match the name of the pbix file."""
     start_datetime: datetime.datetime
     """When the query started"""
     end_datetime: datetime.datetime
@@ -158,9 +171,11 @@ class Subscriber:
     def __init__(self, subscription_create_command: str, conn: Connection, events: Iterable[TraceEvents]) -> None:
         """Initializes the Subscriber in Python and SSAS.
 
-        Note: Without the self.pinger on a separate doing a trivial ping, the subscription occasionally
-        (10% in tests) takes forever (1-5 minutes vs 1-2 seconds) to be created. Although hopefully
-        we solve the root cause, this workaround appears to solve the issue for now.
+        Note:
+            Without the self.pinger on a separate doing a trivial ping, the subscription occasionally
+            (10% in tests) takes forever (1-5 minutes vs 1-2 seconds) to be created. Although hopefully
+            we solve the root cause, this workaround appears to solve the issue for now.
+
         """
         ping_thread = threading.Thread(target=self.pinger, args=(conn.clone(),), daemon=True)
         ping_thread.start()
@@ -203,9 +218,14 @@ class Subscriber:
 
 
 class PerformanceTrace:
+    """Context manager to manage the lifecycle of a trace in SSAS.
+
+    Once initialized, this class can be used to run DAX commands and get performance metrics on them.
+    """
+
     events: Iterable[TraceEvents]
+    """A list of events to capture in the trace. Defaults to TRACE_DEFAULT_EVENTS"""
     db: "BaseTabularModel"
-    commands: list[str]
     trace_create_command: str
     subscription_create_command: str
     trace_delete_command: str
@@ -214,12 +234,10 @@ class PerformanceTrace:
     def __init__(
         self,
         db: "BaseTabularModel",
-        commands: list[str],
         events: Iterable[TraceEvents] = TRACE_DEFAULT_EVENTS,
     ) -> None:
         self.events = events
         self.db: BaseTabularModel = db
-        self.commands = [x.replace("\r\n", "\n") for x in commands]
 
         next_day = (datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
         trace_name = f"pbi_core_{next_day.replace(':', '_')}"
@@ -238,7 +256,25 @@ class PerformanceTrace:
         )
         self.clear_cache_command = TRACE_TEMPLATES["clear_cache.xml"].render(database_name=self.db.db_name)
 
+    def __enter__(self) -> "PerformanceTrace":
+        return self.initialize_tracing()
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> None:
+        self.terminate_tracing()
+
     def initialize_tracing(self) -> "PerformanceTrace":
+        """Creates the SSAS trace and starts the subscriber thread to poll for records.
+
+        Note:
+            Currently, the subscriber also creates a thread that does a trivial ping every second to keep
+            the subscription stream alive. See the Subscription class for more details.
+
+        """
         logger.info("Beginning trace")
         self.db.server.query_xml(self.trace_create_command)
         self.subscriber = Subscriber(
@@ -249,15 +285,23 @@ class PerformanceTrace:
         return self
 
     def terminate_tracing(self) -> None:
+        """Deletes the SSAS trace and stops the subscriber thread from polling."""
         logger.info("Terminating trace")
         with self.db.server.conn(db_name=self.db.db_name) as conn:
             conn.execute_xml(self.trace_delete_command)
+        self.subscriber.kill_polling()
 
-    def get_performance(self, *, clear_cache: bool = False) -> list[Performance]:
+    @staticmethod
+    def _normalize_command(command: str) -> str:
+        """Normalize commands to ensure that we can match them to trace records."""
+        return command.replace("\r\n", "\n")
+
+    def get_performance(self, commands: str | list[str], *, clear_cache: bool = False) -> list[Performance]:
         def thread_func(command: str) -> ThreadResult:
             try:
                 with self.get_conn() as conn:
                     reader = conn.execute_dax(command)
+                    # The limit of 500 is to mimic the behavior of PowerBI, which returns by defult 500 rows
                     rows_returned = len(reader.fetch_many(limit=500))
 
                     # See note in Reader.fetch_stream() documentation for why we do this
@@ -269,7 +313,6 @@ class PerformanceTrace:
                     rows_returned=-1,
                     error=e,
                 )
-            # The limit of 500 is to mimic the behavior of PowerBI, which returns by defult 500 rows
             return ThreadResult(
                 command=command,
                 rows_returned=rows_returned,
@@ -281,10 +324,13 @@ class PerformanceTrace:
             logger.info("Clearing cache before performance testing")
             with self.db.server.conn(db_name=self.db.db_name) as conn:
                 conn.execute_xml(self.clear_cache_command)
+        if isinstance(commands, str):
+            commands = [commands]
+        commands = [self._normalize_command(cmd) for cmd in commands]
 
         with ThreadPoolExecutor() as dax_executor:
             logger.info("Running DAX commands")
-            command_results = list(dax_executor.map(thread_func, self.commands))
+            command_results = list(dax_executor.map(thread_func, commands))
 
         missing_subscription_records = command_results
         for _ in range(5):
@@ -307,9 +353,6 @@ class PerformanceTrace:
             missing_commands = ", ".join(cmd.command for cmd in missing_subscription_records)
             msg = f"Some commands did not have trace records: {missing_commands}"
             raise ValueError(msg)
-
-        self.subscriber.kill_polling()
-        self.terminate_tracing()
 
         return [
             command_result.get_performance(

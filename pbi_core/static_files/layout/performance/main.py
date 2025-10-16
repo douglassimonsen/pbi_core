@@ -20,5 +20,5 @@ def get_performance(model: "BaseTabularModel", commands: list[str], *, clear_cac
 
 
     """
-    perf_trace = PerformanceTrace(model, commands)
-    return perf_trace.get_performance(clear_cache=clear_cache)
+    with PerformanceTrace(model) as perf_trace:
+        return perf_trace.get_performance(commands, clear_cache=clear_cache)
