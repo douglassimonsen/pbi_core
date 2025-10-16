@@ -6,13 +6,13 @@ import threading
 import time
 from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from types import TracebackType
 from typing import TYPE_CHECKING, Any
 
 import jinja2
+from attrs import frozen
 from pbi_pyadomd import Connection, Reader
 
 from pbi_core.logging import get_logger
@@ -53,7 +53,7 @@ def pretty_size(n: int) -> str:
     return f"{pretty_n} {units[prefix]}"
 
 
-@dataclass
+@frozen()
 class ThreadResult:
     command: str
     rows_returned: int
@@ -99,7 +99,7 @@ class ThreadResult:
         raise ValueError(msg)
 
 
-@dataclass
+@frozen()
 class Performance:
     command_text: str
     """The text of the command being executed"""
@@ -317,8 +317,6 @@ class PerformanceTrace:
                 command=command,
                 rows_returned=rows_returned,
             )
-
-        self.initialize_tracing()
 
         if clear_cache:
             logger.info("Clearing cache before performance testing")

@@ -1,11 +1,10 @@
 import json
 import zipfile
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from zipfile import ZipFile
 
 import bs4
-from attrs import field
+from attrs import define, field
 
 from pbi_core.attrs.extra import repr_exists, repr_len
 
@@ -19,7 +18,7 @@ if TYPE_CHECKING:
 LAYOUT_ENCODING = "utf-16-le"
 
 
-@dataclass
+@define()
 class Version:
     major: int
     minor: int

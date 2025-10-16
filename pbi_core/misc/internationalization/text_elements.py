@@ -1,8 +1,8 @@
 import json
-from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal
 
 import openpyxl
+from attrs import define
 
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables import Column, Hierarchy, Measure, Table
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 logger = get_logger()
 
 
-@dataclass
+@define()
 class TextElement:
     category: str
     """Used to group elements into different Excel sheets"""

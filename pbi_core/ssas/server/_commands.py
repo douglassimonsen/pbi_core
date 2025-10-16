@@ -1,5 +1,4 @@
-import dataclasses
-
+import attrs
 import bs4
 import jinja2
 
@@ -67,7 +66,7 @@ base_commands = {
 }
 
 
-@dataclasses.dataclass
+@attrs.define()
 class Command:
     entity_template: jinja2.Template
     base_template: jinja2.Template

@@ -1,9 +1,9 @@
-import dataclasses
 import pathlib
 import socket
 from typing import Any
 from xml.sax.saxutils import escape  # nosec
 
+import attrs
 import jinja2
 import psutil
 
@@ -60,7 +60,7 @@ ROOT_FOLDER = pathlib.Path(__file__).parents[2]
 SKU_ERROR = "ImageLoad/ImageSave commands supports loading/saving data for Excel, Power BI Desktop or Zip files. File extension can be only .XLS?, .PBIX or .ZIP."  # noqa: E501
 
 
-@dataclasses.dataclass
+@attrs.frozen()
 class ServerInfo:
     """Basic information about an SSAS instance from its PID."""
 

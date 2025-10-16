@@ -1,11 +1,10 @@
 import copy
 import pathlib
 import shutil
-from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, cast
 
 import bs4
-from attrs import define, fields
+from attrs import define, field, fields
 from structlog import get_logger
 
 from pbi_core.ssas.server.utils import COMMAND_TEMPLATES
@@ -61,11 +60,11 @@ if TYPE_CHECKING:
     from pbi_core.ssas.server.server import BaseServer, LocalServer
 
 
-@dataclass
+@define()
 class Update:
-    added: list["SsasTable"] = field(default_factory=list)
-    updated: list["SsasAlter"] = field(default_factory=list)
-    deleted: list[int] = field(default_factory=list)
+    added: list["SsasTable"] = field(factory=list)
+    updated: list["SsasAlter"] = field(factory=list)
+    deleted: list[int] = field(factory=list)
 
 
 # TODO: make this fully an attrs class like everything else
