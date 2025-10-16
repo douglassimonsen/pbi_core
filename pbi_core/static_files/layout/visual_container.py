@@ -299,8 +299,7 @@ class QueryBindingAggregates(LayoutNode):
 
 @define()
 class Highlight(LayoutNode):
-    # TODO: merge with VisualFilterExpression. For some reason,
-    # pydantic thinks From should be None when using the visal filter expression
+    # TODO: merge with VisualFilterExpression
     Version: int | None = None
     From: list[FromType] | None = None
     Where: list[Condition]

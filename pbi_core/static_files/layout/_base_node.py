@@ -165,6 +165,8 @@ def _get_xpath(  # noqa: C901  # too complex, but it's actually not that complex
 ) -> list[str | int] | None:
     def _xpath_attrs(parent: LayoutNode, child: LayoutNode, xpath: list[str | int]) -> list[str | int] | None:
         for attr in fields(parent.__class__):
+            if attr.init is False:
+                continue
             val = getattr(parent, attr.name)
             ret = _get_xpath(val, child, xpath=[*xpath, attr.name])
             if ret is not None:

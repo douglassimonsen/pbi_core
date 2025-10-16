@@ -13,22 +13,9 @@ report.save_pbix("example_out.pbix")  # (1)!
 
 !!! danger "Common Issue"
 
-    One of the current limitations in the `pbi_core` library is the incomplete [pydantic](https://docs.pydantic.dev/latest/) typing of the Layout file. This generally appears as a message like: 
+    One of the current limitations in the `pbi_core` library is the incomplete [attrs](https://www.attrs.org/en/stable/) typing of the Layout file, especially of the properties of visual elements. 
 
-    ```shell
-    pydantic_core._pydantic_core.ValidationError: 2 validation errors for Layout
-    sections.0.visualContainers.1.config.singleVisual.TableChart.objects.columnHeaders.0.properties.underline
-    Extra inputs are not permitted [type=extra_forbidden, input_value={'expr': {'Literal': {'Value': 'true'}}}, input_type=dict]
-        For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden
-    sections.0.visualContainers.1.config.singleVisual.TableChart.objects.values.0.properties.underline
-    Extra inputs are not permitted [type=extra_forbidden, input_value={'expr': {'Literal': {'Value': 'true'}}}, input_type=dict]
-        For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden
-    ```
-
-    If you encounter an error message like this, please do the following:
-
-    1. Create an issue on the [Github page](https://github.com/douglassimonsen/pbi_core/issues) with the error message. If you're able, attaching a `pbix` file will make the fix quicker and can be added to the test suite to ensure the issue doesn't re-appear in future versions
-    2. Add  `--allow-extra` to your python call. This will tell Pydantic to [include extra arguments](https://github.com/pydantic/pydantic/issues/6145#issuecomment-1592568675) as standard JSON lists/dicts/strings/ints
+    If you encounter an error message for this, please reate an issue on the [Github page](https://github.com/douglassimonsen/pbi_core/issues) with the error message. If you're able, attaching a `pbix` file will make the fix quicker and can be added to the test suite to ensure the issue doesn't re-appear in future versions
 
 ## Altering Data model
 
@@ -41,28 +28,30 @@ from pbi_core import LocalReport
 
 report = LocalReport.load_pbix("example.pbix")
 for column in report.ssas.columns:
+    # Keys are system columns that can't be viewed or altered in PowerBI
+    if column.is_key:
+        continue
     column.description = "pbi_core has touched this"
-    column.alter()  # saves the changes to the SSAS DB
-
+# save_pbix will automatically update the SSAS model before saving to file
 report.save_pbix("example_out.pbix")
 ```
 
-## Finding records in SSAS tables
+## Exporting records in SSAS tables
 
 This example shows how to find SSAS records and extract data from report columns
 
 ```python3 linenums="1"
 from pbi_core import LocalReport
 
-report = LocalReport.load_pbix("example.pbix")
+report = LocalReport.load_pbix("example_pbis/api.pbix")
 values = report.ssas.columns.find({"explicit_name": "a"}).data()
 print(values)
 values2 = report.ssas.tables.find({"name": "Table"}).data()
 print(values2)
 
 measure = report.ssas.measures.find({"name": "Measure"})
-column = measure.table().columns()[1]  
 # Note: the first column is a hidden row-count column that can't be used in measures
+column = [x for x in measure.table().columns() if not x.is_key][0]
 values3 = measure.data(column, head=10)
 print(values3)
 ```
