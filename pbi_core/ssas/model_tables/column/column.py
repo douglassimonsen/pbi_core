@@ -30,7 +30,7 @@ logger: BoundLogger = get_logger()
 
 
 @define()
-class Column(SsasRenameRecord, CommandMixin):  # pyright: ignore[reportIncompatibleMethodOverride]
+class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompatibleMethodOverride]
     """A column of an SSAS table.
 
     PowerBI spec: [Power BI](https://learn.microsoft.com/en-us/analysis-services/tabular-models/column-properties-ssas-tabular?view=asallproducts-allversions)

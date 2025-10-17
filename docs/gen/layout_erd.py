@@ -135,11 +135,11 @@ class ERD:
         return ret[0]
 
     def process(self) -> None:
-        from pbi_mermaid import MermaidDiagram  # noqa: PLC0415
+        from pbi_mermaid import Flowchart  # noqa: PLC0415
 
         self.visited_nodes.clear()
         _head, nodes, links = self.helper(Layout)
-        diagram = MermaidDiagram(list(nodes), list(links), title="ERD for Layout")
+        diagram = Flowchart(list(nodes), list(links), title="ERD for Layout")
 
         break_nodes = [self._get_node(nodes, name) for name in BREAK_NODE_CLASSES]
 

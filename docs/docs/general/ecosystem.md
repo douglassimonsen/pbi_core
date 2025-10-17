@@ -3,7 +3,7 @@
 **pbi_core**: The main library. This library provides the core functionality for working with Power BI reports. It can:
 - Independently create an SSAS backend and load a Power BI report file (.pbix), allowing for programmatic manipulation of Power BI reports.
 - Run performance traces and extract the data for visuals, measures, columns, and tables in the Power BI report.
-- Provides a full [Pydantic](https://docs.pydantic.dev/latest/) model for the Power BI layout. 
+- Provides a full [attrs](https://www.attrs.org/en/stable/) model for the Power BI layout.
 
 **pbi_parsers**: A library that provides parsers for the DAX and M Query languages used in Power BI. This library allows deeper introspection of the queries used in a report. It also implements basic auto-formatting for DAX queries.
 

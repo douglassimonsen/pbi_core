@@ -10,3 +10,5 @@ dist
 *.VSCodeCounter
 pbi_core/local
 todo
+test*
+!tests/

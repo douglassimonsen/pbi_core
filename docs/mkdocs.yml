@@ -9,6 +9,7 @@ theme:
 
 plugins:
   - search
+  - glightbox
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -19,11 +20,12 @@ plugins:
             show_signature_annotations: true
 
 markdown_extensions:
+  - admonition
+  - attr_list
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
-  - admonition
   - pymdownx.details
   - pymdownx.inlinehilite
   - pymdownx.snippets

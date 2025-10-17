@@ -19,7 +19,7 @@ dependencies = [
   "jinja2>=3.1.6",
   "jsondiff>=2.2.1",
   "lxml>=5.3.0",
-  "pbi_mermaid>=0.3.0",
+  "pbi_mermaid>=0.4.0",
   "pbi_pyadomd>=1.4.2",
   "pbi_prototype_query_translation>=1.1.6",
   "pbi_parsers>=0.9.5",
@@ -45,6 +45,7 @@ docs = [
   "mkdocs>=1.6.1",
   "mkdocs-material>=9.6.16",
   "mkdocstrings-python>=0.30.0",
+  "mkdocs-glightbox>=0.5.1",
 ]
 internationalization = [
   "openpyxl>=3.1.5",

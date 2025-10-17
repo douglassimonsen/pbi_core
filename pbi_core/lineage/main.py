@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, Any, Literal, Protocol
 
 if TYPE_CHECKING:
-    from pbi_mermaid import Link, MermaidDiagram, Node
+    from pbi_mermaid import Flowchart, Link, Node
 
 """
 #ffffcc, #ffcc99, #ffcccc,
@@ -62,7 +62,7 @@ class LineageNode:
         return Node(
             id=f"{value.__class__.__name__}-{value.id}",
             content=value.pbi_core_name(),
-            style=CLASS_STYLES[value.__class__.__name__],
+            classes=[value.__class__.__name__],
             shape=NodeShape.round_edge,
         )
 
@@ -79,9 +79,16 @@ class LineageNode:
             nodes.extend(child_nodes)
         return nodes, links
 
-    def to_mermaid(self) -> "MermaidDiagram":
-        from pbi_mermaid import MermaidDiagram  # noqa: PLC0415
+    def to_mermaid(self) -> "Flowchart":
+        from pbi_mermaid import Flowchart, NodeClass  # noqa: PLC0415
 
         base_node = self._create_node(self.value)
         nodes, links = self._to_mermaid_helper(base_node)
-        return MermaidDiagram(title="Lineage Chart", nodes=nodes, links=links)
+        node_classes = [NodeClass(name=name, style=style) for name, style in sorted(CLASS_STYLES.items())]
+
+        return Flowchart(
+            title="Lineage Chart",
+            nodes=nodes,
+            node_classes=node_classes,
+            links=links,
+        )

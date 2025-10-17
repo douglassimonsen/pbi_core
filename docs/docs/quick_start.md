@@ -56,7 +56,7 @@ values3 = measure.data(column, head=10)
 print(values3)
 ```
 
-## pbi_core Lineage Chart
+## Generating Lineage Charts
 
 This example displays a lineage chart in HTML:
 
@@ -65,8 +65,14 @@ from pbi_core import LocalReport
 
 report = LocalReport.load_pbix("example.pbix", kill_ssas_on_exit=True)
 col = report.ssas.columns.find({"explicit_name": "MeasureColumn"})
+# Can also generate a "children" lineage chart
+# Can also call to_markdown() to embed the results in markdown
 col.get_lineage("parents").to_mermaid().show()
 ```
+Example lineage output:
+
+![Example Lineage Chart](_images/quick_start_lineage.png){: style="height:150px"}
+
 
 ## Improved Multilanguage Support
 
