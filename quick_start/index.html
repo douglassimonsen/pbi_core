@@ -1,7 +1,4 @@
-
-<!doctype html>
-<html lang="en" class="no-js">
-  <head>
+<!DOCTYPE html><html lang="en" class="no-js"><head>
     
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -38,7 +35,7 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
@@ -52,7 +49,17 @@
     
     
     
-  </head>
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
   
   
     <body dir="ltr">
@@ -83,12 +90,12 @@
     <a href=".." title="Pbi_core Documentation" class="md-header__button md-logo" aria-label="Pbi_core Documentation" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
       
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -116,7 +123,7 @@
       
         <label class="md-header__button md-icon" for="__search">
           
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
         </label>
         <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
@@ -125,15 +132,15 @@
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
         
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
         </button>
       </nav>
       
@@ -169,7 +176,7 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -181,7 +188,7 @@
     <a href=".." title="Pbi_core Documentation" class="md-nav__button md-logo" aria-label="Pbi_core Documentation" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
 
     </a>
     Pbi_core Documentation
@@ -282,18 +289,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#finding-records-in-ssas-tables" class="md-nav__link">
+  <a href="#exporting-records-in-ssas-tables" class="md-nav__link">
     <span class="md-ellipsis">
-      Finding records in SSAS tables
+      Exporting records in SSAS tables
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#pbi_core-lineage-chart" class="md-nav__link">
+  <a href="#generating-lineage-charts" class="md-nav__link">
     <span class="md-ellipsis">
-      pbi_core Lineage Chart
+      Generating Lineage Charts
     </span>
   </a>
   
@@ -373,7 +380,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3">
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -457,7 +464,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3">
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
@@ -1400,7 +1407,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4">
         
           
           <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
@@ -1484,7 +1491,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_3">
         
           
           <label class="md-nav__link" for="__nav_3_4_3" id="__nav_3_4_3_label" tabindex="0">
@@ -1683,7 +1690,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4">
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -1797,7 +1804,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5">
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -1858,7 +1865,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2">
         
           
           <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
@@ -3659,7 +3666,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -3727,7 +3734,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7">
         
           
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
@@ -3811,7 +3818,7 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -3846,18 +3853,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#finding-records-in-ssas-tables" class="md-nav__link">
+  <a href="#exporting-records-in-ssas-tables" class="md-nav__link">
     <span class="md-ellipsis">
-      Finding records in SSAS tables
+      Exporting records in SSAS tables
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#pbi_core-lineage-chart" class="md-nav__link">
+  <a href="#generating-lineage-charts" class="md-nav__link">
     <span class="md-ellipsis">
-      pbi_core Lineage Chart
+      Generating Lineage Charts
     </span>
   </a>
   
@@ -3934,107 +3941,105 @@
 
 <h2 id="basic-functionality">Basic Functionality<a class="headerlink" href="#basic-functionality" title="Permanent link">#</a></h2>
 <p>This basic example tests that your PowerBI report can be parsed and reassembled by <code>pbi_core</code>. </p>
-<div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<div class="language-python3 highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
 <span class="normal"><a href="#__codelineno-0-3">3</a></span>
 <span class="normal"><a href="#__codelineno-0-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>  <span class="c1"># (1)!</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;example_out.pbix&quot;</span><span class="p">)</span>  <span class="c1"># (1)!</span>
-</span></code></pre></div></td></tr></table></div>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">"example.pbix"</span><span class="p">)</span>  <span class="c1"># (1)!</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">"example_out.pbix"</span><span class="p">)</span>  <span class="c1"># (1)!</span>
+</span></code></pre></div></td></tr></tbody></table></div>
 <div class="admonition danger">
 <p class="admonition-title">Common Issue</p>
-<p>One of the current limitations in the <code>pbi_core</code> library is the incomplete <a href="https://docs.pydantic.dev/latest/">pydantic</a> typing of the Layout file. This generally appears as a message like: </p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pydantic_core._pydantic_core.ValidationError:<span class="w"> </span><span class="m">2</span><span class="w"> </span>validation<span class="w"> </span>errors<span class="w"> </span><span class="k">for</span><span class="w"> </span>Layout
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sections.0.visualContainers.1.config.singleVisual.TableChart.objects.columnHeaders.0.properties.underline
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Extra<span class="w"> </span>inputs<span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>permitted<span class="w"> </span><span class="o">[</span><span class="nv">type</span><span class="o">=</span>extra_forbidden,<span class="w"> </span><span class="nv">input_value</span><span class="o">={</span><span class="s1">&#39;expr&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;Literal&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;Value&#39;</span>:<span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="o">}}}</span>,<span class="w"> </span><span class="nv">input_type</span><span class="o">=</span>dict<span class="o">]</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span>For<span class="w"> </span>further<span class="w"> </span>information<span class="w"> </span>visit<span class="w"> </span>https://errors.pydantic.dev/2.11/v/extra_forbidden
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>sections.0.visualContainers.1.config.singleVisual.TableChart.objects.values.0.properties.underline
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Extra<span class="w"> </span>inputs<span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>permitted<span class="w"> </span><span class="o">[</span><span class="nv">type</span><span class="o">=</span>extra_forbidden,<span class="w"> </span><span class="nv">input_value</span><span class="o">={</span><span class="s1">&#39;expr&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;Literal&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;Value&#39;</span>:<span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="o">}}}</span>,<span class="w"> </span><span class="nv">input_type</span><span class="o">=</span>dict<span class="o">]</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span>For<span class="w"> </span>further<span class="w"> </span>information<span class="w"> </span>visit<span class="w"> </span>https://errors.pydantic.dev/2.11/v/extra_forbidden
-</span></code></pre></div>
-<p>If you encounter an error message like this, please do the following:</p>
-<ol>
-<li>Create an issue on the <a href="https://github.com/douglassimonsen/pbi_core/issues">Github page</a> with the error message. If you're able, attaching a <code>pbix</code> file will make the fix quicker and can be added to the test suite to ensure the issue doesn't re-appear in future versions</li>
-<li>Add  <code>--allow-extra</code> to your python call. This will tell Pydantic to <a href="https://github.com/pydantic/pydantic/issues/6145#issuecomment-1592568675">include extra arguments</a> as standard JSON lists/dicts/strings/ints</li>
-</ol>
+<p>One of the current limitations in the <code>pbi_core</code> library is the incomplete <a href="https://www.attrs.org/en/stable/">attrs</a> typing of the Layout file, especially of the properties of visual elements. </p>
+<p>If you encounter an error message for this, please reate an issue on the <a href="https://github.com/douglassimonsen/pbi_core/issues">Github page</a> with the error message. If you're able, attaching a <code>pbix</code> file will make the fix quicker and can be added to the test suite to ensure the issue doesn't re-appear in future versions</p>
 </div>
 <h2 id="altering-data-model">Altering Data model<a class="headerlink" href="#altering-data-model" title="Permanent link">#</a></h2>
 <p>This example shows how you can add automatic descriptions to PowerBI columns (possibly from some governance tool??)</p>
-<div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
-<span class="normal"><a href="#__codelineno-2-2">2</a></span>
-<span class="normal"><a href="#__codelineno-2-3">3</a></span>
-<span class="normal"><a href="#__codelineno-2-4">4</a></span>
-<span class="normal"><a href="#__codelineno-2-5">5</a></span>
-<span class="normal"><a href="#__codelineno-2-6">6</a></span>
-<span class="normal"><a href="#__codelineno-2-7">7</a></span>
-<span class="normal"><a href="#__codelineno-2-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a>    <span class="n">column</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;pbi_core has touched this&quot;</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a>    <span class="n">column</span><span class="o">.</span><span class="n">alter</span><span class="p">()</span>  <span class="c1"># saves the changes to the SSAS DB</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;example_out.pbix&quot;</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
-<h2 id="finding-records-in-ssas-tables">Finding records in SSAS tables<a class="headerlink" href="#finding-records-in-ssas-tables" title="Permanent link">#</a></h2>
+<div class="language-python3 highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">"example.pbix"</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>    <span class="c1"># Keys are system columns that can't be viewed or altered in PowerBI</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>    <span class="k">if</span> <span class="n">column</span><span class="o">.</span><span class="n">is_key</span><span class="p">:</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>        <span class="k">continue</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a>    <span class="n">column</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">"pbi_core has touched this"</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="c1"># save_pbix will automatically update the SSAS model before saving to file</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">"example_out.pbix"</span><span class="p">)</span>
+</span></code></pre></div></td></tr></tbody></table></div>
+<h2 id="exporting-records-in-ssas-tables">Exporting records in SSAS tables<a class="headerlink" href="#exporting-records-in-ssas-tables" title="Permanent link">#</a></h2>
 <p>This example shows how to find SSAS records and extract data from report columns</p>
-<div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-3-10">10</a></span>
-<span class="normal"><a href="#__codelineno-3-11">11</a></span>
-<span class="normal"><a href="#__codelineno-3-12">12</a></span>
-<span class="normal"><a href="#__codelineno-3-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="n">values</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;explicit_name&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="n">values2</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Table&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">values2</span><span class="p">)</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="n">measure</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">measures</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Measure&quot;</span><span class="p">})</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="n">column</span> <span class="o">=</span> <span class="n">measure</span><span class="o">.</span><span class="n">table</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>  
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="c1"># Note: the first column is a hidden row-count column that can&#39;t be used in measures</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="n">values3</span> <span class="o">=</span> <span class="n">measure</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">values3</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
-<h2 id="pbi_core-lineage-chart">pbi_core Lineage Chart<a class="headerlink" href="#pbi_core-lineage-chart" title="Permanent link">#</a></h2>
+<div class="language-python3 highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">"example_pbis/api.pbix"</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="n">values</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">"explicit_name"</span><span class="p">:</span> <span class="s2">"a"</span><span class="p">})</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="n">values2</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Table"</span><span class="p">})</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">values2</span><span class="p">)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="n">measure</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">measures</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Measure"</span><span class="p">})</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="c1"># Note: the first column is a hidden row-count column that can't be used in measures</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="n">column</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">measure</span><span class="o">.</span><span class="n">table</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">is_key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="n">values3</span> <span class="o">=</span> <span class="n">measure</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">values3</span><span class="p">)</span>
+</span></code></pre></div></td></tr></tbody></table></div>
+<h2 id="generating-lineage-charts">Generating Lineage Charts<a class="headerlink" href="#generating-lineage-charts" title="Permanent link">#</a></h2>
 <p>This example displays a lineage chart in HTML:</p>
-<div class="language-python3 highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<p></p><div class="language-python3 highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">5</a></span>
+<span class="normal"><a href="#__codelineno-3-6">6</a></span>
+<span class="normal"><a href="#__codelineno-3-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">"example.pbix"</span><span class="p">,</span> <span class="n">kill_ssas_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="n">col</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">"explicit_name"</span><span class="p">:</span> <span class="s2">"MeasureColumn"</span><span class="p">})</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="c1"># Can also generate a "children" lineage chart</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="c1"># Can also call to_markdown() to embed the results in markdown</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="n">col</span><span class="o">.</span><span class="n">get_lineage</span><span class="p">(</span><span class="s2">"parents"</span><span class="p">)</span><span class="o">.</span><span class="n">to_mermaid</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></code></pre></div></td></tr></tbody></table></div>
+Example lineage output:<p></p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../_images/quick_start_lineage.png" data-desc-position="bottom"><img alt="Example Lineage Chart" src="../_images/quick_start_lineage.png" style="height:150px"></a></p>
+<h2 id="improved-multilanguage-support">Improved Multilanguage Support<a class="headerlink" href="#improved-multilanguage-support" title="Permanent link">#</a></h2>
+<p>This example displays the ability to easily convert PBIX reports to alternate languages:</p>
+<div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
 <span class="normal"><a href="#__codelineno-4-2">2</a></span>
 <span class="normal"><a href="#__codelineno-4-3">3</a></span>
 <span class="normal"><a href="#__codelineno-4-4">4</a></span>
-<span class="normal"><a href="#__codelineno-4-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">,</span> <span class="n">kill_ssas_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="n">col</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;explicit_name&quot;</span><span class="p">:</span> <span class="s2">&quot;MeasureColumn&quot;</span><span class="p">})</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="n">col</span><span class="o">.</span><span class="n">get_lineage</span><span class="p">(</span><span class="s2">&quot;parents&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_mermaid</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</span></code></pre></div></td></tr></table></div>
-<h2 id="improved-multilanguage-support">Improved Multilanguage Support<a class="headerlink" href="#improved-multilanguage-support" title="Permanent link">#</a></h2>
-<p>This example displays the ability to easily convert PBIX reports to alternate languages:</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
-<span class="normal"><a href="#__codelineno-5-2">2</a></span>
-<span class="normal"><a href="#__codelineno-5-3">3</a></span>
-<span class="normal"><a href="#__codelineno-5-4">4</a></span>
-<span class="normal"><a href="#__codelineno-5-5">5</a></span>
-<span class="normal"><a href="#__codelineno-5-6">6</a></span>
-<span class="normal"><a href="#__codelineno-5-7">7</a></span>
-<span class="normal"><a href="#__codelineno-5-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core.misc.internationalization</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_static_elements</span><span class="p">,</span> <span class="n">set_static_elements</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example.pbix&quot;</span><span class="p">,</span> <span class="n">kill_ssas_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="n">x</span> <span class="o">=</span> <span class="n">get_static_elements</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="n">x</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">&quot;multilang.xlsx&quot;</span><span class="p">)</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="n">set_static_elements</span><span class="p">(</span><span class="s2">&quot;multilang1.xlsx&quot;</span><span class="p">,</span> <span class="s2">&quot;example.pbix&quot;</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span>
+<span class="normal"><a href="#__codelineno-4-6">6</a></span>
+<span class="normal"><a href="#__codelineno-4-7">7</a></span>
+<span class="normal"><a href="#__codelineno-4-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core.misc.internationalization</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_static_elements</span><span class="p">,</span> <span class="n">set_static_elements</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">"example.pbix"</span><span class="p">,</span> <span class="n">kill_ssas_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="n">x</span> <span class="o">=</span> <span class="n">get_static_elements</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="n">x</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">"multilang.xlsx"</span><span class="p">)</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="n">set_static_elements</span><span class="p">(</span><span class="s2">"multilang1.xlsx"</span><span class="p">,</span> <span class="s2">"example.pbix"</span><span class="p">)</span>
+</span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="automatic-data-model-cleaning">Automatic Data Model Cleaning<a class="headerlink" href="#automatic-data-model-cleaning" title="Permanent link">#</a></h2>
 <p>One of the core tensions in PowerBI is the size of the data model. In development, you want to have many measures, columns, and tables to simplify new visual creation. After developing the report, the additional elements create two issues:</p>
 <ol>
@@ -4042,96 +4047,96 @@
 <li>The additional columns and tables can slow down visual rendering times, negatively impacting UX</li>
 </ol>
 <p>pbi_core has an automatic element culler that allows you to remove unnecessary elements after the report has been designed:</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
-<span class="normal"><a href="#__codelineno-6-2">2</a></span>
-<span class="normal"><a href="#__codelineno-6-3">3</a></span>
-<span class="normal"><a href="#__codelineno-6-4">4</a></span>
-<span class="normal"><a href="#__codelineno-6-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example_pbis/api.pbix&quot;</span><span class="p">)</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="n">report</span><span class="o">.</span><span class="n">cleanse_ssas_model</span><span class="p">()</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;cull_out.pbix&quot;</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
+<div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span>
+<span class="normal"><a href="#__codelineno-5-4">4</a></span>
+<span class="normal"><a href="#__codelineno-5-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">"example_pbis/api.pbix"</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">report</span><span class="o">.</span><span class="n">cleanse_ssas_model</span><span class="p">()</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">"cull_out.pbix"</span><span class="p">)</span>
+</span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="performance-analysis">Performance Analysis<a class="headerlink" href="#performance-analysis" title="Permanent link">#</a></h2>
 <p>This example shows how to analyze the performance of a Power BI report's visual:</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>In the previous implementations, the performance trace occassionally hangs for 2-5 minutes. The library has solved this by pinging the SSAS server during the trace with a trivial <code>EVALUATE {1}</code> command. Although this seems to have fixed the issue, it clearly doesn't touch the root issue. Therefore, if the trace hangs, you may need to kill and restart the process.</p>
 </div>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
-<span class="normal"><a href="#__codelineno-7-2">2</a></span>
-<span class="normal"><a href="#__codelineno-7-3">3</a></span>
-<span class="normal"><a href="#__codelineno-7-4">4</a></span>
-<span class="normal"><a href="#__codelineno-7-5">5</a></span>
-<span class="normal"><a href="#__codelineno-7-6">6</a></span>
-<span class="normal"><a href="#__codelineno-7-7">7</a></span>
-<span class="normal"><a href="#__codelineno-7-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example_pbis/example_section_visibility.pbix&quot;</span><span class="p">)</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="c1"># x = report.static_files.layout.sections[0].visualContainers[0].get_performance(report.ssas)</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="n">perf</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_performance</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="p">)</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">perf</span><span class="p">)</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=================&quot;</span><span class="p">)</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">perf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pprint</span><span class="p">())</span>
-</span></code></pre></div></td></tr></table></div>
+<div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
+<span class="normal"><a href="#__codelineno-6-2">2</a></span>
+<span class="normal"><a href="#__codelineno-6-3">3</a></span>
+<span class="normal"><a href="#__codelineno-6-4">4</a></span>
+<span class="normal"><a href="#__codelineno-6-5">5</a></span>
+<span class="normal"><a href="#__codelineno-6-6">6</a></span>
+<span class="normal"><a href="#__codelineno-6-7">7</a></span>
+<span class="normal"><a href="#__codelineno-6-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">"example_pbis/example_section_visibility.pbix"</span><span class="p">)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="c1"># x = report.static_files.layout.sections[0].visualContainers[0].get_performance(report.ssas)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="n">perf</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_performance</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="p">)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">perf</span><span class="p">)</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"================="</span><span class="p">)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">perf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pprint</span><span class="p">())</span>
+</span></code></pre></div></td></tr></tbody></table></div>
 <p>Which generates the following output.</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:31<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loading<span class="w"> </span>PBIX<span class="w">                   </span><span class="nv">path</span><span class="o">=</span>example_pbis/example_section_visibility.pbix
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:33<span class="w"> </span><span class="o">[</span>warning<span class="w">  </span><span class="o">]</span><span class="w"> </span>Removing<span class="w"> </span>old<span class="w"> </span>version<span class="w"> </span>of<span class="w"> </span>PBIX<span class="w"> </span>data<span class="w"> </span>model<span class="w"> </span><span class="k">for</span><span class="w"> </span>new<span class="w"> </span>version<span class="w"> </span><span class="nv">db_name</span><span class="o">=</span>example_section_visibility
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:33<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Tabular<span class="w"> </span>Model<span class="w"> </span>load<span class="w"> </span><span class="nb">complete</span><span class="w">   </span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:35<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Beginning<span class="w"> </span>trace<span class="w">               </span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:38<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Running<span class="w"> </span>DAX<span class="w"> </span>commands<span class="w">          </span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:41<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Terminating<span class="w"> </span>trace<span class="w">             </span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="o">[</span>Performance<span class="o">(</span><span class="nv">rows</span><span class="o">=</span><span class="m">5</span>,<span class="w"> </span><span class="nv">total_duration</span><span class="o">=</span><span class="m">0</span>.0,<span class="w"> </span><span class="nv">total_cpu_time</span><span class="o">=</span><span class="m">0</span>.0,<span class="w"> </span><span class="nv">peak_consumption</span><span class="o">=</span><span class="m">1</span>.0<span class="w"> </span>MiB<span class="o">]</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="o">=================</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>Performance<span class="o">(</span>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span>Command:
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">        </span>DEFINE<span class="w"> </span>VAR<span class="w"> </span><span class="nv">__DS0Core</span><span class="w"> </span><span class="o">=</span>
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">                </span>SUMMARIZECOLUMNS<span class="o">(</span><span class="s1">&#39;example&#39;</span><span class="o">[</span>b<span class="o">]</span>,<span class="w"> </span><span class="s2">&quot;Suma&quot;</span>,<span class="w"> </span>CALCULATE<span class="o">(</span>SUM<span class="o">(</span><span class="s1">&#39;example&#39;</span><span class="o">[</span>a<span class="o">])))</span>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">        </span>EVALUATE
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">                </span>__DS0Core
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">    </span>Start<span class="w"> </span>Time:<span class="w"> </span><span class="m">2025</span>-07-05T19:07:38.450000+00:00
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">    </span>End<span class="w"> </span>Time:<span class="w"> </span><span class="m">2025</span>-07-05T19:07:38.453000+00:00
-</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="w">    </span>Total<span class="w"> </span>Duration:<span class="w"> </span><span class="m">4</span><span class="w"> </span>ms
-</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="w">    </span>Total<span class="w"> </span>CPU<span class="w"> </span>Time:<span class="w"> </span><span class="m">0</span><span class="w"> </span>ms
-</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="w">    </span>Query<span class="w"> </span>CPU<span class="w"> </span>Time:<span class="w"> </span><span class="m">0</span><span class="w"> </span>ms
-</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="w">    </span>Vertipaq<span class="w"> </span>CPU<span class="w"> </span>Time:<span class="w"> </span><span class="m">0</span><span class="w"> </span>ms
-</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="w">    </span>Execution<span class="w"> </span>Delay:<span class="w"> </span><span class="m">0</span><span class="w"> </span>ms
-</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="w">    </span>Approximate<span class="w"> </span>Peak<span class="w"> </span>Consumption:<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span>MiB
-</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">    </span>Rows<span class="w"> </span>Returned:<span class="w"> </span><span class="m">5</span>
-</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="o">)</span>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:31<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loading<span class="w"> </span>PBIX<span class="w">                   </span><span class="nv">path</span><span class="o">=</span>example_pbis/example_section_visibility.pbix
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:33<span class="w"> </span><span class="o">[</span>warning<span class="w">  </span><span class="o">]</span><span class="w"> </span>Removing<span class="w"> </span>old<span class="w"> </span>version<span class="w"> </span>of<span class="w"> </span>PBIX<span class="w"> </span>data<span class="w"> </span>model<span class="w"> </span><span class="k">for</span><span class="w"> </span>new<span class="w"> </span>version<span class="w"> </span><span class="nv">db_name</span><span class="o">=</span>example_section_visibility
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:33<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Tabular<span class="w"> </span>Model<span class="w"> </span>load<span class="w"> </span><span class="nb">complete</span><span class="w">   </span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:35<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Beginning<span class="w"> </span>trace<span class="w">               </span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:38<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Running<span class="w"> </span>DAX<span class="w"> </span>commands<span class="w">          </span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="m">2025</span>-07-05<span class="w"> </span><span class="m">14</span>:07:41<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Terminating<span class="w"> </span>trace<span class="w">             </span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="o">[</span>Performance<span class="o">(</span><span class="nv">rows</span><span class="o">=</span><span class="m">5</span>,<span class="w"> </span><span class="nv">total_duration</span><span class="o">=</span><span class="m">0</span>.0,<span class="w"> </span><span class="nv">total_cpu_time</span><span class="o">=</span><span class="m">0</span>.0,<span class="w"> </span><span class="nv">peak_consumption</span><span class="o">=</span><span class="m">1</span>.0<span class="w"> </span>MiB<span class="o">]</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="o">=================</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>Performance<span class="o">(</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span>Command:
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">        </span>DEFINE<span class="w"> </span>VAR<span class="w"> </span><span class="nv">__DS0Core</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">                </span>SUMMARIZECOLUMNS<span class="o">(</span><span class="s1">'example'</span><span class="o">[</span>b<span class="o">]</span>,<span class="w"> </span><span class="s2">"Suma"</span>,<span class="w"> </span>CALCULATE<span class="o">(</span>SUM<span class="o">(</span><span class="s1">'example'</span><span class="o">[</span>a<span class="o">])))</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">        </span>EVALUATE
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">                </span>__DS0Core
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">    </span>Start<span class="w"> </span>Time:<span class="w"> </span><span class="m">2025</span>-07-05T19:07:38.450000+00:00
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">    </span>End<span class="w"> </span>Time:<span class="w"> </span><span class="m">2025</span>-07-05T19:07:38.453000+00:00
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">    </span>Total<span class="w"> </span>Duration:<span class="w"> </span><span class="m">4</span><span class="w"> </span>ms
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">    </span>Total<span class="w"> </span>CPU<span class="w"> </span>Time:<span class="w"> </span><span class="m">0</span><span class="w"> </span>ms
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">    </span>Query<span class="w"> </span>CPU<span class="w"> </span>Time:<span class="w"> </span><span class="m">0</span><span class="w"> </span>ms
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">    </span>Vertipaq<span class="w"> </span>CPU<span class="w"> </span>Time:<span class="w"> </span><span class="m">0</span><span class="w"> </span>ms
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">    </span>Execution<span class="w"> </span>Delay:<span class="w"> </span><span class="m">0</span><span class="w"> </span>ms
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">    </span>Approximate<span class="w"> </span>Peak<span class="w"> </span>Consumption:<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span>MiB
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">    </span>Rows<span class="w"> </span>Returned:<span class="w"> </span><span class="m">5</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="o">)</span>
 </span></code></pre></div>
 <h3 id="custom-dax-commands">Custom DAX Commands<a class="headerlink" href="#custom-dax-commands" title="Permanent link">#</a></h3>
 <p>You can also trace custom DAX commands like so:</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
-<span class="normal"><a href="#__codelineno-9-2">2</a></span>
-<span class="normal"><a href="#__codelineno-9-3">3</a></span>
-<span class="normal"><a href="#__codelineno-9-4">4</a></span>
-<span class="normal"><a href="#__codelineno-9-5">5</a></span>
-<span class="normal"><a href="#__codelineno-9-6">6</a></span>
-<span class="normal"><a href="#__codelineno-9-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pbi_core</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="n">command</span> <span class="o">=</span> <span class="s2">&quot;EVALUATE </span><span class="si">{1}</span><span class="s2">&quot;</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="n">report</span> <span class="o">=</span> <span class="n">pbi_core</span><span class="o">.</span><span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example_pbis/api.pbix&quot;</span><span class="p">)</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="k">with</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">get_performance_trace</span><span class="p">()</span> <span class="k">as</span> <span class="n">perf_trace</span><span class="p">:</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>    <span class="n">perf</span> <span class="o">=</span> <span class="n">perf_trace</span><span class="o">.</span><span class="n">get_performance</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">perf</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</span></code></pre></div></td></tr></table></div>
+<div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<span class="normal"><a href="#__codelineno-8-2">2</a></span>
+<span class="normal"><a href="#__codelineno-8-3">3</a></span>
+<span class="normal"><a href="#__codelineno-8-4">4</a></span>
+<span class="normal"><a href="#__codelineno-8-5">5</a></span>
+<span class="normal"><a href="#__codelineno-8-6">6</a></span>
+<span class="normal"><a href="#__codelineno-8-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pbi_core</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="n">command</span> <span class="o">=</span> <span class="s2">"EVALUATE </span><span class="si">{1}</span><span class="s2">"</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="n">report</span> <span class="o">=</span> <span class="n">pbi_core</span><span class="o">.</span><span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">"example_pbis/api.pbix"</span><span class="p">)</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="k">with</span> <span class="n">report</span><span class="o">.</span><span class="n">ssas</span><span class="o">.</span><span class="n">get_performance_trace</span><span class="p">()</span> <span class="k">as</span> <span class="n">perf_trace</span><span class="p">:</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a>    <span class="n">perf</span> <span class="o">=</span> <span class="n">perf_trace</span><span class="o">.</span><span class="n">get_performance</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">perf</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></code></pre></div></td></tr></tbody></table></div>
 <p>Which generates the following output:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loading<span class="w"> </span>PBIX<span class="w"> </span>report<span class="w">            </span><span class="nv">load_ssas</span><span class="o">=</span>True<span class="w"> </span><span class="nv">load_static_files</span><span class="o">=</span>True<span class="w"> </span><span class="nv">path</span><span class="o">=</span>example_pbis/api.pbix
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loading<span class="w"> </span>PBIX<span class="w"> </span>SSAS<span class="w">              </span><span class="nv">path</span><span class="o">=</span>example_pbis/api.pbix
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Re-using<span class="w"> </span>existing<span class="w"> </span><span class="nb">local</span><span class="w"> </span>SSAS<span class="w"> </span>instance<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">52125</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>warning<span class="w">  </span><span class="o">]</span><span class="w"> </span>Removing<span class="w"> </span>old<span class="w"> </span>version<span class="w"> </span>of<span class="w"> </span>PBIX<span class="w"> </span>data<span class="w"> </span>model<span class="w"> </span><span class="k">for</span><span class="w"> </span>new<span class="w"> </span>version<span class="w"> </span><span class="nv">db_name</span><span class="o">=</span>api
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Tabular<span class="w"> </span>Model<span class="w"> </span>load<span class="w"> </span><span class="nb">complete</span><span class="w">   </span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Syncing<span class="w"> </span>from<span class="w"> </span>SSAS<span class="w">              </span><span class="nv">db_name</span><span class="o">=</span>api
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loading<span class="w"> </span>PBIX<span class="w"> </span>Static<span class="w"> </span>Files<span class="w">      </span><span class="nv">path</span><span class="o">=</span>example_pbis/api.pbix
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loaded<span class="w"> </span>PBIX<span class="w"> </span>report<span class="w">             </span><span class="nv">components</span><span class="o">=</span>ssas+static
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Beginning<span class="w"> </span>trace<span class="w">               </span>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:46<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Running<span class="w"> </span>DAX<span class="w"> </span>commands<span class="w">          </span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:47<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Terminating<span class="w"> </span>trace<span class="w">             </span>
-</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="o">[</span>Performance<span class="o">(</span><span class="nv">rows</span><span class="o">=</span><span class="m">1</span>,<span class="w"> </span><span class="nv">total_duration</span><span class="o">=</span><span class="m">0</span>.0,<span class="w"> </span><span class="nv">total_cpu_time</span><span class="o">=</span><span class="m">0</span>.0,<span class="w"> </span><span class="nv">peak_consumption</span><span class="o">=</span><span class="m">0</span>.0<span class="w"> </span>B<span class="o">]</span>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loading<span class="w"> </span>PBIX<span class="w"> </span>report<span class="w">            </span><span class="nv">load_ssas</span><span class="o">=</span>True<span class="w"> </span><span class="nv">load_static_files</span><span class="o">=</span>True<span class="w"> </span><span class="nv">path</span><span class="o">=</span>example_pbis/api.pbix
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loading<span class="w"> </span>PBIX<span class="w"> </span>SSAS<span class="w">              </span><span class="nv">path</span><span class="o">=</span>example_pbis/api.pbix
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Re-using<span class="w"> </span>existing<span class="w"> </span><span class="nb">local</span><span class="w"> </span>SSAS<span class="w"> </span>instance<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">52125</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>warning<span class="w">  </span><span class="o">]</span><span class="w"> </span>Removing<span class="w"> </span>old<span class="w"> </span>version<span class="w"> </span>of<span class="w"> </span>PBIX<span class="w"> </span>data<span class="w"> </span>model<span class="w"> </span><span class="k">for</span><span class="w"> </span>new<span class="w"> </span>version<span class="w"> </span><span class="nv">db_name</span><span class="o">=</span>api
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Tabular<span class="w"> </span>Model<span class="w"> </span>load<span class="w"> </span><span class="nb">complete</span><span class="w">   </span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Syncing<span class="w"> </span>from<span class="w"> </span>SSAS<span class="w">              </span><span class="nv">db_name</span><span class="o">=</span>api
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loading<span class="w"> </span>PBIX<span class="w"> </span>Static<span class="w"> </span>Files<span class="w">      </span><span class="nv">path</span><span class="o">=</span>example_pbis/api.pbix
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Loaded<span class="w"> </span>PBIX<span class="w"> </span>report<span class="w">             </span><span class="nv">components</span><span class="o">=</span>ssas+static
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:44<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Beginning<span class="w"> </span>trace<span class="w">               </span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:46<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Running<span class="w"> </span>DAX<span class="w"> </span>commands<span class="w">          </span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="m">2025</span>-10-16<span class="w"> </span><span class="m">16</span>:02:47<span class="w"> </span><span class="o">[</span>info<span class="w">     </span><span class="o">]</span><span class="w"> </span>Terminating<span class="w"> </span>trace<span class="w">             </span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="o">[</span>Performance<span class="o">(</span><span class="nv">rows</span><span class="o">=</span><span class="m">1</span>,<span class="w"> </span><span class="nv">total_duration</span><span class="o">=</span><span class="m">0</span>.0,<span class="w"> </span><span class="nv">total_cpu_time</span><span class="o">=</span><span class="m">0</span>.0,<span class="w"> </span><span class="nv">peak_consumption</span><span class="o">=</span><span class="m">0</span>.0<span class="w"> </span>B<span class="o">]</span>
 </span></code></pre></div>
 <h2 id="styling-layout-elements">Styling Layout Elements<a class="headerlink" href="#styling-layout-elements" title="Permanent link">#</a></h2>
 <p>This example shows how to apply style changes to elements in a PowerBI report globally. This ensures consistent styling and protects hands from carpal tunnel.</p>
@@ -4139,34 +4144,34 @@
 <p class="admonition-title">Alternate Selection Methods</p>
 <p>We also included two alternate methods of finding elements on lines 8 and 9. You can pass dictionaries of attribute/value pairs or a function returning a boolean and only elements matching those will return. One downside of these methods in this case is that <code>Slicer</code> is a more specific type than <code>BaseVisual</code>. The return of the <code>find_all</code> method returns <code>list[&lt;input type&gt;]</code>, so the more specific type of <code>Slicer</code> will provide better autocompletion if your IDE supports it. For instance, the <code>Slicer</code> class knows there's an <code>objects</code> attribute and it's children, but the <code>BaseVisual</code> doesn't.</p>
 </div>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-11-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-11-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-11-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-11-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-11-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-11-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-11-10">10</a></span>
-<span class="normal"><a href="#__codelineno-11-11">11</a></span>
-<span class="normal"><a href="#__codelineno-11-12">12</a></span>
-<span class="normal"><a href="#__codelineno-11-13">13</a></span>
-<span class="normal"><a href="#__codelineno-11-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core.static_files.layout.visuals.properties.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">SolidColorExpression</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core.static_files.layout.visuals.slicer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Slicer</span>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">&quot;example_pbis/api.pbix&quot;</span><span class="p">,</span> <span class="n">load_ssas</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">load_static_files</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6"></a><span class="n">slicers</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">Slicer</span><span class="p">)</span>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7"></a><span class="c1"># from pbi_core.static_files.layout.visuals.base import BaseVisual</span>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="c1"># slicers = report.static_files.layout.find_all(BaseVisual, {&quot;visualType&quot;: &quot;slicer&quot;})</span>
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="c1"># slicers = report.static_files.layout.find_all(BaseVisual, lambda v: v.visualType == &quot;slicer&quot;)</span>
-</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">slicers</span><span class="p">:</span>
-</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11"></a>    <span class="n">new_color</span> <span class="o">=</span> <span class="n">SolidColorExpression</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s2">&quot;#FF0000&quot;</span><span class="p">)</span>
-</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12"></a>    <span class="n">s</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">fontColor</span> <span class="o">=</span> <span class="n">new_color</span>
-</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13"></a>    <span class="n">s</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">fontColor</span> <span class="o">=</span> <span class="n">new_color</span>
-</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">&quot;example_out.pbix&quot;</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
+<div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-10-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-10-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-10-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-10-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-10-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-10-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-10-10">10</a></span>
+<span class="normal"><a href="#__codelineno-10-11">11</a></span>
+<span class="normal"><a href="#__codelineno-10-12">12</a></span>
+<span class="normal"><a href="#__codelineno-10-13">13</a></span>
+<span class="normal"><a href="#__codelineno-10-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalReport</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core.static_files.layout.visuals.properties.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">SolidColorExpression</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pbi_core.static_files.layout.visuals.slicer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Slicer</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="n">report</span> <span class="o">=</span> <span class="n">LocalReport</span><span class="o">.</span><span class="n">load_pbix</span><span class="p">(</span><span class="s2">"example_pbis/api.pbix"</span><span class="p">,</span> <span class="n">load_ssas</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">load_static_files</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="n">slicers</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">static_files</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">Slicer</span><span class="p">)</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="c1"># from pbi_core.static_files.layout.visuals.base import BaseVisual</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="c1"># slicers = report.static_files.layout.find_all(BaseVisual, {"visualType": "slicer"})</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="c1"># slicers = report.static_files.layout.find_all(BaseVisual, lambda v: v.visualType == "slicer")</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10"></a><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">slicers</span><span class="p">:</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11"></a>    <span class="n">new_color</span> <span class="o">=</span> <span class="n">SolidColorExpression</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s2">"#FF0000"</span><span class="p">)</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12"></a>    <span class="n">s</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">fontColor</span> <span class="o">=</span> <span class="n">new_color</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13"></a>    <span class="n">s</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">fontColor</span> <span class="o">=</span> <span class="n">new_color</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14"></a><span class="n">report</span><span class="o">.</span><span class="n">save_pbix</span><span class="p">(</span><span class="s2">"example_out.pbix"</span><span class="p">)</span>
+</span></code></pre></div></td></tr></tbody></table></div>
 
 
 
@@ -4221,5 +4226,7 @@
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
-  </body>
-</html>
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
