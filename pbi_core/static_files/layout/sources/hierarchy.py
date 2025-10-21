@@ -71,11 +71,16 @@ class HierarchyLevelSource(LayoutNode):
     Name: str | None = None
     NativeReferenceName: str | None = None
 
-    def __repr__(self) -> str:
-        table = self.HierarchyLevel.Expression.Hierarchy.Expression.table()
+    def table(self) -> str:
+        return self.HierarchyLevel.Expression.Hierarchy.Expression.table()
+
+    def column(self) -> str:
         if isinstance(self.HierarchyLevel.Expression.Hierarchy.Expression, SourceRef):
-            column = self.HierarchyLevel.Expression.Hierarchy.Hierarchy
-        else:
-            column = self.HierarchyLevel.Expression.Hierarchy.Expression.column()
-        level = self.HierarchyLevel.Level
-        return f"HierarchyLevelSource({table}.{column}.{level})"
+            return self.HierarchyLevel.Expression.Hierarchy.Hierarchy or ""  # TODO: understand cases where none
+        return self.HierarchyLevel.Expression.Hierarchy.Expression.column()
+
+    def level(self) -> str:
+        return self.HierarchyLevel.Level or ""  # TODO: understand cases where none
+
+    def __repr__(self) -> str:
+        return f"HierarchyLevelSource({self.table()}.{self.column()}.{self.level()})"

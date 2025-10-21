@@ -7,7 +7,7 @@ from attrs import field
 from pbi_core.attrs import Json, define
 from pbi_core.attrs.extra import repr_len
 from pbi_core.lineage.main import LineageNode
-from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
+from pbi_core.static_files.model_references import ModelReference
 
 from ._base_node import LayoutNode
 from .bookmark import LayoutBookmarkChild
@@ -155,9 +155,9 @@ class Layout(LayoutNode):
         *,
         include_sections: bool = True,
         include_filters: bool = True,
-    ) -> set[ModelColumnReference | ModelMeasureReference]:
+    ) -> set[ModelReference]:
         """Returns the SSAS elements (columns and measures) this report is directly dependent on."""
-        ret: set[ModelColumnReference | ModelMeasureReference] = set()
+        ret: set[ModelReference] = set()
         if include_filters:
             for f in self.filters:
                 ret.update(f.get_ssas_elements())

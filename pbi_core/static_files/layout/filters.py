@@ -7,12 +7,18 @@ from attrs import field
 from pbi_core.attrs import BaseValidation, converter, define
 from pbi_core.attrs.extra import repr_exists, repr_len
 from pbi_core.static_files.layout.sources.literal import LiteralSource
-from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
+from pbi_core.static_files.model_references import (
+    ModelColumnReference,
+    ModelHierarchyReference,
+    ModelMeasureReference,
+    ModelReference,
+)
 
 from ._base_node import LayoutNode
 from .condition import AndCondition, ComparisonCondition, Condition, ConditionType, InCondition, NotCondition
 from .sources import AggregationSource, ColumnSource, Entity, MeasureSource, Source
 from .sources.aggregation import ScopedEvalAgg
+from .sources.hierarchy import HierarchyLevelSource
 from .visuals.properties.filter_properties import FilterObjects
 
 if TYPE_CHECKING:
@@ -75,13 +81,15 @@ class TransformMeta(BaseValidation):
     Output: TransformOutput
 
     def table_mapping(self) -> dict[str, str]:
-        ret: list[ColumnSource | MeasureSource] = []
+        ret: list[ColumnSource | MeasureSource | HierarchyLevelSource] = []
         for col in self.Input.Table.Columns:
             ret.extend(PrototypeQuery.unwrap_source(col.Expression))
         input_tables: set[str] = set()
         for source in ret:
             if isinstance(source, ColumnSource):
                 input_tables.add(source.Column.table())
+            elif isinstance(source, HierarchyLevelSource):
+                breakpoint()
             else:
                 input_tables.add(source.Measure.table())
         if len(input_tables) > 1:
@@ -115,7 +123,10 @@ class PrototypeQuery(LayoutNode):
         return ret
 
     @classmethod
-    def unwrap_source(cls, source: Source | ConditionType | ScopedEvalAgg) -> list[ColumnSource | MeasureSource]:
+    def unwrap_source(
+        cls,
+        source: Source | ConditionType | ScopedEvalAgg,
+    ) -> list[ColumnSource | MeasureSource | HierarchyLevelSource]:
         """Identifies the root sources (measures and columns) used in this filter.
 
         Raises:
@@ -123,13 +134,13 @@ class PrototypeQuery(LayoutNode):
                 Should not occur outside development.
 
         """
-        if isinstance(source, ColumnSource | MeasureSource):
+        if isinstance(source, ColumnSource | MeasureSource | HierarchyLevelSource):
             return [source]
         if isinstance(source, AggregationSource):
             return cls.unwrap_source(source.Aggregation.Expression)
 
         if isinstance(source, InCondition):
-            ret: list[ColumnSource | MeasureSource] = []
+            ret: list[ColumnSource | MeasureSource | HierarchyLevelSource] = []
             for expr in source.In.Expressions:
                 ret.extend(cls.unwrap_source(expr))
             return ret
@@ -147,9 +158,9 @@ class PrototypeQuery(LayoutNode):
         breakpoint()
         raise TypeError
 
-    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+    def get_ssas_elements(self) -> set[ModelReference]:
         """Returns the SSAS elements (columns and measures) this query is directly dependent on."""
-        ret: set[ColumnSource | MeasureSource] = set()
+        ret: set[ColumnSource | MeasureSource | HierarchyLevelSource] = set()
         for select in self.Select:
             ret.update(self.unwrap_source(select))
         for where in self.Where:
@@ -160,7 +171,7 @@ class PrototypeQuery(LayoutNode):
             for col in transformation.Input.Table.Columns:
                 ret.update(self.unwrap_source(col.Expression))
         table_mappings: dict[str, str] = self.table_mapping()
-        ret2: set[ModelColumnReference | ModelMeasureReference] = set()
+        ret2: set[ModelReference] = set()
         for source in ret:
             if isinstance(source, ColumnSource):
                 ret2.add(
@@ -168,6 +179,11 @@ class PrototypeQuery(LayoutNode):
                         column=source.Column.column(),
                         table=source.Column.table(table_mappings),
                     ),
+                )
+            elif isinstance(source, HierarchyLevelSource):
+                # TODO: match table mapping in other references
+                ret2.add(
+                    ModelHierarchyReference(hierarchy=source.column(), table=table_mappings[source.table()]),
                 )
             else:
                 ret2.add(
@@ -342,7 +358,7 @@ class Filter(LayoutNode):
             return default_name_source.Measure.Property
         return "--"
 
-    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+    def get_ssas_elements(self) -> set[ModelReference]:
         """Returns the SSAS elements (columns and measures) this filter is directly dependent on."""
         if self.filter is None:
             return set()

@@ -122,7 +122,7 @@ class ERD:
                     sub_head, sub_nodes, sub_links = self.helper(child)
                     nodes.update(sub_nodes)
                     links.update(sub_links)
-                    links.add(Link(head, sub_head, link_text=attr.name))
+                    links.add(Link(from_node=head, to_node=sub_head, link_text=attr.name))
 
         return head, nodes, links
 

@@ -11,6 +11,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.column import Column
     from pbi_core.ssas.model_tables.hierarchy import Hierarchy
+    from pbi_core.ssas.model_tables.measure import Measure
     from pbi_core.ssas.model_tables.relationship import Relationship
 
 
@@ -35,6 +36,16 @@ class Variation(SsasRenameRecord):
     def get_column(self) -> "Column":
         """Name is bad to not consistent with other methods because the column field in this entity :(."""
         return self._tabular_model.columns.find(self.column_id)
+
+    def parents(self, *, recursive: bool = True) -> set["Column | Measure"]:
+        base: set[Column | Measure] = {self.get_column()}
+        default_column = self.default_column()
+        if default_column:
+            base.add(default_column)
+
+        if recursive:
+            return base | {y for x in base for y in x.parents(recursive=True)}
+        return base
 
     def default_column(self) -> "Column | None":
         if self.default_column_id is None:

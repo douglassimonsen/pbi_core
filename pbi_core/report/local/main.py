@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, Literal, overload
 
 from pbi_core.logging import get_logger
 from pbi_core.report.base.main import BaseReport
-from pbi_core.ssas.model_tables import Column, Measure
+from pbi_core.ssas.model_tables import Column, Hierarchy, Measure
 from pbi_core.ssas.server import LocalTabularModel
 from pbi_core.static_files import StaticFiles
 
@@ -14,7 +14,7 @@ logger = get_logger()
 if TYPE_CHECKING:
     from _typeshed import StrPath
 
-    from pbi_core.ssas.model_tables import Table
+    from pbi_core.ssas.model_tables import Level, Table, Variation
 
 
 class LocalReport(LocalSsasReport, LocalStaticReport, BaseReport):  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -180,12 +180,22 @@ class LocalReport(LocalSsasReport, LocalStaticReport, BaseReport):  # pyright: i
             + [relationship.to_column() for relationship in self.ssas.relationships]
             + [relationship.from_column() for relationship in self.ssas.relationships]
         )
-        ret: list[Measure | Column] = []
+        ret: list[Measure | Column | Hierarchy | Level | Variation] = []
         for val in model_values:
             ret.append(val)
             ret.extend(val.parents(recursive=True))
-
-        used_tables = {x.table() for x in ret}
+        used_tables = {
+            x.table()
+            for x in ret
+            if isinstance(
+                x,
+                (
+                    Column,
+                    Measure,
+                    Hierarchy,
+                ),
+            )
+        }
         used_measures = {
             x
             for x in ret
@@ -205,6 +215,7 @@ class LocalReport(LocalSsasReport, LocalStaticReport, BaseReport):  # pyright: i
             if c not in used_columns
             and not c.table().name.startswith("DateTableTemplate")
             and c.table() not in tables_to_drop
+            and c.is_normal()
         }
         logger.info(
             "Dropping unused SSAS elements",

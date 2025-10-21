@@ -11,7 +11,7 @@ from pbi_core.ssas.trace import Performance, get_performance
 from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.filters import PageFilter
 from pbi_core.static_files.layout.visual_container import VisualContainer
-from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
+from pbi_core.static_files.model_references import ModelReference
 
 from .config import Annotation, AutoPageGenerationConfig, PageBinding, SectionConfig, VisualInteraction
 from .enums import (
@@ -77,9 +77,9 @@ class Section(LayoutNode):
         *,
         include_visuals: bool = True,
         include_filters: bool = True,
-    ) -> set[ModelColumnReference | ModelMeasureReference]:
+    ) -> set[ModelReference]:
         """Returns the SSAS elements (columns and measures) this report page is directly dependent on."""
-        ret: set[ModelColumnReference | ModelMeasureReference] = set()
+        ret: set[ModelReference] = set()
         if include_visuals:
             for viz in self.visualContainers:
                 ret.update(viz.get_ssas_elements())

@@ -64,6 +64,16 @@ class Hierarchy(SsasRenameRecord):
         set_name.fix_dax(self, new_name)
         self.name = new_name
 
+    def parents(self, *, recursive: bool = True) -> set["Level | Variation"]:
+        dependencies = self.levels() | self.variations()
+        if recursive:
+            recursive_dependencies = set()
+            for val in dependencies:
+                recursive_dependencies.add(val)
+                recursive_dependencies.update(val.parents(recursive=True))
+            return recursive_dependencies
+        return dependencies
+
     def table(self) -> "Table":
         return self._tabular_model.tables.find({"id": self.table_id})
 

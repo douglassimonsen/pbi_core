@@ -104,6 +104,9 @@ class DependencyMixin(HelpersMixin):
         ]
         full_dependencies = [m for m in self._tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
 
+        if sorting_columns := self.sorting_columns():
+            full_dependencies.extend(sorting_columns)
+
         if recursive:
             recursive_dependencies: set[Column] = set()
             for dep in full_dependencies:
@@ -136,6 +139,8 @@ class DependencyMixin(HelpersMixin):
             if m.referenced_object_type in {"CALC_COLUMN", "COLUMN"}
         }
         full_dependencies = [c for c in self._tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
+        if sort_col := self.sort_by_column():
+            full_dependencies.append(sort_col)
 
         if recursive:
             recursive_dependencies: set[Column] = set()

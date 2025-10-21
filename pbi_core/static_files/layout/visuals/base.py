@@ -17,7 +17,7 @@ from .properties.vc_properties import VCProperties
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Column, Measure
     from pbi_core.ssas.server import BaseTabularModel
-    from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
+    from pbi_core.static_files.model_references import ModelReference
 
 
 class FilterSortOrder(Enum):
@@ -141,7 +141,7 @@ class BaseVisual(LayoutNode):
         """Returns the name displayed in the PBIX report."""
         return self.__class__.__name__
 
-    def get_ssas_elements(self) -> "set[ModelColumnReference | ModelMeasureReference]":
+    def get_ssas_elements(self) -> "set[ModelReference]":
         if self.prototypeQuery is None:
             return set()
         return self.prototypeQuery.get_ssas_elements()

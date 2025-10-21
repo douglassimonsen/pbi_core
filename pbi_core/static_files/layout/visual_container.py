@@ -7,7 +7,7 @@ from pbi_core.attrs import Json, converter, define
 from pbi_core.attrs.extra import repr_exists, repr_len
 from pbi_core.lineage.main import LineageNode
 from pbi_core.ssas.trace import NoQueryError, Performance, get_performance
-from pbi_core.static_files.model_references import ModelColumnReference, ModelMeasureReference
+from pbi_core.static_files.model_references import ModelReference
 
 from ._base_node import LayoutNode
 from .condition import Condition
@@ -352,9 +352,9 @@ def unparse_query_command(v: QueryCommand) -> dict[str, Any]:
 class Query(LayoutNode):
     Commands: list[QueryCommand]
 
-    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+    def get_ssas_elements(self) -> set[ModelReference]:
         """Returns the SSAS elements (columns and measures) this query is directly dependent on."""
-        ret: set[ModelColumnReference | ModelMeasureReference] = set()
+        ret: set[ModelReference] = set()
         for command in self.Commands:
             if isinstance(command, QueryCommand1):
                 ret.update(command.Query.get_ssas_elements())
@@ -589,9 +589,9 @@ class VisualContainer(LayoutNode):
             raise NoQueryError(msg)
         return get_performance(model, [command.get_dax(model).dax])[0]
 
-    def get_ssas_elements(self) -> set[ModelColumnReference | ModelMeasureReference]:
+    def get_ssas_elements(self) -> set[ModelReference]:
         """Returns the SSAS elements (columns and measures) this visual is directly dependent on."""
-        ret: set[ModelColumnReference | ModelMeasureReference] = set()
+        ret: set[ModelReference] = set()
         if self.config.singleVisual is not None:
             ret.update(self.config.singleVisual.get_ssas_elements())
         if self.query is not None:

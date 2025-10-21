@@ -90,6 +90,12 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
     def __repr__(self) -> str:
         return f"Column({self.id}: {self.full_name()})"
 
+    def name(self) -> str:
+        """Returns the name of the column."""
+        ret = self.explicit_name if self.explicit_name is not None else self.inferred_name
+        assert ret is not None, "Column must have either an explicit or inferred name"
+        return ret
+
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the column and update any dependent expressions to use the new name.
 

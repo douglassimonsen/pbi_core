@@ -82,7 +82,7 @@ class SsasDelete(SsasTable):
 
     def delete(self) -> BeautifulSoup:
         data = {
-            "id": self.id,
+            "ID": self.id,
         }
         xml_command = self.render_xml_command(
             data,

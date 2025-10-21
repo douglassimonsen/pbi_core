@@ -28,12 +28,23 @@ class RelationshipMixin:
         return self._tabular_model.levels.find_all({"column_id": self.id})
 
     def sort_by_column(self) -> "Column | None":
+        """Returns the column (if any) that is used to sort this column.
+
+        Note:
+            This is the inverse of sorting_columns
+
+        """
         if self.sort_by_column_id is None:
             return None
         return self._tabular_model.columns.find({"id": self.sort_by_column_id})
 
     def sorting_columns(self) -> set["Column"]:
-        """Provides the inverse information of sort_by_column."""
+        """Returns a list of columns (possibly empty) that are sorted by this column.
+
+        Note:
+            Provides the inverse information of sort_by_column
+
+        """
         return self._tabular_model.columns.find_all({"sort_by_column_id": self.id})
 
     def from_relationships(self) -> set["Relationship"]:
