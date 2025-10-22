@@ -35,7 +35,6 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b)
     """
 
-    _repr_name_field: str = field(default="explicit_name", eq=False)
     _commands: RenameCommands = field(default=SsasCommands.column, init=False, repr=False)
 
     def __repr__(self) -> str:

@@ -70,7 +70,7 @@ class LayoutNode(BaseValidation):
         if isinstance(self, cls_type) and attribute_lambda(self):
             ret.append(self)
         for child in self._children():
-            ret.extend(child.find_all(cls_type, attributes))
+            ret.extend(child.find_all(cls_type, attribute_lambda))
         return ret
 
     def find(self, cls_type: type[T], attributes: dict[str, Any] | Callable[[T], bool] | None = None) -> "T":

@@ -68,12 +68,12 @@ class Update:
     deleted: list[int] = field(factory=list)
 
 
-# TODO: make this fully an attrs class like everything else
 @define(init=False)
 class BaseTabularModel:
     db_name: str
     server: "BaseServer"
     model: "Model"
+
     alternate_ofs: "Group[AlternateOf]"
     annotations: "Group[Annotation]"
     """Notes that can be attached to a variety other SSAS objects"""

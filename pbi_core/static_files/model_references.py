@@ -14,17 +14,17 @@ class ModelLevelReference(BaseValidation):
     level: str
 
     def to_model(self, tabular_model: "BaseTabularModel") -> "Level":
-        def level_matcher(l: "Level") -> bool:
+        def level_matcher(level: "Level") -> bool:
             # TODO: I'm convinced there's different structure for normal and variation (the auto-date) hierarchies
-            if l.name != self.level:
+            if level.name != self.level:
                 return False
-            h = l.hierarchy()
+            h = level.hierarchy()
             variations = h.variations()
             if not variations:
                 return (h.name == self.hierarchy) and (h.table().name == self.table)
             for v in variations:
                 # This generally happens for the automatic date hierarchy.
-                variation_column = v.get_column()
+                variation_column = v.column()
                 if (
                     variation_column
                     and (variation_column.name() == self.hierarchy)

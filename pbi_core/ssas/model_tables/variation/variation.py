@@ -21,7 +21,6 @@ class Variation(SsasRenameRecord):
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/b9dfeb51-cbb6-4eab-91bd-fa2b23f51ca3)
     """
 
-    column: int | None = field(default=None, eq=True)  # TODO: pbi says this shouldn't exist
     column_id: int = field(eq=True)
     default_column_id: int | None = field(default=None, eq=True)
     default_hierarchy_id: int = field(eq=True)
@@ -32,7 +31,7 @@ class Variation(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.variation, init=False, repr=False)
 
-    def get_column(self) -> "Column":
+    def column(self) -> "Column":
         """Name is bad to not consistent with other methods because the column field in this entity :(."""
         return self._tabular_model.columns.find(self.column_id)
 
@@ -51,7 +50,7 @@ class Variation(SsasRenameRecord):
         return frozenset()
 
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = {self.default_hierarchy(), self.relationship(), self.get_column()}
+        base_deps = {self.default_hierarchy(), self.relationship(), self.column()}
         default_column = self.default_column()
         if default_column:
             base_deps.add(default_column)

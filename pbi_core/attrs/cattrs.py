@@ -167,9 +167,9 @@ class SubConverter(cattrs.Converter):
                 base[attr.alias] = base_val
 
         ret = {}
-        try:  # TODO: make all things have a original_data
+        try:  # TODO: make all things have a original_data. VC/visual properties are missing them
             for k in obj._original_data:
-                # we should only have keys that were in the original data or are different from the default
+                # TODO: we should only have keys that were in the original data or are different from the default
                 ret[k] = base[k]
         except:  # noqa: E722
             return base

@@ -6,7 +6,7 @@ from pbi_core.static_files.layout.selector import Selector
 from pbi_core.static_files.layout.sources import Source
 
 
-@define()
+@define(repr=True)
 class TextStyle(LayoutNode):
     color: str | None = None  # TODO: check that it's hex
     fontSize: str | None = None
