@@ -1,14 +1,11 @@
-from typing import TYPE_CHECKING, Literal
-
-from pbi_core.lineage import LineageNode
+from typing import TYPE_CHECKING
 
 from .helpers import HelpersMixin
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.attribute_hierarchy import AttributeHierarchy
-    from pbi_core.ssas.model_tables.base import SsasTable
     from pbi_core.ssas.model_tables.measure import Measure
     from pbi_core.ssas.model_tables.table_permission import TablePermission
+    from pbi_core.ssas.model_tables.variation.variation import Variation
 
     from .column import Column
 
@@ -16,25 +13,6 @@ if TYPE_CHECKING:
 class DependencyMixin(HelpersMixin):
     explicit_name: str | None
     expression: str | int | None
-
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            children_nodes: list[Column | Measure | AttributeHierarchy] = [
-                self.attribute_hierarchy(),
-                *self.child_measures(),
-                *self.sorting_columns(),
-                *self.child_columns(),
-            ]
-            children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
-            return LineageNode(self, lineage_type, children_lineage)
-        parent_nodes: list[SsasTable | None] = [
-            self.table(),
-            self.sort_by_column(),
-            *self.parent_columns(),
-            *self.parent_measures(),
-        ]
-        parent_lineage = [p.get_lineage(lineage_type) for p in parent_nodes if p is not None]
-        return LineageNode(self, lineage_type, parent_lineage)
 
     def child_measures(self, *, recursive: bool = False) -> set["Measure"]:
         """Returns measures dependent on this Column."""
@@ -173,3 +151,9 @@ class DependencyMixin(HelpersMixin):
             )
 
         return set(full_dependencies)
+
+    def child_variations(self) -> set["Variation"]:
+        return self._tabular_model.variations.find_all(lambda v: v.column_id == self.id)
+
+    def child_default_variations(self) -> set["Variation"]:
+        return self._tabular_model.variations.find_all(lambda v: v.default_column_id == self.id)

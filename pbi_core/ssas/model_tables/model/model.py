@@ -1,10 +1,9 @@
 import datetime
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 
 from attrs import field, setters
 
 from pbi_core.attrs import BaseValidation, Json, define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import RefreshType, SsasModelRecord
 from pbi_core.ssas.server._commands import ModelCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -12,6 +11,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import DefaultDataView
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.culture import Culture
     from pbi_core.ssas.model_tables.measure import Measure
     from pbi_core.ssas.model_tables.query_group import QueryGroup
@@ -88,13 +88,11 @@ class Model(SsasModelRecord):
     def _db_command_obj_name(cls) -> str:
         return "Model"
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(
-                self,
-                lineage_type,
-                [c.get_lineage(lineage_type) for c in self.cultures()]
-                + [t.get_lineage(lineage_type) for t in self.tables()]
-                + [q.get_lineage(lineage_type) for q in self.query_groups()],
-            )
-        return LineageNode(self, lineage_type)
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset(self.cultures() | self.tables() | self.query_groups())
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
+        return frozenset()

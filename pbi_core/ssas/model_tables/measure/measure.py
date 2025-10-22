@@ -1,11 +1,10 @@
 import datetime
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 from uuid import UUID, uuid4
 
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.enums import DataState, DataType
@@ -231,10 +230,14 @@ class Measure(SsasRenameRecord):
 
     def parents(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures this Measure is dependent on."""
-        base_deps = frozenset(self.parent_columns() | self.parent_measures())
+        base_deps: set[Table | KPI | Column | Measure] = {self.table()} | self.parent_columns() | self.parent_measures()
+        if kpi := self.KPI():
+            base_deps.add(kpi)
+        frozen_base_deps = frozenset(base_deps)
+
         if recursive:
-            return self._recurse_parents(base_deps)
-        return base_deps
+            return self._recurse_parents(frozen_base_deps)
+        return frozen_base_deps
 
     def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures dependent on this Measure."""
@@ -242,22 +245,6 @@ class Measure(SsasRenameRecord):
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps
-
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(
-                self,
-                lineage_type,
-                [c.get_lineage(lineage_type) for c in self.child_measures() | self.child_columns()],
-            )
-        parent_nodes: list[SsasTable | None] = [
-            self.KPI(),
-            self.table(),
-            *self.parent_measures(),
-            *self.parent_columns(),
-        ]
-        parent_lineage = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
-        return LineageNode(self, lineage_type, parent_lineage)
 
     @staticmethod
     def new(

@@ -1,10 +1,9 @@
 import datetime
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server._commands import RenameCommands
@@ -13,6 +12,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import CrossFilteringBehavior, JoinOnDateBehavior, RelationshipType, SecurityFilteringBehavior
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.column import Column
     from pbi_core.ssas.model_tables.model import Model
     from pbi_core.ssas.model_tables.table import Table
@@ -86,23 +86,17 @@ class Relationship(SsasRenameRecord):
     def variations(self) -> set["Variation"]:
         return self._tabular_model.variations.find_all({"relationship_id": self.id})
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(
-                self,
-                lineage_type,
-                [variation.get_lineage(lineage_type) for variation in self.variations()],
-            )
-        return LineageNode(
-            self,
-            lineage_type,
-            [
-                self.from_table().get_lineage(lineage_type),
-                self.to_table().get_lineage(lineage_type),
-                self.from_column().get_lineage(lineage_type),
-                self.to_column().get_lineage(lineage_type),
-            ],
-        )
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset(self.variations())
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset({self.from_table(), self.to_table(), self.from_column(), self.to_column()})
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.id}, from: {self.pbi_core_name()}, to: {self.pbi_core_name()})"

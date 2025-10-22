@@ -1,15 +1,15 @@
 import datetime
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.measure import Measure
 
 
@@ -42,10 +42,14 @@ class KPI(SsasEditableRecord):
     def measure(self) -> "Measure":
         return self._tabular_model.measures.find({"id": self.measure_id})
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(self, lineage_type)
-        return LineageNode(self, lineage_type, [self.measure().get_lineage(lineage_type)])
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
+        return frozenset()
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset({self.measure()})
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps
 
     @classmethod
     def _db_command_obj_name(cls) -> str:

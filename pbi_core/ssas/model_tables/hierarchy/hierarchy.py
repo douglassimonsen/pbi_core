@@ -1,11 +1,10 @@
 import datetime
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 from uuid import UUID, uuid4
 
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.model_tables.hierarchy import set_name
@@ -65,12 +64,6 @@ class Hierarchy(SsasRenameRecord):
         set_name.fix_dax(self, new_name)
         self.name = new_name
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(self.levels() | self.variations())
-        if recursive:
-            return self._recurse_parents(base_deps)
-        return base_deps
-
     def table(self) -> "Table":
         return self._tabular_model.tables.find({"id": self.table_id})
 
@@ -84,19 +77,14 @@ class Hierarchy(SsasRenameRecord):
     def _db_command_obj_name(cls) -> str:
         return "Hierarchies"
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(
-                self,
-                lineage_type,
-                [level.get_lineage(lineage_type) for level in self.levels()]
-                + [variation.get_lineage(lineage_type) for variation in self.variations()],
-            )
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset(self.levels() | self.variations())
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps
 
-        return LineageNode(
-            self,
-            lineage_type,
-            [
-                self.table().get_lineage(lineage_type),
-            ],
-        )
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset({self.table()})
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps

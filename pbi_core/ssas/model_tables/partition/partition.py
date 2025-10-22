@@ -1,11 +1,10 @@
 import datetime
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 
 from attrs import field, setters
 from bs4 import BeautifulSoup
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables._group import RowNotFoundError
 from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord, SsasTable
@@ -103,12 +102,17 @@ class Partition(SsasRefreshRecord):
     def table(self) -> "Table":
         return self._tabular_model.tables.find({"id": self.table_id})
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(self, lineage_type)
-        parent_nodes: list[SsasTable | None] = [self.table(), self.query_group()]
-        parent_lineage: list[LineageNode] = [c.get_lineage(lineage_type) for c in parent_nodes if c is not None]
-        return LineageNode(self, lineage_type, parent_lineage)
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        return frozenset()
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps: set[QueryGroup | Table] = {self.table()}
+        if query_group := self.query_group():
+            base_deps.add(query_group)
+        frozen_base_deps = frozenset(base_deps)
+        if recursive:
+            return self._recurse_children(frozen_base_deps)
+        return frozen_base_deps
 
     def remove_columns(self, dropped_columns: "Iterable[Column | str | None]") -> BeautifulSoup:
         def pq_escape(x: str) -> str:

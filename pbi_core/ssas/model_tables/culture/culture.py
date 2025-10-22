@@ -1,15 +1,15 @@
 import datetime
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.linguistic_metadata import LinguisticMetadata
     from pbi_core.ssas.model_tables.model import Model
 
@@ -36,7 +36,14 @@ class Culture(SsasRenameRecord):
     def model(self) -> "Model":
         return self._tabular_model.model
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(self, lineage_type, [self.linguistic_metdata().get_lineage(lineage_type)])
-        return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset({self.linguistic_metdata()})
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset({self.model()})
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps

@@ -1,14 +1,14 @@
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING
 
 from attrs import field
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.expression import Expression
     from pbi_core.ssas.model_tables.model import Model
     from pbi_core.ssas.model_tables.partition import Partition
@@ -39,12 +39,14 @@ class QueryGroup(SsasEditableRecord):
     def model(self) -> "Model":
         return self._tabular_model.model
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(
-                self,
-                lineage_type,
-                [expression.get_lineage(lineage_type) for expression in self.expressions()]
-                + [partition.get_lineage(lineage_type) for partition in self.partitions()],
-            )
-        return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset(self.expressions() | self.partitions())
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset({self.model()})
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps

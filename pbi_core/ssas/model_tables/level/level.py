@@ -1,11 +1,10 @@
 import datetime
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 from uuid import UUID, uuid4
 
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -45,16 +44,10 @@ class Level(SsasRenameRecord):
         return self._tabular_model.hierarchies.find({"id": self.hierarchy_id})
 
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.column()})
+        base = frozenset({self.column(), self.hierarchy()})
         if recursive:
             return self._recurse_parents(base)
         return base
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(self, lineage_type)
-        return LineageNode(
-            self,
-            lineage_type,
-            [self.column().get_lineage(lineage_type), self.hierarchy().get_lineage(lineage_type)],
-        )
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
+        return frozenset()

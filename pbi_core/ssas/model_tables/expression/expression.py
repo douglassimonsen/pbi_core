@@ -1,6 +1,6 @@
 import datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 from uuid import UUID, uuid4
 
 from attrs import field, setters
@@ -14,7 +14,6 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.column import Column
     from pbi_core.ssas.model_tables.model import Model
     from pbi_core.ssas.model_tables.query_group import QueryGroup
-from pbi_core.lineage import LineageNode
 
 
 class Kind(Enum):
@@ -54,9 +53,15 @@ class Expression(SsasRenameRecord):
     def query_group(self) -> "QueryGroup | None":
         return self._tabular_model.query_groups.find({"id": self.query_group_id})
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(self, lineage_type)
-        parent_nodes: list[SsasTable | None] = [self.model(), self.query_group()]
-        parent_lineage = [p.get_lineage(lineage_type) for p in parent_nodes if p is not None]
-        return LineageNode(self, lineage_type, parent_lineage)
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
+        return frozenset()
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps: set[SsasTable] = {self.model()}
+        if group_query := self.query_group():
+            base_deps.add(group_query)
+        frozen_base_deps = frozenset(base_deps)
+
+        if recursive:
+            return self._recurse_children(frozen_base_deps)
+        return frozen_base_deps

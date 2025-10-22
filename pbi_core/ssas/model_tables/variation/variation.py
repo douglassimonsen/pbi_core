@@ -1,9 +1,8 @@
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING
 
 from attrs import field
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -12,7 +11,6 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.column import Column
     from pbi_core.ssas.model_tables.hierarchy import Hierarchy
-    from pbi_core.ssas.model_tables.measure import Measure
     from pbi_core.ssas.model_tables.relationship import Relationship
 
 
@@ -38,17 +36,6 @@ class Variation(SsasRenameRecord):
         """Name is bad to not consistent with other methods because the column field in this entity :(."""
         return self._tabular_model.columns.find(self.column_id)
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base: set[Column | Measure] = {self.get_column()}
-        default_column = self.default_column()
-        if default_column:
-            base.add(default_column)
-        frozen_base = frozenset(base)
-
-        if recursive:
-            return self._recurse_parents(frozen_base)
-        return frozen_base
-
     def default_column(self) -> "Column | None":
         if self.default_column_id is None:
             return None
@@ -60,14 +47,15 @@ class Variation(SsasRenameRecord):
     def relationship(self) -> "Relationship":
         return self._tabular_model.relationships.find(self.relationship_id)
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(self, lineage_type)
-        return LineageNode(
-            self,
-            lineage_type,
-            [
-                self.default_hierarchy().get_lineage(lineage_type),
-                self.relationship().get_lineage(lineage_type),
-            ],
-        )
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
+        return frozenset()
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = {self.default_hierarchy(), self.relationship(), self.get_column()}
+        default_column = self.default_column()
+        if default_column:
+            base_deps.add(default_column)
+        frozen_base_deps = frozenset(base_deps)
+        if recursive:
+            return self._recurse_children(frozen_base_deps)
+        return frozen_base_deps

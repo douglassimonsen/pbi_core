@@ -93,14 +93,25 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
 
     def parents(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures this Column is dependent on."""
-        full_dependencies = self.parent_columns() | self.parent_measures()
+        base_deps = {self.table()} | self.parent_columns() | self.parent_measures()
+        if sort_by_column := self.sort_by_column():
+            base_deps.add(sort_by_column)
+        frozen_base_deps = frozenset(base_deps)
+
         if recursive:
-            return self._recurse_parents(frozenset(full_dependencies))
-        return frozenset(full_dependencies)
+            return self._recurse_parents(frozen_base_deps)
+        return frozen_base_deps
 
     def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures dependent on this Column."""
-        full_dependencies = frozenset(self.child_columns() | self.child_measures())
+        full_dependencies = frozenset(
+            {self.attribute_hierarchy()}
+            | self.child_columns()
+            | self.child_measures()
+            | self.sorting_columns()
+            | self.child_variations()
+            | self.child_default_variations(),
+        )
         if recursive:
             return self._recurse_children(full_dependencies)
         return full_dependencies

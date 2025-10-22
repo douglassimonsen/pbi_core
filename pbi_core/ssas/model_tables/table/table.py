@@ -1,12 +1,11 @@
 import datetime
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 from uuid import UUID, uuid4
 
 from attrs import field, setters
 from bs4 import BeautifulSoup
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord
 from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.enums import DataCategory
@@ -21,6 +20,7 @@ from . import set_name
 if TYPE_CHECKING:
     from pbi_parsers.pq.misc.external_sources import BaseExternalSource
 
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
     from pbi_core.ssas.model_tables.detail_row_definition import DetailRowDefinition
     from pbi_core.ssas.model_tables.model import Model
@@ -177,16 +177,19 @@ class Table(SsasRefreshRecord):
     def model(self) -> "Model":
         return self._tabular_model.model
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(
-                self,
-                lineage_type,
-                [col.get_lineage(lineage_type) for col in self.columns()]
-                + [partition.get_lineage(lineage_type) for partition in self.partitions()]
-                + [measure.get_lineage(lineage_type) for measure in self.measures()],
-            )
-        return LineageNode(self, lineage_type, [self.model().get_lineage(lineage_type)])
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset(
+            self.columns() | self.partitions() | self.measures(),
+        )
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset({self.model()})
+        if recursive:
+            return self._recurse_parents(base_deps)
+        return base_deps
 
     def refresh(self, *, include_model_refresh: bool = True) -> list[BeautifulSoup]:  # pyright: ignore reportIncompatibleMethodOverride
         """Needs a model refresh to properly propogate the update."""
