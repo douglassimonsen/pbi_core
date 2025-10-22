@@ -13,6 +13,13 @@ class RowNotFoundError(Exception):
     pass
 
 
+def _resolve_attr(instance, field):
+    ret = getattr(instance, field)
+    if callable(ret):
+        return ret()
+    return ret
+
+
 class Group(list[T]):  # noqa: FURB189
     def find(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> T:
         """Gets a matching value from the group.
@@ -33,7 +40,7 @@ class Group(list[T]):  # noqa: FURB189
                     return val
         elif isinstance(match_val, dict):
             for val in self:
-                if all(getattr(val, field_name) == field_value for field_name, field_value in match_val.items()):
+                if all(_resolve_attr(val, field_name) == field_value for field_name, field_value in match_val.items()):
                     return val
 
         else:
@@ -50,7 +57,7 @@ class Group(list[T]):  # noqa: FURB189
             ret.update(
                 val
                 for val in self
-                if all(getattr(val, field_name) == field_value for field_name, field_value in match_val.items())
+                if all(_resolve_attr(val, field_name) == field_value for field_name, field_value in match_val.items())
             )
         else:
             ret.update(val for val in self if match_val(val) is True)

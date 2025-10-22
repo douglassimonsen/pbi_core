@@ -20,7 +20,7 @@ class DependencyMixin(HelpersMixin):
         dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "referenced_object_type": object_type,
             "referenced_table": self.table().name,
-            "referenced_object": self.explicit_name,
+            "referenced_object": self.name(),
             "object_type": "MEASURE",
         })
         child_keys: list[tuple[str | None, str]] = [(m.table, m.object) for m in dependent_measures]
@@ -29,12 +29,12 @@ class DependencyMixin(HelpersMixin):
         if recursive:
             recursive_dependencies: set[Measure] = set()
             for dep in full_dependencies:
-                if f"[{self.explicit_name}]" in str(dep.expression):
+                if f"[{self.name()}]" in str(dep.expression):
                     recursive_dependencies.add(dep)
                     recursive_dependencies.update(dep.child_measures(recursive=True))
             return recursive_dependencies
 
-        return {x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)}
+        return {x for x in full_dependencies if f"[{self.name()}]" in str(x.expression)}
 
     def parent_measures(self, *, recursive: bool = False) -> set["Measure"]:
         """Returns measures this column is dependent on.
@@ -47,7 +47,7 @@ class DependencyMixin(HelpersMixin):
         dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "object_type": object_type,
             "table": self.table().name,
-            "object": self.explicit_name,
+            "object": self.name(),
             "referenced_object_type": "MEASURE",
         })
         parent_keys = [(m.referenced_table, m.referenced_object) for m in dependent_measures]
@@ -74,13 +74,13 @@ class DependencyMixin(HelpersMixin):
         dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "referenced_object_type": object_type,
             "referenced_table": self.table().name,
-            "referenced_object": self.explicit_name,
+            "referenced_object": self.name(),
         })
         assert all(m.table is not None for m in dependent_measures)
         child_keys: list[tuple[str, str]] = [  # pyright: ignore reportAssignmentType
             (m.table, m.object) for m in dependent_measures if m.object_type in {"CALC_COLUMN", "COLUMN"}
         ]
-        full_dependencies = [m for m in self._tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
+        full_dependencies = [c for c in self._tabular_model.columns if (c.table().name, c.name()) in child_keys]
 
         if sorting_columns := self.sorting_columns():
             full_dependencies.extend(sorting_columns)
@@ -88,12 +88,12 @@ class DependencyMixin(HelpersMixin):
         if recursive:
             recursive_dependencies: set[Column] = set()
             for dep in full_dependencies:
-                if f"[{self.explicit_name}]" in str(dep.expression):
+                if f"[{self.name()}]" in str(dep.expression):
                     recursive_dependencies.add(dep)
                     recursive_dependencies.update(dep.child_columns(recursive=True))
             return recursive_dependencies
 
-        return {x for x in full_dependencies if f"[{self.explicit_name}]" in str(x.expression)}
+        return {x for x in full_dependencies if f"[{self.name()}]" in str(x.expression)}
 
     def parent_columns(self, *, recursive: bool = False) -> set["Column"]:
         """Returns Columns this Column is dependent on.
@@ -109,26 +109,26 @@ class DependencyMixin(HelpersMixin):
         dependent_measures = self._tabular_model.calc_dependencies.find_all({
             "object_type": object_type,
             "table": self.table().name,
-            "object": self.explicit_name,
+            "object": self.name(),
         })
         parent_keys = {
             (m.referenced_table, m.referenced_object)
             for m in dependent_measures
             if m.referenced_object_type in {"CALC_COLUMN", "COLUMN"}
         }
-        full_dependencies = [c for c in self._tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
+        full_dependencies = [c for c in self._tabular_model.columns if (c.table().name, c.name()) in parent_keys]
         if sort_col := self.sort_by_column():
             full_dependencies.append(sort_col)
 
         if recursive:
             recursive_dependencies: set[Column] = set()
             for dep in full_dependencies:
-                if f"[{dep.explicit_name}]" in str(self.expression):
+                if f"[{dep.name()}]" in str(self.expression):
                     recursive_dependencies.add(dep)
                     recursive_dependencies.update(dep.parent_columns(recursive=True))
             return recursive_dependencies
 
-        return {x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)}
+        return {x for x in full_dependencies if f"[{x.name()}]" in str(self.expression)}
 
     def child_table_permissions(self) -> set["TablePermission"]:
         """Returns table permissions dependent via DAX on this Column."""
@@ -136,7 +136,7 @@ class DependencyMixin(HelpersMixin):
         dependent_permissions = self._tabular_model.calc_dependencies.find_all({
             "referenced_object_type": object_type,
             "referenced_table": self.table().name,
-            "referenced_object": self.explicit_name,
+            "referenced_object": self.name(),
             "object_type": "ROWS_ALLOWED",
         })
 
@@ -147,7 +147,7 @@ class DependencyMixin(HelpersMixin):
             full_dependencies.extend(
                 tp
                 for tp in role.table_permissions()
-                if tp.table().name == table and f"[{self.explicit_name}]" in str(tp.filter_expression)
+                if tp.table().name == table and f"[{self.name()}]" in str(tp.filter_expression)
             )
 
         return set(full_dependencies)

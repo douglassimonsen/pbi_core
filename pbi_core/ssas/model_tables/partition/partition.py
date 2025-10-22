@@ -130,8 +130,7 @@ class Partition(SsasRefreshRecord):
             if isinstance(col, Column):
                 # Tables have a column named "RowNumber-<UUID>" that cannot be removed in the PowerQuery
                 if col._column_type() != "CALC_COLUMN" and not col.is_key:
-                    assert col.explicit_name is not None, "Column must have an explicit name to be dropped"
-                    new_dropped_columns.append(col.explicit_name)
+                    new_dropped_columns.append(col.name())
             elif isinstance(col, str):
                 new_dropped_columns.append(col)
 

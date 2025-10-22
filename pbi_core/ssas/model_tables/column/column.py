@@ -116,11 +116,6 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
             return self._recurse_children(full_dependencies)
         return full_dependencies
 
-    def name(self) -> str:
-        """Returns the name of the column."""
-        ret = self.explicit_name if self.explicit_name is not None else self.inferred_name
-        assert ret is not None, "Column must have either an explicit or inferred name"
-        return ret
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the column and update any dependent expressions to use the new name.
@@ -131,7 +126,7 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
         columns = _get_columns_sources(self, layout)
         for c in columns:
             c.Column.Property = new_name
-            if c.NativeReferenceName == self.explicit_name:
+            if c.NativeReferenceName == self.name():
                 c.NativeReferenceName = new_name
         hierarchies = _get_hierarchies_sources(self, layout)
         for h in hierarchies:
@@ -148,7 +143,7 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
 def _get_matching_columns(n: "LayoutNode", entity_mapping: dict[str, str], column: "Column") -> list[ColumnSource]:
     columns = []
     for c in n.find_all(ColumnSource):
-        if c.Column.Property != column.explicit_name:
+        if c.Column.Property != column.name():
             continue
 
         if isinstance(c.Column.Expression, SourceRef):
@@ -191,8 +186,6 @@ def _get_matching_hierarchies(
     column: "Column",
 ) -> list[HierarchySource]:
     hierarchies = []
-    if column.explicit_name != "date_Column":
-        return []
 
     for h in n.find_all(HierarchySource):
         if isinstance(h.Hierarchy.Expression, SourceRef):
@@ -205,7 +198,7 @@ def _get_matching_hierarchies(
             table_name = h.Hierarchy.Expression.table(entity_mapping)
             column_name = h.Hierarchy.Hierarchy
 
-        if column_name == column.explicit_name and table_name == column.table().name:
+        if column_name == column.name() and table_name == column.table().name:
             hierarchies.append(h)
     return hierarchies
 

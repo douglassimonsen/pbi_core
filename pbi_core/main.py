@@ -6,10 +6,10 @@ logger = get_logger()
 
 
 def column_finder(c: Column, reference: ModelColumnReference) -> bool:
-    match = c.explicit_name == reference.column and c.table().name == reference.table
+    match = c.name() == reference.column and c.table().name == reference.table
     logger.debug(
         "column_finder",
-        column=c.explicit_name,
+        column=c.name(),
         table=c.table().name,
         reference_table=reference.table,
         reference_column=reference.column,

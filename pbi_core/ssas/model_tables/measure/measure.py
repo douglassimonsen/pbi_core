@@ -192,7 +192,7 @@ class Measure(SsasRenameRecord):
             "referenced_object": self.name,
         })
         child_keys = [(m.table, m.object) for m in dependent_measures if m.object_type in {"CALC_COLUMN", "COLUMN"}]
-        full_dependencies = [m for m in self._tabular_model.columns if (m.table().name, m.explicit_name) in child_keys]
+        full_dependencies = [m for m in self._tabular_model.columns if (m.table().name, m.name()) in child_keys]
 
         if recursive:
             recursive_dependencies: set[Column] = set()
@@ -216,17 +216,17 @@ class Measure(SsasRenameRecord):
             for m in dependent_measures
             if m.referenced_object_type in {"CALC_COLUMN", "COLUMN"}
         }
-        full_dependencies = [c for c in self._tabular_model.columns if (c.table().name, c.explicit_name) in parent_keys]
+        full_dependencies = [c for c in self._tabular_model.columns if (c.table().name, c.name()) in parent_keys]
 
         if recursive:
             recursive_dependencies: set[Column] = set()
             for dep in full_dependencies:
-                if f"[{dep.explicit_name}]" in str(self.expression):
+                if f"[{dep.name()}]" in str(self.expression):
                     recursive_dependencies.add(dep)
                     recursive_dependencies.update(dep.parent_columns(recursive=True))
             return recursive_dependencies
 
-        return {x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)}
+        return {x for x in full_dependencies if f"[{x.name()}]" in str(self.expression)}
 
     def parents(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures this Measure is dependent on."""

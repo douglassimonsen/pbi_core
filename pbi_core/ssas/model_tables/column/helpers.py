@@ -42,16 +42,23 @@ class HelpersMixin(RelationshipMixin):
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""
-        if self.explicit_name is not None:
-            return self.explicit_name
-        if self.inferred_name is not None:
-            return self.inferred_name
-        return str(self.id)
+        return self.name()
 
     def _column_type(self) -> Literal["COLUMN", "CALC_COLUMN"]:
         if self.type == ColumnType.DATA:
             return "COLUMN"
         return "CALC_COLUMN"
+
+    def name(self) -> str:
+        """Returns the name of the column.
+
+        Note:
+            It appears that [{explicit_name} {inferred_name}] can also be valid in DAX
+
+        """
+        ret = self.explicit_name if self.explicit_name is not None else self.inferred_name
+        assert ret is not None, "Column must have either an explicit or inferred name"
+        return ret
 
     def full_name(self) -> str:
         """Returns the fully qualified name for DAX queries.
@@ -61,7 +68,7 @@ class HelpersMixin(RelationshipMixin):
 
         """
         table_name = self.table().name
-        return f"'{table_name}'[{self.explicit_name}]"
+        return f"'{table_name}'[{self.name()}]"
 
     def data(self, head: int = 100) -> list[int | float | str]:
         table_name = self.table().name

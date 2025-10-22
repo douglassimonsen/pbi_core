@@ -44,7 +44,7 @@ This example shows how to find SSAS records and extract data from report columns
 from pbi_core import LocalReport
 
 report = LocalReport.load_pbix("example_pbis/api.pbix")
-values = report.ssas.columns.find({"explicit_name": "a"}).data()
+values = report.ssas.columns.find({"name": "a"}).data()
 print(values)
 values2 = report.ssas.tables.find({"name": "Table"}).data()
 print(values2)
@@ -64,7 +64,7 @@ This example displays a lineage chart in HTML:
 from pbi_core import LocalReport
 
 report = LocalReport.load_pbix("example.pbix", kill_ssas_on_exit=True)
-col = report.ssas.columns.find({"explicit_name": "MeasureColumn"})
+col = report.ssas.columns.find({"name": "MeasureColumn"})
 # Can also generate a "children" lineage chart
 # Can also call to_markdown() to embed the results in markdown
 col.get_lineage("parents").to_mermaid().show()

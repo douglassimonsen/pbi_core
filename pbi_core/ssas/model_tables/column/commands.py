@@ -25,7 +25,7 @@ class CommandMixin(DependencyMixin):
             if self._column_type() == "CALC_COLUMN":
                 logger.info("Column is calculated, there is nothing to remove from the PowerQuery", column=self)
                 return None
-            name = self.explicit_name
+            name = self.name()
             if name is None:
                 logger.warning("Column has no name to include in the PowerQuery", column=self)
                 return None

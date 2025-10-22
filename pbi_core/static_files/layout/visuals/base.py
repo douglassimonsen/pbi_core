@@ -158,7 +158,7 @@ class BaseVisual(LayoutNode):
         children = self.prototypeQuery.get_ssas_elements()
         for child in children:
             if isinstance(child, ColumnSource):
-                candidate_columns = tabular_model.columns.find_all({"explicit_name": child.Column.column()})
+                candidate_columns = tabular_model.columns.find_all({"name": child.Column.column()})
                 for candidate_column in candidate_columns:
                     if candidate_column.table().name == table_mapping[child.Column.table()]:
                         ret.append(candidate_column)
