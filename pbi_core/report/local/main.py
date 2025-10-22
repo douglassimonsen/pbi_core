@@ -2,7 +2,8 @@ from typing import TYPE_CHECKING, Literal, overload
 
 from pbi_core.logging import get_logger
 from pbi_core.report.base.main import BaseReport
-from pbi_core.ssas.model_tables import Column, Hierarchy, Measure
+from pbi_core.ssas.model_tables import Column, Measure
+from pbi_core.ssas.model_tables.level.level import Level
 from pbi_core.ssas.server import LocalTabularModel
 from pbi_core.static_files import StaticFiles
 
@@ -193,10 +194,9 @@ class LocalReport(LocalSsasReport, LocalStaticReport, BaseReport):  # pyright: i
                 (
                     Column,
                     Measure,
-                    Hierarchy,
                 ),
             )
-        }
+        } | {x.hierarchy().table() for x in ret if isinstance(x, Level)}
         used_measures = {
             x
             for x in ret

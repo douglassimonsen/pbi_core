@@ -9,7 +9,7 @@ from pbi_core.attrs.extra import repr_exists, repr_len
 from pbi_core.static_files.layout.sources.literal import LiteralSource
 from pbi_core.static_files.model_references import (
     ModelColumnReference,
-    ModelHierarchyReference,
+    ModelLevelReference,
     ModelMeasureReference,
     ModelReference,
 )
@@ -183,7 +183,11 @@ class PrototypeQuery(LayoutNode):
             elif isinstance(source, HierarchyLevelSource):
                 # TODO: match table mapping in other references
                 ret2.add(
-                    ModelHierarchyReference(hierarchy=source.column(), table=table_mappings[source.table()]),
+                    ModelLevelReference(
+                        hierarchy=source.column(),
+                        table=table_mappings[source.table()],
+                        level=source.level(),
+                    ),
                 )
             else:
                 ret2.add(

@@ -3,17 +3,22 @@ from typing import TYPE_CHECKING
 from pbi_core.attrs import BaseValidation, define
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Column, Hierarchy, Measure, Table
+    from pbi_core.ssas.model_tables import Column, Level, Measure, Table
     from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
 
 
 @define(repr=True)
-class ModelHierarchyReference(BaseValidation):
+class ModelLevelReference(BaseValidation):
     hierarchy: str
     table: str
+    level: str
 
-    def to_model(self, tabular_model: "BaseTabularModel") -> "Hierarchy":
-        def hierarchy_matcher(h: "Hierarchy") -> bool:
+    def to_model(self, tabular_model: "BaseTabularModel") -> "Level":
+        def level_matcher(l: "Level") -> bool:
+            # TODO: I'm convinced there's different structure for normal and variation (the auto-date) hierarchies
+            if l.name != self.level:
+                return False
+            h = l.hierarchy()
             variations = h.variations()
             if not variations:
                 return (h.name == self.hierarchy) and (h.table().name == self.table)
@@ -28,7 +33,9 @@ class ModelHierarchyReference(BaseValidation):
                     return True
             return False
 
-        return tabular_model.hierarchies.find(hierarchy_matcher)
+        print(self)
+        print(tabular_model.levels)
+        return tabular_model.levels.find(level_matcher)
 
 
 @define(repr=True)
@@ -59,4 +66,4 @@ class ModelMeasureReference(BaseValidation):
         return tabular_model.measures.find(lambda m: (m.name == self.measure) and (m.table().name == self.table))
 
 
-ModelReference = ModelColumnReference | ModelHierarchyReference | ModelMeasureReference
+ModelReference = ModelColumnReference | ModelLevelReference | ModelMeasureReference
