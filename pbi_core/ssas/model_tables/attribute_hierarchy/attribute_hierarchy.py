@@ -1,14 +1,14 @@
 import datetime
-from typing import TYPE_CHECKING, Final, Literal
+from typing import TYPE_CHECKING, Final
 
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasReadonlyRecord
 from pbi_core.ssas.model_tables.enums import DataState
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.column import Column
     from pbi_core.ssas.model_tables.level import Level
 
@@ -37,7 +37,14 @@ class AttributeHierarchy(SsasReadonlyRecord):
     def levels(self) -> set["Level"]:
         return self._tabular_model.levels.find_all({"hierarchy_id": self.id})
 
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(self, lineage_type, [level.get_lineage(lineage_type) for level in self.levels()])
-        return LineageNode(self, lineage_type, [self.column().get_lineage(lineage_type)])
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset(self.levels())
+        if recursive:
+            return self._recurse_children(base)
+        return base
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset({self.column()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base

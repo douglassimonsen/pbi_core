@@ -173,26 +173,3 @@ class DependencyMixin(HelpersMixin):
             )
 
         return set(full_dependencies)
-
-    def parents(self, *, recursive: bool = False) -> "set[Column | Measure]":
-        """Returns all columns and measures this Column is dependent on."""
-        full_dependencies = self.parent_columns() | self.parent_measures()
-        if recursive:
-            recursive_dependencies: set[Column | Measure] = set()
-            for dep in full_dependencies:
-                recursive_dependencies.add(dep)
-                recursive_dependencies.update(dep.parents(recursive=True))
-            return recursive_dependencies
-
-        return full_dependencies
-
-    def children(self, *, recursive: bool = False) -> "set[Column | Measure]":
-        """Returns all columns and measures dependent on this Column."""
-        full_dependencies = self.child_columns() | self.child_measures()
-        if recursive:
-            recursive_dependencies: set[Column | Measure] = set()
-            for dep in full_dependencies:
-                recursive_dependencies.add(dep)
-                recursive_dependencies.update(dep.children(recursive=True))
-            return recursive_dependencies
-        return full_dependencies

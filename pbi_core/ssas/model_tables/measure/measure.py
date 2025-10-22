@@ -229,29 +229,19 @@ class Measure(SsasRenameRecord):
 
         return {x for x in full_dependencies if f"[{x.explicit_name}]" in str(self.expression)}
 
-    def parents(self, *, recursive: bool = False) -> "set[Column | Measure]":
+    def parents(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures this Measure is dependent on."""
-        full_dependencies = self.parent_columns() | self.parent_measures()
+        base_deps = frozenset(self.parent_columns() | self.parent_measures())
         if recursive:
-            recursive_dependencies: set[Column | Measure] = set()
-            for dep in full_dependencies:
-                recursive_dependencies.add(dep)
-                recursive_dependencies.update(dep.parents(recursive=True))
-            return recursive_dependencies
+            return self._recurse_parents(base_deps)
+        return base_deps
 
-        return full_dependencies
-
-    def children(self, *, recursive: bool = False) -> "set[Column | Measure]":
+    def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures dependent on this Measure."""
-        full_dependencies = self.child_columns() | self.child_measures()
+        base_deps = frozenset(self.child_columns() | self.child_measures())
         if recursive:
-            recursive_dependencies: set[Column | Measure] = set()
-            for dep in full_dependencies:
-                recursive_dependencies.add(dep)
-                recursive_dependencies.update(dep.children(recursive=True))
-            return recursive_dependencies
-
-        return full_dependencies
+            return self._recurse_children(base_deps)
+        return base_deps
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

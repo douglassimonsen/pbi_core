@@ -11,9 +11,9 @@ from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.column import Column
     from pbi_core.ssas.model_tables.hierarchy import Hierarchy
-    from pbi_core.ssas.model_tables.measure import Measure
 
 
 @define()
@@ -44,10 +44,11 @@ class Level(SsasRenameRecord):
     def hierarchy(self) -> "Hierarchy":
         return self._tabular_model.hierarchies.find({"id": self.hierarchy_id})
 
-    def parents(self, *, recursive: bool = True) -> set["Column | Measure"]:
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset({self.column()})
         if recursive:
-            return {self.column()} | self.column().parents(recursive=True)
-        return {self.column()}
+            return self._recurse_parents(base)
+        return base
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
         if lineage_type == "children":

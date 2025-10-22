@@ -16,6 +16,7 @@ from pbi_core.static_files.layout.sources.hierarchy import HierarchySource
 from .enums import HideMembers
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.level import Level
     from pbi_core.ssas.model_tables.table import Table
     from pbi_core.ssas.model_tables.variation import Variation
@@ -64,15 +65,11 @@ class Hierarchy(SsasRenameRecord):
         set_name.fix_dax(self, new_name)
         self.name = new_name
 
-    def parents(self, *, recursive: bool = True) -> set["Level | Variation"]:
-        dependencies = self.levels() | self.variations()
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset(self.levels() | self.variations())
         if recursive:
-            recursive_dependencies = set()
-            for val in dependencies:
-                recursive_dependencies.add(val)
-                recursive_dependencies.update(val.parents(recursive=True))
-            return recursive_dependencies
-        return dependencies
+            return self._recurse_parents(base_deps)
+        return base_deps
 
     def table(self) -> "Table":
         return self._tabular_model.tables.find({"id": self.table_id})

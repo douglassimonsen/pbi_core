@@ -1,10 +1,9 @@
 import datetime
-from typing import Final, Literal
+from typing import Final
 
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.lineage import LineageNode
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import ObjectType
 from pbi_core.ssas.server._commands import RenameCommands
@@ -65,8 +64,3 @@ class Annotation(SsasRenameRecord):
             msg = f"Object Type {self.object_type} does not map to a known SSAS entity type."
             raise TypeError(msg)
         return mapper[self.object_type](self.object_id)
-
-    def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
-        if lineage_type == "children":
-            return LineageNode(self, lineage_type)
-        return LineageNode(self, lineage_type, [self.object().get_lineage(lineage_type)])

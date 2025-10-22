@@ -14,7 +14,8 @@ logger = get_logger()
 if TYPE_CHECKING:
     from _typeshed import StrPath
 
-    from pbi_core.ssas.model_tables import Level, Table, Variation
+    from pbi_core.ssas.model_tables import Table
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
 
 
 class LocalReport(LocalSsasReport, LocalStaticReport, BaseReport):  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -180,7 +181,7 @@ class LocalReport(LocalSsasReport, LocalStaticReport, BaseReport):  # pyright: i
             + [relationship.to_column() for relationship in self.ssas.relationships]
             + [relationship.from_column() for relationship in self.ssas.relationships]
         )
-        ret: list[Measure | Column | Hierarchy | Level | Variation] = []
+        ret: list[SsasTable] = []
         for val in model_values:
             ret.append(val)
             ret.extend(val.parents(recursive=True))

@@ -9,6 +9,7 @@ from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.column import Column
     from pbi_core.ssas.model_tables.hierarchy import Hierarchy
     from pbi_core.ssas.model_tables.measure import Measure
@@ -37,15 +38,16 @@ class Variation(SsasRenameRecord):
         """Name is bad to not consistent with other methods because the column field in this entity :(."""
         return self._tabular_model.columns.find(self.column_id)
 
-    def parents(self, *, recursive: bool = True) -> set["Column | Measure"]:
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base: set[Column | Measure] = {self.get_column()}
         default_column = self.default_column()
         if default_column:
             base.add(default_column)
+        frozen_base = frozenset(base)
 
         if recursive:
-            return base | {y for x in base for y in x.parents(recursive=True)}
-        return base
+            return self._recurse_parents(frozen_base)
+        return frozen_base
 
     def default_column(self) -> "Column | None":
         if self.default_column_id is None:

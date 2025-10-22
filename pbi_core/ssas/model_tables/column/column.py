@@ -22,6 +22,7 @@ from .commands import CommandMixin
 from .enums import Alignment, ColumnType, EncodingHint, SummarizedBy
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.static_files.layout._base_node import LayoutNode
     from pbi_core.static_files.layout.layout import Layout
 
@@ -89,6 +90,20 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
 
     def __repr__(self) -> str:
         return f"Column({self.id}: {self.full_name()})"
+
+    def parents(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
+        """Returns all columns and measures this Column is dependent on."""
+        full_dependencies = self.parent_columns() | self.parent_measures()
+        if recursive:
+            return self._recurse_parents(frozenset(full_dependencies))
+        return frozenset(full_dependencies)
+
+    def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
+        """Returns all columns and measures dependent on this Column."""
+        full_dependencies = frozenset(self.child_columns() | self.child_measures())
+        if recursive:
+            return self._recurse_children(full_dependencies)
+        return full_dependencies
 
     def name(self) -> str:
         """Returns the name of the column."""
