@@ -11,9 +11,6 @@ if TYPE_CHECKING:
 
 
 class DependencyMixin(HelpersMixin):
-    explicit_name: str | None
-    expression: str | int | None
-
     def child_measures(self, *, recursive: bool = False) -> set["Measure"]:
         """Returns measures dependent on this Column."""
         object_type = self._column_type()

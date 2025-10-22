@@ -102,7 +102,7 @@ class Partition(SsasRefreshRecord):
     def table(self) -> "Table":
         return self._tabular_model.tables.find({"id": self.table_id})
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
         return frozenset()
 
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:

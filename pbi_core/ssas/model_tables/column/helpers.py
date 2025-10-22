@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Literal
 
-from .enums import Alignment, ColumnType
+from .enums import ColumnType
 from .relationships import RelationshipMixin
 
 if TYPE_CHECKING:
@@ -8,14 +8,6 @@ if TYPE_CHECKING:
 
 
 class HelpersMixin(RelationshipMixin):
-    alignment: Alignment
-    expression: str | int | None
-    system_flags: int
-    explicit_name: str | None
-    id: int
-    inferred_name: str | None
-    type: ColumnType
-
     def expression_ast(self) -> "dax.Expression | None":
         from pbi_parsers import dax  # noqa: PLC0415
 

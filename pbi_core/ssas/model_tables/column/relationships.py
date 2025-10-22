@@ -1,22 +1,19 @@
 from typing import TYPE_CHECKING
 
+from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
+
+from .base import ColumnDTO
+
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.attribute_hierarchy import AttributeHierarchy
     from pbi_core.ssas.model_tables.level import Level
     from pbi_core.ssas.model_tables.relationship.relationship import Relationship
     from pbi_core.ssas.model_tables.table import Table
-    from pbi_core.ssas.server.tabular_model import BaseTabularModel
 
     from .column import Column
 
 
-class RelationshipMixin:
-    id: int
-    table_id: int
-    attribute_hierarchy_id: int
-    sort_by_column_id: int | None
-    _tabular_model: "BaseTabularModel"
-
+class RelationshipMixin(ColumnDTO, SsasTable):
     def table(self) -> "Table":
         """Returns the table class the column is a part of."""
         return self._tabular_model.tables.find({"id": self.table_id})

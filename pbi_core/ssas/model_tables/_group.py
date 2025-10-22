@@ -13,7 +13,7 @@ class RowNotFoundError(Exception):
     pass
 
 
-def _resolve_attr(instance, field):
+def _resolve_attr(instance: IdBase, field: str) -> Any:
     ret = getattr(instance, field)
     if callable(ret):
         return ret()
