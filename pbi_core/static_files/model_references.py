@@ -33,8 +33,6 @@ class ModelLevelReference(BaseValidation):
                     return True
             return False
 
-        print(self)
-        print(tabular_model.levels)
         return tabular_model.levels.find(level_matcher)
 
 
