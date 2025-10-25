@@ -500,15 +500,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#pbi_core.ssas.model_tables.calc_dependency.CalcDependency.pbi_core_name" class="md-nav__link">
-    <span class="md-ellipsis">
-      pbi_core_name
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -3784,15 +3775,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#pbi_core.ssas.model_tables.calc_dependency.CalcDependency.pbi_core_name" class="md-nav__link">
-    <span class="md-ellipsis">
-      pbi_core_name
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -3863,8 +3845,7 @@ This entity is calculated, rather than being "real" like the other entities.</p>
 <span class="normal"><a href="#__codelineno-0-28">28</a></span>
 <span class="normal"><a href="#__codelineno-0-29">29</a></span>
 <span class="normal"><a href="#__codelineno-0-30">30</a></span>
-<span class="normal"><a href="#__codelineno-0-31">31</a></span>
-<span class="normal"><a href="#__codelineno-0-32">32</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="nd">@define</span><span class="p">()</span>
+<span class="normal"><a href="#__codelineno-0-31">31</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="nd">@define</span><span class="p">()</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">CalcDependency</span><span class="p">(</span><span class="n">SsasReadonlyRecord</span><span class="p">):</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">    </span><span class="sd">"""Calculation Dependency.</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a>
@@ -3888,8 +3869,7 @@ This entity is calculated, rather than being "real" like the other entities.</p>
 </span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a>    <span class="n">referenced_expression</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a>
 </span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">pbi_core_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="w">        </span><span class="sd">"""Returns the name displayed in the PBIX report."""</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">object_type</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="si">}</span><span class="s2">] -&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">referenced_object_type</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">referenced_object</span><span class="si">}</span><span class="s2">]"</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">object_type</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="si">}</span><span class="s2">] -&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">referenced_object_type</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">referenced_object</span><span class="si">}</span><span class="s2">]"</span>
 </span></code></pre></div></td></tr></tbody></table></div>
               </details>
 
@@ -3905,36 +3885,6 @@ This entity is calculated, rather than being "real" like the other entities.</p>
 
 
 
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="pbi_core.ssas.model_tables.calc_dependency.CalcDependency.pbi_core_name" class="doc doc-heading">
-            <span class="doc doc-object-name doc-function-name">pbi_core_name</span>
-
-
-<a href="#pbi_core.ssas.model_tables.calc_dependency.CalcDependency.pbi_core_name" class="headerlink" title="Permanent link">#</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">pbi_core_name</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span>
-</span></code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Returns the name displayed in the PBIX report.</p>
-
-          
-
-            <details class="quote">
-              <summary>Source code in <code>pbi_core/ssas/model_tables/calc_dependency/calc_dependency.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-30">30</a></span>
-<span class="normal"><a href="#__codelineno-0-31">31</a></span>
-<span class="normal"><a href="#__codelineno-0-32">32</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="k">def</span><span class="w"> </span><span class="nf">pbi_core_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="w">    </span><span class="sd">"""Returns the name displayed in the PBIX report."""</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">object_type</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="si">}</span><span class="s2">] -&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">referenced_object_type</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">referenced_object</span><span class="si">}</span><span class="s2">]"</span>
-</span></code></pre></div></td></tr></tbody></table></div>
-            </details>
-    </div>
-
-</div>
 
 
 
