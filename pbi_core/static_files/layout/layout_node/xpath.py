@@ -1,15 +1,11 @@
 from typing import TYPE_CHECKING
 
-from pbi_core.attrs import fields
-
 if TYPE_CHECKING:
     from .main import LayoutNode
 
 
 def _xpath_attrs(parent: "LayoutNode", child: "LayoutNode", xpath: list[str | int]) -> list[str | int] | None:
-    for attr in fields(parent.__class__):
-        if attr.init is False:
-            continue
+    for attr in parent.data_attributes():
         val = getattr(parent, attr.name)
         ret = _get_xpath(val, child, xpath=[*xpath, attr.name])
         if ret is not None:

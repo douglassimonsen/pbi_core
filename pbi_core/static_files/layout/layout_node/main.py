@@ -2,6 +2,8 @@ import json
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
+from attrs import Attribute
+
 from pbi_core.attrs import BaseValidation, fields
 from pbi_core.lineage import LineageNode
 
@@ -46,28 +48,23 @@ class LayoutNode(BaseValidation, XPathMixin, FindMixin):
         Differs from the model_dump_json method in that it does not convert the JSON models back to strings.
         """
         ret = {}
-        for field in fields(self.__class__):
-            if field.init is False:
-                continue
+        for field in self.data_attributes():
             ret[field.name] = self.serialize_helper(getattr(self, field.name))
         return ret
 
     def pbi_core_name(self) -> str:
         raise NotImplementedError
 
-    def _children(self) -> list["LayoutNode"]:
-        ret: list[LayoutNode] = []
-        for attr in dir(self):
-            if attr.startswith("_"):
-                continue
-            child_candidate: list[Any] | dict[str, Any] | LayoutNode | int | str = getattr(self, attr)
-            if isinstance(child_candidate, list):
-                ret.extend(val for val in child_candidate if isinstance(val, LayoutNode))
-            elif isinstance(child_candidate, dict):
-                ret.extend(val for val in child_candidate.values() if isinstance(val, LayoutNode))
-            elif isinstance(child_candidate, LayoutNode):
-                ret.append(child_candidate)
-        return ret
+    @classmethod
+    def data_attributes(cls) -> list[Attribute]:
+        """Get a list of data attributes for the class.
+
+        This excludes any attributes that are not initialized via the constructor since those are not part of the data
+        model. For example, attributes used to link children to parents are excluded since they are only helpers for
+        navigation.
+
+        """
+        return [field for field in fields(cls) if field.init is True]
 
     def get_lineage(
         self,

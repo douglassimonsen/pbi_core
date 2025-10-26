@@ -28,30 +28,74 @@ class FindMixin:
         cls_type: type[T] | tuple[type[T], ...],
         attributes: dict[str, Any] | Callable[[T], bool] | None = None,
     ) -> list["T"]:
-        ret: list[T] = []
         from .main import LayoutNode  # noqa: PLC0415
 
         assert isinstance(self, LayoutNode)
 
         attribute_lambda = _gen_find_filter_callable(attributes)
-        if isinstance(self, cls_type) and attribute_lambda(self):
-            ret.append(self)
-        for child in self._children():
-            ret.extend(child.find_all(cls_type, attribute_lambda))
-        return ret
+        return _find_all(self, cls_type, attribute_lambda)
 
-    def find(self, cls_type: type[T], attributes: dict[str, Any] | Callable[[T], bool] | None = None) -> "T":
+    def find(
+        self,
+        cls_type: type[T] | tuple[type[T], ...],
+        attributes: dict[str, Any] | Callable[[T], bool] | None = None,
+    ) -> "T":
         from .main import LayoutNode  # noqa: PLC0415
 
         assert isinstance(self, LayoutNode)
 
         attribute_lambda = _gen_find_filter_callable(attributes)
-        if isinstance(self, cls_type) and attribute_lambda(self):
-            return self
-        for child in self._children():
-            try:
-                return child.find(cls_type, attribute_lambda)
-            except ValueError:
-                pass
+        candidate = _find(self, cls_type, attribute_lambda)
+        if candidate is not None:
+            return candidate
+
         msg = f"Object not found: {cls_type}"
         raise ValueError(msg)
+
+
+def _find_all(
+    val: "list[Any] | dict[str, Any] | LayoutNode",
+    cls_type: type[T] | tuple[type[T], ...],
+    attribute_lambda: Callable[[T], bool],
+) -> list[T]:
+    from .main import LayoutNode  # noqa: PLC0415
+
+    ret: list[T] = []
+    if isinstance(val, LayoutNode):
+        if isinstance(val, cls_type) and attribute_lambda(val):
+            ret.append(val)
+        for attr in val.data_attributes():
+            child_val = getattr(val, attr.name)
+            ret.extend(_find_all(child_val, cls_type, attribute_lambda))
+    elif isinstance(val, list):
+        for item in val:
+            ret.extend(_find_all(item, cls_type, attribute_lambda))
+    elif isinstance(val, dict):
+        for item in val.values():
+            ret.extend(_find_all(item, cls_type, attribute_lambda))
+    return ret
+
+
+def _find(  # noqa: C901
+    val: "list[Any] | dict[str, Any] | LayoutNode",
+    cls_type: type[T] | tuple[type[T], ...],
+    attribute_lambda: Callable[[T], bool],
+) -> T | None:
+    from .main import LayoutNode  # noqa: PLC0415
+
+    if isinstance(val, LayoutNode):
+        if isinstance(val, cls_type) and attribute_lambda(val):
+            return val
+        for attr in val.data_attributes():
+            child_val = getattr(val, attr.name)
+            if candidate := _find(child_val, cls_type, attribute_lambda):
+                return candidate
+    elif isinstance(val, list):
+        for item in val:
+            if candidate := _find(item, cls_type, attribute_lambda):
+                return candidate
+    elif isinstance(val, dict):
+        for item in val.values():
+            if candidate := _find(item, cls_type, attribute_lambda):
+                return candidate
+    return None
