@@ -9,4 +9,4 @@ def test_multilanguage_support():
 
 
 def test_multilanguage_support_set() -> None:
-    set_static_elements("multilang1.xlsx", "test.pbix")
+    set_static_elements("multilang_example.xlsx", "test.pbix")
