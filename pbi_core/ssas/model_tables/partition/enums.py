@@ -15,7 +15,7 @@ class PartitionType(Enum):
 
     QUERY = 1
     CALCULATED = 2
-    _NONE = 3
+    NONE = 3
     M = 4
     ENTITY = 5
     CALCULATION_GROUP = 7

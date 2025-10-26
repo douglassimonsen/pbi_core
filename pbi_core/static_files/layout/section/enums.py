@@ -24,7 +24,7 @@ class SectionVisibility(Enum):
 class BindingType(Enum):
     DEFAULT = "Default"
     """No specific usage of this binding."""
-    DRILL_THROUGH = "Drillthrough"
+    DRILLTHROUGH = "Drillthrough"
     """Binding to be used as drillthrough."""
     TOOLTIP = "Tooltip"
     """Binding to be used as tooltip page."""
@@ -45,7 +45,7 @@ class AcceptsFilterContext(Enum):
 
 
 class PageType(Enum):
-    DRILL_THROUGH = "Drillthrough"
+    DRILLTHROUGH = "Drillthrough"
     """Page to be used as drillthrough."""
     TOOLTIP = "Tooltip"
     """Page to be used as tooltip."""

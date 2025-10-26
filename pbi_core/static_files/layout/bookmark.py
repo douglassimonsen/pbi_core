@@ -43,19 +43,19 @@ class Highlight(LayoutNode):
 
 
 class DisplayMode(Enum):
-    maximize = "maximize"
+    MAXIMIZE = "maximize"
     """Visual is shown full screen."""
-    spotlight = "spotlight"
+    SPOTLIGHT = "spotlight"
     """Visual is spotlighted and other visuals on the page are dimmed."""
-    elevation = "elevation"
+    ELEVATION = "elevation"
     """Visual is shown with an elevation."""
-    hidden = "hidden"
+    HIDDEN = "hidden"
     """Visual is hidden."""
 
 
 class DataTableOptions(Enum):
-    accessible = "accessible"
-    normal = "normal"
+    ACCESSIBLE = "accessible"
+    NORMAL = "normal"
 
 
 @define()

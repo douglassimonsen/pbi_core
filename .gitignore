@@ -1,3 +1,8 @@
+test*
+!tests/
+!tests/** 
+
+
 venv
 *.pyc
 *.pbix
@@ -10,5 +15,3 @@ dist
 *.VSCodeCounter
 pbi_core/local
 todo
-test*
-!tests/

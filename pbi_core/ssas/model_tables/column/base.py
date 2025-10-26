@@ -9,7 +9,7 @@ from pbi_core.attrs import define
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables.enums import DataState, DataType
 
-from .enums import Alignment, ColumnType, EncodingHint, SummarizedBy
+from .enums import Alignment, ColumnType, DataCategory, EncodingHint, SummarizedBy
 
 logger: BoundLogger = get_logger()
 
@@ -27,7 +27,7 @@ class ColumnDTO:
     attribute_hierarchy_id: int = field(eq=True)
     column_origin_id: int | None = field(eq=True, default=None)
     column_storage_id: int = field(eq=True)
-    data_category: str | None = field(eq=True, default=None)
+    data_category: DataCategory | None = field(eq=True, default=None)
     description: str | None = field(eq=True, default=None)
     display_folder: str | None = field(eq=True, default=None)
     display_ordinal: int = field(eq=True)

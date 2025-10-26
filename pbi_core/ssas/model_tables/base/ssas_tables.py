@@ -21,7 +21,7 @@ class SsasAlter(SsasTable):
     _commands: BaseCommands
 
     def alter(self) -> BeautifulSoup:
-        """Updates a non-name field of an object."""
+        """Updates a non-name field of an object in SSAS."""
         xml_command = self.render_xml_command(
             self.xml_fields(),
             self._commands.alter,
@@ -41,7 +41,7 @@ class SsasRename(SsasTable):
     _commands: RenameCommands
 
     def rename(self) -> BeautifulSoup:
-        """Updates a name field of an object."""
+        """Updates a name field of an object in SSAS."""
         xml_command = self.render_xml_command(
             self.xml_fields(),
             self._commands.rename,
@@ -81,6 +81,7 @@ class SsasDelete(SsasTable):
     _commands: BaseCommands
 
     def delete(self) -> BeautifulSoup:
+        """Removes an object from SSAS."""
         data = {
             "ID": self.id,
         }

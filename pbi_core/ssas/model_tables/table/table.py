@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord
 from pbi_core.ssas.model_tables.column import Column
-from pbi_core.ssas.model_tables.enums import DataCategory
 from pbi_core.ssas.model_tables.measure import Measure
 from pbi_core.ssas.model_tables.partition import Partition
 from pbi_core.ssas.server._commands import RefreshCommands
@@ -16,6 +15,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from pbi_core.static_files.layout.sources.base import Entity
 
 from . import set_name
+from .enums import DataCategory
 
 if TYPE_CHECKING:
     from pbi_parsers.pq.misc.external_sources import BaseExternalSource

@@ -28,7 +28,7 @@ class FilterSortOrder(Enum):
 
 
 class DisplayMode(Enum):
-    hidden = "hidden"
+    HIDDEN = "hidden"
 
 
 @define()

@@ -10,7 +10,38 @@ import cattrs
 from .attrs import BaseValidation, fields
 
 T = TypeVar("T")
-# cursed, but I don't know how else to identify annotated unions
+
+
+def _is_union(tp: Any) -> bool:
+    o = get_origin(tp)
+    if o is Union:  # typing.Union[...]
+        return True
+    if o is UnionType:  # PEP 604 union (A | B)  # noqa: SIM103
+        return True
+    return False
+
+
+def _structure_union(val: Any, tp: Any) -> Any:
+    args = get_args(tp)
+
+    # Without doing a isinstance check first, cattrs will try to coerce strings to bools for instance
+    for a in args:
+        if a is None and val is None:
+            return None
+        try:
+            if isinstance(val, a):
+                return val
+        except TypeError:
+            pass
+
+    last_error = None
+    for a in args:
+        try:
+            return converter.structure(val, a)
+        except (cattrs.ClassValidationError, cattrs.StructureHandlerNotFoundError, AttributeError) as e:
+            last_error = e
+    msg = f"Could not match union type {tp} for value {val!r}"
+    raise ValueError(msg) from last_error
 
 
 def _is_json(tp: Any) -> bool:
@@ -153,6 +184,8 @@ class SubConverter(cattrs.Converter):
 converter = SubConverter(forbid_extra_keys=True, use_alias=True)
 
 converter.register_structure_hook_func(_is_nullable_union, _structure_nullable_union)
+
+converter.register_structure_hook_func(_is_union, _structure_union)
 
 converter.register_structure_hook_func(_is_json, _structure_json)
 converter.register_unstructure_hook_func(_is_json, unstruct_json)

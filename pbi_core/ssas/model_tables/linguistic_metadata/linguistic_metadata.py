@@ -15,8 +15,8 @@ if TYPE_CHECKING:
 
 
 class ContentType(Enum):
-    Xml = 0
-    Json = 1
+    XML = 0
+    JSON = 1
 
 
 @define(repr=True)
@@ -35,7 +35,7 @@ class EntityDefinition(BaseValidation):
 
 
 class TermSourceType(Enum):
-    External = "External"
+    EXTERNAL = "External"
 
 
 @define(repr=True)
@@ -45,13 +45,13 @@ class TermSource(BaseValidation):
 
 
 class TermDefinitionState(Enum):
-    Suggested = "Suggested"
-    Generated = "Generated"
-    Deleted = "Deleted"
+    SUGGESTED = "Suggested"
+    GENERATED = "Generated"
+    DELETED = "Deleted"
 
 
 class TermDefinitionType(Enum):
-    Noun = "Noun"
+    NOUN = "Noun"
 
 
 @define(repr=True)
@@ -64,11 +64,11 @@ class TermDefinition(BaseValidation):
 
 
 class VisibilityValue(Enum):
-    Hidden = "Hidden"
+    HIDDEN = "Hidden"
 
 
 class VisibilityState(Enum):
-    Authored = "Authored"
+    AUTHORED = "Authored"
 
 
 @define(repr=True)
@@ -78,8 +78,8 @@ class VisibilityType(BaseValidation):
 
 
 class NameTypeType(Enum):
-    Identifier = "Identifier"
-    Name = "Name"
+    IDENTIFIER = "Identifier"
+    NAME = "Name"
 
 
 @define(repr=True)
@@ -107,7 +107,7 @@ class PhrasingAttributeRole(BaseValidation):
 
 
 class RelationshipPhrasingState(Enum):
-    Generated = "Generated"
+    GENERATED = "Generated"
 
 
 # TODO: Subtype
@@ -157,8 +157,8 @@ class SemanticSlot(BaseValidation):
 
 
 class ConditionOperator(Enum):
-    Equals = "Equals"
-    GreaterThan = "GreaterThan"
+    EQUALS = "Equals"
+    GREATER_THAN = "GreaterThan"
 
 
 @define(repr=True)

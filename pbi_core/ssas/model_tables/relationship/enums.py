@@ -19,4 +19,4 @@ class JoinOnDateBehavior(Enum):
 class SecurityFilteringBehavior(Enum):
     ONE_DIRECTION = 1
     BOTH_DIRECTIONS = 2
-    _NONE = 3
+    NONE = 3
