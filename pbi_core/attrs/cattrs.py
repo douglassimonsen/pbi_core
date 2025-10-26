@@ -53,8 +53,9 @@ def _structure_nullable_union(val: Any, tp: Any) -> Any:
     non_none_args: list[type] = [arg for arg in args if arg is not NoneType]
     if val is None:
         return None
-    new_type = Union[tuple(non_none_args)]
-    return converter.structure(val, new_type)
+    new_type = Union[tuple(non_none_args)]  # noqa: UP007
+    # cattrs isn't typed to acknowledge that unions are ok, but they are
+    return converter.structure(val, new_type)  # pyright: ignore[reportArgumentType]
 
 
 def struct_uuid(obj: Any, _: Any = None) -> UUID:
