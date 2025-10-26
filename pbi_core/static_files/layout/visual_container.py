@@ -9,11 +9,11 @@ from pbi_core.lineage.main import LineageNode
 from pbi_core.ssas.trace import NoQueryError, Performance, get_performance
 from pbi_core.static_files.model_references import ModelReference
 
-from ._base_node import LayoutNode
 from .condition import Condition
 from .expansion_state import ExpansionState
 from .filters import From as FromType
 from .filters import PrototypeQuery, PrototypeQueryResult, VisualFilter
+from .layout_node import LayoutNode
 from .selector import Selector
 from .sources import Source
 from .visuals.base import FilterSortOrder, ProjectionConfig, PropertyDef

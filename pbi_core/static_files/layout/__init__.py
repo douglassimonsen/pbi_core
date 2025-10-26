@@ -1,5 +1,5 @@
-from ._base_node import LayoutNode
 from .layout import Layout
+from .layout_node import LayoutNode
 from .resource_package import (
     ResourcePackage,
     ResourcePackageDetails,

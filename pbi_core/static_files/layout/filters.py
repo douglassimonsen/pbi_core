@@ -14,8 +14,8 @@ from pbi_core.static_files.model_references import (
     ModelReference,
 )
 
-from ._base_node import LayoutNode
 from .condition import AndCondition, ComparisonCondition, Condition, ConditionType, InCondition, NotCondition
+from .layout_node import LayoutNode
 from .sources import AggregationSource, ColumnSource, Entity, MeasureSource, Source
 from .sources.aggregation import ScopedEvalAgg
 from .sources.hierarchy import HierarchyLevelSource

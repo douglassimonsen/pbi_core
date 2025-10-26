@@ -5,9 +5,9 @@ from attrs import field
 
 from pbi_core.attrs import converter, define
 
-from ._base_node import LayoutNode
 from .expansion_state import ExpansionStateLevel, ExpansionStateRoot
 from .filters import BookmarkFilter, CachedDisplayNames, Direction, FilterExpressionMetadata, HighlightScope, Orderby
+from .layout_node import LayoutNode
 from .selector import Selector
 from .sources import Source
 from .visuals.base import PropertyDef

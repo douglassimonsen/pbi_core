@@ -19,8 +19,8 @@ from .commands import CommandMixin
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.static_files.layout._base_node import LayoutNode
     from pbi_core.static_files.layout.layout import Layout
+    from pbi_core.static_files.layout.layout_node import LayoutNode
 
 
 logger: BoundLogger = get_logger()

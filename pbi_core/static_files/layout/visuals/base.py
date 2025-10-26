@@ -3,9 +3,9 @@ from typing import TYPE_CHECKING, Any, Literal
 
 from pbi_core.attrs import converter, define
 from pbi_core.lineage import LineageNode
-from pbi_core.static_files.layout._base_node import LayoutNode
 from pbi_core.static_files.layout.expansion_state import ExpansionState
 from pbi_core.static_files.layout.filters import Filter, PrototypeQuery
+from pbi_core.static_files.layout.layout_node import LayoutNode
 from pbi_core.static_files.layout.selector import Selector
 from pbi_core.static_files.layout.sources.column import ColumnSource
 from pbi_core.static_files.layout.sources.measure import MeasureSource
@@ -84,7 +84,7 @@ class PropertyDef(LayoutNode):
 def get_property_def_type(v: dict[str, Any], _: type | None = None) -> PropertyDef:
     try:
         properties = {k: get_property_expression_type(e) for k, e in v.get("properties", {}).items()}
-    except Exception:
+    except TypeError:
         properties = v.get("properties", {})
     selector = Selector.model_validate(v["selector"]) if "selector" in v else None
     return PropertyDef(properties=properties, selector=selector)

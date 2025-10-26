@@ -51,7 +51,6 @@ class LocalStaticReport(BaseStaticReport):
 
         Args:
             path (StrPath): the path (relative or absolute) to save the PBIX to
-            sync_ssas_changes (bool, optional): whether to sync changes made in the SSAS model back to the PBIX file
 
         """
         shutil.copy(self._source_path, path)

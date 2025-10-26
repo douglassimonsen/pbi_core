@@ -5,7 +5,7 @@ from attrs import field
 
 from pbi_core.attrs import converter, define
 
-from ._base_node import LayoutNode
+from .layout_node import LayoutNode
 from .sources import DataSource, LiteralSource, Source, SourceRef, TransformOutputRoleRef
 from .sources.aggregation import AggregationSource, ScopedEvalExpression, SelectRef
 from .sources.arithmetic import ArithmeticSource, ScopedEvalArith

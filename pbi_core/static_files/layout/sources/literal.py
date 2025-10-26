@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 
 from pbi_core.attrs import define
-from pbi_core.static_files.layout._base_node import LayoutNode
+from pbi_core.static_files.layout.layout_node import LayoutNode
 
 PrimitiveValue = int | str | datetime | bool | None
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"

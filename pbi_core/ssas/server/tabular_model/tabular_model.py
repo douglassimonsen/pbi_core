@@ -252,18 +252,9 @@ class BaseTabularModel:
         )
 
     def get_performance_trace(self) -> PerformanceTrace:
-        """Calculates performance of a DAX query using a Trace.
+        """Returns a performance trace for this tabular model instance.
 
-        Args:
-            model (BaseTabularModel): the SSAS instance the DAX should be run against
-            commands (list[str]): A list of DAX queries to run against the SSAS model
-            clear_cache (bool): Whether to clear the SSAS cache before running the queries.
-                Useful to test cold start times for users
-
-        Returns:
-            Performance: contains memory and time usage of the DAX query
-
-
+        This trace can be used to analyze performance of DAX queries against this model.
         """
         return PerformanceTrace(self)
 

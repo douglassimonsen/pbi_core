@@ -9,9 +9,9 @@ from pbi_core.attrs.extra import repr_len
 from pbi_core.lineage.main import LineageNode
 from pbi_core.static_files.model_references import ModelReference
 
-from ._base_node import LayoutNode
 from .bookmark import LayoutBookmarkChild
 from .filters import GlobalFilter
+from .layout_node import LayoutNode
 from .pod import Pod
 from .resource_package import ResourcePackage
 from .section import Section

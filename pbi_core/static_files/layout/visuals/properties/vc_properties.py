@@ -1,7 +1,7 @@
 from attrs import field
 
 from pbi_core.attrs import define
-from pbi_core.static_files.layout._base_node import LayoutNode
+from pbi_core.static_files.layout.layout_node import LayoutNode
 
 from .base import Expression
 

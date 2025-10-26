@@ -50,6 +50,12 @@ class Group(list[T]):  # noqa: FURB189
         raise RowNotFoundError
 
     def find_all(self, match_val: int | dict[str, Any] | Callable[[T], bool]) -> set[T]:
+        """The same as `find` but returns all matching records rather than just the first.
+
+        Note:
+            This method returns a set of matching records. If no records match, an empty set is returned.
+
+        """
         ret: set[T] = set()
         if isinstance(match_val, int):
             ret.update(val for val in self if val.id == match_val)

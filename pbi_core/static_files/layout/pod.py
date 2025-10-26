@@ -5,7 +5,7 @@ from attrs import field
 
 from pbi_core.attrs import Json, define
 
-from ._base_node import LayoutNode
+from .layout_node import LayoutNode
 from .sources import ColumnSource
 
 

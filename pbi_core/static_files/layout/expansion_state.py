@@ -1,6 +1,6 @@
 from pbi_core.attrs import define
 
-from ._base_node import LayoutNode
+from .layout_node import LayoutNode
 from .sources import Source
 
 
