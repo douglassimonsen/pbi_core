@@ -200,6 +200,13 @@ class ZoomProperties(LayoutNode):
 class BarChartProperties(LayoutNode):
     categoryAxis: list[CategoryAxisProperties] = field(factory=lambda: [CategoryAxisProperties()])
     dataPoint: list[DataPointProperties] = field(factory=lambda: [DataPointProperties()])
+
+    fill: list = field(factory=list)
+    icon: list = field(factory=list)
+    outline: list = field(factory=list)
+    shape: list = field(factory=list)
+    text: list = field(factory=list)
+
     general: list[GeneralProperties] = field(factory=lambda: [GeneralProperties()])
     labels: list[LabelsProperties] = field(factory=lambda: [LabelsProperties()])
     layout: list[LayoutProperties] = field(factory=lambda: [LayoutProperties()])

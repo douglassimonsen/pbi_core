@@ -226,6 +226,7 @@ class SelectRefExpression(LayoutNode):
 
 @define()
 class ImageExpression(LayoutNode):
+    @define()
     class _ImageExpressionHelper(LayoutNode):
         name: "Expression"
         scaling: "Expression"
@@ -236,6 +237,7 @@ class ImageExpression(LayoutNode):
 
 @define()
 class GeoJsonExpression(LayoutNode):
+    @define()
     class _GeoJsonExpressionHelper(LayoutNode):
         name: "Expression"
         content: "Expression"

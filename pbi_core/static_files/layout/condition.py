@@ -1,8 +1,6 @@
 from enum import Enum
 from typing import Any
 
-from attrs import field
-
 from pbi_core.attrs import converter, define
 
 from .layout_node import LayoutNode
@@ -78,19 +76,6 @@ class ContainsCondition(LayoutNode):
         if isinstance(self.Contains.Right, LiteralSource):
             return [self.Contains.Left]
         return [self.Contains.Left, self.Contains.Right]
-
-
-@define()
-class Expression:
-    template: str
-    source: str
-    data: dict[str, str] = field(factory=dict)
-    expr_type: str = ""
-
-    def to_text(self) -> str:
-        if self.data:
-            return self.template.format(**self.data)
-        return self.template
 
 
 @define()

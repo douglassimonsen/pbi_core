@@ -1,6 +1,5 @@
 import datetime
 import json
-from collections.abc import Callable
 from enum import Enum
 from types import NoneType, UnionType
 from typing import Any, TypeVar, Union, get_args, get_origin
@@ -12,38 +11,6 @@ from .attrs import BaseValidation, fields
 
 T = TypeVar("T")
 # cursed, but I don't know how else to identify annotated unions
-
-
-def _is_union(tp: Any) -> bool:
-    o = get_origin(tp)
-    if o is Union:  # typing.Union[...]
-        return True
-    if o is UnionType:  # PEP 604 union (A | B)  # noqa: SIM103
-        return True
-    return False
-
-
-def _structure_union(val: Any, tp: Any) -> Any:
-    args = get_args(tp)
-
-    # Without doing a isinstance check first, cattrs will try to coerce strings to bools for instance
-    for a in args:
-        if a is None and val is None:
-            return None
-        try:
-            if isinstance(val, a):
-                return val
-        except TypeError:
-            pass
-
-    last_error = None
-    for a in args:
-        try:
-            return converter.structure(val, a)
-        except (cattrs.ClassValidationError, cattrs.StructureHandlerNotFoundError, AttributeError) as e:
-            last_error = e
-    msg = f"Could not match union type {tp} for value {val!r}"
-    raise ValueError(msg) from last_error
 
 
 def _is_json(tp: Any) -> bool:
@@ -73,15 +40,21 @@ def unstruct_json(val: Any) -> str:
     return json.dumps(unwrapped)
 
 
-def tagged_union_checker(tp: UnionType, tp_name: str) -> Callable[[Any], bool]:
-    def inner(v: Any) -> bool:
-        if isinstance(v, UnionType):
-            return v is tp
-        if isinstance(v, str):
-            return v == tp_name
-        return False
+def _is_nullable_union(tp: Any) -> bool:
+    o = get_origin(tp)
+    if o is Union or o is UnionType:
+        args = get_args(tp)
+        return any(arg is NoneType for arg in args)
+    return False
 
-    return inner
+
+def _structure_nullable_union(val: Any, tp: Any) -> Any:
+    args = get_args(tp)
+    non_none_args: list[type] = [arg for arg in args if arg is not NoneType]
+    if val is None:
+        return None
+    new_type = Union[tuple(non_none_args)]
+    return converter.structure(val, new_type)
 
 
 def struct_uuid(obj: Any, _: Any = None) -> UUID:
@@ -178,8 +151,7 @@ class SubConverter(cattrs.Converter):
 
 converter = SubConverter(forbid_extra_keys=True, use_alias=True)
 
-converter.register_structure_hook_func(_is_union, _structure_union)
-# no need to explicitly register unstructure unions
+converter.register_structure_hook_func(_is_nullable_union, _structure_nullable_union)
 
 converter.register_structure_hook_func(_is_json, _structure_json)
 converter.register_unstructure_hook_func(_is_json, unstruct_json)

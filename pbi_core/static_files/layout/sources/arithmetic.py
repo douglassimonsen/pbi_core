@@ -6,11 +6,11 @@ from pbi_core.static_files.layout.layout_node import LayoutNode
 
 from .aggregation import AggregationSource, DataSource, get_data_source_type
 
-Expression = DataSource | AggregationSource
+AggExpression = DataSource | AggregationSource
 
 
 @converter.register_structure_hook
-def get_expression_type(v: dict[str, Any], _: type | None = None) -> Expression:
+def get_expression_type(v: dict[str, Any], _: type | None = None) -> AggExpression:
     if "Aggregation" in v:
         return AggregationSource.model_validate(v)
     if any(c in v for c in ("Column", "Measure", "HierarchyLevel")):
@@ -19,7 +19,7 @@ def get_expression_type(v: dict[str, Any], _: type | None = None) -> Expression:
 
 
 @converter.register_unstructure_hook
-def unparse_expression_type(v: Expression) -> dict[str, Any]:
+def unparse_expression_type(v: AggExpression) -> dict[str, Any]:
     return converter.unstructure(v)
 
 
@@ -30,7 +30,7 @@ class AllRolesRef(LayoutNode):
 
 @define()
 class ScopedEval2(LayoutNode):
-    Expression: Expression
+    Expression: AggExpression
     Scope: list[AllRolesRef]
 
 
@@ -46,7 +46,7 @@ class ArithmeticOperator(Enum):
 
 @define()
 class _ArithmeticSourceHelper(LayoutNode):
-    Left: Expression
+    Left: AggExpression
     Right: ScopedEvalArith
     Operator: ArithmeticOperator
 
