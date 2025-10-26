@@ -2,7 +2,7 @@ from pbi_core import LocalReport
 
 
 def test_exporting_records():
-    report = LocalReport.load_pbix("api.pbix")
+    report = LocalReport.load_pbix("test.pbix")
     values = report.ssas.columns.find({"explicit_name": "a"}).data()
     assert values
     values2 = report.ssas.tables.find({"name": "Table"}).data()

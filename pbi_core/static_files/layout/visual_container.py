@@ -324,10 +324,18 @@ class QueryCommand1(LayoutNode):
     Query: PrototypeQuery
     Binding: QueryBinding | None = None
 
+    # Only used to make the QueryCommand union more convenient
+    def get_prototype_query(self) -> PrototypeQuery:
+        return self.Query
+
 
 @define()
 class QueryCommand2(LayoutNode):
     SemanticQueryDataShapeCommand: QueryCommand1
+
+    # Only used to make the QueryCommand union more convenient
+    def get_prototype_query(self) -> PrototypeQuery:
+        return self.SemanticQueryDataShapeCommand.Query
 
 
 QueryCommand = QueryCommand1 | QueryCommand2
@@ -543,21 +551,13 @@ class VisualContainer(LayoutNode):
         return []
 
     def _get_data_command(self) -> PrototypeQuery | None:
-        if self.query is None:
+        queries = _get_queries(self)
+        if len(queries) == 0:
             return None
-        if len(self.query.Commands) == 0:
-            return None
-
-        if len(self.query.Commands) > 1:
+        if len(queries) > 1:
             msg = "Cannot get data for multiple commands"
             raise NotImplementedError(msg)
-
-        query_command = self.query.Commands[0]
-        if isinstance(query_command, QueryCommand1):
-            query = query_command.Query
-        else:
-            query = query_command.SemanticQueryDataShapeCommand.Query
-        return query
+        return queries[0]
 
     def get_data(self, model: "BaseTabularModel") -> PrototypeQueryResult | None:
         """Gets data that would populate this visual from the SSAS DB.
@@ -620,3 +620,16 @@ class VisualContainer(LayoutNode):
 
         children_lineage = [p.get_lineage(lineage_type) for p in children_nodes if p is not None]
         return LineageNode(self, lineage_type, children_lineage)
+
+
+def _get_queries(viz_container: VisualContainer) -> list[PrototypeQuery]:
+    """Helper function to get the Commands from a VisualContainer."""
+    ret = []
+    if viz_container.query is not None:
+        commands = viz_container.query.Commands
+        ret.extend(cmd.get_prototype_query() for cmd in commands)
+    if viz_container.config.singleVisual is not None:
+        viz = viz_container.config.singleVisual
+        if viz.prototypeQuery is not None:
+            ret.append(viz.prototypeQuery)
+    return ret

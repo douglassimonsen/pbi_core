@@ -121,10 +121,9 @@ class Section(LayoutNode):
         """
         commands: list[str] = []
         for viz in self.visualContainers:
-            if viz.query is not None:
-                command = viz._get_data_command()
-                if command is not None:
-                    commands.append(command.get_dax(model).dax)
+            command = viz._get_data_command()
+            if command is not None:
+                commands.append(command.get_dax(model).dax)
         if not commands:
             msg = "Cannot get performance for a page without any querying visuals"
             raise ValueError(msg)
