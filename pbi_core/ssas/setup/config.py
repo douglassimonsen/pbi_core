@@ -15,10 +15,10 @@ assert PACKAGE_DIR.name == "pbi_core"
 
 @define()
 class PbiCoreStartupConfig(BaseValidation):
+    workspace_dir: Path
     cert_dir: Path | None = None
     msmdsrv_ini: Path | None = None
     msmdsrv_exe: Path | None = None
-    workspace_dir: Path | None = None
     desktop_exe: Path | None = None
 
     @staticmethod

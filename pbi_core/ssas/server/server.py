@@ -176,6 +176,7 @@ class LocalServer(BaseServer):
             self.physical_process = SSASProcess(pid=pid, kill_on_exit=kill_on_exit, startup_config=None)
         else:
             startup_config = get_startup_config()
+            assert startup_config.workspace_dir is not None
             workspace_directory = workspace_directory or (
                 startup_config.workspace_dir / datetime.now(UTC).strftime(DT_FORMAT)
             )

@@ -2,6 +2,7 @@ import atexit
 import pathlib
 import shutil
 import subprocess  # nosec. It's necessary to run the msmdsrv exe  # noqa: S404
+import time
 from functools import cached_property
 from typing import TYPE_CHECKING
 
@@ -17,6 +18,7 @@ if TYPE_CHECKING:
     from _typeshed import StrPath
 logger = get_logger()
 PORT_ACCESS_TRIES = 5
+MAX_WAIT_FOR_SSAS_STARTUP = 30
 
 
 class SSASProcess:
@@ -108,6 +110,8 @@ class SSASProcess:
         assert self.startup_config is not None, "Startup config must be set before creating a workspace"
         logger.debug("initializing SSAS Workspace", directory=self._workspace_directory)
         self._workspace_directory.mkdir(parents=True, exist_ok=True)
+        assert self.startup_config.msmdsrv_ini is not None
+        assert self.startup_config.cert_dir is not None
         (self._workspace_directory / "msmdsrv.ini").write_text(
             self.startup_config.msmdsrv_ini_template().render(
                 data_directory=self._workspace_directory.as_posix().replace("/", "\\"),
@@ -129,6 +133,7 @@ class SSASProcess:
         """
         assert self.startup_config is not None, "Startup config must be set before running msmdsrv"
         logger.debug("Running msmdsrv exe")
+        assert self.startup_config.msmdsrv_exe is not None
         command = [  # pbi_core_master is not really used, but a port file isn't generated without it
             self.startup_config.msmdsrv_exe.as_posix(),
             "-c",
@@ -163,7 +168,52 @@ class SSASProcess:
             msg = f"Could not find msmdsrv.port.txt file in directory {self._workspace_directory}. This is needed to get the port of the SSAS instance"  # noqa: E501
             raise FileNotFoundError(msg) from e
 
+    @staticmethod
+    def _wait_for_ssas_startup() -> int:
+        for _ in range(MAX_WAIT_FOR_SSAS_STARTUP):
+            for p in psutil.process_iter():
+                if p.name() == "msmdsrv.exe":
+                    proc_info = get_msmdsrv_info(p)
+                    if proc_info is not None:
+                        logger.info("SSAS Instance Started", pid=p.pid, port=proc_info.port)
+                        return p.pid
+                    logger.info("Found a msmdsrv.exe, but it lacks a port to connect to. Waiting...")
+            time.sleep(1)
+            msg = "SSAS instance did not start within the expected time"
+        raise ValueError(msg)
+
+    def _run_desktop(self) -> int:
+        """Runs PowerBI Desktop to initialize the SSAS instance.
+
+        This method runs PowerBI Desktop, which in turn initializes an SSAS instance
+        with the workspace directory specified in the startup config
+
+        Returns:
+            int: The PID of the SSAS instance initialized by PowerBI Desktop
+
+        Raises:
+            ValueError: When the desktop_exe is not specified in the startup config
+
+        """
+        assert self.startup_config is not None, "Startup config must be set before running PowerBI Desktop"
+        if self.startup_config.desktop_exe is None:
+            msg = "To run PowerBI Desktop, the desktop_exe must be specified in the startup config"
+            raise ValueError(msg)
+        logger.debug("Running PowerBI Desktop to initialize SSAS instance", desktop_exe=self.startup_config.desktop_exe)
+        flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+        subprocess.Popen(  # noqa: S603
+            [self.startup_config.desktop_exe.as_posix()],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            creationflags=flags,
+        )
+        # Wait for the SSAS instance to start
+        return self._wait_for_ssas_startup()
+
     def _initialize_server(self) -> int:
+        assert self.startup_config is not None
+        if self.startup_config.desktop_exe is not None:
+            return self._run_desktop()
         self._create_workspace()
         return self._run_msmdsrv()
 
