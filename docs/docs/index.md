@@ -1,6 +1,17 @@
-# Overview of the PBI_CORE Library
+# Overview
 
 The `pbi_core` library is designed to streamline and enhance the management, manipulation, and analysis of Power BI files (`.pbix`). It provides a suite of tools and utilities that enable users to automate repetitive tasks, extract insights, and perform advanced operations on Power BI files with ease. 
+
+## Getting Started
+
+To install this library, you can use pip:
+
+```bash
+pip install pbi_core
+```
+
+- To see recipes for standard tasks, visit the [Quick Start Guide](quick_start.md).
+- To do the optional setup for SSAS, visit the [Setup Guide](setup.md).
 
 ## Key Features
 

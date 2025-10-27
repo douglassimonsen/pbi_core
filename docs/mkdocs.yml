@@ -1,4 +1,4 @@
-site_name: "Pbi_core Documentation"
+site_name: "pbi_core Documentation"
 
 theme:
   name: "material"
