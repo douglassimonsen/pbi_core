@@ -8,9 +8,13 @@ import bs4
 from .config import PACKAGE_DIR, PbiCoreStartupConfig
 
 
-def get_msmdsrv_exe_path() -> str | None:
+def get_pbi_bin_folder() -> str | None:
     """Can require admin rights to do."""
-    candidate_folders = ["C:/Program Files/Microsoft Power BI Desktop", "C:/Program Files/WindowsApps"]
+    candidate_folders = [
+        "C:/Program Files/Microsoft Power BI Desktop",
+        "C:/Program Files/WindowsApps",
+        "C:/Program Files/Microsoft Power BI Desktop/bin",
+    ]
     for folder in candidate_folders:
         for path in Path(folder).glob("**/msmdsrv.exe"):
             return path.parent.absolute().as_posix()
@@ -21,6 +25,7 @@ def get_msmdsrv_ini_path() -> str | None:
     """Can require admin rights to do."""
     candidate_folders = [
         f"C:/Users/{os.getlogin()}/Microsoft/Power BI Desktop Store App/AnalysisServicesWorkspaces",
+        "",
     ]
     for folder in candidate_folders:
         for path in Path(folder).glob("**/msmdsrv.ini"):
@@ -31,7 +36,6 @@ def get_msmdsrv_ini_path() -> str | None:
 def get_certificate_directory() -> str | None:
     candidates = [
         f"C:/Users/{os.getlogin()}/AppData/Local/Microsoft/Power BI Desktop/CertifiedExtensions",
-        f"C:/Users/{os.getlogin()}/Microsoft/Power BI Desktop Store App/CertifiedExtensions",
     ]
     for candidate in candidates:
         if Path(candidate).exists():
@@ -71,13 +75,14 @@ def create_ini_template(raw_path: Path) -> None:
 def interactive_setup() -> None:
     import inquirer  # noqa: PLC0415 # heavy import
 
-    cert_dir = get_certificate_directory()
-    msmdsrv_exe_path = get_msmdsrv_exe_path()
-    msmdsrv_ini_path = get_msmdsrv_ini_path()
+    # cert_dir = get_certificate_directory()
+    # msmdsrv_exe_path = get_msmdsrv_exe_path()
+    # msmdsrv_ini_path = get_msmdsrv_ini_path()
+    desktop_exe_path = f"{get_pbi_bin_folder()}/PBIDesktop.exe"
 
     target_dir = PACKAGE_DIR / "local"
 
-    default_workspace_path = (PACKAGE_DIR / "workspaces").absolute().as_posix()
+    default_workspace_path = (target_dir / "workspaces").absolute().as_posix()
     questions = [
         inquirer.Text(
             "workspace_dir",
@@ -85,22 +90,28 @@ def interactive_setup() -> None:
             default=default_workspace_path,
             validate=validator_potential,
         ),
+        # inquirer.Text(
+        #     "msmdsrv_ini",
+        #     message="Path to PowerBI's msmdsrv.ini",
+        #     default=msmdsrv_ini_path,
+        #     validate=validator,
+        # ),
+        # inquirer.Text(
+        #     "bin_path",
+        #     message="Path to PowerBI's bin folder",
+        #     default=msmdsrv_exe_path,
+        #     validate=validator,
+        # ),
+        # inquirer.Text(
+        #     "cert_dir",
+        #     message="Path to PowerBI's CertifiedExtensions folder",
+        #     default=cert_dir,
+        #     validate=validator,
+        # ),
         inquirer.Text(
-            "msmdsrv_ini",
-            message="Path to PowerBI's msmdsrv.ini",
-            default=msmdsrv_ini_path,
-            validate=validator,
-        ),
-        inquirer.Text(
-            "bin_path",
-            message="Path to PowerBI's bin folder",
-            default=msmdsrv_exe_path,
-            validate=validator,
-        ),
-        inquirer.Text(
-            "cert_dir",
-            message="Path to PowerBI's CertifiedExtensions folder",
-            default=cert_dir,
+            "desktop_exe",
+            message="Path to PowerBI's desktop.exe",
+            default=desktop_exe_path,
             validate=validator,
         ),
     ]
@@ -110,22 +121,30 @@ def interactive_setup() -> None:
     target_dir.mkdir(exist_ok=True)
     shutil.rmtree(target_dir)
     (target_dir / "pbi").mkdir(exist_ok=True, parents=True)
+    config_data = {}
 
-    shutil.copy(answers["msmdsrv_ini"], target_dir / "msmdsrv.ini")
-    create_ini_template(target_dir / "msmdsrv.ini")
+    if answers.get("msmdsrv_ini"):
+        shutil.copy(answers["msmdsrv_ini"], target_dir / "msmdsrv.ini")
+        create_ini_template(target_dir / "msmdsrv.ini")
+        config_data["msmdsrv_ini"] = target_dir / "msmdsrv.ini"
 
-    shutil.copytree(answers["bin_path"], target_dir / "bin")
-    shutil.copytree(answers["cert_dir"], target_dir / "CertifiedExtensions")
+    if answers.get("bin_path"):
+        shutil.copytree(answers["bin_path"], target_dir / "bin")
+        config_data["bin_path"] = target_dir / "bin"
+    if answers.get("cert_dir"):
+        shutil.copytree(answers["cert_dir"], target_dir / "CertifiedExtensions")
+        config_data["cert_dir"] = target_dir / "CertifiedExtensions"
+    if answers.get("desktop_exe"):
+        config_data["desktop_exe"] = Path(answers["desktop_exe"])
+    if answers.get("workspace_dir"):
+        config_data["workspace_dir"] = Path(answers["workspace_dir"])
 
-    config_data = {
-        "msmdsrv_ini": target_dir / "msmdsrv_template.ini",
-        "msmdsrv_exe": target_dir / "bin" / "msmdsrv.exe",
-        "cert_dir": target_dir / "CertifiedExtensions",
-        "workspace_dir": Path(answers["workspace_dir"]),
-    }
     for k, v in config_data.items():
         if PACKAGE_DIR in v.parents:
             config_data[k] = v.relative_to(PACKAGE_DIR)
+
+    if answers.get("workspace_dir"):
+        Path(answers["workspace_dir"]).mkdir(exist_ok=True, parents=True)
 
     out = PbiCoreStartupConfig(**config_data).model_dump_json(indent=2)
     with (target_dir / "settings.json").open("w") as f:

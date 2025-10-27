@@ -1,8 +1,8 @@
 import textwrap
 from pathlib import Path
-from typing import Any
 
 import jinja2
+from attrs import fields
 
 from pbi_core.attrs import BaseValidation, define
 from pbi_core.logging import get_logger
@@ -15,23 +15,26 @@ assert PACKAGE_DIR.name == "pbi_core"
 
 @define()
 class PbiCoreStartupConfig(BaseValidation):
-    # TODO: update for attrs
-    cert_dir: Path
-    msmdsrv_ini: Path
-    msmdsrv_exe: Path
-    workspace_dir: Path
+    cert_dir: Path | None = None
+    msmdsrv_ini: Path | None = None
+    msmdsrv_exe: Path | None = None
+    workspace_dir: Path | None = None
+    desktop_exe: Path | None = None
 
-    def model_post_init(self, __context: Any, /) -> None:
-        if not self.cert_dir.is_absolute():
-            self.cert_dir = PACKAGE_DIR / self.cert_dir
-        if not self.msmdsrv_ini.is_absolute():
-            self.msmdsrv_ini = PACKAGE_DIR / self.msmdsrv_ini
-        if not self.msmdsrv_exe.is_absolute():
-            self.msmdsrv_exe = PACKAGE_DIR / self.msmdsrv_exe
-        if not self.workspace_dir.is_absolute():
-            self.workspace_dir = PACKAGE_DIR / self.workspace_dir
+    @staticmethod
+    def from_file(path: Path | None = None) -> "PbiCoreStartupConfig":
+        path = path or Path(__file__).parents[2] / "local" / "settings.json"
+        return PbiCoreStartupConfig.model_validate_json(path.read_text())
+
+    def __attrs_post_init__(self) -> None:
+        for a in fields(self.__class__):
+            val: Path = getattr(self, a.name)
+            if val is not None and not val.is_absolute():
+                val = PACKAGE_DIR / val
+            setattr(self, a.name, val)
 
     def msmdsrv_ini_template(self) -> jinja2.Template:
+        assert self.msmdsrv_ini is not None
         return jinja2.Template(self.msmdsrv_ini.read_text())
 
 
