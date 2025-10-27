@@ -3974,7 +3974,8 @@
 <div class="admonition danger">
 <p class="admonition-title">Common Issue</p>
 <p>One of the current limitations in the <code>pbi_core</code> library is the incomplete <a href="https://www.attrs.org/en/stable/">attrs</a> typing of the Layout file, especially of the properties of visual elements. </p>
-<p>If you encounter an error message for this, please reate an issue on the <a href="https://github.com/douglassimonsen/pbi_core/issues">Github page</a> with the error message. If you're able, attaching a <code>pbix</code> file will make the fix quicker and can be added to the test suite to ensure the issue doesn't re-appear in future versions</p>
+<p>If you encounter an error message for this, please reate an issue on the <a href="https://github.com/douglassimonsen/pbi_core/issues">Github page</a> with the error message. If you're able, attaching a <code>pbix</code> file will make the fix quicker and can be added to the test suite to ensure the issue doesn't re-appear in future versions.</p>
+<p>The vast majority of these issues are due to properties that are missing from the field definition of classes. To allow them to be parsed as simple dictionaries, you can update the <code>cattrs</code> Converter in <code>pbi_core\attrs\cattrs.py</code> to use <code>forbid_extra_keys=False</code> in the source code.</p>
 </div>
 <h2 id="altering-data-model">Altering Data model<a class="headerlink" href="#altering-data-model" title="Permanent link">#</a></h2>
 <p>This example shows how you can add automatic descriptions to PowerBI columns (possibly from some governance tool??)</p>
