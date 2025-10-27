@@ -16,3 +16,30 @@ def test_column_data():
     column = report.ssas.columns.find({"name": "Value"})
     data = column.data(head=10)
     assert len(data) == 10
+
+
+def test_column_table():
+    report = LocalReport.load_pbix("test.pbix")
+    column = report.ssas.columns.find({"name": "Value"})
+    table = column.table()
+    assert table.name == "Table"
+
+
+def test_column_parents():
+    report = LocalReport.load_pbix("test.pbix")
+    column = report.ssas.columns.find({"name": "Value"})
+    parents = column.parents()
+    assert len(parents) == 1
+    assert {p.pbi_core_name() for p in parents} == {"Table"}
+
+
+def test_column_children():
+    report = LocalReport.load_pbix("test.pbix")
+    column = report.ssas.columns.find({"name": "Value"})
+    children = column.children()
+    assert len(children) == 3
+    assert {c.pbi_core_name() for c in children} == {'Measure 4', 'Value', 'complicated_measure'}
+    assert {c.__class__.__name__ for c in children} == {'Measure', 'AttributeHierarchy', 'Measure'}
+
+
+
