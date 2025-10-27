@@ -6,22 +6,22 @@
       
       
       
-        <link rel="prev" href="../Paragraph/">
+        <link rel="prev" href="../quick_start/">
       
       
-        <link rel="next" href="../Pod/">
+        <link rel="next" href="../SSAS/SSAS_ERD/">
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
     
     
       
-        <title>PieChart - pbi_core Documentation</title>
+        <title>Setup - pbi_core Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
       
       
 
@@ -40,16 +40,16 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
     
-  <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
             html.glightbox-open { overflow: initial; height: 100%; }
             .gslide-title { margin-top: 0px; user-select: text; }
             .gslide-desc { color: #666; user-select: text; }
@@ -70,6 +70,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#exe-setup-recommended" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -82,7 +87,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="pbi_core Documentation" class="md-header__button md-logo" aria-label="pbi_core Documentation" data-md-component="logo">
+    <a href=".." title="pbi_core Documentation" class="md-header__button md-logo" aria-label="pbi_core Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
@@ -102,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              PieChart
+              Setup
             
           </span>
         </div>
@@ -180,7 +185,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="pbi_core Documentation" class="md-nav__button md-logo" aria-label="pbi_core Documentation" data-md-component="logo">
+    <a href=".." title="pbi_core Documentation" class="md-nav__button md-logo" aria-label="pbi_core Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
@@ -198,7 +203,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -220,7 +225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../quick_start/" class="md-nav__link">
+      <a href="../quick_start/" class="md-nav__link">
         
   
   
@@ -239,10 +244,30 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../setup/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Setup
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -253,6 +278,72 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#exe-setup-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXE Setup (Recommended)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="EXE Setup (Recommended)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verifying-correct-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying correct setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msmdsrv-setup-broken" class="md-nav__link">
+    <span class="md-ellipsis">
+      MSMDSRV Setup (Broken)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MSMDSRV Setup (Broken)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verifying-correct-setup_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying correct setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -302,7 +393,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/SSAS_ERD/" class="md-nav__link">
+      <a href="../SSAS/SSAS_ERD/" class="md-nav__link">
         
   
   
@@ -325,7 +416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/overview/" class="md-nav__link">
+      <a href="../SSAS/overview/" class="md-nav__link">
         
   
   
@@ -386,7 +477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/alternate_of/" class="md-nav__link">
+      <a href="../SSAS/entities/alternate_of/" class="md-nav__link">
         
   
   
@@ -409,7 +500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/annotation/" class="md-nav__link">
+      <a href="../SSAS/entities/annotation/" class="md-nav__link">
         
   
   
@@ -432,7 +523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/attribute_hierarchy/" class="md-nav__link">
+      <a href="../SSAS/entities/attribute_hierarchy/" class="md-nav__link">
         
   
   
@@ -455,7 +546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/calc_dependency/" class="md-nav__link">
+      <a href="../SSAS/entities/calc_dependency/" class="md-nav__link">
         
   
   
@@ -478,7 +569,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/calculation_group/" class="md-nav__link">
+      <a href="../SSAS/entities/calculation_group/" class="md-nav__link">
         
   
   
@@ -501,7 +592,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/calculation_item/" class="md-nav__link">
+      <a href="../SSAS/entities/calculation_item/" class="md-nav__link">
         
   
   
@@ -524,7 +615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/column/" class="md-nav__link">
+      <a href="../SSAS/entities/column/" class="md-nav__link">
         
   
   
@@ -547,7 +638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/column_permission/" class="md-nav__link">
+      <a href="../SSAS/entities/column_permission/" class="md-nav__link">
         
   
   
@@ -570,7 +661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/culture/" class="md-nav__link">
+      <a href="../SSAS/entities/culture/" class="md-nav__link">
         
   
   
@@ -593,7 +684,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/data_source/" class="md-nav__link">
+      <a href="../SSAS/entities/data_source/" class="md-nav__link">
         
   
   
@@ -616,7 +707,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/detail_row_definition/" class="md-nav__link">
+      <a href="../SSAS/entities/detail_row_definition/" class="md-nav__link">
         
   
   
@@ -639,7 +730,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/expression/" class="md-nav__link">
+      <a href="../SSAS/entities/expression/" class="md-nav__link">
         
   
   
@@ -662,7 +753,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/extended_property/" class="md-nav__link">
+      <a href="../SSAS/entities/extended_property/" class="md-nav__link">
         
   
   
@@ -685,7 +776,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/format_string_definition/" class="md-nav__link">
+      <a href="../SSAS/entities/format_string_definition/" class="md-nav__link">
         
   
   
@@ -708,7 +799,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/group_by_column/" class="md-nav__link">
+      <a href="../SSAS/entities/group_by_column/" class="md-nav__link">
         
   
   
@@ -731,7 +822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/hierarchy/" class="md-nav__link">
+      <a href="../SSAS/entities/hierarchy/" class="md-nav__link">
         
   
   
@@ -754,7 +845,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/kpi/" class="md-nav__link">
+      <a href="../SSAS/entities/kpi/" class="md-nav__link">
         
   
   
@@ -777,7 +868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/level/" class="md-nav__link">
+      <a href="../SSAS/entities/level/" class="md-nav__link">
         
   
   
@@ -800,7 +891,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/linguistic_metadata/" class="md-nav__link">
+      <a href="../SSAS/entities/linguistic_metadata/" class="md-nav__link">
         
   
   
@@ -823,7 +914,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/measure/" class="md-nav__link">
+      <a href="../SSAS/entities/measure/" class="md-nav__link">
         
   
   
@@ -846,7 +937,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/model/" class="md-nav__link">
+      <a href="../SSAS/entities/model/" class="md-nav__link">
         
   
   
@@ -869,7 +960,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/object_translation/" class="md-nav__link">
+      <a href="../SSAS/entities/object_translation/" class="md-nav__link">
         
   
   
@@ -892,7 +983,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/partition/" class="md-nav__link">
+      <a href="../SSAS/entities/partition/" class="md-nav__link">
         
   
   
@@ -915,7 +1006,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/perspective/" class="md-nav__link">
+      <a href="../SSAS/entities/perspective/" class="md-nav__link">
         
   
   
@@ -938,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/perspective_column/" class="md-nav__link">
+      <a href="../SSAS/entities/perspective_column/" class="md-nav__link">
         
   
   
@@ -961,7 +1052,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/perspective_hierarchy/" class="md-nav__link">
+      <a href="../SSAS/entities/perspective_hierarchy/" class="md-nav__link">
         
   
   
@@ -984,7 +1075,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/perspective_measure/" class="md-nav__link">
+      <a href="../SSAS/entities/perspective_measure/" class="md-nav__link">
         
   
   
@@ -1007,7 +1098,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/perspective_set/" class="md-nav__link">
+      <a href="../SSAS/entities/perspective_set/" class="md-nav__link">
         
   
   
@@ -1030,7 +1121,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/perspective_table/" class="md-nav__link">
+      <a href="../SSAS/entities/perspective_table/" class="md-nav__link">
         
   
   
@@ -1053,7 +1144,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/query_group/" class="md-nav__link">
+      <a href="../SSAS/entities/query_group/" class="md-nav__link">
         
   
   
@@ -1076,7 +1167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/refresh_policy/" class="md-nav__link">
+      <a href="../SSAS/entities/refresh_policy/" class="md-nav__link">
         
   
   
@@ -1099,7 +1190,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/related_column_detail/" class="md-nav__link">
+      <a href="../SSAS/entities/related_column_detail/" class="md-nav__link">
         
   
   
@@ -1122,7 +1213,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/relationship/" class="md-nav__link">
+      <a href="../SSAS/entities/relationship/" class="md-nav__link">
         
   
   
@@ -1145,7 +1236,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/role/" class="md-nav__link">
+      <a href="../SSAS/entities/role/" class="md-nav__link">
         
   
   
@@ -1168,7 +1259,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/role_membership/" class="md-nav__link">
+      <a href="../SSAS/entities/role_membership/" class="md-nav__link">
         
   
   
@@ -1191,7 +1282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/set/" class="md-nav__link">
+      <a href="../SSAS/entities/set/" class="md-nav__link">
         
   
   
@@ -1214,7 +1305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/table/" class="md-nav__link">
+      <a href="../SSAS/entities/table/" class="md-nav__link">
         
   
   
@@ -1237,7 +1328,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/table_permission/" class="md-nav__link">
+      <a href="../SSAS/entities/table_permission/" class="md-nav__link">
         
   
   
@@ -1260,7 +1351,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/entities/variation/" class="md-nav__link">
+      <a href="../SSAS/entities/variation/" class="md-nav__link">
         
   
   
@@ -1329,7 +1420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/infra/base_server/" class="md-nav__link">
+      <a href="../SSAS/infra/base_server/" class="md-nav__link">
         
   
   
@@ -1352,7 +1443,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/infra/local_server/" class="md-nav__link">
+      <a href="../SSAS/infra/local_server/" class="md-nav__link">
         
   
   
@@ -1413,7 +1504,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/infra/commands/blank_model/" class="md-nav__link">
+      <a href="../SSAS/infra/commands/blank_model/" class="md-nav__link">
         
   
   
@@ -1436,7 +1527,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/infra/commands/db_delete/" class="md-nav__link">
+      <a href="../SSAS/infra/commands/db_delete/" class="md-nav__link">
         
   
   
@@ -1459,7 +1550,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/infra/commands/discover_schema/" class="md-nav__link">
+      <a href="../SSAS/infra/commands/discover_schema/" class="md-nav__link">
         
   
   
@@ -1482,7 +1573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/infra/commands/image_load/" class="md-nav__link">
+      <a href="../SSAS/infra/commands/image_load/" class="md-nav__link">
         
   
   
@@ -1505,7 +1596,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/infra/commands/image_save/" class="md-nav__link">
+      <a href="../SSAS/infra/commands/image_save/" class="md-nav__link">
         
   
   
@@ -1528,7 +1619,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../SSAS/infra/commands/list_dbs/" class="md-nav__link">
+      <a href="../SSAS/infra/commands/list_dbs/" class="md-nav__link">
         
   
   
@@ -1612,7 +1703,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../general/ecosystem/" class="md-nav__link">
+      <a href="../general/ecosystem/" class="md-nav__link">
         
   
   
@@ -1635,7 +1726,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../general/goals/" class="md-nav__link">
+      <a href="../general/goals/" class="md-nav__link">
         
   
   
@@ -1658,7 +1749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../general/setup/" class="md-nav__link">
+      <a href="../general/setup/" class="md-nav__link">
         
   
   
@@ -1685,20 +1776,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -1714,7 +1803,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Layout
@@ -1728,7 +1817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../layout/" class="md-nav__link">
+      <a href="../layout/layout/" class="md-nav__link">
         
   
   
@@ -1748,20 +1837,18 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2">
         
           
           <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
@@ -1777,7 +1864,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_2">
             <span class="md-nav__icon md-icon"></span>
             Erd
@@ -1791,7 +1878,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ActionButton/" class="md-nav__link">
+      <a href="../layout/erd/ActionButton/" class="md-nav__link">
         
   
   
@@ -1814,7 +1901,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../AggregationExpression/" class="md-nav__link">
+      <a href="../layout/erd/AggregationExpression/" class="md-nav__link">
         
   
   
@@ -1837,7 +1924,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../AggregationSource/" class="md-nav__link">
+      <a href="../layout/erd/AggregationSource/" class="md-nav__link">
         
   
   
@@ -1860,7 +1947,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../AlgorithmExpression/" class="md-nav__link">
+      <a href="../layout/erd/AlgorithmExpression/" class="md-nav__link">
         
   
   
@@ -1883,7 +1970,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../AndCondition/" class="md-nav__link">
+      <a href="../layout/erd/AndCondition/" class="md-nav__link">
         
   
   
@@ -1906,7 +1993,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ArithmeticSource/" class="md-nav__link">
+      <a href="../layout/erd/ArithmeticSource/" class="md-nav__link">
         
   
   
@@ -1929,7 +2016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../BarChart/" class="md-nav__link">
+      <a href="../layout/erd/BarChart/" class="md-nav__link">
         
   
   
@@ -1952,7 +2039,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../BasicShape/" class="md-nav__link">
+      <a href="../layout/erd/BasicShape/" class="md-nav__link">
         
   
   
@@ -1975,7 +2062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Bookmark/" class="md-nav__link">
+      <a href="../layout/erd/Bookmark/" class="md-nav__link">
         
   
   
@@ -1998,7 +2085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../BookmarkFilter/" class="md-nav__link">
+      <a href="../layout/erd/BookmarkFilter/" class="md-nav__link">
         
   
   
@@ -2021,7 +2108,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../BookmarkVisual/" class="md-nav__link">
+      <a href="../layout/erd/BookmarkVisual/" class="md-nav__link">
         
   
   
@@ -2044,7 +2131,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Card/" class="md-nav__link">
+      <a href="../layout/erd/Card/" class="md-nav__link">
         
   
   
@@ -2067,7 +2154,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ClusteredColumnChart/" class="md-nav__link">
+      <a href="../layout/erd/ClusteredColumnChart/" class="md-nav__link">
         
   
   
@@ -2090,7 +2177,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ColumnChart/" class="md-nav__link">
+      <a href="../layout/erd/ColumnChart/" class="md-nav__link">
         
   
   
@@ -2113,7 +2200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ColumnExpression/" class="md-nav__link">
+      <a href="../layout/erd/ColumnExpression/" class="md-nav__link">
         
   
   
@@ -2136,7 +2223,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ColumnProperty/" class="md-nav__link">
+      <a href="../layout/erd/ColumnProperty/" class="md-nav__link">
         
   
   
@@ -2159,7 +2246,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ColumnSource/" class="md-nav__link">
+      <a href="../layout/erd/ColumnSource/" class="md-nav__link">
         
   
   
@@ -2182,7 +2269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ComparisonCondition/" class="md-nav__link">
+      <a href="../layout/erd/ComparisonCondition/" class="md-nav__link">
         
   
   
@@ -2205,7 +2292,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Condition/" class="md-nav__link">
+      <a href="../layout/erd/Condition/" class="md-nav__link">
         
   
   
@@ -2228,7 +2315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ConditionalSource/" class="md-nav__link">
+      <a href="../layout/erd/ConditionalSource/" class="md-nav__link">
         
   
   
@@ -2251,7 +2338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ContainsCondition/" class="md-nav__link">
+      <a href="../layout/erd/ContainsCondition/" class="md-nav__link">
         
   
   
@@ -2274,7 +2361,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../DateSpan/" class="md-nav__link">
+      <a href="../layout/erd/DateSpan/" class="md-nav__link">
         
   
   
@@ -2297,7 +2384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../DonutChart/" class="md-nav__link">
+      <a href="../layout/erd/DonutChart/" class="md-nav__link">
         
   
   
@@ -2320,7 +2407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ERD/" class="md-nav__link">
+      <a href="../layout/erd/ERD/" class="md-nav__link">
         
   
   
@@ -2343,7 +2430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ExistsCondition/" class="md-nav__link">
+      <a href="../layout/erd/ExistsCondition/" class="md-nav__link">
         
   
   
@@ -2366,7 +2453,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ExpansionState/" class="md-nav__link">
+      <a href="../layout/erd/ExpansionState/" class="md-nav__link">
         
   
   
@@ -2389,7 +2476,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ExplorationStateProperties/" class="md-nav__link">
+      <a href="../layout/erd/ExplorationStateProperties/" class="md-nav__link">
         
   
   
@@ -2412,7 +2499,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../FillRule/" class="md-nav__link">
+      <a href="../layout/erd/FillRule/" class="md-nav__link">
         
   
   
@@ -2435,7 +2522,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Filter/" class="md-nav__link">
+      <a href="../layout/erd/Filter/" class="md-nav__link">
         
   
   
@@ -2458,7 +2545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../FilterProperties/" class="md-nav__link">
+      <a href="../layout/erd/FilterProperties/" class="md-nav__link">
         
   
   
@@ -2481,7 +2568,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Funnel/" class="md-nav__link">
+      <a href="../layout/erd/Funnel/" class="md-nav__link">
         
   
   
@@ -2504,7 +2591,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../GeoJsonExpression/" class="md-nav__link">
+      <a href="../layout/erd/GeoJsonExpression/" class="md-nav__link">
         
   
   
@@ -2527,7 +2614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../GlobalFilter/" class="md-nav__link">
+      <a href="../layout/erd/GlobalFilter/" class="md-nav__link">
         
   
   
@@ -2550,7 +2637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../GroupSource/" class="md-nav__link">
+      <a href="../layout/erd/GroupSource/" class="md-nav__link">
         
   
   
@@ -2573,7 +2660,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../HierarchyLevelSource/" class="md-nav__link">
+      <a href="../layout/erd/HierarchyLevelSource/" class="md-nav__link">
         
   
   
@@ -2596,7 +2683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Image/" class="md-nav__link">
+      <a href="../layout/erd/Image/" class="md-nav__link">
         
   
   
@@ -2619,7 +2706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ImageExpression/" class="md-nav__link">
+      <a href="../layout/erd/ImageExpression/" class="md-nav__link">
         
   
   
@@ -2642,7 +2729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ImageKindExpression/" class="md-nav__link">
+      <a href="../layout/erd/ImageKindExpression/" class="md-nav__link">
         
   
   
@@ -2665,7 +2752,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../InCondition/" class="md-nav__link">
+      <a href="../layout/erd/InCondition/" class="md-nav__link">
         
   
   
@@ -2688,7 +2775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../LayoutConfig/" class="md-nav__link">
+      <a href="../layout/erd/LayoutConfig/" class="md-nav__link">
         
   
   
@@ -2711,7 +2798,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../LineChart/" class="md-nav__link">
+      <a href="../layout/erd/LineChart/" class="md-nav__link">
         
   
   
@@ -2734,7 +2821,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../LineStackedColumnComboChart/" class="md-nav__link">
+      <a href="../layout/erd/LineStackedColumnComboChart/" class="md-nav__link">
         
   
   
@@ -2757,7 +2844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../LinearGradient2Expression/" class="md-nav__link">
+      <a href="../layout/erd/LinearGradient2Expression/" class="md-nav__link">
         
   
   
@@ -2780,7 +2867,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../LinearGradient3Expression/" class="md-nav__link">
+      <a href="../layout/erd/LinearGradient3Expression/" class="md-nav__link">
         
   
   
@@ -2803,7 +2890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../LiteralExpression/" class="md-nav__link">
+      <a href="../layout/erd/LiteralExpression/" class="md-nav__link">
         
   
   
@@ -2826,7 +2913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../LiteralSource/" class="md-nav__link">
+      <a href="../layout/erd/LiteralSource/" class="md-nav__link">
         
   
   
@@ -2849,7 +2936,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../MeasureExpression/" class="md-nav__link">
+      <a href="../layout/erd/MeasureExpression/" class="md-nav__link">
         
   
   
@@ -2872,7 +2959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../MeasureSource/" class="md-nav__link">
+      <a href="../layout/erd/MeasureSource/" class="md-nav__link">
         
   
   
@@ -2895,7 +2982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../NotCondition/" class="md-nav__link">
+      <a href="../layout/erd/NotCondition/" class="md-nav__link">
         
   
   
@@ -2918,7 +3005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../OrCondition/" class="md-nav__link">
+      <a href="../layout/erd/OrCondition/" class="md-nav__link">
         
   
   
@@ -2941,7 +3028,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Paragraph/" class="md-nav__link">
+      <a href="../layout/erd/Paragraph/" class="md-nav__link">
         
   
   
@@ -2961,17 +3048,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../layout/erd/PieChart/" class="md-nav__link">
         
   
   
@@ -2982,7 +3062,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -2995,7 +3074,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Pod/" class="md-nav__link">
+      <a href="../layout/erd/Pod/" class="md-nav__link">
         
   
   
@@ -3018,7 +3097,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../PropertyDef/" class="md-nav__link">
+      <a href="../layout/erd/PropertyDef/" class="md-nav__link">
         
   
   
@@ -3041,7 +3120,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../PrototypeQuery/" class="md-nav__link">
+      <a href="../layout/erd/PrototypeQuery/" class="md-nav__link">
         
   
   
@@ -3064,7 +3143,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Query/" class="md-nav__link">
+      <a href="../layout/erd/Query/" class="md-nav__link">
         
   
   
@@ -3087,7 +3166,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../QueryMetadata/" class="md-nav__link">
+      <a href="../layout/erd/QueryMetadata/" class="md-nav__link">
         
   
   
@@ -3110,7 +3189,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ResourcePackage/" class="md-nav__link">
+      <a href="../layout/erd/ResourcePackage/" class="md-nav__link">
         
   
   
@@ -3133,7 +3212,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ResourcePackageAccess/" class="md-nav__link">
+      <a href="../layout/erd/ResourcePackageAccess/" class="md-nav__link">
         
   
   
@@ -3156,7 +3235,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ScatterChart/" class="md-nav__link">
+      <a href="../layout/erd/ScatterChart/" class="md-nav__link">
         
   
   
@@ -3179,7 +3258,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Scope/" class="md-nav__link">
+      <a href="../layout/erd/Scope/" class="md-nav__link">
         
   
   
@@ -3202,7 +3281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ScopedEvalAgg/" class="md-nav__link">
+      <a href="../layout/erd/ScopedEvalAgg/" class="md-nav__link">
         
   
   
@@ -3225,7 +3304,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ScopedEvalArith/" class="md-nav__link">
+      <a href="../layout/erd/ScopedEvalArith/" class="md-nav__link">
         
   
   
@@ -3248,7 +3327,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Section/" class="md-nav__link">
+      <a href="../layout/erd/Section/" class="md-nav__link">
         
   
   
@@ -3271,7 +3350,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../SelectRefExpression/" class="md-nav__link">
+      <a href="../layout/erd/SelectRefExpression/" class="md-nav__link">
         
   
   
@@ -3294,7 +3373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Selector/" class="md-nav__link">
+      <a href="../layout/erd/Selector/" class="md-nav__link">
         
   
   
@@ -3317,7 +3396,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Slicer/" class="md-nav__link">
+      <a href="../layout/erd/Slicer/" class="md-nav__link">
         
   
   
@@ -3340,7 +3419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../SolidColorExpression/" class="md-nav__link">
+      <a href="../layout/erd/SolidColorExpression/" class="md-nav__link">
         
   
   
@@ -3363,7 +3442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../SolidExpression/" class="md-nav__link">
+      <a href="../layout/erd/SolidExpression/" class="md-nav__link">
         
   
   
@@ -3386,7 +3465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../TableChart/" class="md-nav__link">
+      <a href="../layout/erd/TableChart/" class="md-nav__link">
         
   
   
@@ -3409,7 +3488,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../TextBox/" class="md-nav__link">
+      <a href="../layout/erd/TextBox/" class="md-nav__link">
         
   
   
@@ -3432,7 +3511,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../TransformMeta/" class="md-nav__link">
+      <a href="../layout/erd/TransformMeta/" class="md-nav__link">
         
   
   
@@ -3455,7 +3534,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../VCProperties/" class="md-nav__link">
+      <a href="../layout/erd/VCProperties/" class="md-nav__link">
         
   
   
@@ -3478,7 +3557,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../VisualConfig/" class="md-nav__link">
+      <a href="../layout/erd/VisualConfig/" class="md-nav__link">
         
   
   
@@ -3501,7 +3580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../VisualContainer/" class="md-nav__link">
+      <a href="../layout/erd/VisualContainer/" class="md-nav__link">
         
   
   
@@ -3524,7 +3603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../VisualFilter/" class="md-nav__link">
+      <a href="../layout/erd/VisualFilter/" class="md-nav__link">
         
   
   
@@ -3600,7 +3679,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../other/style_decisions/" class="md-nav__link">
+      <a href="../other/style_decisions/" class="md-nav__link">
         
   
   
@@ -3668,7 +3747,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../powerbi_references/SSAS_Architecture/" class="md-nav__link">
+      <a href="../powerbi_references/SSAS_Architecture/" class="md-nav__link">
         
   
   
@@ -3691,7 +3770,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../powerbi_references/layout_architecture/" class="md-nav__link">
+      <a href="../powerbi_references/layout_architecture/" class="md-nav__link">
         
   
   
@@ -3732,6 +3811,62 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#exe-setup-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXE Setup (Recommended)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="EXE Setup (Recommended)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verifying-correct-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying correct setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msmdsrv-setup-broken" class="md-nav__link">
+    <span class="md-ellipsis">
+      MSMDSRV Setup (Broken)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MSMDSRV Setup (Broken)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verifying-correct-setup_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying correct setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3746,115 +3881,63 @@
 
 
 
-  <h1>PieChart</h1>
+  <h1>Setup</h1>
 
-<pre class="mermaid"><code>---
-title: PieChart
----
-graph 
-AggregationExpression[&lt;a href='/layout/erd/AggregationExpression'&gt;AggregationExpression&lt;/a&gt;]
-style AggregationExpression stroke:#ff0000,stroke-width:1px
-AlgorithmExpression[&lt;a href='/layout/erd/AlgorithmExpression'&gt;AlgorithmExpression&lt;/a&gt;]
-style AlgorithmExpression stroke:#ff0000,stroke-width:1px
-ColumnExpression[&lt;a href='/layout/erd/ColumnExpression'&gt;ColumnExpression&lt;/a&gt;]
-style ColumnExpression stroke:#ff0000,stroke-width:1px
-ColumnProperty[&lt;a href='/layout/erd/ColumnProperty'&gt;ColumnProperty&lt;/a&gt;]
-style ColumnProperty stroke:#ff0000,stroke-width:1px
-DataPointProperties[DataPointProperties]
-Display[Display]
-ExpressionList[ExpressionList]
-GeoJsonExpression[&lt;a href='/layout/erd/GeoJsonExpression'&gt;GeoJsonExpression&lt;/a&gt;]
-style GeoJsonExpression stroke:#ff0000,stroke-width:1px
-ImageExpression[&lt;a href='/layout/erd/ImageExpression'&gt;ImageExpression&lt;/a&gt;]
-style ImageExpression stroke:#ff0000,stroke-width:1px
-ImageKindExpression[&lt;a href='/layout/erd/ImageKindExpression'&gt;ImageKindExpression&lt;/a&gt;]
-style ImageKindExpression stroke:#ff0000,stroke-width:1px
-LabelsProperties[LabelsProperties]
-LegendProperties[LegendProperties]
-LinearGradient2Expression[&lt;a href='/layout/erd/LinearGradient2Expression'&gt;LinearGradient2Expression&lt;/a&gt;]
-style LinearGradient2Expression stroke:#ff0000,stroke-width:1px
-LinearGradient3Expression[&lt;a href='/layout/erd/LinearGradient3Expression'&gt;LinearGradient3Expression&lt;/a&gt;]
-style LinearGradient3Expression stroke:#ff0000,stroke-width:1px
-LiteralExpression[&lt;a href='/layout/erd/LiteralExpression'&gt;LiteralExpression&lt;/a&gt;]
-style LiteralExpression stroke:#ff0000,stroke-width:1px
-MeasureExpression[&lt;a href='/layout/erd/MeasureExpression'&gt;MeasureExpression&lt;/a&gt;]
-style MeasureExpression stroke:#ff0000,stroke-width:1px
-PieChart[&lt;a href='/layout/erd/PieChart'&gt;PieChart&lt;/a&gt;]
-PieChartProperties[PieChartProperties]
-ProjectionConfig[ProjectionConfig]
-PrototypeQuery[&lt;a href='/layout/erd/PrototypeQuery'&gt;PrototypeQuery&lt;/a&gt;]
-style PrototypeQuery stroke:#ff0000,stroke-width:1px
-QueryOptions[QueryOptions]
-ResourcePackageAccess[&lt;a href='/layout/erd/ResourcePackageAccess'&gt;ResourcePackageAccess&lt;/a&gt;]
-style ResourcePackageAccess stroke:#ff0000,stroke-width:1px
-SelectRefExpression[&lt;a href='/layout/erd/SelectRefExpression'&gt;SelectRefExpression&lt;/a&gt;]
-style SelectRefExpression stroke:#ff0000,stroke-width:1px
-Selector[&lt;a href='/layout/erd/Selector'&gt;Selector&lt;/a&gt;]
-style Selector stroke:#ff0000,stroke-width:1px
-SolidColorExpression[&lt;a href='/layout/erd/SolidColorExpression'&gt;SolidColorExpression&lt;/a&gt;]
-style SolidColorExpression stroke:#ff0000,stroke-width:1px
-VCProperties[&lt;a href='/layout/erd/VCProperties'&gt;VCProperties&lt;/a&gt;]
-style VCProperties stroke:#ff0000,stroke-width:1px
-_DataPointPropertiesHelper[_DataPointPropertiesHelper]
-_LabelsPropertiesHelper[_LabelsPropertiesHelper]
-_LegendPropertiesHelper[_LegendPropertiesHelper]
-_LegendPropertiesHelper ---&gt;|fontSize| ExpressionList
-_DataPointPropertiesHelper ---&gt; GeoJsonExpression
-_LegendPropertiesHelper ---&gt; ColumnExpression
-_LabelsPropertiesHelper ---&gt; ColumnExpression
-_LegendPropertiesHelper ---&gt; GeoJsonExpression
-_LabelsPropertiesHelper ---&gt; MeasureExpression
-_LegendPropertiesHelper ---&gt; SelectRefExpression
-_DataPointPropertiesHelper ---&gt; ImageKindExpression
-_DataPointPropertiesHelper ---&gt; ImageExpression
-_LegendPropertiesHelper ---&gt; LinearGradient3Expression
-_LegendPropertiesHelper ---&gt; AlgorithmExpression
-PieChart ---&gt; VCProperties
-_LegendPropertiesHelper ---&gt; LinearGradient2Expression
-_DataPointPropertiesHelper ---&gt; MeasureExpression
-PieChart ---&gt;|objects| PieChartProperties
-LegendProperties ---&gt;|properties| _LegendPropertiesHelper
-_DataPointPropertiesHelper ---&gt; AlgorithmExpression
-PieChart ---&gt; PrototypeQuery
-DataPointProperties ---&gt; Selector
-_LegendPropertiesHelper ---&gt; ImageExpression
-_LabelsPropertiesHelper ---&gt; GeoJsonExpression
-PieChartProperties ---&gt;|labels| LabelsProperties
-_DataPointPropertiesHelper ---&gt; ResourcePackageAccess
-_LegendPropertiesHelper ---&gt; SolidColorExpression
-PieChartProperties ---&gt;|legend| LegendProperties
-_LegendPropertiesHelper ---&gt; MeasureExpression
-PieChart ---&gt;|display| Display
-PieChart ---&gt; ColumnProperty
-_DataPointPropertiesHelper ---&gt; ColumnExpression
-_DataPointPropertiesHelper ---&gt; LinearGradient2Expression
-_DataPointPropertiesHelper ---&gt; AggregationExpression
-_LegendPropertiesHelper ---&gt; ResourcePackageAccess
-_LabelsPropertiesHelper ---&gt; LinearGradient3Expression
-PieChartProperties ---&gt;|dataPoint| DataPointProperties
-_LabelsPropertiesHelper ---&gt; AlgorithmExpression
-_LegendPropertiesHelper ---&gt; ImageKindExpression
-_DataPointPropertiesHelper ---&gt; SelectRefExpression
-PieChart ---&gt;|projections| ProjectionConfig
-_LegendPropertiesHelper ---&gt; AggregationExpression
-_LabelsPropertiesHelper ---&gt; SelectRefExpression
-_LabelsPropertiesHelper ---&gt; LinearGradient2Expression
-LabelsProperties ---&gt;|properties| _LabelsPropertiesHelper
-DataPointProperties ---&gt;|properties| _DataPointPropertiesHelper
-_LabelsPropertiesHelper ---&gt; SolidColorExpression
-_DataPointPropertiesHelper ---&gt; SolidColorExpression
-_DataPointPropertiesHelper ---&gt;|borderColorMatchFill| ExpressionList
-_LabelsPropertiesHelper ---&gt; ImageKindExpression
-_LabelsPropertiesHelper ---&gt; LiteralExpression
-_LabelsPropertiesHelper ---&gt; AggregationExpression
-_DataPointPropertiesHelper ---&gt; LiteralExpression
-_LegendPropertiesHelper ---&gt; LiteralExpression
-_LabelsPropertiesHelper ---&gt;|backgroundColor| ExpressionList
-_DataPointPropertiesHelper ---&gt; LinearGradient3Expression
-PieChart ---&gt;|queryOptions| QueryOptions
-LabelsProperties ---&gt; Selector
-_LabelsPropertiesHelper ---&gt; ResourcePackageAccess
-_LabelsPropertiesHelper ---&gt; ImageExpression</code></pre>
+<p>This library can be run without any setup if PowerBI Desktop is already running, as it can connect to the SSAS instance started by PowerBI Desktop. However, you can also set up the library to automatically setup the necessary SSAS programs when it cannot find a running SSAS instance.</p>
+<p>There are currently two setup options:</p>
+<ol>
+<li>EXE Setup (Recommended)</li>
+<li>MSMDSRV Setup (Broken)</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Pre-Setup Requirement</p>
+<p>These setups assume that the user has PowerBI Desktop installed on their machine.</p>
+</div>
+<h2 id="exe-setup-recommended">EXE Setup (Recommended)<a class="headerlink" href="#exe-setup-recommended" title="Permanent link">#</a></h2>
+<p>Steps:</p>
+<ol>
+<li>Run the following command in your terminal:</li>
+</ol>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pbi_core<span class="w"> </span>setup
+</span></code></pre></div>
+<ol>
+<li>You will be prompted to <code>Select startup configuration type (msmdsrv/exe)</code>. Choose <code>exe</code>.</li>
+<li>The temp workspaces are not currently used when using the <code>exe</code> setup, so you can just press Enter to accept the default.</li>
+<li>Enter the path to your PowerBI Desktop executable when prompted. When possible, the script will attempt to locate it automatically. You can find it by opening the file location of the PowerBI Desktop shortcut. On Windows, it might be something like:</li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>C:\Program Files\Microsoft Power BI Desktop\bin\PBIDesktop.exe
+</span></code></pre></div>
+<h3 id="verifying-correct-setup">Verifying correct setup<a class="headerlink" href="#verifying-correct-setup" title="Permanent link">#</a></h3>
+<p>Close all instances of PowerBI Desktop and run the script <a href="../quick_start/#basic-functionality">here</a> to verify that the setup was successful. There should be no errors in the terminal and you should see a new PowerBI Desktop  window open.</p>
+<h2 id="msmdsrv-setup-broken">MSMDSRV Setup (Broken)<a class="headerlink" href="#msmdsrv-setup-broken" title="Permanent link">#</a></h2>
+<p>Steps:</p>
+<ol>
+<li>Run the following command in your terminal:</li>
+</ol>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pbi_core<span class="w"> </span>setup
+</span></code></pre></div>
+<ol>
+<li>You will be prompted to <code>Select startup configuration type (msmdsrv/exe)</code>. Choose <code>msmdsrv</code>.</li>
+<li>Press Enter to accept the default temp workspaces. This will be the folder where the necessary SSAS config files are stored. These files are temporay and linked to the specific instance of SSAS running. You shouldn't need to explore this folder manually.</li>
+<li>Open a report in PowerBI Desktop. This will start an SSAS instance that we can use as a template.</li>
+<li><code>msmdsrv.ini path</code>: You must find the <code>AnalysisServicesWorkspaces</code> folder and then choose any subfolder. This file should be in this folder. Copy the full path of this file. <div class="language-text highlight"><pre><span></span><code>```
+C:/Users/{os.getlogin()}/Microsoft/Power BI Desktop Store App/AnalysisServicesWorkspaces/&lt;UUID&gt;
+```
+</code></pre></div>
+<ul>
+<li>
+<p><code>bin folder path</code>: This is the folder where the <code>msmdsrv.exe</code> file is located. This is usually in the <code>bin</code> folder of your PowerBI Desktop installation. Copy the full path of this folder. You can find it by opening the file location of the PowerBI Desktop shortcut. It is usually something like:</p>
+<p></p><div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>C:/Program Files/Microsoft Power BI Desktop/bin
+</span></code></pre></div>
+    - <code>CertifiedExtensions folder path</code>: This is the folder where the <code>CertifiedExtensions</code> folder is located. This is usually in the main installation folder of your PowerBI Desktop installation. Copy the full path of this folder. You can find it by opening the file location of the PowerBI Desktop shortcut. It is usually something like:<p></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>C:/Program Files/Microsoft Power BI Desktop/CertifiedExtensions
+</span></code></pre></div>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="verifying-correct-setup_1">Verifying correct setup<a class="headerlink" href="#verifying-correct-setup_1" title="Permanent link">#</a></h3>
+<p>Close all instances of PowerBI Desktop and run the script <a href="../quick_start/#basic-functionality">here</a> to verify that the setup was successful. There should be no errors in the terminal and you should see <strong>no</strong> PowerBI Desktop  window open.</p>
 
 
 
@@ -3903,10 +3986,10 @@ _LabelsPropertiesHelper ---&gt; ImageExpression</code></pre>
     
     
       
-      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.select", "content.code.annotate"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
   
