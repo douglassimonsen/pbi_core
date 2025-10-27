@@ -15,7 +15,9 @@ report.save_pbix("example_out.pbix")  # (1)!
 
     One of the current limitations in the `pbi_core` library is the incomplete [attrs](https://www.attrs.org/en/stable/) typing of the Layout file, especially of the properties of visual elements. 
 
-    If you encounter an error message for this, please reate an issue on the [Github page](https://github.com/douglassimonsen/pbi_core/issues) with the error message. If you're able, attaching a `pbix` file will make the fix quicker and can be added to the test suite to ensure the issue doesn't re-appear in future versions
+    If you encounter an error message for this, please reate an issue on the [Github page](https://github.com/douglassimonsen/pbi_core/issues) with the error message. If you're able, attaching a `pbix` file will make the fix quicker and can be added to the test suite to ensure the issue doesn't re-appear in future versions.
+
+    The vast majority of these issues are due to properties that are missing from the field definition of classes. To allow them to be parsed as simple dictionaries, you can update the `cattrs` Converter in `pbi_core\attrs\cattrs.py` to use `forbid_extra_keys=False` in the source code.
 
 ## Altering Data model
 
