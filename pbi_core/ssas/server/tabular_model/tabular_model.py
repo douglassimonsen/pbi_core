@@ -264,7 +264,8 @@ class LocalTabularModel(BaseTabularModel):
     server: "LocalServer"  # type: ignore[assignment]
 
     def __init__(self, db_name: str, server: "LocalServer", pbix_path: pathlib.Path) -> None:
-        self.pbix_path = pbix_path
+        # Without absolute, saving the PBIX after changing working directories can fail
+        self.pbix_path = pbix_path.absolute()
         super().__init__(db_name, server)
 
     def save_pbix(self, path: "StrPath") -> None:

@@ -6,9 +6,9 @@ def test_pbix_load():
     LocalReport.load_pbix("test.pbix")
 
 
-def test_pbix_save():
-    report = LocalReport.load_pbix("test.pbix")
-    report.save_pbix("test_out.pbix")
+def test_pbix_save(ssas_pbix):
+    # TODO: add a case where the save happens after chdir
+    ssas_pbix.save_pbix("test_out.pbix")
 
 
 def test_pbix_load_static():

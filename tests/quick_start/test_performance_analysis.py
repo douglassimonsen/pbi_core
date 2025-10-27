@@ -1,9 +1,7 @@
 from pbi_core import LocalReport
 
 
-def test_performance_analysis():
-    report = LocalReport.load_pbix("test.pbix")
-    section = report.static_files.layout.sections[0]
-    print(section)
-    perf = section.get_performance(report.ssas)
+def test_performance_analysis(ssas_pbix):
+    section = ssas_pbix.static_files.layout.sections[0]
+    perf = section.get_performance(ssas_pbix.ssas)
     assert perf
