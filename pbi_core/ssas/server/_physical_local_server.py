@@ -10,7 +10,7 @@ import backoff
 import psutil
 
 from pbi_core.logging import get_logger
-from pbi_core.ssas.setup import PbiCoreStartupConfig, get_startup_config
+from pbi_core.ssas.setup import ExeStartupConfig, MsmdsrvStartupConfig, get_startup_config
 
 from .utils import get_msmdsrv_info
 
@@ -47,7 +47,7 @@ class SSASProcess:
     _workspace_directory: pathlib.Path
     pid: int = -1
     kill_on_exit: bool
-    startup_config: PbiCoreStartupConfig | None
+    startup_config: ExeStartupConfig | MsmdsrvStartupConfig | None
 
     def __init__(
         self,
@@ -55,7 +55,7 @@ class SSASProcess:
         workspace_directory: "StrPath | None" = None,
         *,
         kill_on_exit: bool = True,
-        startup_config: PbiCoreStartupConfig | None = None,
+        startup_config: ExeStartupConfig | MsmdsrvStartupConfig | None = None,
     ) -> None:
         """__init__ is not intended to be directly called.
 
@@ -77,7 +77,7 @@ class SSASProcess:
             logger.info(
                 "No pid provided. Initializing new SSAS Instance",
                 workspace_dir=self._workspace_directory,
-                msmdsrv_exe=self.startup_config.msmdsrv_exe,
+                exe=self.startup_config.get_exe(),
             )
             self.pid = self._initialize_server()
         else:
@@ -107,11 +107,9 @@ class SSASProcess:
 
     def _create_workspace(self) -> None:
         """Creates the workspace directory and populates the initial config file for the new SSAS instance."""
-        assert self.startup_config is not None, "Startup config must be set before creating a workspace"
+        assert isinstance(self.startup_config, MsmdsrvStartupConfig)
         logger.debug("initializing SSAS Workspace", directory=self._workspace_directory)
         self._workspace_directory.mkdir(parents=True, exist_ok=True)
-        assert self.startup_config.msmdsrv_ini is not None
-        assert self.startup_config.cert_dir is not None
         (self._workspace_directory / "msmdsrv.ini").write_text(
             self.startup_config.msmdsrv_ini_template().render(
                 data_directory=self._workspace_directory.as_posix().replace("/", "\\"),
@@ -131,9 +129,9 @@ class SSASProcess:
             ``-s`` points to the workspace created in the method "create_workspace"
 
         """
-        assert self.startup_config is not None, "Startup config must be set before running msmdsrv"
+        assert isinstance(self.startup_config, MsmdsrvStartupConfig)
         logger.debug("Running msmdsrv exe")
-        assert self.startup_config.msmdsrv_exe is not None
+
         command = [  # pbi_core_master is not really used, but a port file isn't generated without it
             self.startup_config.msmdsrv_exe.as_posix(),
             "-c",
@@ -159,14 +157,15 @@ class SSASProcess:
         to generate the msmdsrv.port.txt file in the workspace
 
         Raises:
-            FileNotFoundError: when ``msmdsrv.port.txt`` cannot be found in the SSAS workspace folder
+            ValueError: When the PID points to a non-DB process or a DB without a port
 
         """
-        try:
-            return int((self._workspace_directory / "msmdsrv.port.txt").read_text(encoding="utf-16-le"))
-        except FileNotFoundError as e:
-            msg = f"Could not find msmdsrv.port.txt file in directory {self._workspace_directory}. This is needed to get the port of the SSAS instance"  # noqa: E501
-            raise FileNotFoundError(msg) from e
+        proc = psutil.Process(self.pid)
+        proc_info = get_msmdsrv_info(proc)
+        if proc_info is None:
+            msg = "This PID doesn't correspond to a valid SSAS instance"
+            raise ValueError(msg)
+        return proc_info.port
 
     @staticmethod
     def _wait_for_ssas_startup() -> int:
@@ -179,7 +178,7 @@ class SSASProcess:
                         return p.pid
                     logger.info("Found a msmdsrv.exe, but it lacks a port to connect to. Waiting...")
             time.sleep(1)
-            msg = "SSAS instance did not start within the expected time"
+        msg = "SSAS instance did not start within the expected time"
         raise ValueError(msg)
 
     def _run_desktop(self) -> int:
@@ -191,14 +190,10 @@ class SSASProcess:
         Returns:
             int: The PID of the SSAS instance initialized by PowerBI Desktop
 
-        Raises:
-            ValueError: When the desktop_exe is not specified in the startup config
-
         """
-        assert self.startup_config is not None, "Startup config must be set before running PowerBI Desktop"
-        if self.startup_config.desktop_exe is None:
-            msg = "To run PowerBI Desktop, the desktop_exe must be specified in the startup config"
-            raise ValueError(msg)
+        assert isinstance(self.startup_config, ExeStartupConfig), (
+            "Startup config must be set before running PowerBI Desktop"
+        )
         logger.debug("Running PowerBI Desktop to initialize SSAS instance", desktop_exe=self.startup_config.desktop_exe)
         flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
         subprocess.Popen(  # noqa: S603
@@ -207,12 +202,17 @@ class SSASProcess:
             stderr=subprocess.PIPE,
             creationflags=flags,
         )
+        # Since the SSAS instance is a child process of PowerBI Desktop, we don't have direct ownership over it.
+        # Therefore, we set kill_on_exit to False to avoid terminating the SSAS instance when the Python script exits.
+        self.kill_on_exit = False
+        self._workspace_directory = None  # pyright: ignore[reportAttributeAccessIssue] # we're not using the workspace directory here, since it's automatically managed by PowerBI Desktop. We want this to be None to avoid accidental usage and ensure an error is raised if it is used.
+        # TODO: find the workspace? It's not used anywhere though
         # Wait for the SSAS instance to start
         return self._wait_for_ssas_startup()
 
     def _initialize_server(self) -> int:
         assert self.startup_config is not None
-        if self.startup_config.desktop_exe is not None:
+        if isinstance(self.startup_config, ExeStartupConfig):
             return self._run_desktop()
         self._create_workspace()
         return self._run_msmdsrv()

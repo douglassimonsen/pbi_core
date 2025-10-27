@@ -1,18 +1,16 @@
 import shutil
 from pathlib import Path
 
-from pbi_core.ssas.setup import PbiCoreStartupConfig
+from pbi_core.ssas.setup import get_startup_config
 
 
 def get_workspaces() -> list[Path]:
-    settings = PbiCoreStartupConfig.from_file()
-    if settings.workspace_dir is None:
-        return []
+    settings = get_startup_config()
     return list(settings.workspace_dir.iterdir())
 
 
 def list_workspaces() -> None:
-    settings = PbiCoreStartupConfig.from_file()
+    settings = get_startup_config()
     workspaces = get_workspaces()
     if len(workspaces) == 0:
         print(f"No workspaces to remove from {settings.workspace_dir}")
@@ -27,7 +25,7 @@ def list_workspaces() -> None:
 
 
 def clear_workspaces() -> None:
-    settings = PbiCoreStartupConfig.from_file()
+    settings = get_startup_config()
     workspaces = get_workspaces()
     if len(workspaces) == 0:
         print(f"No workspaces to remove from {settings.workspace_dir.absolute().as_posix()}")
