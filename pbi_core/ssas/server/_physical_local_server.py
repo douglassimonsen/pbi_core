@@ -2,6 +2,7 @@ import atexit
 import pathlib
 import shutil
 import subprocess  # nosec. It's necessary to run the msmdsrv exe  # noqa: S404
+import threading
 import time
 from functools import cached_property
 from typing import TYPE_CHECKING
@@ -190,17 +191,21 @@ class SSASProcess:
 
         def minimize_pbi(hwnd: int, _) -> None:
             window_text = win32gui.GetWindowText(hwnd)
-            print(window_text)
             if "Untitled - Power BI Desktop" in window_text:
                 logger.info("Minimizing PowerBI Desktop Window", hwnd=hwnd)
                 win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
 
+                nonlocal is_minimized
+                is_minimized = True
+
         if platform.system() != "Windows":
             logger.info("Minimizing PowerBI Desktop is only supported on Windows", system=platform.system())
             return
-        time.sleep(6)
+        is_minimized = False
 
-        win32gui.EnumWindows(minimize_pbi, None)
+        while is_minimized is False:
+            win32gui.EnumWindows(minimize_pbi, None)
+            time.sleep(1)
 
     def _run_desktop(self) -> int:
         """Runs PowerBI Desktop to initialize the SSAS instance.
@@ -229,9 +234,9 @@ class SSASProcess:
         self._workspace_directory = None  # pyright: ignore[reportAttributeAccessIssue] # we're not using the workspace directory here, since it's automatically managed by PowerBI Desktop. We want this to be None to avoid accidental usage and ensure an error is raised if it is used.
         # TODO: find the workspace? It's not used anywhere though
         # Wait for the SSAS instance to start
-
         pid = self._wait_for_ssas_startup()
-        self._try_minimize_desktop()
+        # Attempt to minimize the PowerBI Desktop window to reduce annoyance
+        threading.Thread(target=self._try_minimize_desktop).start()
         return pid
 
     def _initialize_server(self) -> int:
