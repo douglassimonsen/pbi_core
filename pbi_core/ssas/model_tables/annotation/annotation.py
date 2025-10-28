@@ -26,6 +26,13 @@ class Annotation(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.annotation, init=False, repr=False)
 
+    def parents(self, *, recursive: bool = True) -> frozenset[SsasTable]:
+        """Returns the parent object the annotation is describing."""
+        base = frozenset({self.object()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base
+
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.
 

@@ -1,15 +1,13 @@
-from pbi_core import LocalReport, report
 from pbi_core.ssas.model_tables.column.enums import DataCategory
 
-def test_column_alteration():
-    report = LocalReport.load_pbix("test.pbix")
-    column = report.ssas.columns.find({"name": "Value"})
+
+def test_column_alteration(ssas_pbix):
+    column = ssas_pbix.ssas.columns.find({"name": "Value"})
 
     column.data_category = DataCategory.POSTAL_CODE
     column.format_string = "#,0"
     column.alter()
 
-    report.save_pbix("test_out.pbix")
 
 def test_column_data(ssas_pbix):
     column = ssas_pbix.ssas.columns.find({"name": "Value"})
