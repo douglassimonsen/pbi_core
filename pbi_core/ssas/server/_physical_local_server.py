@@ -5,6 +5,7 @@ import subprocess  # nosec. It's necessary to run the msmdsrv exe  # noqa: S404
 import threading
 import time
 from functools import cached_property
+from types import NoneType
 from typing import TYPE_CHECKING
 
 import backoff
@@ -186,17 +187,25 @@ class SSASProcess:
     def _try_minimize_desktop() -> None:
         import platform  # noqa: PLC0415
 
-        import win32con  # noqa: PLC0415
-        import win32gui  # noqa: PLC0415
+        import win32con  # pyright: ignore[reportMissingModuleSource] # noqa: PLC0415
+        import win32gui  # pyright: ignore[reportMissingModuleSource] # noqa: PLC0415
 
-        def minimize_pbi(hwnd: int, _) -> None:
+        def minimize_pbi(hwnd: int, _: NoneType) -> bool:
+            """Minimizes the PowerBI Desktop window if found.
+
+            Note: returns False to stop enumeration when the window is found and minimized.
+                See https://superuser.com/a/677023
+            """
             window_text = win32gui.GetWindowText(hwnd)
             if "Untitled - Power BI Desktop" in window_text:
                 logger.info("Minimizing PowerBI Desktop Window", hwnd=hwnd)
                 win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
 
+                # nonlocal is needed since we don't have pointers
                 nonlocal is_minimized
                 is_minimized = True
+                return False  # stop enumeration
+            return True  # continue enumeration
 
         if platform.system() != "Windows":
             logger.info("Minimizing PowerBI Desktop is only supported on Windows", system=platform.system())
@@ -211,7 +220,10 @@ class SSASProcess:
         """Runs PowerBI Desktop to initialize the SSAS instance.
 
         This method runs PowerBI Desktop, which in turn initializes an SSAS instance
-        with the workspace directory specified in the startup config
+        with the workspace directory specified in the startup config.
+
+        Since it's obnoxious to have PowerBI Desktop pop up every time we want to
+        initialize an SSAS instance, we attempt to minimize the window after startup.
 
         Returns:
             int: The PID of the SSAS instance initialized by PowerBI Desktop
