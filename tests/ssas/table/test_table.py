@@ -37,6 +37,3 @@ def test_table_children(ssas_pbix):
     assert len(children) == 7
     assert {c.pbi_core_name() for c in children} == {'complicated_measure', 'RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61', 'Table', 'Measure 4', 'Value'}
     assert {c.__class__.__name__ for c in children} == {'Measure', 'Column', 'AttributeHierarchy', 'Partition'}
-
-
-

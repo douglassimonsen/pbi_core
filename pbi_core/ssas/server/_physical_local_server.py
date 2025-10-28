@@ -181,6 +181,27 @@ class SSASProcess:
         msg = "SSAS instance did not start within the expected time"
         raise ValueError(msg)
 
+    @staticmethod
+    def _try_minimize_desktop() -> None:
+        import platform  # noqa: PLC0415
+
+        import win32con  # noqa: PLC0415
+        import win32gui  # noqa: PLC0415
+
+        def minimize_pbi(hwnd: int, _) -> None:
+            window_text = win32gui.GetWindowText(hwnd)
+            print(window_text)
+            if "Untitled - Power BI Desktop" in window_text:
+                logger.info("Minimizing PowerBI Desktop Window", hwnd=hwnd)
+                win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
+
+        if platform.system() != "Windows":
+            logger.info("Minimizing PowerBI Desktop is only supported on Windows", system=platform.system())
+            return
+        time.sleep(6)
+
+        win32gui.EnumWindows(minimize_pbi, None)
+
     def _run_desktop(self) -> int:
         """Runs PowerBI Desktop to initialize the SSAS instance.
 
@@ -208,7 +229,10 @@ class SSASProcess:
         self._workspace_directory = None  # pyright: ignore[reportAttributeAccessIssue] # we're not using the workspace directory here, since it's automatically managed by PowerBI Desktop. We want this to be None to avoid accidental usage and ensure an error is raised if it is used.
         # TODO: find the workspace? It's not used anywhere though
         # Wait for the SSAS instance to start
-        return self._wait_for_ssas_startup()
+
+        pid = self._wait_for_ssas_startup()
+        self._try_minimize_desktop()
+        return pid
 
     def _initialize_server(self) -> int:
         assert self.startup_config is not None

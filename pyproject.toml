@@ -26,6 +26,7 @@ dependencies = [
   "psutil>=6.0.0",
   "pytest>=8.3.2",
   "pythonnet>=3.0.5",
+  "pywin32>=311",
   "semver>=3.0.4",
   "structlog>=24.4.0",
 ]
