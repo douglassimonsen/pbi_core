@@ -47,7 +47,7 @@ class TablePermission(SsasEditableRecord):
         return self._tabular_model.column_permissions.find_all({"table_permission_id": self.id})
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.column_permissions())
+        base = frozenset(self.column_permissions() | self.annotations())
         if recursive:
             return self._recurse_children(base)
         return base

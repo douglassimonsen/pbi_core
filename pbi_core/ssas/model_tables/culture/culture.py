@@ -35,7 +35,7 @@ class Culture(SsasRenameRecord):
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         """Is based on the culture spec, since it's a little ambiguous just from the data."""
-        base_deps = frozenset({self.linguistic_metadata()})
+        base_deps = frozenset({self.linguistic_metadata()} | self.annotations())
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps

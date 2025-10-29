@@ -32,6 +32,12 @@ class PerspectiveMeasure(SsasEditableRecord):
     def measure(self) -> "Measure":
         return self._tabular_model.measures.find(self.measure_id)
 
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base)
+        return base
+
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base = frozenset({self.perspective_table(), self.measure()})
         if recursive:

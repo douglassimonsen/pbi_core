@@ -23,6 +23,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import (
         CalculationGroup,
         DetailRowDefinition,
+        Hierarchy,
         Model,
         PerspectiveTable,
         RefreshPolicy,
@@ -179,13 +180,28 @@ class Table(SsasRefreshRecord):
             ret.update(col.child_measures(recursive=recursive))
         return ret
 
+    def hierarchies(self) -> set["Hierarchy"]:
+        """Get associated dependent hierarchies.
+
+        Returns:
+            (set[Hierarchy]): A list of the hierarchies defined on this table
+
+        """
+        return self._tabular_model.hierarchies.find_all({"table_id": self.id})
+
     def model(self) -> "Model":
         return self._tabular_model.model
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         # We don't include the table_measures since they are picked up via the columns' child measures
         base_deps: set[SsasTable] = (
-            self.columns() | self.partitions() | self.measures() | self.perspective_tables() | self.table_measures()
+            self.annotations()
+            | self.columns()
+            | self.partitions()
+            | self.measures()
+            | self.perspective_tables()
+            | self.table_measures()
+            | self.hierarchies()
         )  # pyright: ignore[reportAssignmentType]
         if rp := self.refresh_policy():
             base_deps.add(rp)

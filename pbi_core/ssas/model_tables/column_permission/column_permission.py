@@ -5,6 +5,7 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
 from pbi_core.ssas.model_tables.table_permission import MetadataPermission, TablePermission
 from pbi_core.ssas.server import BaseCommands, SsasCommands
 
@@ -32,6 +33,12 @@ class ColumnPermission(SsasEditableRecord):
 
     def column(self) -> "Column":
         return self._tabular_model.columns.find(self.column_id)
+
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base)
+        return base
 
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base = frozenset({self.column(), self.table_permission()})

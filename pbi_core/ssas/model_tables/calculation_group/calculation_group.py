@@ -39,7 +39,7 @@ class CalculationGroup(SsasEditableRecord):
         return base
 
     def children(self, *, recursive: bool = False) -> frozenset["SsasTable"]:
-        base = frozenset(self.calculation_items())
+        base = frozenset(self.calculation_items() | self.annotations())
         if recursive:
             return self._recurse_children(base)
         return base

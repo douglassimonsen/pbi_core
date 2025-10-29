@@ -108,7 +108,8 @@ class Model(SsasModelRecord):
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base_deps = frozenset(
-            self.cultures()
+            self.annotations()
+            | self.cultures()
             | self.data_sources()
             | self.expressions()
             | self.perspectives()

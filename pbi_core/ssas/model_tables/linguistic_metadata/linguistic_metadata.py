@@ -214,8 +214,11 @@ class LinguisticMetadata(SsasEditableRecord):
         """Returns the name displayed in the PBIX report."""
         return self.culture().pbi_core_name()
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
-        return frozenset()
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base_deps)
+        return base_deps
 
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base_deps = frozenset({self.culture()})

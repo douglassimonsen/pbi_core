@@ -37,7 +37,7 @@ class QueryGroup(SsasEditableRecord):
         return self._tabular_model.model
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(self.expressions() | self.partitions())
+        base_deps = frozenset(self.expressions() | self.partitions() | self.annotations())
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps

@@ -47,7 +47,7 @@ class Role(SsasRenameRecord):
         return base
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.table_permissions() | self.role_memberships())
+        base = frozenset(self.table_permissions() | self.role_memberships() | self.annotations())
         if recursive:
             return self._recurse_children(base)
         return base

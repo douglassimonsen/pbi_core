@@ -45,11 +45,11 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
 
     def parents(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures this Column is dependent on."""
-        base_deps = (
-            {self.table(), self.sort_by_column(), self.column_origin()} | self.parent_columns() | self.parent_measures()
-        )
+        base_deps = {self.table()} | self.parent_columns() | self.parent_measures()
         if sort_by_column := self.sort_by_column():
             base_deps.add(sort_by_column)
+        if column_origin := self.column_origin():
+            base_deps.add(column_origin)
         frozen_base_deps = frozenset(base_deps)
 
         if recursive:
@@ -58,10 +58,9 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
 
     def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures dependent on this Column."""
-        full_dependencies: set[
-            AttributeHierarchy | Column | Measure | Variation | Relationship | FormatStringDefinition
-        ] = (
+        base: set[AttributeHierarchy | Column | Measure | Variation | Relationship | FormatStringDefinition] = (
             {self.attribute_hierarchy()}
+            | self.annotations()
             | self.child_columns()
             | self.child_measures()
             | self.origin_columns()
@@ -73,11 +72,12 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
             | self.perspective_columns()
         )  # pyright: ignore[reportAssignmentType]
         if fsd := self.format_string_definition():
-            full_dependencies.add(fsd)
-        frozen_full_dependencies = frozenset(full_dependencies)
+            base.add(fsd)
+
+        frozen_base = frozenset(base)
         if recursive:
-            return self._recurse_children(frozen_full_dependencies)
-        return frozen_full_dependencies
+            return self._recurse_children(frozen_base)
+        return frozen_base
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the column and update any dependent expressions to use the new name.

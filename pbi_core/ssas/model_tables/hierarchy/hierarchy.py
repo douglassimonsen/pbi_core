@@ -73,7 +73,7 @@ class Hierarchy(SsasRenameRecord):
         return self._tabular_model.perspective_hierarchies.find_all({"hierarchy_id": self.id})
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(self.levels() | self.variations() | self.perspective_hierarchies())
+        base_deps = frozenset(self.levels() | self.variations() | self.perspective_hierarchies() | self.annotations())
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps

@@ -104,6 +104,12 @@ class Partition(SsasRefreshRecord):
     def table(self) -> "Table":
         return self._tabular_model.tables.find({"id": self.table_id})
 
+    def children(self, *, recursive: bool = True) -> frozenset[SsasTable]:
+        base = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base)
+        return base
+
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base_deps: set[QueryGroup | Table | Expression | DataSource] = {self.table()}
         if query_group := self.query_group():

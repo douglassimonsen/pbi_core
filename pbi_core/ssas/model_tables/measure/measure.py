@@ -247,10 +247,15 @@ class Measure(SsasRenameRecord):
 
     def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures dependent on this Measure."""
-        base_deps = frozenset(self.child_columns() | self.child_measures() | self.perspective_measures())
+        base: set[SsasTable] = (
+            self.child_columns() | self.child_measures() | self.perspective_measures() | self.annotations()
+        )  # pyright: ignore[reportAssignmentType]
+        if fsd := self.format_string_definition():
+            base.add(fsd)
+        frozen_base = frozenset(base)
         if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+            return self._recurse_children(frozen_base)
+        return frozen_base
 
     @staticmethod
     def new(

@@ -83,7 +83,7 @@ class Relationship(SsasRenameRecord):
         return self._tabular_model.variations.find_all({"relationship_id": self.id})
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(self.variations())
+        base_deps = frozenset(self.variations() | self.annotations())
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps

@@ -5,6 +5,7 @@ from attrs import field
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 
 from .enums import DataSourceType, ImpersonationMode, Isolation
@@ -43,7 +44,13 @@ class DataSource(SsasRenameRecord):
     def model(self) -> "Model":
         return self._tabular_model.model
 
-    def parents(self, *, recursive: bool = True) -> "frozenset[SsasTable]":
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base)
+        return base
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base = frozenset({self.model()})
         if recursive:
             return self._recurse_parents(base)

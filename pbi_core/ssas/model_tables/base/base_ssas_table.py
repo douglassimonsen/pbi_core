@@ -2,6 +2,7 @@ from typing import Any, ClassVar, Literal, Self, cast
 
 from attrs import Attribute, field, fields, setters
 from bs4 import BeautifulSoup
+from git import TYPE_CHECKING
 from structlog import get_logger
 
 from pbi_core.attrs import BaseValidation, define
@@ -10,6 +11,9 @@ from pbi_core.ssas.model_tables._group import IdBase
 from pbi_core.ssas.server import ROW_TEMPLATE, BaseTabularModel, Command, python_to_xml
 
 logger = get_logger()
+
+if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.annotation import Annotation
 
 
 @define()
@@ -154,6 +158,17 @@ class SsasTable(BaseValidation, IdBase):
         for p in parents:
             ret.update(p.parents(recursive=True))
         return frozenset(ret)
+
+    def annotations(self) -> set["Annotation"]:
+        """Get associated dependent annotations.
+
+        Returns:
+            (set[Annotation]): A list of the annotations linked to this object
+
+        """
+        # Althought annotations are not children of every concrete SsasTable, they are
+        # of enough to warrant inclusion here.
+        return self._tabular_model.annotations.find_all(lambda a: a.object() == self)
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
         return frozenset()

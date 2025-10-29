@@ -32,6 +32,12 @@ class PerspectiveColumn(SsasEditableRecord):
     def column(self) -> "Column":
         return self._tabular_model.columns.find(self.column_id)
 
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base)
+        return base
+
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base = frozenset({self.perspective_table(), self.column()})
         if recursive:

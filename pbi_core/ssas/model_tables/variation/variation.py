@@ -4,6 +4,7 @@ from attrs import field
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 
 if TYPE_CHECKING:
@@ -41,6 +42,12 @@ class Variation(SsasRenameRecord):
 
     def relationship(self) -> "Relationship":
         return self._tabular_model.relationships.find(self.relationship_id)
+
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base)
+        return base
 
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base_deps = {self.default_hierarchy(), self.relationship(), self.column()}

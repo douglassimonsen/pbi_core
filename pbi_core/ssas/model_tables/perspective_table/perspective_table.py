@@ -57,7 +57,12 @@ class PerspectiveTable(SsasEditableRecord):
         return base
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.perspective_columns() | self.perspective_hierarchies() | self.perspective_measures())
+        base = frozenset(
+            self.perspective_columns()
+            | self.perspective_hierarchies()
+            | self.perspective_measures()
+            | self.annotations(),
+        )
         if recursive:
             return self._recurse_children(base)
         return base

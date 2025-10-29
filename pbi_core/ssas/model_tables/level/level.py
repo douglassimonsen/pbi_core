@@ -47,5 +47,8 @@ class Level(SsasRenameRecord):
             return self._recurse_parents(base)
         return base
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
-        return frozenset()
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base)
+        return base

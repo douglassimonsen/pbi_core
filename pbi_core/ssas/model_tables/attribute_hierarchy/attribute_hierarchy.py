@@ -36,7 +36,7 @@ class AttributeHierarchy(SsasReadonlyRecord):
         return self._tabular_model.levels.find_all({"hierarchy_id": self.id})
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.levels())
+        base = frozenset(self.levels() | self.annotations())
         if recursive:
             return self._recurse_children(base)
         return base

@@ -37,6 +37,12 @@ class PerspectiveHierarchy(SsasEditableRecord):
     def hierarchy(self) -> "Hierarchy":
         return self._tabular_model.hierarchies.find(self.hierarchy_id)
 
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base)
+        return base
+
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base = frozenset({self.perspective_table(), self.hierarchy()})
         if recursive:

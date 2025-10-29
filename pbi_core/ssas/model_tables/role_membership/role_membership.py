@@ -5,6 +5,7 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
@@ -33,6 +34,12 @@ class RoleMembership(SsasEditableRecord):
 
     def role(self) -> "Role":
         return self._tabular_model.roles.find(self.role_id)
+
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base)
+        return base
 
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base = frozenset({self.role()})

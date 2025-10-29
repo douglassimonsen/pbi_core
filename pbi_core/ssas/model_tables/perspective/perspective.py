@@ -31,6 +31,12 @@ class Perspective(SsasRenameRecord):
     def model(self) -> "Model":
         return self._tabular_model.model
 
+    def children(self, *, recursive: bool = True) -> frozenset[SsasTable]:
+        base = frozenset(self.annotations())
+        if recursive:
+            return self._recurse_children(base)
+        return base
+
     def parents(self, *, recursive: bool = True) -> frozenset[SsasTable]:
         base = frozenset({self.model()})
         if recursive:
