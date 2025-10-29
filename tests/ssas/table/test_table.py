@@ -34,6 +34,7 @@ def test_table_parents(ssas_pbix):
 def test_table_children(ssas_pbix):
     table = ssas_pbix.ssas.tables.find({"name": "Table"})
     children = table.children()
-    assert len(children) == 7
-    assert {c.pbi_core_name() for c in children} == {'complicated_measure', 'RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61', 'Table', 'Measure 4', 'Value'}
-    assert {c.__class__.__name__ for c in children} == {'Measure', 'Column', 'AttributeHierarchy', 'Partition'}
+    print({c.pbi_core_name() for c in children})
+    assert len(children) == 9
+    assert {c.pbi_core_name() for c in children} == {'Table', 'RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61', 'Value', 'PBI_Id', 'SummarizationSetBy', 'Measure 4', 'complicated_measure'}
+    assert {c.__class__.__name__ for c in children} == {'Measure', 'Column', 'AttributeHierarchy', 'Partition', 'Annotation'}

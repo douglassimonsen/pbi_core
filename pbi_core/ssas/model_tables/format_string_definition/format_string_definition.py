@@ -95,7 +95,7 @@ class FormatStringDefinition(SsasEditableRecord):
         return ret
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.id}: {self.object():!r})"
+        return f"{self.__class__.__name__}({self.id}: {self.object()})"
 
     def parents(self, *, recursive: bool = True) -> frozenset[SsasTable]:
         base = frozenset({self.object()})

@@ -31,8 +31,9 @@ def test_column_parents(ssas_pbix):
 def test_column_children(ssas_pbix):
     column = ssas_pbix.ssas.columns.find({"name": "Value"})
     children = column.children()
-    assert len(children) == 5
-    assert {c.pbi_core_name() for c in children} == {'Measure 4', 'Value', 'complicated_measure'}
+    print({c.pbi_core_name() for c in children})
+    assert len(children) == 4
+    assert {c.pbi_core_name() for c in children} == {'Measure 4', 'complicated_measure', 'Value', 'SummarizationSetBy'}
     assert {c.__class__.__name__ for c in children} == {'Annotation', 'Measure', 'AttributeHierarchy', 'Measure'}
 
 
