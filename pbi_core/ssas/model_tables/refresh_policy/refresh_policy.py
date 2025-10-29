@@ -1,11 +1,16 @@
 from attrs import field
+from git import TYPE_CHECKING
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import Granularity, PolicyType, RefreshMode
+
+if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.table.table import Table
 
 
 @define()
@@ -28,3 +33,12 @@ class RefreshPolicy(SsasEditableRecord):
     table_id: int = field(eq=True)
 
     _commands: BaseCommands = field(default=SsasCommands.refresh_policy, init=False, repr=False, eq=False)
+
+    def table(self) -> "Table":
+        return self._tabular_model.tables.find(self.table_id)
+
+    def parents(self, *, recursive: bool = True) -> frozenset[SsasTable]:
+        base = frozenset({self.table()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base

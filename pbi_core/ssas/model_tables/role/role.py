@@ -5,14 +5,14 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import ModelPermission
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.model import Model
-    from pbi_core.ssas.model_tables.table_permission import TablePermission
+    from pbi_core.ssas.model_tables import Model, RoleMembership, SsasTable, TablePermission
 
 
 @define()
@@ -34,5 +34,20 @@ class Role(SsasRenameRecord):
     def model(self) -> "Model":
         return self._tabular_model.model
 
-    def table_permissions(self) -> list["TablePermission"]:
-        return [tp for tp in self._tabular_model.table_permissions if tp.role_id == self.id]
+    def table_permissions(self) -> set["TablePermission"]:
+        return self._tabular_model.table_permissions.find_all({"role_id": self.id})
+
+    def role_memberships(self) -> set["RoleMembership"]:
+        return self._tabular_model.role_memberships.find_all({"role_id": self.id})
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset({self.model()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base
+
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset(self.table_permissions() | self.role_memberships())
+        if recursive:
+            return self._recurse_children(base)
+        return base

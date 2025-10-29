@@ -215,10 +215,6 @@ class LinguisticMetadata(SsasEditableRecord):
         """Returns the name displayed in the PBIX report."""
         return self.culture().pbi_core_name()
 
-    @classmethod
-    def _db_command_obj_name(cls) -> str:
-        return "LinguisticMetadata"
-
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
         return frozenset()
 

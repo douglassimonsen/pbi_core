@@ -17,7 +17,7 @@ from . import set_name
 if TYPE_CHECKING:
     from pbi_parsers import dax
 
-    from pbi_core.ssas.model_tables.calc_dependency import CalcDependency
+    from pbi_core.ssas.model_tables import CalcDependency, PerspectiveMeasure
     from pbi_core.ssas.model_tables.detail_row_definition import DetailRowDefinition
     from pbi_core.ssas.model_tables.format_string_definition import FormatStringDefinition
     from pbi_core.ssas.model_tables.kpi import KPI
@@ -116,6 +116,9 @@ class Measure(SsasRenameRecord):
             return self._tabular_model.kpis.find({"id": self.kpi_id})
         return None
 
+    def perspective_measures(self) -> set["PerspectiveMeasure"]:
+        return self._tabular_model.perspective_measures.find_all({"measure_id": self.id})
+
     def table(self) -> "Table":
         """The Table object the measure is saved under."""
         return self._tabular_model.tables.find({"id": self.table_id})
@@ -151,7 +154,7 @@ class Measure(SsasRenameRecord):
             "object_type": "MEASURE",
         })
         child_keys: list[tuple[str | None, str]] = [(m.table, m.object) for m in dependent_measures]
-        full_dependencies = [m for m in self._tabular_model.measures if (m.table().name, m.name) in child_keys]
+        full_dependencies = {m for m in self._tabular_model.measures if (m.table().name, m.name) in child_keys}
 
         if recursive:
             recursive_dependencies: set[Measure] = set()
@@ -241,7 +244,7 @@ class Measure(SsasRenameRecord):
 
     def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures dependent on this Measure."""
-        base_deps = frozenset(self.child_columns() | self.child_measures())
+        base_deps = frozenset(self.child_columns() | self.child_measures() | self.perspective_measures())
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps

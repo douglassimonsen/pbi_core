@@ -42,15 +42,8 @@ class KPI(SsasEditableRecord):
     def measure(self) -> "Measure":
         return self._tabular_model.measures.find({"id": self.measure_id})
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
-        return frozenset()
-
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base_deps = frozenset({self.measure()})
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps
-
-    @classmethod
-    def _db_command_obj_name(cls) -> str:
-        return "Kpis"

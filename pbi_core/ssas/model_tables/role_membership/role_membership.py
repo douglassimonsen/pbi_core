@@ -11,6 +11,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import MemberType
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.role import Role
 
 
@@ -33,3 +34,9 @@ class RoleMembership(SsasEditableRecord):
 
     def role(self) -> "Role":
         return self._tabular_model.roles.find(self.role_id)
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset({self.role()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base

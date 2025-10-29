@@ -15,8 +15,8 @@ from pbi_core.static_files.layout.sources.hierarchy import HierarchySource
 from .enums import HideMembers
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables import Level, PerspectiveHierarchy
     from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.level import Level
     from pbi_core.ssas.model_tables.table import Table
     from pbi_core.ssas.model_tables.variation import Variation
     from pbi_core.static_files.layout.layout import Layout
@@ -73,12 +73,11 @@ class Hierarchy(SsasRenameRecord):
     def variations(self) -> set["Variation"]:
         return self._tabular_model.variations.find_all({"default_hierarchy_id": self.id})
 
-    @classmethod
-    def _db_command_obj_name(cls) -> str:
-        return "Hierarchies"
+    def perspective_hierarchies(self) -> set["PerspectiveHierarchy"]:
+        return self._tabular_model.perspective_hierarchies.find_all({"hierarchy_id": self.id})
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(self.levels() | self.variations())
+        base_deps = frozenset(self.levels() | self.variations() | self.perspective_hierarchies())
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps

@@ -11,11 +11,18 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import DefaultDataView
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.culture import Culture
-    from pbi_core.ssas.model_tables.measure import Measure
-    from pbi_core.ssas.model_tables.query_group import QueryGroup
-    from pbi_core.ssas.model_tables.table import Table
+    from pbi_core.ssas.model_tables import (
+        Culture,
+        DataSource,
+        Expression,
+        Measure,
+        Perspective,
+        QueryGroup,
+        Relationship,
+        Role,
+        SsasTable,
+        Table,
+    )
 
 
 @define()
@@ -78,21 +85,38 @@ class Model(SsasModelRecord):
     def cultures(self) -> set["Culture"]:
         return self._tabular_model.cultures.find_all({"model_id": self.id})
 
-    def tables(self) -> set["Table"]:
-        return self._tabular_model.tables.find_all({"model_id": self.id})
+    def data_sources(self) -> set["DataSource"]:
+        return self._tabular_model.data_sources.find_all({"model_id": self.id})
+
+    def expressions(self) -> set["Expression"]:
+        return self._tabular_model.expressions.find_all({"model_id": self.id})
+
+    def perspectives(self) -> set["Perspective"]:
+        return self._tabular_model.perspectives.find_all({"model_id": self.id})
 
     def query_groups(self) -> set["QueryGroup"]:
         return self._tabular_model.query_groups.find_all({"model_id": self.id})
 
-    @classmethod
-    def _db_command_obj_name(cls) -> str:
-        return "Model"
+    def relationships(self) -> set["Relationship"]:
+        return self._tabular_model.relationships.find_all({"model_id": self.id})
+
+    def roles(self) -> set["Role"]:
+        return self._tabular_model.roles.find_all({"model_id": self.id})
+
+    def tables(self) -> set["Table"]:
+        return self._tabular_model.tables.find_all({"model_id": self.id})
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(self.cultures() | self.tables() | self.query_groups())
+        base_deps = frozenset(
+            self.cultures()
+            | self.data_sources()
+            | self.expressions()
+            | self.perspectives()
+            | self.query_groups()
+            | self.relationships()
+            | self.roles()
+            | self.tables(),
+        )
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps
-
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
-        return frozenset()

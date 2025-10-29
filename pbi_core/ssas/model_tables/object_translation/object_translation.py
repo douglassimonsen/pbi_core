@@ -1,5 +1,5 @@
 import datetime
-from typing import Final
+from typing import TYPE_CHECKING, Final
 
 from attrs import field, setters
 
@@ -10,6 +10,9 @@ from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import Property
+
+if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.culture.culture import Culture
 
 
 @define()
@@ -69,3 +72,12 @@ class ObjectTranslation(SsasEditableRecord):
             return mapper[self.object_type]
         msg = f"No logic implemented for type {self.object_type}"
         raise TypeError(msg)
+
+    def culture(self) -> "Culture":
+        return self._tabular_model.cultures.find({"id": self.culture_id})
+
+    def parents(self, *, recursive: bool = True) -> frozenset[SsasTable]:
+        base = frozenset({self.object(), self.culture()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base

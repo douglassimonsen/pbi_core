@@ -10,6 +10,7 @@ from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
     from pbi_core.ssas.model_tables.format_string_definition import FormatStringDefinition
 
@@ -38,3 +39,15 @@ class CalculationItem(SsasRenameRecord):
 
     def calculation_group(self) -> "CalculationGroup":
         return self._tabular_model.calculation_groups.find(self.calculation_group_id)
+
+    def parents(self, *, recursive: bool = True) -> "frozenset[SsasTable]":
+        base = frozenset({self.calculation_group()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base
+
+    def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
+        base = frozenset({self.format_string_definition()})
+        if recursive:
+            return self._recurse_children(base)
+        return base

@@ -10,6 +10,7 @@ from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.measure import Measure
     from pbi_core.ssas.model_tables.table import Table
 
@@ -51,3 +52,9 @@ class DetailRowDefinition(SsasEditableRecord):
             case _:
                 msg = f"No logic for object type: {self.object_type}"
                 raise TypeError(msg)
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset({self.object()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base

@@ -46,14 +46,10 @@ class Variation(SsasRenameRecord):
     def relationship(self) -> "Relationship":
         return self._tabular_model.relationships.find(self.relationship_id)
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
-        return frozenset()
-
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base_deps = {self.default_hierarchy(), self.relationship(), self.column()}
-        default_column = self.default_column()
-        if default_column:
-            base_deps.add(default_column)
+        if dc := self.default_column():
+            base_deps.add(dc)
         frozen_base_deps = frozenset(base_deps)
         if recursive:
             return self._recurse_children(frozen_base_deps)

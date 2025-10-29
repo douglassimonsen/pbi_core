@@ -21,6 +21,7 @@ if TYPE_CHECKING:
     from pbi_parsers.pq.misc.external_sources import BaseExternalSource
 
     from pbi_core.ssas.model_tables.column import Column
+    from pbi_core.ssas.model_tables.data_source.data_source import DataSource
     from pbi_core.ssas.model_tables.expression import Expression
     from pbi_core.ssas.model_tables.query_group import QueryGroup
     from pbi_core.ssas.model_tables.table import Table
@@ -82,16 +83,21 @@ class Partition(SsasRefreshRecord):
             logger.warning("Attempted to get AST of non-M/DAX partition", partition=self.name, type=self.type)
             return None
 
-    def expression_source(self) -> "Expression | None":
-        if self.expression_source_id is None:
-            return None
-        return self._tabular_model.expressions.find(self.expression_source_id)
-
     def is_system_table(self) -> bool:
         return bool(self.system_flags >> 1 % 2)
 
     def is_from_calculated_table(self) -> bool:
         return bool(self.system_flags % 2)
+
+    def data_source(self) -> "DataSource | None":
+        if self.data_source_id is None:
+            return None
+        return self._tabular_model.data_sources.find(self.data_source_id)
+
+    def expression_source(self) -> "Expression | None":
+        if self.expression_source_id is None:
+            return None
+        return self._tabular_model.expressions.find(self.expression_source_id)
 
     def query_group(self) -> "QueryGroup | None":
         try:
@@ -102,13 +108,14 @@ class Partition(SsasRefreshRecord):
     def table(self) -> "Table":
         return self._tabular_model.tables.find({"id": self.table_id})
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
-        return frozenset()
-
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps: set[QueryGroup | Table] = {self.table()}
+        base_deps: set[QueryGroup | Table | Expression | DataSource] = {self.table()}
         if query_group := self.query_group():
             base_deps.add(query_group)
+        if expr := self.expression_source():
+            base_deps.add(expr)
+        if ds := self.data_source():
+            base_deps.add(ds)
         frozen_base_deps = frozenset(base_deps)
         if recursive:
             return self._recurse_children(frozen_base_deps)

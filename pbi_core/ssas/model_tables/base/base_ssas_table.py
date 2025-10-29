@@ -43,14 +43,6 @@ class SsasTable(BaseValidation, IdBase):
 
         return super().model_validate(formatted_data)
 
-    @classmethod
-    def _db_command_obj_name(cls) -> str:
-        """Returns the name of the object expected by their XMLA commands.
-
-        Generally a simple pluralization, but occasionally different in subclasses.
-        """
-        return cls.__name__ + "s"
-
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report.
 

@@ -1,14 +1,19 @@
 from typing import TYPE_CHECKING
 
+from pbi_core.ssas.model_tables._group import RowNotFoundError
 from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
 
 from .base import ColumnDTO
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.attribute_hierarchy import AttributeHierarchy
-    from pbi_core.ssas.model_tables.level import Level
-    from pbi_core.ssas.model_tables.relationship.relationship import Relationship
-    from pbi_core.ssas.model_tables.table import Table
+    from pbi_core.ssas.model_tables import (
+        AttributeHierarchy,
+        FormatStringDefinition,
+        Level,
+        PerspectiveColumn,
+        Relationship,
+        Table,
+    )
 
     from .column import Column
 
@@ -35,6 +40,26 @@ class RelationshipMixin(ColumnDTO, SsasTable):
             return None
         return self._tabular_model.columns.find({"id": self.sort_by_column_id})
 
+    def column_origin(self) -> "Column | None":
+        """Returns the origin column (if any) for this column.
+
+        Note:
+            This is the inverse of origin_columns
+
+        """
+        if self.column_origin_id is None:
+            return None
+        return self._tabular_model.columns.find({"id": self.column_origin_id})
+
+    def origin_columns(self) -> set["Column"]:
+        """Returns a list of columns (possibly empty) that have this column as their origin.
+
+        Note:
+            Provides the inverse information of column_origin
+
+        """
+        return self._tabular_model.columns.find_all({"column_origin_id": self.id})
+
     def sorting_columns(self) -> set["Column"]:
         """Returns a list of columns (possibly empty) that are sorted by this column.
 
@@ -52,3 +77,12 @@ class RelationshipMixin(ColumnDTO, SsasTable):
 
     def relationships(self) -> set["Relationship"]:
         return self.from_relationships() | self.to_relationships()
+
+    def format_string_definition(self) -> "FormatStringDefinition | None":
+        try:
+            return self._tabular_model.format_string_definitions.find(lambda fsd: fsd.object() == self)
+        except RowNotFoundError:
+            return None
+
+    def perspective_columns(self) -> set["PerspectiveColumn"]:
+        return set(self._tabular_model.perspective_columns.find_all({"column_id": self.id}))

@@ -18,10 +18,14 @@ from . import set_name
 from .commands import CommandMixin
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.attribute_hierarchy.attribute_hierarchy import AttributeHierarchy
     from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
+    from pbi_core.ssas.model_tables.format_string_definition.format_string_definition import FormatStringDefinition
+    from pbi_core.ssas.model_tables.measure.measure import Measure
+    from pbi_core.ssas.model_tables.relationship.relationship import Relationship
+    from pbi_core.ssas.model_tables.variation.variation import Variation
     from pbi_core.static_files.layout.layout import Layout
     from pbi_core.static_files.layout.layout_node import LayoutNode
-
 
 logger: BoundLogger = get_logger()
 
@@ -42,7 +46,9 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
 
     def parents(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures this Column is dependent on."""
-        base_deps = {self.table()} | self.parent_columns() | self.parent_measures()
+        base_deps = (
+            {self.table(), self.sort_by_column(), self.column_origin()} | self.parent_columns() | self.parent_measures()
+        )
         if sort_by_column := self.sort_by_column():
             base_deps.add(sort_by_column)
         frozen_base_deps = frozenset(base_deps)
@@ -53,17 +59,26 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
 
     def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
         """Returns all columns and measures dependent on this Column."""
-        full_dependencies = frozenset(
+        full_dependencies: set[
+            AttributeHierarchy | Column | Measure | Variation | Relationship | FormatStringDefinition
+        ] = (
             {self.attribute_hierarchy()}
             | self.child_columns()
             | self.child_measures()
+            | self.origin_columns()
             | self.sorting_columns()
             | self.child_variations()
-            | self.child_default_variations(),
-        )
+            | self.child_default_variations()
+            | self.from_relationships()
+            | self.to_relationships()
+            | self.perspective_columns()
+        )  # pyright: ignore[reportAssignmentType]
+        if fsd := self.format_string_definition():
+            full_dependencies.add(fsd)
+        frozen_full_dependencies = frozenset(full_dependencies)
         if recursive:
-            return self._recurse_children(full_dependencies)
-        return full_dependencies
+            return self._recurse_children(frozen_full_dependencies)
+        return frozen_full_dependencies
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the column and update any dependent expressions to use the new name.

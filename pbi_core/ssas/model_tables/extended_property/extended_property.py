@@ -86,6 +86,8 @@ class ExtendedProperty(SsasRenameRecord):
         }
         return mapper[self.object_type](self.object_id)
 
-    @classmethod
-    def _db_command_obj_name(cls) -> str:
-        return "ExtendedProperties"
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset({self.object()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base

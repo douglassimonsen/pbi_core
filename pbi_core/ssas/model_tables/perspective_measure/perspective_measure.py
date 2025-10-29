@@ -9,6 +9,7 @@ from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.measure import Measure
     from pbi_core.ssas.model_tables.perspective_table import PerspectiveTable
 
@@ -32,3 +33,9 @@ class PerspectiveMeasure(SsasEditableRecord):
 
     def measure(self) -> "Measure":
         return self._tabular_model.measures.find(self.measure_id)
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset({self.perspective_table(), self.measure()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base

@@ -53,13 +53,12 @@ class Expression(SsasRenameRecord):
     def query_group(self) -> "QueryGroup | None":
         return self._tabular_model.query_groups.find({"id": self.query_group_id})
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
-        return frozenset()
-
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base_deps: set[SsasTable] = {self.model()}
         if group_query := self.query_group():
             base_deps.add(group_query)
+        if param_col := self.parameter_values_column():
+            base_deps.add(param_col)
         frozen_base_deps = frozenset(base_deps)
 
         if recursive:

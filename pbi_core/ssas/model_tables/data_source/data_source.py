@@ -11,6 +11,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import DataSourceType, ImpersonationMode, Isolation
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.model import Model
 
 
@@ -43,3 +44,9 @@ class DataSource(SsasRenameRecord):
 
     def model(self) -> "Model":
         return self._tabular_model.model
+
+    def parents(self, *, recursive: bool = True) -> "frozenset[SsasTable]":
+        base = frozenset({self.model()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base

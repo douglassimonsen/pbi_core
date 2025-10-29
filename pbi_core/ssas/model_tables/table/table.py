@@ -24,6 +24,7 @@ if TYPE_CHECKING:
     from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
     from pbi_core.ssas.model_tables.detail_row_definition import DetailRowDefinition
     from pbi_core.ssas.model_tables.model import Model
+    from pbi_core.ssas.model_tables.perspective_table.perspective_table import PerspectiveTable
     from pbi_core.ssas.model_tables.refresh_policy import RefreshPolicy
     from pbi_core.static_files.layout.layout import Layout
 
@@ -138,6 +139,8 @@ class Table(SsasRefreshRecord):
     def table_measures(self) -> set[Measure]:
         """Get measures saved to this table.
 
+        These are the measures that can be found under the table in the model structure.
+
         Returns:
             (set[Measure]): A list of measures saved to this table
 
@@ -178,12 +181,23 @@ class Table(SsasRefreshRecord):
         return self._tabular_model.model
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(
-            self.columns() | self.partitions() | self.measures(),
-        )
+        # We don't include the table_measures since they are picked up via the columns' child measures
+        base_deps: set[SsasTable] = (
+            self.columns() | self.partitions() | self.measures() | self.perspective_tables() | self.table_measures()
+        )  # pyright: ignore[reportAssignmentType]
+        if rp := self.refresh_policy():
+            base_deps.add(rp)
+        if drd := self.default_row_definition():
+            base_deps.add(drd)
+        if cg := self.calculation_group():
+            base_deps.add(cg)
+        frozen_base_deps = frozenset(base_deps)
         if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+            return self._recurse_children(frozen_base_deps)
+        return frozen_base_deps
+
+    def perspective_tables(self) -> set["PerspectiveTable"]:
+        return self._tabular_model.perspective_tables.find_all({"table_id": self.id})
 
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base_deps = frozenset({self.model()})

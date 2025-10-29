@@ -9,6 +9,7 @@ from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.hierarchy import Hierarchy
     from pbi_core.ssas.model_tables.perspective_table import PerspectiveTable
 
@@ -37,3 +38,9 @@ class PerspectiveHierarchy(SsasEditableRecord):
 
     def hierarchy(self) -> "Hierarchy":
         return self._tabular_model.hierarchies.find(self.hierarchy_id)
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base = frozenset({self.perspective_table(), self.hierarchy()})
+        if recursive:
+            return self._recurse_parents(base)
+        return base

@@ -93,7 +93,15 @@ class Relationship(SsasRenameRecord):
         return base_deps
 
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset({self.from_table(), self.to_table(), self.from_column(), self.to_column()})
+        """Returns all tables and columns this Relationship is dependent on.
+
+        Note:
+            Although relationships have direct links to tables via the from_table_id and to_table_id,
+            they are actually dependent on the columns that make up those tables. Therefore, `recursive=False`
+            returns only the from_column and to_column as dependencies.
+
+        """
+        base_deps = frozenset({self.from_column(), self.to_column()})
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps
