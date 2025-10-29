@@ -17,12 +17,15 @@ from . import set_name
 if TYPE_CHECKING:
     from pbi_parsers import dax
 
-    from pbi_core.ssas.model_tables import CalcDependency, PerspectiveMeasure
-    from pbi_core.ssas.model_tables.detail_row_definition import DetailRowDefinition
-    from pbi_core.ssas.model_tables.format_string_definition import FormatStringDefinition
-    from pbi_core.ssas.model_tables.kpi import KPI
-    from pbi_core.ssas.model_tables.table import Table
-    from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
+    from pbi_core.ssas.model_tables import (
+        KPI,
+        CalcDependency,
+        DetailRowDefinition,
+        FormatStringDefinition,
+        PerspectiveMeasure,
+        Table,
+    )
+    from pbi_core.ssas.server import BaseTabularModel
     from pbi_core.static_files.layout.layout import Layout
 
 

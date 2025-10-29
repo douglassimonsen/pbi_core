@@ -4,15 +4,12 @@ from typing import TYPE_CHECKING, Final
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.ssas.model_tables.base import SsasEditableRecord
-from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
+from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.calculation_item.calculation_item import CalculationItem
-    from pbi_core.ssas.model_tables.table import Table
+    from pbi_core.ssas.model_tables import CalculationItem, SsasTable, Table
 
 
 @define()

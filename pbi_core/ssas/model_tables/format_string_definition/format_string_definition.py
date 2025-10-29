@@ -12,7 +12,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 if TYPE_CHECKING:
     from pbi_parsers import dax
 
-    from pbi_core.ssas.model_tables._group import Group
+    from pbi_core.ssas.model_tables import Group
 
 
 @define()

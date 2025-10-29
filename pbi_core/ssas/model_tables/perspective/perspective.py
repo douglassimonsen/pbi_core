@@ -10,7 +10,7 @@ from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.model import Model
+    from pbi_core.ssas.model_tables import Model
 
 
 @define()

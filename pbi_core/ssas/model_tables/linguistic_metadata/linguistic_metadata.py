@@ -10,8 +10,7 @@ from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.culture import Culture
+    from pbi_core.ssas.model_tables import Culture, SsasTable
 
 
 class ContentType(Enum):

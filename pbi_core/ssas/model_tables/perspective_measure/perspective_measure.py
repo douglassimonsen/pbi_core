@@ -9,9 +9,7 @@ from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.measure import Measure
-    from pbi_core.ssas.model_tables.perspective_table import PerspectiveTable
+    from pbi_core.ssas.model_tables import Measure, PerspectiveTable, SsasTable
 
 
 @define()

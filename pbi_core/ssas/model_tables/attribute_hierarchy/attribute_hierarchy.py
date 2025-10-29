@@ -8,9 +8,7 @@ from pbi_core.ssas.model_tables.base import SsasReadonlyRecord
 from pbi_core.ssas.model_tables.enums import DataState
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.column import Column
-    from pbi_core.ssas.model_tables.level import Level
+    from pbi_core.ssas.model_tables import Column, Level, SsasTable
 
 
 @define()

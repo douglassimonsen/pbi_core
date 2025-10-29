@@ -3,7 +3,6 @@ from typing import Final
 from uuid import UUID, uuid4
 
 from attrs import field, setters
-from structlog import BoundLogger
 
 from pbi_core.attrs import define
 from pbi_core.logging import get_logger
@@ -11,7 +10,7 @@ from pbi_core.ssas.model_tables.enums import DataState, DataType
 
 from .enums import Alignment, ColumnType, DataCategory, EncodingHint, SummarizedBy
 
-logger: BoundLogger = get_logger()
+logger = get_logger()
 
 
 @define()

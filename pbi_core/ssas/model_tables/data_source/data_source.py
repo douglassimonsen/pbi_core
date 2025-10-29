@@ -11,8 +11,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import DataSourceType, ImpersonationMode, Isolation
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.model import Model
+    from pbi_core.ssas.model_tables import Model, SsasTable
 
 
 @define()

@@ -8,14 +8,13 @@ from .base import ColumnDTO
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import (
         AttributeHierarchy,
+        Column,
         FormatStringDefinition,
         Level,
         PerspectiveColumn,
         Relationship,
         Table,
     )
-
-    from .column import Column
 
 
 class RelationshipMixin(ColumnDTO, SsasTable):

@@ -20,12 +20,14 @@ from .enums import DataCategory
 if TYPE_CHECKING:
     from pbi_parsers.pq.misc.external_sources import BaseExternalSource
 
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
-    from pbi_core.ssas.model_tables.detail_row_definition import DetailRowDefinition
-    from pbi_core.ssas.model_tables.model import Model
-    from pbi_core.ssas.model_tables.perspective_table.perspective_table import PerspectiveTable
-    from pbi_core.ssas.model_tables.refresh_policy import RefreshPolicy
+    from pbi_core.ssas.model_tables import (
+        CalculationGroup,
+        DetailRowDefinition,
+        Model,
+        PerspectiveTable,
+        RefreshPolicy,
+        SsasTable,
+    )
     from pbi_core.static_files.layout.layout import Layout
 
 

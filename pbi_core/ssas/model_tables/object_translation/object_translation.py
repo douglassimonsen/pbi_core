@@ -12,7 +12,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import Property
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.culture.culture import Culture
+    from pbi_core.ssas.model_tables import Culture
 
 
 @define()

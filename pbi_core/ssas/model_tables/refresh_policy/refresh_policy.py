@@ -10,7 +10,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import Granularity, PolicyType, RefreshMode
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.table.table import Table
+    from pbi_core.ssas.model_tables import Table
 
 
 @define()

@@ -10,10 +10,14 @@ from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import PerspectiveColumn, PerspectiveHierarchy, PerspectiveMeasure
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.perspective import Perspective
-    from pbi_core.ssas.model_tables.table import Table
+    from pbi_core.ssas.model_tables import (
+        Perspective,
+        PerspectiveColumn,
+        PerspectiveHierarchy,
+        PerspectiveMeasure,
+        SsasTable,
+        Table,
+    )
 
 
 @define()

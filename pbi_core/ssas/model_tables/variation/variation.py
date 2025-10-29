@@ -8,10 +8,7 @@ from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.column import Column
-    from pbi_core.ssas.model_tables.hierarchy import Hierarchy
-    from pbi_core.ssas.model_tables.relationship import Relationship
+    from pbi_core.ssas.model_tables import Column, Hierarchy, Relationship, SsasTable
 
 
 @define()

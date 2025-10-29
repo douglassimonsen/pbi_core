@@ -1,11 +1,10 @@
 from bs4 import BeautifulSoup
-from structlog import BoundLogger
 
 from pbi_core.logging import get_logger
 
 from .dependencies import DependencyMixin
 
-logger: BoundLogger = get_logger()
+logger = get_logger()
 
 
 class CommandMixin(DependencyMixin):

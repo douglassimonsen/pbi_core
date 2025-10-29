@@ -8,10 +8,7 @@ from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.expression import Expression
-    from pbi_core.ssas.model_tables.model import Model
-    from pbi_core.ssas.model_tables.partition import Partition
+    from pbi_core.ssas.model_tables import Expression, Model, Partition, SsasTable
 
 
 @define()

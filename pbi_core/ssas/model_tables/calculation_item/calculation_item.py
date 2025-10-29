@@ -10,9 +10,7 @@ from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.calculation_group import CalculationGroup
-    from pbi_core.ssas.model_tables.format_string_definition import FormatStringDefinition
+    from pbi_core.ssas.model_tables import CalculationGroup, FormatStringDefinition, SsasTable
 
 
 @define()

@@ -12,9 +12,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import MetadataPermission
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import ColumnPermission, Role
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.table import Table
+    from pbi_core.ssas.model_tables import ColumnPermission, Role, SsasTable, Table
 
 
 @define()

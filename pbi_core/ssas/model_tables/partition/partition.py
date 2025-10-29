@@ -20,11 +20,7 @@ if TYPE_CHECKING:
     from pbi_parsers import dax, pq
     from pbi_parsers.pq.misc.external_sources import BaseExternalSource
 
-    from pbi_core.ssas.model_tables.column import Column
-    from pbi_core.ssas.model_tables.data_source.data_source import DataSource
-    from pbi_core.ssas.model_tables.expression import Expression
-    from pbi_core.ssas.model_tables.query_group import QueryGroup
-    from pbi_core.ssas.model_tables.table import Table
+    from pbi_core.ssas.model_tables import Column, DataSource, Expression, QueryGroup, Table
 
 
 logger = get_logger()

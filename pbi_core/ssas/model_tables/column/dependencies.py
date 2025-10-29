@@ -3,11 +3,7 @@ from typing import TYPE_CHECKING
 from .helpers import HelpersMixin
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.measure import Measure
-    from pbi_core.ssas.model_tables.table_permission import TablePermission
-    from pbi_core.ssas.model_tables.variation.variation import Variation
-
-    from .column import Column
+    from pbi_core.ssas.model_tables import Column, Measure, TablePermission, Variation
 
 
 class DependencyMixin(HelpersMixin):

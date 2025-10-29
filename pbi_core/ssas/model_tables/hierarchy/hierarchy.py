@@ -15,10 +15,7 @@ from pbi_core.static_files.layout.sources.hierarchy import HierarchySource
 from .enums import HideMembers
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Level, PerspectiveHierarchy
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.table import Table
-    from pbi_core.ssas.model_tables.variation import Variation
+    from pbi_core.ssas.model_tables import Level, PerspectiveHierarchy, SsasTable, Table, Variation
     from pbi_core.static_files.layout.layout import Layout
 
 

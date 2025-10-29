@@ -12,11 +12,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import CrossFilteringBehavior, JoinOnDateBehavior, RelationshipType, SecurityFilteringBehavior
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.column import Column
-    from pbi_core.ssas.model_tables.model import Model
-    from pbi_core.ssas.model_tables.table import Table
-    from pbi_core.ssas.model_tables.variation import Variation
+    from pbi_core.ssas.model_tables import Column, Model, SsasTable, Table, Variation
 
 
 @define()

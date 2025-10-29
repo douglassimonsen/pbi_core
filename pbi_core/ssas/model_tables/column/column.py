@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING
 
 from attrs import field
-from structlog import BoundLogger
 
 from pbi_core.attrs import define
 from pbi_core.logging import get_logger
@@ -18,16 +17,17 @@ from . import set_name
 from .commands import CommandMixin
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.attribute_hierarchy.attribute_hierarchy import AttributeHierarchy
-    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
-    from pbi_core.ssas.model_tables.format_string_definition.format_string_definition import FormatStringDefinition
-    from pbi_core.ssas.model_tables.measure.measure import Measure
-    from pbi_core.ssas.model_tables.relationship.relationship import Relationship
-    from pbi_core.ssas.model_tables.variation.variation import Variation
-    from pbi_core.static_files.layout.layout import Layout
-    from pbi_core.static_files.layout.layout_node import LayoutNode
+    from pbi_core.ssas.model_tables import (
+        AttributeHierarchy,
+        FormatStringDefinition,
+        Measure,
+        Relationship,
+        SsasTable,
+        Variation,
+    )
+    from pbi_core.static_files.layout import Layout, LayoutNode
 
-logger: BoundLogger = get_logger()
+logger = get_logger()
 
 
 @define()
