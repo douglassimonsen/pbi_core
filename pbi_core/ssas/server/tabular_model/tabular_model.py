@@ -204,52 +204,15 @@ class BaseTabularModel:
             deleted=[obj_id for updates in updated_objects.values() for obj_id in updates.deleted],
         )
 
-    @staticmethod
-    def TABULAR_FIELDS() -> tuple[str, ...]:  # noqa: N802
+    @classmethod
+    def TABULAR_FIELDS(cls) -> tuple[str, ...]:  # noqa: N802
         """Returns a list of all the field names for the SSAS tables in the tabular model.
 
         No calc_dependencies, it's not a real table but a view
         No model, since it's not a "real" table
         """
-        return (
-            "alternate_ofs",
-            "annotations",
-            "attribute_hierarchies",
-            "calculation_groups",
-            "calculation_items",
-            "column_permissions",
-            "columns",
-            "cultures",
-            "data_sources",
-            "detail_row_definitions",
-            "expressions",
-            "extended_properties",
-            "format_string_definitions",
-            "group_by_columns",
-            "hierarchies",
-            "kpis",
-            "levels",
-            "linguistic_metadata",
-            "measures",
-            "object_translations",
-            "partitions",
-            "perspectives",
-            "perspective_columns",
-            "perspective_hierarchies",
-            "perspective_measures",
-            "perspective_sets",
-            "perspective_tables",
-            "query_groups",
-            "refresh_policies",
-            "related_column_details",
-            "relationships",
-            "role_memberships",
-            "roles",
-            "sets",
-            "table_permissions",
-            "tables",
-            "variations",
-        )
+        blacklist = {"calc_dependencies", "model", "db_name", "server"}
+        return tuple(f.name for f in fields(cls) if f.name not in blacklist)
 
     def get_performance_trace(self) -> PerformanceTrace:
         """Returns a performance trace for this tabular model instance.
