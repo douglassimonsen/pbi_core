@@ -32,6 +32,9 @@ class TablePermission(SsasEditableRecord):
 
     _commands: BaseCommands = field(default=SsasCommands.table_permission, init=False, repr=False, eq=False)
 
+    def pbi_core_name(self) -> str:
+        return self.table().pbi_core_name()
+
     def __repr__(self) -> str:
         role_name = self.role().pbi_core_name()
         table_name = self.table().pbi_core_name()
