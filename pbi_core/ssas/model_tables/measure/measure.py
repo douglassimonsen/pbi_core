@@ -26,7 +26,7 @@ if TYPE_CHECKING:
         Table,
     )
     from pbi_core.ssas.server import BaseTabularModel
-    from pbi_core.static_files.layout.layout import Layout
+    from pbi_core.static_files.layout import Layout
 
 
 @define()

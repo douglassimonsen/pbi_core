@@ -7,16 +7,15 @@ from attrs import field, setters
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState
-from pbi_core.ssas.model_tables.hierarchy import set_name
-from pbi_core.ssas.server._commands import RenameCommands
-from pbi_core.ssas.server.utils import SsasCommands
+from pbi_core.ssas.server import RenameCommands, SsasCommands
 from pbi_core.static_files.layout.sources.hierarchy import HierarchySource
 
+from . import set_name
 from .enums import HideMembers
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Level, PerspectiveHierarchy, SsasTable, Table, Variation
-    from pbi_core.static_files.layout.layout import Layout
+    from pbi_core.static_files.layout import Layout
 
 
 @define()

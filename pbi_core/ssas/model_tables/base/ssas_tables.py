@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from structlog import get_logger
 
 from pbi_core.attrs import define
-from pbi_core.ssas.server._commands import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
+from pbi_core.ssas.server import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 
 from .base_ssas_table import SsasTable
 from .enums import RefreshType

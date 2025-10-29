@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 import jinja2
 
-from pbi_core.ssas.server._commands import BASE_ALTER_TEMPLATE
+from pbi_core.ssas.server import BASE_ALTER_TEMPLATE
 
 if TYPE_CHECKING:
     from .ssas_tables import SsasAlter

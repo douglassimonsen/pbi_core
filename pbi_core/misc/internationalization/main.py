@@ -1,10 +1,8 @@
 from pbi_core.logging import get_logger
-from pbi_core.report.base.main import BaseReport
-from pbi_core.ssas.model_tables.column.column import Column
+from pbi_core.report import BaseReport
+from pbi_core.ssas.model_tables import Column, Measure, Table
 from pbi_core.ssas.model_tables.enums import DataType
-from pbi_core.ssas.model_tables.measure.measure import Measure
-from pbi_core.ssas.model_tables.table.table import Table
-from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel
+from pbi_core.ssas.server import BaseTabularModel
 
 from .get_static_elements import get_static_elements
 from .text_elements import TextElement, TextElements

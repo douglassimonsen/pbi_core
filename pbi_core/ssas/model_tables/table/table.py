@@ -28,7 +28,7 @@ if TYPE_CHECKING:
         RefreshPolicy,
         SsasTable,
     )
-    from pbi_core.static_files.layout.layout import Layout
+    from pbi_core.static_files.layout import Layout
 
 
 @define()

@@ -2,8 +2,7 @@ from typing import TYPE_CHECKING, Literal, overload
 
 from pbi_core.logging import get_logger
 from pbi_core.report.base.main import BaseReport
-from pbi_core.ssas.model_tables import Column, Measure
-from pbi_core.ssas.model_tables.level.level import Level
+from pbi_core.ssas.model_tables import Column, Level, Measure
 from pbi_core.ssas.server import LocalTabularModel
 from pbi_core.static_files import StaticFiles
 

@@ -10,7 +10,7 @@ from pbi_core.attrs.extra import repr_exists, repr_len
 
 from .file_classes import Connections, DiagramLayout, Metadata, Settings, parse_diagram_layout
 from .file_classes.theme import Theme
-from .layout.layout import Layout
+from .layout import Layout
 
 if TYPE_CHECKING:
     from _typeshed import StrPath

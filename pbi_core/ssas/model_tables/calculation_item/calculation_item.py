@@ -6,8 +6,7 @@ from attrs import field
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.enums import DataState
-from pbi_core.ssas.server._commands import RenameCommands
-from pbi_core.ssas.server.utils import SsasCommands
+from pbi_core.ssas.server import RenameCommands, SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import CalculationGroup, FormatStringDefinition, SsasTable

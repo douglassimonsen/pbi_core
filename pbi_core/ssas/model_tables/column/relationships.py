@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from pbi_core.ssas.model_tables._group import RowNotFoundError
-from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
+from pbi_core.ssas.model_tables.base import SsasTable
 
 from .base import ColumnDTO
 
