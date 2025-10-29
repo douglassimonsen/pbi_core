@@ -12,6 +12,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import MetadataPermission
 
 if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
     from pbi_core.ssas.model_tables.role import Role
     from pbi_core.ssas.model_tables.table import Table
 
@@ -44,3 +45,12 @@ class TablePermission(SsasEditableRecord):
 
     def table(self) -> "Table":
         return self._tabular_model.tables.find(self.table_id)
+
+    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:  # noqa: ARG002, PLR6301
+        return frozenset()  # No children
+
+    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+        base_deps = frozenset({self.role(), self.table()})
+        if recursive:
+            return self._recurse_parents(base_deps)
+        return base_deps

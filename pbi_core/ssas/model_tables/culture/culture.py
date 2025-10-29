@@ -30,14 +30,15 @@ class Culture(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.culture, init=False, repr=False, eq=False)
 
-    def linguistic_metdata(self) -> "LinguisticMetadata":
+    def linguistic_metadata(self) -> "LinguisticMetadata":
         return self._tabular_model.linguistic_metadata.find({"id": self.linguistic_metadata_id})
 
     def model(self) -> "Model":
         return self._tabular_model.model
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset({self.linguistic_metdata()})
+        """Is based on the culture spec, since it's a little ambiguous just from the data."""
+        base_deps = frozenset({self.linguistic_metadata()})
         if recursive:
             return self._recurse_children(base_deps)
         return base_deps
@@ -45,5 +46,5 @@ class Culture(SsasRenameRecord):
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base_deps = frozenset({self.model()})
         if recursive:
-            return self._recurse_children(base_deps)
+            return self._recurse_parents(base_deps)
         return base_deps
