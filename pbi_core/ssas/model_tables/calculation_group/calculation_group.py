@@ -4,11 +4,12 @@ from typing import TYPE_CHECKING, Final
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
+from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server import BaseCommands, SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import CalculationItem, SsasTable, Table
+    from pbi_core.ssas.model_tables import CalculationItem, Table
 
 
 @define()
@@ -32,14 +33,11 @@ class CalculationGroup(SsasEditableRecord):
     def calculation_items(self) -> "set[CalculationItem]":
         return self._tabular_model.calculation_items.find_all({"calculation_group_id": self.id})
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.table()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset[LinkedEntity]:
+        return LinkedEntity.from_iter({self.table()}, by="table")
 
-    def children(self, *, recursive: bool = False) -> frozenset["SsasTable"]:
-        base = frozenset(self.calculation_items() | self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset[LinkedEntity]:
+        return LinkedEntity.from_iter(self.calculation_items(), by="calculation_item") | LinkedEntity.from_iter(
+            self.annotations(),
+            by="annotation",
+        )

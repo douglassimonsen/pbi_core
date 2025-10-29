@@ -5,13 +5,14 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server import BaseCommands, SsasCommands
 
 from .enums import MetadataPermission
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import ColumnPermission, Role, SsasTable, Table
+    from pbi_core.ssas.model_tables import ColumnPermission, Role, Table
 
 
 @define()
@@ -49,14 +50,17 @@ class TablePermission(SsasEditableRecord):
     def column_permissions(self) -> set["ColumnPermission"]:
         return self._tabular_model.column_permissions.find_all({"table_permission_id": self.id})
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.column_permissions() | self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter(self.column_permissions(), by="column_permission") | LinkedEntity.from_iter(
+            self.annotations(),
+            by="annotation",
+        )
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset({self.role(), self.table()})
-        if recursive:
-            return self._recurse_parents(base_deps)
-        return base_deps
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter(
+            {self.role()},
+            by="role",
+        ) | LinkedEntity.from_iter(
+            {self.table()},
+            by="table",
+        )

@@ -5,10 +5,11 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasReadonlyRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import DataState
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Column, Level, SsasTable
+    from pbi_core.ssas.model_tables import Column, Level
 
 
 @define()
@@ -35,14 +36,11 @@ class AttributeHierarchy(SsasReadonlyRecord):
     def levels(self) -> set["Level"]:
         return self._tabular_model.levels.find_all({"hierarchy_id": self.id})
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.levels() | self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset[LinkedEntity]:
+        return LinkedEntity.from_iter(self.levels(), by="level") | LinkedEntity.from_iter(
+            self.annotations(),
+            by="annotation",
+        )
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.column()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset[LinkedEntity]:
+        return LinkedEntity.from_iter({self.column()}, by="column")

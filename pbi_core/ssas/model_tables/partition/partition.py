@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup
 from pbi_core.attrs import define
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables._group import RowNotFoundError
-from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord, SsasTable
+from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server._commands import RefreshCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -104,24 +105,22 @@ class Partition(SsasRefreshRecord):
     def table(self) -> "Table":
         return self._tabular_model.tables.find({"id": self.table_id})
 
-    def children(self, *, recursive: bool = True) -> frozenset[SsasTable]:
-        base = frozenset(self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset[LinkedEntity]:
+        return LinkedEntity.from_iter(self.annotations(), by="annotation")
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps: set[QueryGroup | Table | Expression | DataSource] = {self.table()}
-        if query_group := self.query_group():
-            base_deps.add(query_group)
-        if expr := self.expression_source():
-            base_deps.add(expr)
-        if ds := self.data_source():
-            base_deps.add(ds)
-        frozen_base_deps = frozenset(base_deps)
-        if recursive:
-            return self._recurse_children(frozen_base_deps)
-        return frozen_base_deps
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return (
+            LinkedEntity.from_iter({self.table()}, by="table")
+            | LinkedEntity.from_iter({self.query_group()}, by="query_group")
+            | LinkedEntity.from_iter(
+                {self.expression_source()},
+                by="expression_source",
+            )
+            | LinkedEntity.from_iter(
+                {self.data_source()},
+                by="data_source",
+            )
+        )
 
     def remove_columns(self, dropped_columns: "Iterable[Column | str | None]") -> BeautifulSoup:
         def pq_escape(x: str) -> str:

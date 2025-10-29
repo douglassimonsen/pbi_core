@@ -5,6 +5,7 @@ from attrs import field
 from pbi_core.attrs import define
 from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 from pbi_core.static_files.layout.filters import Filter
 from pbi_core.static_files.layout.sources.base import Entity, Source, SourceRef
@@ -16,14 +17,6 @@ from . import set_name
 from .commands import CommandMixin
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import (
-        AttributeHierarchy,
-        FormatStringDefinition,
-        Measure,
-        Relationship,
-        SsasTable,
-        Variation,
-    )
     from pbi_core.static_files.layout import Layout, LayoutNode
 
 logger = get_logger()
@@ -43,41 +36,50 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
     def __repr__(self) -> str:
         return f"Column({self.id}: {self.full_name()})"
 
-    def parents(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
+    def parents_base(self) -> "frozenset[LinkedEntity]":
         """Returns all columns and measures this Column is dependent on."""
-        base_deps = {self.table()} | self.parent_columns() | self.parent_measures()
-        if sort_by_column := self.sort_by_column():
-            base_deps.add(sort_by_column)
-        if column_origin := self.column_origin():
-            base_deps.add(column_origin)
-        frozen_base_deps = frozenset(base_deps)
+        return (
+            LinkedEntity.from_iter({self.table()}, by="table")
+            | LinkedEntity.from_iter(
+                self.parent_columns(),
+                by="parent_column",
+            )
+            | LinkedEntity.from_iter(self.parent_measures(), by="parent_measure")
+            | LinkedEntity.from_iter({self.sort_by_column()}, by="sort_by_column")
+            | LinkedEntity.from_iter({self.column_origin()}, by="column_origin")
+        )
 
-        if recursive:
-            return self._recurse_parents(frozen_base_deps)
-        return frozen_base_deps
-
-    def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
+    def children_base(self) -> "frozenset[LinkedEntity]":
         """Returns all columns and measures dependent on this Column."""
-        base: set[AttributeHierarchy | Column | Measure | Variation | Relationship | FormatStringDefinition] = (
-            {self.attribute_hierarchy()}
-            | self.annotations()
-            | self.child_columns()
-            | self.child_measures()
-            | self.origin_columns()
-            | self.sorting_columns()
-            | self.child_variations()
-            | self.child_default_variations()
-            | self.from_relationships()
-            | self.to_relationships()
-            | self.perspective_columns()
-        )  # pyright: ignore[reportAssignmentType]
-        if fsd := self.format_string_definition():
-            base.add(fsd)
-
-        frozen_base = frozenset(base)
-        if recursive:
-            return self._recurse_children(frozen_base)
-        return frozen_base
+        return (
+            LinkedEntity.from_iter(self.annotations(), by="annotation")
+            | LinkedEntity.from_iter({self.attribute_hierarchy()}, by="attribute_hierarchy")
+            | LinkedEntity.from_iter(
+                self.child_columns(),
+                by="child_column",
+            )
+            | LinkedEntity.from_iter(self.child_measures(), by="child_measure")
+            | LinkedEntity.from_iter(
+                self.origin_columns(),
+                by="origin_column",
+            )
+            | LinkedEntity.from_iter(self.sorting_columns(), by="sorting_column")
+            | LinkedEntity.from_iter(
+                self.child_variations(),
+                by="child_variation",
+            )
+            | LinkedEntity.from_iter(
+                self.child_default_variations(),
+                by="child_default_variation",
+            )
+            | LinkedEntity.from_iter(self.from_relationships(), by="from_relationship")
+            | LinkedEntity.from_iter(
+                self.to_relationships(),
+                by="to_relationship",
+            )
+            | LinkedEntity.from_iter(self.perspective_columns(), by="perspective_column")
+            | LinkedEntity.from_iter({self.format_string_definition()}, by="format_string_definition")
+        )
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the column and update any dependent expressions to use the new name.

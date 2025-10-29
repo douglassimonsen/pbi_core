@@ -5,7 +5,7 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
-from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
@@ -15,7 +15,6 @@ if TYPE_CHECKING:
         PerspectiveColumn,
         PerspectiveHierarchy,
         PerspectiveMeasure,
-        SsasTable,
         Table,
     )
 
@@ -50,19 +49,25 @@ class PerspectiveTable(SsasEditableRecord):
     def perspective_measures(self) -> set["PerspectiveMeasure"]:
         return self._tabular_model.perspective_measures.find_all({"perspective_table_id": self.id})
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.perspective(), self.table()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
-
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(
-            self.perspective_columns()
-            | self.perspective_hierarchies()
-            | self.perspective_measures()
-            | self.annotations(),
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.perspective()}, by="perspective") | LinkedEntity.from_iter(
+            {self.table()},
+            by="table",
         )
-        if recursive:
-            return self._recurse_children(base)
-        return base
+
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return (
+            LinkedEntity.from_iter(self.perspective_columns(), by="perspective_column")
+            | LinkedEntity.from_iter(
+                self.perspective_hierarchies(),
+                by="perspective_hierarchy",
+            )
+            | LinkedEntity.from_iter(
+                self.perspective_measures(),
+                by="perspective_measure",
+            )
+            | LinkedEntity.from_iter(
+                self.annotations(),
+                by="annotation",
+            )
+        )

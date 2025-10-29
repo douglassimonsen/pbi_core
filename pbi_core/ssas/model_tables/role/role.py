@@ -5,14 +5,14 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
-from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import ModelPermission
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Model, RoleMembership, SsasTable, TablePermission
+    from pbi_core.ssas.model_tables import Model, RoleMembership, TablePermission
 
 
 @define()
@@ -40,14 +40,18 @@ class Role(SsasRenameRecord):
     def role_memberships(self) -> set["RoleMembership"]:
         return self._tabular_model.role_memberships.find_all({"role_id": self.id})
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.model()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.model()}, by="model")
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.table_permissions() | self.role_memberships() | self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return (
+            LinkedEntity.from_iter(
+                self.table_permissions(),
+                by="table_permission",
+            )
+            | LinkedEntity.from_iter(self.role_memberships(), by="role_membership")
+            | LinkedEntity.from_iter(
+                self.annotations(),
+                by="annotation",
+            )
+        )

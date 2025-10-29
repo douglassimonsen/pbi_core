@@ -5,6 +5,7 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -12,7 +13,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 from .enums import CrossFilteringBehavior, JoinOnDateBehavior, RelationshipType, SecurityFilteringBehavior
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Column, Model, SsasTable, Table, Variation
+    from pbi_core.ssas.model_tables import Column, Model, Table, Variation
 
 
 @define()
@@ -82,13 +83,13 @@ class Relationship(SsasRenameRecord):
     def variations(self) -> set["Variation"]:
         return self._tabular_model.variations.find_all({"relationship_id": self.id})
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(self.variations() | self.annotations())
-        if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter(self.variations(), by="variation") | LinkedEntity.from_iter(
+            self.annotations(),
+            by="annotation",
+        )
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+    def parents_base(self) -> frozenset["LinkedEntity"]:
         """Returns all tables and columns this Relationship is dependent on.
 
         Note:
@@ -97,10 +98,10 @@ class Relationship(SsasRenameRecord):
             returns only the from_column and to_column as dependencies.
 
         """
-        base_deps = frozenset({self.from_column(), self.to_column()})
-        if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+        return LinkedEntity.from_iter({self.from_column()}, by="from_column") | LinkedEntity.from_iter(
+            {self.to_column()},
+            by="to_column",
+        )
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.id}, from: {self.pbi_core_name()}, to: {self.pbi_core_name()})"

@@ -6,6 +6,7 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 from pbi_core.static_files.layout.sources.hierarchy import HierarchySource
@@ -14,7 +15,7 @@ from . import set_name
 from .enums import HideMembers
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Level, PerspectiveHierarchy, SsasTable, Table, Variation
+    from pbi_core.ssas.model_tables import Level, PerspectiveHierarchy, Table, Variation
     from pbi_core.static_files.layout import Layout
 
 
@@ -72,14 +73,19 @@ class Hierarchy(SsasRenameRecord):
     def perspective_hierarchies(self) -> set["PerspectiveHierarchy"]:
         return self._tabular_model.perspective_hierarchies.find_all({"hierarchy_id": self.id})
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(self.levels() | self.variations() | self.perspective_hierarchies() | self.annotations())
-        if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return (
+            LinkedEntity.from_iter(self.levels(), by="level")
+            | LinkedEntity.from_iter(
+                self.variations(),
+                by="variation",
+            )
+            | LinkedEntity.from_iter(
+                self.perspective_hierarchies(),
+                by="perspective_hierarchy",
+            )
+            | LinkedEntity.from_iter(self.annotations(), by="annotation")
+        )
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset({self.table()})
-        if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.table()}, by="table")

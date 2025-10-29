@@ -4,11 +4,11 @@ from attrs import field
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
-from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Column, Hierarchy, Relationship, SsasTable
+    from pbi_core.ssas.model_tables import Column, Hierarchy, Relationship
 
 
 @define()
@@ -43,17 +43,22 @@ class Variation(SsasRenameRecord):
     def relationship(self) -> "Relationship":
         return self._tabular_model.relationships.find(self.relationship_id)
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter(self.annotations(), by="annotation")
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = {self.default_hierarchy(), self.relationship(), self.column()}
-        if dc := self.default_column():
-            base_deps.add(dc)
-        frozen_base_deps = frozenset(base_deps)
-        if recursive:
-            return self._recurse_children(frozen_base_deps)
-        return frozen_base_deps
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return (
+            LinkedEntity.from_iter({self.default_hierarchy()}, by="default_hierarchy")
+            | LinkedEntity.from_iter(
+                {self.relationship()},
+                by="relationship",
+            )
+            | LinkedEntity.from_iter(
+                {self.column()},
+                by="column",
+            )
+            | LinkedEntity.from_iter(
+                {self.default_column()},
+                by="default_column",
+            )
+        )

@@ -5,6 +5,7 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import ObjectType
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -76,8 +77,8 @@ class ObjectTranslation(SsasEditableRecord):
     def culture(self) -> "Culture":
         return self._tabular_model.cultures.find({"id": self.culture_id})
 
-    def parents(self, *, recursive: bool = True) -> frozenset[SsasTable]:
-        base = frozenset({self.object(), self.culture()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset[LinkedEntity]:
+        return LinkedEntity.from_iter({self.object()}, by="object") | LinkedEntity.from_iter(
+            {self.culture()},
+            by="culture",
+        )

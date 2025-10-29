@@ -5,6 +5,7 @@ from attrs import field, setters
 
 from pbi_core.attrs import BaseValidation, Json, define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import ObjectType
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 from pbi_core.static_files.layout.sources.column import ColumnSource
@@ -85,8 +86,5 @@ class ExtendedProperty(SsasRenameRecord):
         }
         return mapper[self.object_type](self.object_id)
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.object()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.object()}, by="object")

@@ -4,11 +4,12 @@ from attrs import field
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Expression, Model, Partition, SsasTable
+    from pbi_core.ssas.model_tables import Expression, Model, Partition
 
 
 @define()
@@ -36,14 +37,18 @@ class QueryGroup(SsasEditableRecord):
     def model(self) -> "Model":
         return self._tabular_model.model
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(self.expressions() | self.partitions() | self.annotations())
-        if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return (
+            LinkedEntity.from_iter(self.expressions(), by="expression")
+            | LinkedEntity.from_iter(
+                self.partitions(),
+                by="partition",
+            )
+            | LinkedEntity.from_iter(
+                self.annotations(),
+                by="annotation",
+            )
+        )
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset({self.model()})
-        if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.model()}, by="model")

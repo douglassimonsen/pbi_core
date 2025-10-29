@@ -5,6 +5,7 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord, SsasTable
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
 from pbi_core.ssas.server import BaseCommands, SsasCommands
 
@@ -97,8 +98,5 @@ class FormatStringDefinition(SsasEditableRecord):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.id}: {self.object()})"
 
-    def parents(self, *, recursive: bool = True) -> frozenset[SsasTable]:
-        base = frozenset({self.object()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset[LinkedEntity]:
+        return LinkedEntity.from_iter({self.object()}, by="object")

@@ -6,11 +6,12 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server._commands import RenameCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Column, Hierarchy, SsasTable
+    from pbi_core.ssas.model_tables import Column, Hierarchy
 
 
 @define()
@@ -41,14 +42,11 @@ class Level(SsasRenameRecord):
     def hierarchy(self) -> "Hierarchy":
         return self._tabular_model.hierarchies.find({"id": self.hierarchy_id})
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.column(), self.hierarchy()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.column()}, by="column") | LinkedEntity.from_iter(
+            {self.hierarchy()},
+            by="hierarchy",
+        )
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter(self.annotations(), by="annotation")

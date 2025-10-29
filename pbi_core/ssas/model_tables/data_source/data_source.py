@@ -5,13 +5,13 @@ from attrs import field
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
-from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 
 from .enums import DataSourceType, ImpersonationMode, Isolation
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Model, SsasTable
+    from pbi_core.ssas.model_tables import Model
 
 
 @define()
@@ -44,14 +44,8 @@ class DataSource(SsasRenameRecord):
     def model(self) -> "Model":
         return self._tabular_model.model
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter(self.annotations(), by="annotation")
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.model()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.model()}, by="model")

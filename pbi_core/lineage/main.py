@@ -42,17 +42,21 @@ class LineageNode:
     value: Any
     relatives: list["LineageNode"]
     lineage_type: Literal["children", "parents"]
+    by: str = ""
+    """The field/method by which the entity is linked."""
 
     def __init__(
         self,
         value: Any,
         lineage_type: Literal["children", "parents"],
         relatives: list["LineageNode"] | None = None,
+        by: str = "",
     ) -> None:
         """Initialize."""
         self.value = value
         self.relatives = relatives or []
         self.lineage_type = lineage_type
+        self.by = by
 
     @staticmethod
     def _create_node(value: LineageProtocol) -> "Node":
@@ -74,7 +78,7 @@ class LineageNode:
         for relative in self.relatives:
             child_node = self._create_node(relative.value)
             child_nodes, child_links = relative._to_mermaid_helper(child_node)
-            links.append(Link(nodes[0], child_node))
+            links.append(Link(nodes[0], child_node, link_text=relative.by))
             links.extend(child_links)
             nodes.extend(child_nodes)
         return nodes, links

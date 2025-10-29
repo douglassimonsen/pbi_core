@@ -6,7 +6,8 @@ from uuid import UUID, uuid4
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
+from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 
 if TYPE_CHECKING:
@@ -50,20 +51,15 @@ class Expression(SsasRenameRecord):
     def query_group(self) -> "QueryGroup | None":
         return self._tabular_model.query_groups.find({"id": self.query_group_id})
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter(self.annotations(), by="annotation")
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps: set[SsasTable] = {self.model()}
-        if group_query := self.query_group():
-            base_deps.add(group_query)
-        if param_col := self.parameter_values_column():
-            base_deps.add(param_col)
-        frozen_base_deps = frozenset(base_deps)
-
-        if recursive:
-            return self._recurse_children(frozen_base_deps)
-        return frozen_base_deps
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return (
+            LinkedEntity.from_iter({self.model()}, by="model")
+            | LinkedEntity.from_iter({self.query_group()}, by="query_group")
+            | LinkedEntity.from_iter(
+                {self.parameter_values_column()},
+                by="parameter_values_column",
+            )
+        )

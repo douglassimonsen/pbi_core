@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.measure import Measure
 from pbi_core.ssas.model_tables.partition import Partition
@@ -27,7 +28,6 @@ if TYPE_CHECKING:
         Model,
         PerspectiveTable,
         RefreshPolicy,
-        SsasTable,
     )
     from pbi_core.static_files.layout import Layout
 
@@ -192,36 +192,53 @@ class Table(SsasRefreshRecord):
     def model(self) -> "Model":
         return self._tabular_model.model
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+    def children_base(self) -> frozenset["LinkedEntity"]:
         # We don't include the table_measures since they are picked up via the columns' child measures
-        base_deps: set[SsasTable] = (
-            self.annotations()
-            | self.columns()
-            | self.partitions()
-            | self.measures()
-            | self.perspective_tables()
-            | self.table_measures()
-            | self.hierarchies()
-        )  # pyright: ignore[reportAssignmentType]
-        if rp := self.refresh_policy():
-            base_deps.add(rp)
-        if drd := self.default_row_definition():
-            base_deps.add(drd)
-        if cg := self.calculation_group():
-            base_deps.add(cg)
-        frozen_base_deps = frozenset(base_deps)
-        if recursive:
-            return self._recurse_children(frozen_base_deps)
-        return frozen_base_deps
+        return (
+            LinkedEntity.from_iter(self.annotations(), by="annotation")
+            | LinkedEntity.from_iter(
+                self.columns(),
+                by="column",
+            )
+            | LinkedEntity.from_iter(
+                self.partitions(),
+                by="partition",
+            )
+            | LinkedEntity.from_iter(
+                self.measures(),
+                by="measure",
+            )
+            | LinkedEntity.from_iter(
+                self.perspective_tables(),
+                by="perspective_table",
+            )
+            | LinkedEntity.from_iter(
+                self.table_measures(),
+                by="table_measure",
+            )
+            | LinkedEntity.from_iter(
+                self.hierarchies(),
+                by="hierarchy",
+            )
+            | LinkedEntity.from_iter(
+                {self.refresh_policy()},
+                by="refresh_policy",
+            )
+            | LinkedEntity.from_iter(
+                {self.default_row_definition()},
+                by="default_row_definition",
+            )
+            | LinkedEntity.from_iter(
+                {self.calculation_group()},
+                by="calculation_group",
+            )
+        )
 
     def perspective_tables(self) -> set["PerspectiveTable"]:
         return self._tabular_model.perspective_tables.find_all({"table_id": self.id})
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset({self.model()})
-        if recursive:
-            return self._recurse_parents(base_deps)
-        return base_deps
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.model()}, by="model")
 
     def refresh(self, *, include_model_refresh: bool = True) -> list[BeautifulSoup]:  # pyright: ignore reportIncompatibleMethodOverride
         """Needs a model refresh to properly propogate the update."""

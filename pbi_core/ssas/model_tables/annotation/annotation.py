@@ -4,7 +4,7 @@ from typing import Final
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
+from pbi_core.ssas.model_tables.base import LinkedEntity, SsasRenameRecord, SsasTable
 from pbi_core.ssas.model_tables.enums import ObjectType
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 
@@ -25,12 +25,9 @@ class Annotation(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.annotation, init=False, repr=False)
 
-    def parents(self, *, recursive: bool = True) -> frozenset[SsasTable]:
+    def parents_base(self) -> frozenset[LinkedEntity]:
         """Returns the parent object the annotation is describing."""
-        base = frozenset({self.object()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+        return LinkedEntity.from_iter({self.object()}, by="object")
 
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.

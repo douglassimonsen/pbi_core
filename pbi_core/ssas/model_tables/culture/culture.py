@@ -5,10 +5,11 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import LinguisticMetadata, Model, SsasTable
+    from pbi_core.ssas.model_tables import LinguisticMetadata, Model
 
 
 @define()
@@ -33,15 +34,12 @@ class Culture(SsasRenameRecord):
     def model(self) -> "Model":
         return self._tabular_model.model
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
+    def children_base(self) -> frozenset["LinkedEntity"]:
         """Is based on the culture spec, since it's a little ambiguous just from the data."""
-        base_deps = frozenset({self.linguistic_metadata()} | self.annotations())
-        if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+        return LinkedEntity.from_iter(self.annotations(), by="annotation") | LinkedEntity.from_iter(
+            {self.linguistic_metadata()},
+            by="linguistic_metadata",
+        )
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset({self.model()})
-        if recursive:
-            return self._recurse_parents(base_deps)
-        return base_deps
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.model()}, by="model")

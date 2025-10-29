@@ -5,6 +5,7 @@ from attrs import field, setters
 
 from pbi_core.attrs import BaseValidation, Json, define
 from pbi_core.ssas.model_tables.base import RefreshType, SsasModelRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server._commands import ModelCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
@@ -20,7 +21,6 @@ if TYPE_CHECKING:
         QueryGroup,
         Relationship,
         Role,
-        SsasTable,
         Table,
     )
 
@@ -106,18 +106,24 @@ class Model(SsasModelRecord):
     def tables(self) -> set["Table"]:
         return self._tabular_model.tables.find_all({"model_id": self.id})
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(
-            self.annotations()
-            | self.cultures()
-            | self.data_sources()
-            | self.expressions()
-            | self.perspectives()
-            | self.query_groups()
-            | self.relationships()
-            | self.roles()
-            | self.tables(),
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return (
+            LinkedEntity.from_iter(self.annotations(), by="annotation")
+            | LinkedEntity.from_iter(self.cultures(), by="culture")
+            | LinkedEntity.from_iter(
+                self.data_sources(),
+                by="data_source",
+            )
+            | LinkedEntity.from_iter(self.expressions(), by="expression")
+            | LinkedEntity.from_iter(
+                self.perspectives(),
+                by="perspective",
+            )
+            | LinkedEntity.from_iter(self.query_groups(), by="query_group")
+            | LinkedEntity.from_iter(
+                self.relationships(),
+                by="relationship",
+            )
+            | LinkedEntity.from_iter(self.roles(), by="role")
+            | LinkedEntity.from_iter(self.tables(), by="table")
         )
-        if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps

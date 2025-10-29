@@ -5,7 +5,8 @@ from uuid import UUID, uuid4
 from attrs import field, setters
 
 from pbi_core.attrs import define
-from pbi_core.ssas.model_tables.base import SsasRenameRecord, SsasTable
+from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.enums import DataState, DataType
 from pbi_core.ssas.server._commands import RenameCommands
@@ -234,28 +235,39 @@ class Measure(SsasRenameRecord):
 
         return {x for x in full_dependencies if f"[{x.name()}]" in str(self.expression)}
 
-    def parents(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
+    def parents_base(self) -> "frozenset[LinkedEntity]":
         """Returns all columns and measures this Measure is dependent on."""
-        base_deps: set[Table | KPI | Column | Measure] = {self.table()} | self.parent_columns() | self.parent_measures()
-        if kpi := self.KPI():
-            base_deps.add(kpi)
-        frozen_base_deps = frozenset(base_deps)
+        return (
+            LinkedEntity.from_iter({self.table()}, by="table")
+            | LinkedEntity.from_iter(
+                self.parent_columns(),
+                by="parent_column",
+            )
+            | LinkedEntity.from_iter(
+                self.parent_measures(),
+                by="parent_measure",
+            )
+            | (LinkedEntity.from_iter({self.KPI()}, by="kpi"))
+        )
 
-        if recursive:
-            return self._recurse_parents(frozen_base_deps)
-        return frozen_base_deps
-
-    def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
+    def children_base(self) -> "frozenset[LinkedEntity]":
         """Returns all columns and measures dependent on this Measure."""
-        base: set[SsasTable] = (
-            self.child_columns() | self.child_measures() | self.perspective_measures() | self.annotations()
-        )  # pyright: ignore[reportAssignmentType]
-        if fsd := self.format_string_definition():
-            base.add(fsd)
-        frozen_base = frozenset(base)
-        if recursive:
-            return self._recurse_children(frozen_base)
-        return frozen_base
+        return (
+            LinkedEntity.from_iter(self.child_columns(), by="child_column")
+            | LinkedEntity.from_iter(
+                self.child_measures(),
+                by="child_measure",
+            )
+            | LinkedEntity.from_iter(
+                self.perspective_measures(),
+                by="perspective_measure",
+            )
+            | LinkedEntity.from_iter(self.annotations(), by="annotation")
+            | LinkedEntity.from_iter(
+                {self.format_string_definition()},
+                by="format_string_definition",
+            )
+        )
 
     @staticmethod
     def new(

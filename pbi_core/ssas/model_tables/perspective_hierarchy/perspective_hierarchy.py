@@ -5,11 +5,12 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Hierarchy, PerspectiveTable, SsasTable
+    from pbi_core.ssas.model_tables import Hierarchy, PerspectiveTable
 
 
 @define()
@@ -37,14 +38,11 @@ class PerspectiveHierarchy(SsasEditableRecord):
     def hierarchy(self) -> "Hierarchy":
         return self._tabular_model.hierarchies.find(self.hierarchy_id)
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter(self.annotations(), by="annotation")
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.perspective_table(), self.hierarchy()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.perspective_table()}, by="perspective_table") | LinkedEntity.from_iter(
+            {self.hierarchy()},
+            by="hierarchy",
+        )

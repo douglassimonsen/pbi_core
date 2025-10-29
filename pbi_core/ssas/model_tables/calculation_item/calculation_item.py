@@ -5,11 +5,12 @@ from attrs import field
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import CalculationGroup, FormatStringDefinition, SsasTable
+    from pbi_core.ssas.model_tables import CalculationGroup, FormatStringDefinition
 
 
 @define()
@@ -37,14 +38,8 @@ class CalculationItem(SsasRenameRecord):
     def calculation_group(self) -> "CalculationGroup":
         return self._tabular_model.calculation_groups.find(self.calculation_group_id)
 
-    def parents(self, *, recursive: bool = True) -> "frozenset[SsasTable]":
-        base = frozenset({self.calculation_group()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> "frozenset[LinkedEntity]":
+        return LinkedEntity.from_iter({self.calculation_group()}, by="calculation_group")
 
-    def children(self, *, recursive: bool = False) -> "frozenset[SsasTable]":
-        base = frozenset({self.format_string_definition()})
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> "frozenset[LinkedEntity]":
+        return LinkedEntity.from_iter({self.format_string_definition()}, by="format_string_definition")

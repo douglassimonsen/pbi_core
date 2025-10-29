@@ -5,11 +5,12 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import DataState, ObjectType
 from pbi_core.ssas.server import BaseCommands, SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Measure, SsasTable, Table
+    from pbi_core.ssas.model_tables import Measure, Table
 
 
 @define()
@@ -50,8 +51,5 @@ class DetailRowDefinition(SsasEditableRecord):
                 msg = f"No logic for object type: {self.object_type}"
                 raise TypeError(msg)
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.object()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.object()}, by="object")

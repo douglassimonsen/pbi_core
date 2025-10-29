@@ -5,12 +5,12 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
-from pbi_core.ssas.model_tables.base.base_ssas_table import SsasTable
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.table_permission import MetadataPermission, TablePermission
 from pbi_core.ssas.server import BaseCommands, SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Column, SsasTable
+    from pbi_core.ssas.model_tables import Column
 
 
 @define()
@@ -34,14 +34,11 @@ class ColumnPermission(SsasEditableRecord):
     def column(self) -> "Column":
         return self._tabular_model.columns.find(self.column_id)
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset(self.annotations())
-        if recursive:
-            return self._recurse_children(base)
-        return base
+    def children_base(self) -> frozenset[LinkedEntity]:
+        return LinkedEntity.from_iter(self.annotations(), by="annotation")
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base = frozenset({self.column(), self.table_permission()})
-        if recursive:
-            return self._recurse_parents(base)
-        return base
+    def parents_base(self) -> frozenset[LinkedEntity]:
+        return LinkedEntity.from_iter({self.column()}, by="column") | LinkedEntity.from_iter(
+            {self.table_permission()},
+            by="table_permission",
+        )

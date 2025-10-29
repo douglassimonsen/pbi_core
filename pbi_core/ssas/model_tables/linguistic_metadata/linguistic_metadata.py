@@ -6,11 +6,12 @@ from attrs import field, setters
 
 from pbi_core.attrs import BaseValidation, Json, define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
+from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server._commands import BaseCommands
 from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Culture, SsasTable
+    from pbi_core.ssas.model_tables import Culture
 
 
 class ContentType(Enum):
@@ -214,14 +215,8 @@ class LinguisticMetadata(SsasEditableRecord):
         """Returns the name displayed in the PBIX report."""
         return self.culture().pbi_core_name()
 
-    def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset(self.annotations())
-        if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+    def children_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter(self.annotations(), by="annotation")
 
-    def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
-        base_deps = frozenset({self.culture()})
-        if recursive:
-            return self._recurse_children(base_deps)
-        return base_deps
+    def parents_base(self) -> frozenset["LinkedEntity"]:
+        return LinkedEntity.from_iter({self.culture()}, by="culture")
