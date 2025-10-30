@@ -28,6 +28,7 @@ if TYPE_CHECKING:
         Model,
         PerspectiveTable,
         RefreshPolicy,
+        Variation,
     )
     from pbi_core.static_files.layout import Layout
 
@@ -239,6 +240,17 @@ class Table(SsasRefreshRecord):
 
     def parents_base(self) -> frozenset["LinkedEntity"]:
         return LinkedEntity.from_iter({self.model()}, by="model")
+
+    def variations(self) -> set["Variation"]:
+        """Get associated dependent variations.
+
+        The SSAS model requires all ShowAsVariationsOnly tables to have at least one variation defined.
+
+        Returns:
+            (set[Variation]): A list of the variations defined on this table
+
+        """
+        return self._tabular_model.variations.find_all(lambda v: v.default_hierarchy().table_id == self.id)
 
     def refresh(self, *, include_model_refresh: bool = True) -> list[BeautifulSoup]:  # pyright: ignore reportIncompatibleMethodOverride
         """Needs a model refresh to properly propogate the update."""
