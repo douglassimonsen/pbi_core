@@ -1,4 +1,4 @@
-To run the test suite for this library, first download the files found at (Github)[https://github.com/douglassimonsen/pbi_core/releases/tag/resources].
+To run the test suite for this library, first download the files found at (Github)[https://github.com/douglassimonsen/pbi_core/releases/tag/resources]. SSAS operations depend on Windows OS APIs, so they can only be run on Windows computers.
 
 You should have the following files:
 
