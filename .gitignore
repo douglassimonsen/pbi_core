@@ -1,6 +1,4 @@
-test*
-!tests/
-!tests/** 
+/test*.py
 
 
 venv

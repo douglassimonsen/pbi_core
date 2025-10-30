@@ -1,5 +1,6 @@
 from pbi_core import LocalReport
 
+
 def test_model_has_all_children(ssas_pbix):
     # Needed to ensure there aren't orphaned python objects pointing to now dead SSAS objects
     ssas_pbix.ssas.sync_from()
