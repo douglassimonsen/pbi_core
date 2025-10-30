@@ -23,7 +23,9 @@ def get_pbi_bin_folder() -> str | None:
 def gen_exe_setup(target_dir: Path) -> ExeStartupConfig:
     import inquirer  # noqa: PLC0415
 
-    desktop_exe_path = f"{get_pbi_bin_folder()}/PBIDesktop.exe"
+    desktop_exe_path = ""
+    if bin_folder := get_pbi_bin_folder():
+        desktop_exe_path = f"{bin_folder}/PBIDesktop.exe"
 
     default_workspace_path = (target_dir / "workspaces").absolute().as_posix()
     questions = [

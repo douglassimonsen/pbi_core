@@ -187,6 +187,7 @@ class SSASProcess:
     def _try_minimize_desktop() -> None:
         import platform  # noqa: PLC0415
 
+        import pywintypes  # pyright: ignore[reportMissingModuleSource] # noqa: PLC0415
         import win32con  # pyright: ignore[reportMissingModuleSource] # noqa: PLC0415
         import win32gui  # pyright: ignore[reportMissingModuleSource] # noqa: PLC0415
 
@@ -212,9 +213,14 @@ class SSASProcess:
             return
         is_minimized = False
 
-        while is_minimized is False:
-            win32gui.EnumWindows(minimize_pbi, None)
-            time.sleep(1)
+        for _ in range(MAX_WAIT_FOR_SSAS_STARTUP):
+            try:
+                win32gui.EnumWindows(minimize_pbi, None)
+            except pywintypes.error as e:
+                logger.info("Error minimizing PowerBI Desktop window", error=e)
+            else:
+                return
+            time.sleep(0.5)
 
     def _run_desktop(self) -> int:
         """Runs PowerBI Desktop to initialize the SSAS instance.
