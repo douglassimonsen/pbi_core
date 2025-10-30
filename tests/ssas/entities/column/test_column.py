@@ -24,8 +24,8 @@ def test_column_table(ssas_pbix):
 def test_column_parents(ssas_pbix):
     column = ssas_pbix.ssas.columns.find({"name": "Value"})
     parents = column.parents()
-    assert len(parents) == 1
-    assert {p.pbi_core_name() for p in parents} == {"Table"}
+    assert len(parents) == 2
+    assert {p.pbi_core_name() for p in parents} == {"Table", "Model"}
 
 
 def test_column_children(ssas_pbix):

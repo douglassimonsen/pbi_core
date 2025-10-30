@@ -34,10 +34,11 @@ class LineageMixin:
     def parents(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
         base = self.parents_base()
         if recursive:
-            ret = set()
+            ret: set[SsasTable] = set()
             for b in base:
                 ret.add(b.val)
                 ret.update(b.val.parents(recursive=True))
+            return frozenset(ret)
         return frozenset(le.val for le in base)
 
     def children(self, *, recursive: bool = True) -> frozenset["SsasTable"]:
@@ -47,6 +48,7 @@ class LineageMixin:
             for b in base:
                 ret.add(b.val)
                 ret.update(b.val.children(recursive=True))
+            return frozenset(ret)
         return frozenset(le.val for le in base)
 
     def get_lineage(self, lineage_type: Literal["children", "parents"]) -> LineageNode:
