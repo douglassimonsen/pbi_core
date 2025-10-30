@@ -1,5 +1,6 @@
 from pbi_core import LocalReport
 
+
 def test_server_sync():
     ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     col_count = len(ssas_pbix.ssas.columns)

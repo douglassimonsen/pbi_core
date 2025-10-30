@@ -2,8 +2,9 @@ def test_expression_children(ssas_pbix):
     expr = ssas_pbix.ssas.expressions.find(616)
     children = expr.children()
     assert len(children) == 2
-    assert {c.pbi_core_name() for c in children} == {'PBI_ResultType', 'PBI_NavigationStepName'}
+    assert {c.pbi_core_name() for c in children} == {"PBI_ResultType", "PBI_NavigationStepName"}
     assert {c.__class__.__name__ for c in children} == {"Annotation"}
+
 
 def test_expression_parents(ssas_pbix):
     expr = ssas_pbix.ssas.expressions.find(616)
@@ -12,10 +13,12 @@ def test_expression_parents(ssas_pbix):
     assert {p.pbi_core_name() for p in parents} == {"Model"}
     assert {p.__class__.__name__ for p in parents} == {"Model"}
 
+
 def test_expression_alter(ssas_pbix):
     expr = ssas_pbix.ssas.expressions.find(616)
     expr.name = "new_country"
     expr.alter()
+
 
 def test_expression_delete(ssas_pbix):
     expr = ssas_pbix.ssas.expressions.find(616)

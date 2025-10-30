@@ -1,4 +1,3 @@
-from pbi_core import LocalReport
 
 
 def test_lineage_chart(ssas_pbix):

@@ -1,6 +1,5 @@
-from pbi_core import LocalReport, report
-from pbi_core.ssas.model_tables import column
-from pbi_core.ssas.model_tables.column.enums import DataCategory
+from pbi_core import LocalReport
+
 
 def test_table_alteration():
     report = LocalReport.load_pbix("test.pbix")
@@ -10,6 +9,7 @@ def test_table_alteration():
     table.alter()
 
     report.save_pbix("test_out.pbix")
+
 
 def test_table_data(ssas_pbix):
     table = ssas_pbix.ssas.tables.find({"name": "Table"})
@@ -36,5 +36,19 @@ def test_table_children(ssas_pbix):
     children = table.children()
     print({c.pbi_core_name() for c in children})
     assert len(children) == 9
-    assert {c.pbi_core_name() for c in children} == {'Table', 'RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61', 'Value', 'PBI_Id', 'SummarizationSetBy', 'Measure 4', 'complicated_measure'}
-    assert {c.__class__.__name__ for c in children} == {'Measure', 'Column', 'AttributeHierarchy', 'Partition', 'Annotation'}
+    assert {c.pbi_core_name() for c in children} == {
+        "Table",
+        "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+        "Value",
+        "PBI_Id",
+        "SummarizationSetBy",
+        "Measure 4",
+        "complicated_measure",
+    }
+    assert {c.__class__.__name__ for c in children} == {
+        "Measure",
+        "Column",
+        "AttributeHierarchy",
+        "Partition",
+        "Annotation",
+    }

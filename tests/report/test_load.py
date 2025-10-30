@@ -1,4 +1,3 @@
-from os import kill
 from pbi_core import LocalReport
 
 
