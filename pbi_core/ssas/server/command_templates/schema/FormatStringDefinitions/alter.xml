@@ -1,4 +1,4 @@
-<FormatStringDefinition>                                
+<FormatStringDefinitions>                                
   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sql="urn:schemas-microsoft-com:xml-sql">
     <xs:element>
       <xs:complexType>
@@ -15,4 +15,4 @@
     </xs:complexType>
   </xs:schema>
   {{rows}}
-</FormatStringDefinition>
+</FormatStringDefinitions>

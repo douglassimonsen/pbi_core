@@ -49,6 +49,8 @@ class Expression(SsasRenameRecord):
         return self._tabular_model.columns.find(self.parameter_values_column_id)
 
     def query_group(self) -> "QueryGroup | None":
+        if self.query_group_id is None:
+            return None
         return self._tabular_model.query_groups.find({"id": self.query_group_id})
 
     def children_base(self) -> frozenset["LinkedEntity"]:
