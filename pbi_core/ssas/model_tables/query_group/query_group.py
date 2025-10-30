@@ -20,7 +20,7 @@ class QueryGroup(SsasEditableRecord):
     This class represents a group of queries that can be executed together.
     """
 
-    _repr_name_field = "folder"
+    _repr_name_field: str = field(default="folder")
 
     description: str | None = field(default=None, eq=True)
     folder: str = field(eq=True)
