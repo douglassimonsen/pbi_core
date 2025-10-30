@@ -1,0 +1,26 @@
+
+
+def test_query_group_children(ssas_pbix):
+    expr = ssas_pbix.ssas.query_groups.find(3383)
+    children = expr.children()
+    assert len(children) == 4
+    assert {c.pbi_core_name() for c in children} == {'Section', 'PBI_QueryGroupOrder', 'Filter', 'Visual'}
+    assert {c.__class__.__name__ for c in children} == {'Annotation', 'Partition'}
+    
+def test_query_group_parents(ssas_pbix):
+    expr = ssas_pbix.ssas.query_groups.find(3383)
+    parents = expr.parents()
+    assert len(parents) == 1
+    assert {p.pbi_core_name() for p in parents} == {'Model'}
+    assert {p.__class__.__name__ for p in parents} == {'Model'}
+
+def test_query_group_alter(ssas_pbix) -> None:
+    expr = ssas_pbix.ssas.query_groups.find(3383)
+    expr.description = "test description"
+    expr.alter()
+
+def test_query_group_delete(ssas_pbix):
+    expr = ssas_pbix.ssas.query_groups.find(3383)
+    # TODO: delete dependent objects first
+    # expr.delete()
+

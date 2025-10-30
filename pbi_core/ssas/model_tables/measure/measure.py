@@ -200,7 +200,6 @@ class Measure(SsasRenameRecord):
         })
         child_keys = [(m.table, m.object) for m in dependent_measures if m.object_type in {"CALC_COLUMN", "COLUMN"}]
         full_dependencies = [m for m in self._tabular_model.columns if (m.table().name, m.name()) in child_keys]
-
         if recursive:
             recursive_dependencies: set[Column] = set()
             for dep in full_dependencies:

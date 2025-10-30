@@ -1,3 +1,6 @@
+from pbi_core import LocalReport
+
+
 def test_culture_parents(ssas_pbix):
     culture = ssas_pbix.ssas.cultures.find({"name": "en-US"})
     parents = culture.parents()
@@ -19,7 +22,8 @@ def test_culture_alter(ssas_pbix):
     culture.linguistic_metadata_id = None
     culture.alter()
 
-def test_culture_rename(ssas_pbix):
+def test_culture_rename():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     culture = ssas_pbix.ssas.cultures.find({"name": "en-US"})
     culture.name = "de-DE"
     culture.rename()
