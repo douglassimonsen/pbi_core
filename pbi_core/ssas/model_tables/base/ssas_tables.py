@@ -4,6 +4,8 @@ from structlog import get_logger
 
 from pbi_core.attrs import define
 from pbi_core.ssas.server import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
+from pbi_core.ssas.server._command_utils import CommandData
+from pbi_core.ssas.server.batch import Batch
 
 from .base_ssas_table import SsasTable
 from .enums import RefreshType
@@ -20,13 +22,21 @@ class SsasAlter(SsasTable):
 
     _commands: BaseCommands
 
+    def alter_cmd(self) -> CommandData:
+        """Prepares the command data for altering an object in SSAS.
+
+        This has been separated from the `alter` method to allow for batch commands.
+        """
+        return CommandData(
+            data=self.xml_fields(),  # pyright: ignore[reportArgumentType]
+            command=self._commands.alter,
+            entity=self._db_type_name(),
+            db_name=self._tabular_model.db_name,
+        )
+
     def alter(self) -> BeautifulSoup:
         """Updates a non-name field of an object in SSAS."""
-        xml_command = self.render_xml_command(
-            self.xml_fields(),
-            self._commands.alter,
-            self._tabular_model.db_name,
-        )
+        xml_command = Batch([self.alter_cmd()]).render_xml()
         logger.info("Syncing Alter Changes to SSAS", obj=self._db_type_name())
         return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
@@ -40,13 +50,21 @@ class SsasRename(SsasTable):
 
     _commands: RenameCommands
 
+    def rename_cmd(self) -> CommandData:
+        """Prepares the command data for renaming an object in SSAS.
+
+        This has been separated from the `rename` method to allow for batch commands.
+        """
+        return CommandData(
+            data=self.xml_fields(),  # pyright: ignore[reportArgumentType]
+            command=self._commands.rename,
+            entity=self._db_type_name(),
+            db_name=self._tabular_model.db_name,
+        )
+
     def rename(self) -> BeautifulSoup:
         """Updates a name field of an object in SSAS."""
-        xml_command = self.render_xml_command(
-            self.xml_fields(),
-            self._commands.rename,
-            self._tabular_model.db_name,
-        )
+        xml_command = Batch([self.rename_cmd()]).render_xml()
         logger.info("Syncing Rename Changes to SSAS", obj=self._db_type_name())
         return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
@@ -60,13 +78,21 @@ class SsasCreate(SsasTable):
 
     _commands: BaseCommands
 
+    def create_cmd(self) -> CommandData:
+        """Prepares the command data for creating an object in SSAS.
+
+        This has been separated from the `create` method to allow for batch commands.
+        """
+        return CommandData(
+            data=self.xml_fields(),  # pyright: ignore[reportArgumentType]
+            command=self._commands.create,
+            entity=self._db_type_name(),
+            db_name=self._tabular_model.db_name,
+        )
+
     def create(self) -> BeautifulSoup:
         """Creates a new SSAS object based on the python object."""
-        xml_command = self.render_xml_command(
-            self.xml_fields(),
-            self._commands.create,
-            self._tabular_model.db_name,
-        )
+        xml_command = Batch([self.create_cmd()]).render_xml()
         logger.info("Syncing Create Changes to SSAS", obj=self._db_type_name())
         return self._tabular_model.server.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
@@ -80,17 +106,29 @@ class SsasDelete(SsasTable):
 
     _commands: BaseCommands
 
-    def delete(self) -> BeautifulSoup:
-        """Removes an object from SSAS."""
+    def delete_cmd(self) -> CommandData:
+        """Prepares the command data for deleting an object from SSAS.
+
+        This has been separated from the `delete` method to allow for batch commands.
+        """
         data = {
             "ID": self.id,
         }
-        xml_command = self.render_xml_command(
-            data,
-            self._commands.delete,
-            self._tabular_model.db_name,
+        return CommandData(
+            data=data,  # pyright: ignore[reportArgumentType]
+            command=self._commands.delete,
+            entity=self._db_type_name(),
+            db_name=self._tabular_model.db_name,
         )
-        logger.info("Syncing Delete Changes to SSAS", obj=self._db_type_name())
+
+    def delete(self) -> BeautifulSoup:
+        """Removes an object from SSAS."""
+        # The variation can point to at most one table
+        objects_to_delete = {self, *self.delete_dependencies()}
+        cmds = [obj.delete_cmd() for obj in objects_to_delete]
+
+        xml_command = Batch(cmds).render_xml()
+        logger.info("Syncing Delete Changes to SSAS", objs=objects_to_delete)
         return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
 
@@ -104,12 +142,21 @@ class SsasRefresh(SsasTable):
     _default_refresh_type: RefreshType
     _commands: RefreshCommands
 
-    def refresh(self, refresh_type: RefreshType | None = None) -> BeautifulSoup:
-        xml_command = self.render_xml_command(
-            self.xml_fields() | {"RefreshType": (refresh_type or self._default_refresh_type).value},
-            self._commands.refresh,
-            self._tabular_model.db_name,
+    def refresh_cmd(self, refresh_type: RefreshType | None = None) -> CommandData:
+        """Prepares the command data for refreshing an object in SSAS.
+
+        This has been separated from the `refresh` method to allow for batch commands.
+        """
+        data = self.xml_fields() | {"RefreshType": (refresh_type or self._default_refresh_type).value}
+        return CommandData(
+            data=data,  # pyright: ignore[reportArgumentType]
+            command=self._commands.refresh,
+            entity=self._db_type_name(),
+            db_name=self._tabular_model.db_name,
         )
+
+    def refresh(self, refresh_type: RefreshType | None = None) -> BeautifulSoup:
+        xml_command = Batch([self.refresh_cmd(refresh_type)]).render_xml()
         logger.info("Syncing Refresh Changes to SSAS", obj=self)
         return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 

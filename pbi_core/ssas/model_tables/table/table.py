@@ -30,6 +30,7 @@ if TYPE_CHECKING:
         RefreshPolicy,
         Variation,
     )
+    from pbi_core.ssas.model_tables.base.ssas_tables import SsasDelete
     from pbi_core.static_files.layout import Layout
 
 
@@ -263,3 +264,7 @@ class Table(SsasRefreshRecord):
 
     def external_sources(self) -> list["BaseExternalSource"]:
         return list({source for partition in self.partitions() for source in partition.external_sources()})
+
+    def delete_dependencies(self) -> frozenset["SsasDelete"]:
+        # We must explicitly delete relationships that depend on this table via its columns
+        return frozenset({r for c in self.columns() for r in c.relationships()})

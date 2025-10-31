@@ -20,5 +20,4 @@ def test_partition_alter(ssas_pbix):
 
 def test_partition_delete(ssas_pbix):
     expr = ssas_pbix.ssas.partitions.find(618)
-    # TODO: create a table with multiple partitions to allow us to delete one
-    # expr.delete()
+    expr.delete()

@@ -1,11 +1,13 @@
 from typing import Any, ClassVar, Self
 
 from attrs import Attribute, field, fields, setters
+from git import TYPE_CHECKING
 from structlog import get_logger
 
 from pbi_core.attrs import BaseValidation, define
-from pbi_core.ssas.server import ROW_TEMPLATE, Command, python_to_xml
 
+if TYPE_CHECKING:
+    from pbi_core.ssas.model_tables.base.ssas_tables import SsasDelete
 logger = get_logger()
 
 
@@ -19,44 +21,6 @@ class SsasMixin(BaseValidation):
         For the Column class:
         {"ExplicitName": "explicit_name"...}
     """
-    _delete_on_next_sync: bool = field(default=False, eq=False, repr=False)
-    """Marks the object to be deleted on the next sync to SSAS."""
-
-    @staticmethod
-    def _get_row_xml(values: dict[str, Any], command: Command) -> str:
-        fields: list[tuple[str, str]] = []
-        for field_name, field_value in values.items():
-            if field_name not in command.field_order:
-                continue
-            if field_value is None:
-                continue
-            fields.append((field_name, python_to_xml(field_value)))
-        fields = command.sort(fields)
-        return ROW_TEMPLATE.render(fields=fields)
-
-    @staticmethod
-    def render_xml_command(values: dict[str, Any], command: Command, db_name: str) -> str:
-        """XMLA commands: create/alter/delete/rename/refresh.
-
-        Commands are generally in the form:
-        <batch>
-            <create/alter...>
-                <db>
-            </create/alter...>
-            <entity-schema.../>
-            <records.../>
-        </batch>
-
-        Entity schemas can be found at `pbi_core/ssas/server/command_templates/schema`
-        """
-        logger.debug(
-            "Rendering XML command",
-            db_name=db_name,
-            fields=list(values.keys()),
-        )
-        xml_row = SsasMixin._get_row_xml(values, command)
-        xml_entity_definition = command.entity_template.render(rows=xml_row)
-        return command.base_template.render(db_name=db_name, entity_def=xml_entity_definition)
 
     @classmethod
     def to_snake_case(cls: type[Self], raw_values: dict[str, Any]) -> dict[str, Any]:
@@ -125,3 +89,11 @@ class SsasMixin(BaseValidation):
         formatted_data = cls.to_snake_case(data)
 
         return super().model_validate(formatted_data)
+
+    def delete_dependencies(self) -> frozenset["SsasDelete"]:  # noqa: PLR6301
+        """Returns a set of dependent objects that should be deleted before this object is deleted.
+
+        By default, there are no dependencies.
+        Override this method in subclasses to provide specific dependencies.
+        """
+        return frozenset()

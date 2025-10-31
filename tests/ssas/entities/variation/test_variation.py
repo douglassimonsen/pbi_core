@@ -33,5 +33,4 @@ def test_variation_alter(ssas_pbix):
 
 def test_variation_delete(ssas_pbix):
     expr = ssas_pbix.ssas.variations.find(1656)
-    # TODO: check for dependent tables before enabling delete: ShowAsVariationsOnly property set to '1' must be a target
-    # expr.delete()
+    expr.delete()

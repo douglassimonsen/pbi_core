@@ -25,5 +25,4 @@ def test_hierarchy_alter(ssas_pbix):
 
 def test_hierarchy_delete(ssas_pbix):
     expr = ssas_pbix.ssas.hierarchies.find(1655)
-    # TODO: fix delete hierarchy
-    # expr.delete()
+    expr.delete()

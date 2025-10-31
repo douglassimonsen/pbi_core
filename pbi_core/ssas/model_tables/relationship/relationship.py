@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Final
 from attrs import field, setters
 
 from pbi_core.attrs import define
+from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import DataState
@@ -14,6 +15,9 @@ from .enums import CrossFilteringBehavior, JoinOnDateBehavior, RelationshipType,
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Column, Model, Table, Variation
+    from pbi_core.ssas.model_tables.base.ssas_tables import SsasDelete
+
+logger = get_logger()
 
 
 @define()
@@ -105,3 +109,11 @@ class Relationship(SsasRenameRecord):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.id}, from: {self.pbi_core_name()}, to: {self.pbi_core_name()})"
+
+    def delete_dependencies(self) -> frozenset["SsasDelete"]:
+        """Returns a set of dependent objects that should be deleted before/while this object is deleted."""
+        ret = set()
+        for variation in self.variations():
+            ret.add(variation)
+            ret.update(variation.delete_dependencies())
+        return frozenset(ret)

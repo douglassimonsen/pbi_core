@@ -22,5 +22,4 @@ def test_query_group_alter(ssas_pbix) -> None:
 
 def test_query_group_delete(ssas_pbix):
     expr = ssas_pbix.ssas.query_groups.find(3383)
-    # TODO: delete dependent objects first
-    # expr.delete()
+    expr.delete()

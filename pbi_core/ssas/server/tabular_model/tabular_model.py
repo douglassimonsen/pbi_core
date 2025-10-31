@@ -58,6 +58,7 @@ if TYPE_CHECKING:
         Variation,
     )
     from pbi_core.ssas.model_tables.base.ssas_tables import SsasAlter
+    from pbi_core.ssas.server._command_utils import CommandData
     from pbi_core.ssas.server.server import BaseServer, LocalServer
 
 
@@ -164,32 +165,29 @@ class BaseTabularModel:
                 setattr(self, field_name, Group(group))
 
     def sync_to(self) -> Update:
-        from pbi_core.ssas.model_tables.base.batch import AlterCommand, Batch  # noqa: PLC0415
         from pbi_core.ssas.model_tables.base.ssas_tables import SsasAlter, SsasTable  # noqa: PLC0415
+        from pbi_core.ssas.server.batch import Batch  # noqa: PLC0415
 
         logger.info("Syncing to SSAS", db_name=self.db_name)
         updated_objects: dict[str, Update] = {}
         for f in fields(self.__class__):
             field_updates: Update = Update()
-
             current_objects: Any = getattr(self, f.name)
             if isinstance(current_objects, SsasTable):
                 current_objects = [current_objects]
             elif not isinstance(current_objects, list):
                 continue
 
-            field_updates.deleted = [obj.id for obj in current_objects if obj._delete_on_next_sync]
             for obj in current_objects:
                 if obj.get_altered_fields() and isinstance(obj, SsasAlter):
                     field_updates.updated.append(obj)
             if field_updates.added or field_updates.updated or field_updates.deleted:
                 updated_objects[f.name] = field_updates
-        commands = [
-            AlterCommand(
-                self.db_name,
-                {field_name: updates.updated for field_name, updates in updated_objects.items()},
-            ),
+
+        commands: list[CommandData] = [
+            update.alter_cmd() for updates in updated_objects.values() for update in updates.updated
         ]
+
         command_str = Batch(commands).render_xml()
         self.server.query_xml(command_str, db_name=self.db_name)
         logger.info(

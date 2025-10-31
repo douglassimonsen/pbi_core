@@ -29,5 +29,4 @@ def test_relationship_alter(ssas_pbix):
 
 def test_relationship_delete(ssas_pbix):
     expr = ssas_pbix.ssas.relationships.find(1646)
-    # TODO: cascade delete variations before enabling this
-    # expr.delete()
+    expr.delete()

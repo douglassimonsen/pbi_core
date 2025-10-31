@@ -1,7 +1,5 @@
 import pathlib
 import socket
-from typing import Any
-from xml.sax.saxutils import escape  # nosec
 
 import attrs
 import jinja2
@@ -106,35 +104,3 @@ def get_msmdsrv_info(process: psutil.Process) -> ServerInfo | None:
     if (workspace_dir := check_workspace(process)) is None:
         return None
     return ServerInfo(port, workspace_dir)
-
-
-def python_to_xml(text: Any) -> str:
-    """Implements basic XML transformation when returning data to SSAS backend.
-
-    Converts:
-
-    - True/False to true/false
-
-    Args:
-        text (Any): a value to be sent to SSAS
-
-    Returns:
-        str: A stringified, xml-safe version of the value
-
-    """
-    if text in {True, False}:
-        return str(text).lower()
-    if not isinstance(text, str):
-        text = str(text)
-    return escape(text)
-
-
-ROW_TEMPLATE = jinja2.Template(
-    """
-<row xmlns="urn:schemas-microsoft-com:xml-analysis:rowset">
-{%- for k, v in fields %}
-    <{{k}}>{{v}}</{{k}}>
-{%- endfor %}
-</row>
-""",
-)

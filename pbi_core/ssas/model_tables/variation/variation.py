@@ -8,7 +8,8 @@ from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.server import RenameCommands, SsasCommands
 
 if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables import Column, Hierarchy, Relationship
+    from pbi_core.ssas.model_tables import Column, Hierarchy, Relationship, Table
+    from pbi_core.ssas.model_tables.base.ssas_tables import SsasDelete
 
 
 @define()
@@ -62,3 +63,17 @@ class Variation(SsasRenameRecord):
                 by="default_column",
             )
         )
+
+    def delete_dependencies(self) -> frozenset["SsasDelete"]:
+        def table_checker(table: "Table") -> bool:
+            if not table.show_as_variations_only:
+                return False
+            variation_ids = {var.id for var in table.variations()}
+            return len(variation_ids - {self.id}) == 0
+
+        """Returns a set of dependent objects that should be deleted before/while this object is deleted."""
+        ret = set()
+        if source_table := self._tabular_model.tables.find(table_checker):
+            ret.add(source_table)
+            ret.update(source_table.delete_dependencies())
+        return frozenset(ret)

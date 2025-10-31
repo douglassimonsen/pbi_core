@@ -2,60 +2,58 @@ import attrs
 import bs4
 import jinja2
 
-BASE_ALTER_TEMPLATE = jinja2.Template(
+BATCH_TEMPLATE = jinja2.Template(
     """
 <Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
-  <Alter xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
-    <DatabaseID>{{db_name}}</DatabaseID>
-    {{entity_def}}
-  </Alter>
+{{actions}}
 </Batch>
-""".strip(),
+""".lstrip(),
+)
+
+BASE_ALTER_TEMPLATE = jinja2.Template(
+    """
+<Alter xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+  <DatabaseID>{{db_name}}</DatabaseID>
+{{entity_def}}
+</Alter>
+""".lstrip(),
 )
 
 # note that Transaction = true. I think it's necessary, not very tested tbqh
 BASE_REFRESH_TEMPLATE = jinja2.Template(
     """
-<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
-  <Refresh xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
-	<DatabaseID>{{db_name}}</DatabaseID>
-    {{entity_def}}
-  </Refresh>
-</Batch>
-""".strip(),
+<Refresh xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+  <DatabaseID>{{db_name}}</DatabaseID>
+  {{entity_def}}
+</Refresh>
+""".lstrip(),
 )
 BASE_RENAME_TEMPLATE = jinja2.Template(
     """
-<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
-  <Alter xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
-    <DatabaseID>{{db_name}}</DatabaseID>
-  </Alter>
-  <Rename xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
-    <DatabaseID>{{db_name}}</DatabaseID>
-    {{entity_def}}
-  </Rename>
-</Batch>
-""".strip(),
+<Alter xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+  <DatabaseID>{{db_name}}</DatabaseID>
+</Alter>
+<Rename xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+  <DatabaseID>{{db_name}}</DatabaseID>
+{{entity_def}}
+</Rename>
+""".lstrip(),
 )
 BASE_DELETE_TEMPLATE = jinja2.Template(
     """
-<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
-  <Delete xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
-    <DatabaseID>{{db_name}}</DatabaseID>
-    {{entity_def}}
-  </Delete>
-</Batch>
-""".strip(),
+<Delete xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+  <DatabaseID>{{db_name}}</DatabaseID>
+{{entity_def}}
+</Delete>
+""".lstrip(),
 )
 BASE_CREATE_TEMPLATE = jinja2.Template(
     """
-<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
-  <Create xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
-    <DatabaseID>{{db_name}}</DatabaseID>
-    {{entity_def}}
-  </Create>
-</Batch>
-""".strip(),
+<Create xmlns="http://schemas.microsoft.com/analysisservices/2014/engine">
+  <DatabaseID>{{db_name}}</DatabaseID>
+{{entity_def}}
+</Create>
+""".lstrip(),
 )
 base_commands = {
     "alter": BASE_ALTER_TEMPLATE,
@@ -69,8 +67,9 @@ base_commands = {
 @attrs.define()
 class Command:
     entity_template: jinja2.Template
-    base_template: jinja2.Template
+    action_template: jinja2.Template
     field_order: list[str]
+    name: str
 
     def sort(self, fields: list[tuple[str, str]]) -> list[tuple[str, str]]:
         return sorted(fields, key=lambda k: self.field_order.index(k[0]))
@@ -81,8 +80,9 @@ class NoCommands:
         for field_name, template_text in kwargs.items():
             v = Command(
                 entity_template=jinja2.Template(template_text),
-                base_template=base_commands[field_name],
+                action_template=base_commands[field_name],
                 field_order=self.get_field_order(template_text),
+                name=field_name,
             )
             self.__setattr__(field_name, v)
 
