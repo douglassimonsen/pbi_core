@@ -1,3 +1,7 @@
+from pbi_core import LocalReport
+from pbi_core.ssas.model_tables.measure.measure import Measure
+
+
 def test_measure_children(ssas_pbix):
     expr = ssas_pbix.ssas.measures.find(1595)
     children = expr.children()
@@ -18,6 +22,16 @@ def test_measure_alter(ssas_pbix):
     expr.alter()
 
 
-def test_measure_delete(ssas_pbix):
+def test_measure_delete():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.measures.find(1595)
     expr.delete()
+
+
+def test_measure_create(ssas_pbix):
+    Measure.new(
+        "New Measure",
+        "1",
+        ssas_pbix.ssas.tables[0],
+        ssas_pbix.ssas,
+    )

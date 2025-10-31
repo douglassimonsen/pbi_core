@@ -1,3 +1,6 @@
+from pbi_core import LocalReport
+
+
 def test_annotation_children(ssas_pbix):
     annotation = ssas_pbix.ssas.annotations.find(36)
     children = annotation.children()
@@ -22,6 +25,7 @@ def test_annotation_alter(ssas_pbix):
     annotation.alter()
 
 
-def test_annotation_delete(ssas_pbix):
+def test_annotation_delete():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     annotation = ssas_pbix.ssas.annotations.find(36)
     annotation.delete()

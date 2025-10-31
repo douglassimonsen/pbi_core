@@ -1,3 +1,6 @@
+from pbi_core import LocalReport
+
+
 def test_relationship_children(ssas_pbix):
     expr = ssas_pbix.ssas.relationships.find(1646)
     children = expr.children()
@@ -27,6 +30,7 @@ def test_relationship_alter(ssas_pbix):
     expr.alter()
 
 
-def test_relationship_delete(ssas_pbix):
+def test_relationship_delete():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.relationships.find(1646)
     expr.delete()

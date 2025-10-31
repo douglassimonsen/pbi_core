@@ -69,6 +69,24 @@ BASE_CREATE_TEMPLATE = jinja2.Template(
 </Create>
 """.lstrip(),
 )
+DISCOVER_TEMPLATE = jinja2.Template(
+    """
+<Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Discover xmlns="urn:schemas-microsoft-com:xml-analysis">
+    <RequestType>TMSCHEMA_MEASURES</RequestType>
+    <Restrictions>
+      <RestrictionList>
+        <DatabaseName>{{db_name}}</DatabaseName>
+{{filter_expr}}
+      </RestrictionList>
+    </Restrictions>
+    <Properties>
+      <PropertyList/>
+    </Properties>
+  </Discover>
+</Batch>
+""".lstrip(),
+)
 base_commands = {
     "alter": BASE_ALTER_TEMPLATE,
     "create": BASE_CREATE_TEMPLATE,

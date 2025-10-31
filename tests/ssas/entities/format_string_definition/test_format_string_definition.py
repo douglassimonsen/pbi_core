@@ -1,4 +1,4 @@
-from pbi_core.report.local.main import LocalReport
+from pbi_core import LocalReport
 
 
 def test_format_string_definition_children(ssas_pbix):
@@ -21,6 +21,7 @@ def test_format_string_definition_alter(ssas_pbix):
     expr.alter()
 
 
-def test_format_string_definition_delete(ssas_pbix):
+def test_format_string_definition_delete():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.format_string_definitions.find(2802)
     expr.delete()

@@ -1,3 +1,6 @@
+from pbi_core import LocalReport
+
+
 def test_partition_children(ssas_pbix):
     expr = ssas_pbix.ssas.partitions.find(618)
     children = expr.children()
@@ -18,6 +21,7 @@ def test_partition_alter(ssas_pbix):
     expr.alter()
 
 
-def test_partition_delete(ssas_pbix):
+def test_partition_delete():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.partitions.find(618)
     expr.delete()

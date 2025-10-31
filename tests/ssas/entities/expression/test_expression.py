@@ -1,3 +1,6 @@
+from pbi_core import LocalReport
+
+
 def test_expression_children(ssas_pbix):
     expr = ssas_pbix.ssas.expressions.find(616)
     children = expr.children()
@@ -20,6 +23,7 @@ def test_expression_alter(ssas_pbix):
     expr.alter()
 
 
-def test_expression_delete(ssas_pbix):
+def test_expression_delete():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.expressions.find(616)
     expr.delete()

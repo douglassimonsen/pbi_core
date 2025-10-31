@@ -1,5 +1,6 @@
 from ._commands import (
     BASE_ALTER_TEMPLATE,
+    DISCOVER_TEMPLATE,
     ROW_TEMPLATE,
     BaseCommands,
     Command,
@@ -16,6 +17,7 @@ from .utils import python_to_xml
 
 __all__ = [
     "BASE_ALTER_TEMPLATE",
+    "DISCOVER_TEMPLATE",
     "ROW_TEMPLATE",
     "BaseCommands",
     "BaseServer",

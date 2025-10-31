@@ -1,9 +1,19 @@
+import textwrap
+
 from attrs import field
 from bs4 import BeautifulSoup
 from structlog import get_logger
 
 from pbi_core.attrs import define
-from pbi_core.ssas.server import BaseCommands, CommandData, ModelCommands, NoCommands, RefreshCommands, RenameCommands
+from pbi_core.ssas.server import (
+    DISCOVER_TEMPLATE,
+    BaseCommands,
+    CommandData,
+    ModelCommands,
+    NoCommands,
+    RefreshCommands,
+    RenameCommands,
+)
 from pbi_core.ssas.server.batch import Batch
 
 from .base_ssas_table import SsasTable
@@ -72,6 +82,7 @@ class SsasCreate(SsasTable):
     """  # noqa: E501
 
     _commands: BaseCommands
+    _discover_fields: tuple[str, ...] = field(factory=tuple)
 
     def create_cmd(self) -> CommandData:
         """Prepares the command data for creating an object in SSAS.
@@ -87,6 +98,22 @@ class SsasCreate(SsasTable):
         """Creates a new SSAS object based on the python object."""
         xml_command = Batch([self.create_cmd()]).render_xml()
         logger.info("Syncing Create Changes to SSAS", obj=self._db_type_name())
+        # We return the result of the discover because the create command only returns a success/failure response
+        self._tabular_model.server.query_xml(xml_command, db_name=self._tabular_model.db_name)
+        return self.discover()
+
+    def discover(self) -> BeautifulSoup:
+        filter_fields = []
+        for f in self._discover_fields:
+            db_name = self._db_field_names.get(f, f)
+            val = getattr(self, f)
+            filter_fields.append(f"<{db_name}>{val}</{db_name}>")
+        filter_expr = textwrap.indent("\n".join(filter_fields), " " * 8)
+
+        xml_command = DISCOVER_TEMPLATE.render(
+            db_name=self._tabular_model.db_name,
+            filter_expr=filter_expr,
+        )
         return self._tabular_model.server.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
 

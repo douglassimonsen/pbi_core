@@ -1,3 +1,6 @@
+from pbi_core import LocalReport
+
+
 def test_level_children(ssas_pbix):
     expr = ssas_pbix.ssas.levels.find(1660)
     children = expr.children()
@@ -18,12 +21,14 @@ def test_level_parents(ssas_pbix):
     assert {p.__class__.__name__ for p in parents} == {"Column", "Hierarchy", "Table", "Model"}
 
 
-def test_level_alter(ssas_pbix):
+def test_level_alter():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.levels.find(1660)
     expr.description = "test description"
     expr.alter()
 
 
-def test_level_delete(ssas_pbix):
+def test_level_delete():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.levels.find(1660)
     expr.delete()

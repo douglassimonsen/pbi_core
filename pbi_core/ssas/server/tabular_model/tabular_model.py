@@ -245,7 +245,15 @@ def parse_schema(xml: bs4.BeautifulSoup) -> dict[str, str | int]:
 
 
 def discover_xml_to_dict(xml: bs4.BeautifulSoup) -> dict[str, list[dict[Any, Any]]]:
-    """Converts the results of the Discover XML to a dictionary to make downstream transformations more convenient."""
+    """Converts the results of the Discover XML to a dictionary to make downstream transformations more convenient.
+
+    Args:
+        xml (bs4.BeautifulSoup): The XML returned from a Discover command.
+
+    Returns:
+        dict[str, list[dict[Any, Any]]]: A dictionary mapping table names to lists of row dictionaries.
+
+    """
     assert xml.results is not None
     results = cast("list[bs4.element.Tag]", list(xml.results))
     results[-1]["name"] = "CalcDependency"

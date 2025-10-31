@@ -31,6 +31,7 @@ def test_variation_alter(ssas_pbix):
     expr.alter()
 
 
-def test_variation_delete(ssas_pbix):
+def test_variation_delete():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.variations.find(1656)
     expr.delete()

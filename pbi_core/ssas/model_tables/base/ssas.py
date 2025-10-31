@@ -63,7 +63,7 @@ class SsasMixin(BaseValidation):
                 ret.append(f)
                 continue
 
-            old_val = getattr(self._original_data, f.name)
+            old_val = getattr(self._original_data, f.name, None)
             new_val = getattr(self, f.name)
             if old_val != new_val:
                 ret.append(f)

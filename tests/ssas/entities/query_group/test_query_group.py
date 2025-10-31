@@ -1,3 +1,6 @@
+from pbi_core import LocalReport
+
+
 def test_query_group_children(ssas_pbix):
     expr = ssas_pbix.ssas.query_groups.find(3383)
     children = expr.children()
@@ -20,6 +23,7 @@ def test_query_group_alter(ssas_pbix) -> None:
     expr.alter()
 
 
-def test_query_group_delete(ssas_pbix):
+def test_query_group_delete():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.query_groups.find(3383)
     expr.delete()
