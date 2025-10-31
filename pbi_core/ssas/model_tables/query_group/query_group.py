@@ -10,6 +10,7 @@ from pbi_core.ssas.server.utils import SsasCommands
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Expression, Model, Partition
+    from pbi_core.ssas.model_tables.base.ssas_tables import SsasDelete
 
 
 @define()
@@ -52,3 +53,11 @@ class QueryGroup(SsasEditableRecord):
 
     def parents_base(self) -> frozenset["LinkedEntity"]:
         return LinkedEntity.from_iter({self.model()}, by="model")
+
+    def delete_objects(self) -> frozenset["SsasDelete"]:
+        base = {self}
+        for obj in self.expressions():
+            base |= obj.delete_objects()
+        for obj in self.partitions():
+            base |= obj.delete_objects()
+        return frozenset(base)

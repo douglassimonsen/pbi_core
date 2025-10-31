@@ -110,10 +110,9 @@ class Relationship(SsasRenameRecord):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.id}, from: {self.pbi_core_name()}, to: {self.pbi_core_name()})"
 
-    def delete_dependencies(self) -> frozenset["SsasDelete"]:
+    def delete_objects(self) -> frozenset["SsasDelete"]:
         """Returns a set of dependent objects that should be deleted before/while this object is deleted."""
-        ret = set()
+        ret: set[SsasDelete] = set({self})
         for variation in self.variations():
-            ret.add(variation)
-            ret.update(variation.delete_dependencies())
+            ret.update(variation.delete_objects())
         return frozenset(ret)

@@ -124,12 +124,28 @@ class SsasDelete(SsasTable):
     def delete(self) -> BeautifulSoup:
         """Removes an object from SSAS."""
         # The variation can point to at most one table
-        objects_to_delete = {self, *self.delete_dependencies()}
+        objects_to_delete = self.delete_objects()
         cmds = [obj.delete_cmd() for obj in objects_to_delete]
 
         xml_command = Batch(cmds).render_xml()
         logger.info("Syncing Delete Changes to SSAS", objs=objects_to_delete)
         return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
+
+    def delete_objects(self) -> frozenset["SsasDelete"]:
+        """Returns a set of objects that should be deleted before this object is deleted.
+
+        By default, there are no dependencies.
+        Override this method in subclasses to provide specific dependencies.
+
+        Note:
+            We include the object itself in the returned set to ensure it gets deleted. In certain subclasses,
+            we exclude the object itself since the deletion of dependencies may already cover it. For instance,
+            you call the method to delete a Partition. The partition checks if it's the last partition of a table,
+            and if so, it adds the table to the dependencies to be deleted. The deletion of the table will inherently
+            handle the deletion of the partition, so we can't explicitly also include the partition in that case.
+
+        """
+        return frozenset({self})
 
 
 @define()

@@ -1,13 +1,10 @@
 from typing import Any, ClassVar, Self
 
 from attrs import Attribute, field, fields, setters
-from git import TYPE_CHECKING
 from structlog import get_logger
 
 from pbi_core.attrs import BaseValidation, define
 
-if TYPE_CHECKING:
-    from pbi_core.ssas.model_tables.base.ssas_tables import SsasDelete
 logger = get_logger()
 
 
@@ -89,11 +86,3 @@ class SsasMixin(BaseValidation):
         formatted_data = cls.to_snake_case(data)
 
         return super().model_validate(formatted_data)
-
-    def delete_dependencies(self) -> frozenset["SsasDelete"]:  # noqa: PLR6301
-        """Returns a set of dependent objects that should be deleted before this object is deleted.
-
-        By default, there are no dependencies.
-        Override this method in subclasses to provide specific dependencies.
-        """
-        return frozenset()

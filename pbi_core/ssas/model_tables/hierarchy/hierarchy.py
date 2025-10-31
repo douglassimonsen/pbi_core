@@ -16,6 +16,7 @@ from .enums import HideMembers
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Level, PerspectiveHierarchy, Table, Variation
+    from pbi_core.ssas.model_tables.base.ssas_tables import SsasDelete
     from pbi_core.static_files.layout import Layout
 
 
@@ -89,3 +90,12 @@ class Hierarchy(SsasRenameRecord):
 
     def parents_base(self) -> frozenset["LinkedEntity"]:
         return LinkedEntity.from_iter({self.table()}, by="table")
+
+    def delete_objects(self) -> frozenset["SsasDelete"]:
+        """Deletes the hierarchy from the model, including all dependent objects."""
+        if variations := self.variations():
+            ret = set()
+            for variation in variations:
+                ret.update(variation.delete_objects())
+            return frozenset(ret)
+        return frozenset({self})

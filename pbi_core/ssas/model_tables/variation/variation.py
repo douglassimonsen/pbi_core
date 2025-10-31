@@ -64,7 +64,7 @@ class Variation(SsasRenameRecord):
             )
         )
 
-    def delete_dependencies(self) -> frozenset["SsasDelete"]:
+    def delete_objects(self) -> frozenset["SsasDelete"]:
         def table_checker(table: "Table") -> bool:
             if not table.show_as_variations_only:
                 return False
@@ -72,8 +72,7 @@ class Variation(SsasRenameRecord):
             return len(variation_ids - {self.id}) == 0
 
         """Returns a set of dependent objects that should be deleted before/while this object is deleted."""
-        ret = set()
+        ret: set[SsasDelete] = set({self})
         if source_table := self._tabular_model.tables.find(table_checker):
-            ret.add(source_table)
-            ret.update(source_table.delete_dependencies())
+            ret.update(source_table.delete_objects())
         return frozenset(ret)

@@ -9,6 +9,7 @@ from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables._group import RowNotFoundError
 from pbi_core.ssas.model_tables.base import RefreshType, SsasRefreshRecord
 from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
+from pbi_core.ssas.model_tables.base.ssas_tables import SsasDelete
 from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server._commands import RefreshCommands
 from pbi_core.ssas.server.utils import SsasCommands
@@ -164,3 +165,10 @@ class Partition(SsasRefreshRecord):
         if self.type != PartitionType.M:
             return []
         return get_external_sources(self.query_definition)
+
+    def delete_objects(self) -> frozenset[SsasDelete]:
+        """If a partition is the last one in a table, the table should be deleted too."""
+        table = self.table()
+        if len(table.partitions() - {self}) == 0:
+            return frozenset({table})
+        return frozenset({self})
