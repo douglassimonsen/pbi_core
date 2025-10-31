@@ -4,7 +4,10 @@ from collections.abc import Iterable
 from attrs import field
 
 from pbi_core.attrs import define
+from pbi_core.logging import get_logger
 from pbi_core.ssas.server._commands import BATCH_TEMPLATE, CommandData
+
+logger = get_logger()
 
 
 @define(kw_only=False)
@@ -16,6 +19,11 @@ class Batch:
         for cmd in self.commands:
             command_entities.setdefault(cmd.action, {}).setdefault(cmd.entity, []).append(cmd)
 
+        logger_info = {
+            action: {entity: len(cmds) for entity, cmds in entities.items()}
+            for action, entities in command_entities.items()
+        }
+        logger.info("Preparing Batch Command for SSAS", **logger_info)
         actions = []
         for action_data in command_entities.values():
             entity_xmls = []
