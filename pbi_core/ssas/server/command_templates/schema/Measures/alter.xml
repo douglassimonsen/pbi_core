@@ -25,5 +25,5 @@
       </xs:sequence>
     </xs:complexType>
   </xs:schema>
-  {{rows}}
+{{rows}}
 </Measures>
