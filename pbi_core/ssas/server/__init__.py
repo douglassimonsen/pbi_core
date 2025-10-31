@@ -1,16 +1,18 @@
-from ._command_utils import ROW_TEMPLATE, python_to_xml
 from ._commands import (
     BASE_ALTER_TEMPLATE,
+    ROW_TEMPLATE,
     BaseCommands,
     Command,
+    CommandData,
     ModelCommands,
     NoCommands,
     RefreshCommands,
     RenameCommands,
 )
 from .server import BaseServer, LocalServer, get_or_create_local_server, list_local_servers, terminate_all_local_servers
+from .ssas_command_list import SsasCommands
 from .tabular_model import BaseTabularModel, LocalTabularModel
-from .utils import SsasCommands
+from .utils import python_to_xml
 
 __all__ = [
     "BASE_ALTER_TEMPLATE",
@@ -19,6 +21,7 @@ __all__ = [
     "BaseServer",
     "BaseTabularModel",
     "Command",
+    "CommandData",
     "LocalServer",
     "LocalTabularModel",
     "ModelCommands",

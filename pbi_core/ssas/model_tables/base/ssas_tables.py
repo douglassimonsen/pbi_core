@@ -3,8 +3,7 @@ from bs4 import BeautifulSoup
 from structlog import get_logger
 
 from pbi_core.attrs import define
-from pbi_core.ssas.server import BaseCommands, ModelCommands, NoCommands, RefreshCommands, RenameCommands
-from pbi_core.ssas.server._command_utils import CommandData
+from pbi_core.ssas.server import BaseCommands, CommandData, ModelCommands, NoCommands, RefreshCommands, RenameCommands
 from pbi_core.ssas.server.batch import Batch
 
 from .base_ssas_table import SsasTable
@@ -27,10 +26,8 @@ class SsasAlter(SsasTable):
 
         This has been separated from the `alter` method to allow for batch commands.
         """
-        return CommandData(
-            data=self.xml_fields(),  # pyright: ignore[reportArgumentType]
-            command=self._commands.alter,
-            entity=self._db_type_name(),
+        return self._commands.alter.to_data(
+            data=self.xml_fields(),
             db_name=self._tabular_model.db_name,
         )
 
@@ -55,10 +52,8 @@ class SsasRename(SsasTable):
 
         This has been separated from the `rename` method to allow for batch commands.
         """
-        return CommandData(
-            data=self.xml_fields(),  # pyright: ignore[reportArgumentType]
-            command=self._commands.rename,
-            entity=self._db_type_name(),
+        return self._commands.rename.to_data(
+            data=self.xml_fields(),
             db_name=self._tabular_model.db_name,
         )
 
@@ -83,10 +78,8 @@ class SsasCreate(SsasTable):
 
         This has been separated from the `create` method to allow for batch commands.
         """
-        return CommandData(
-            data=self.xml_fields(),  # pyright: ignore[reportArgumentType]
-            command=self._commands.create,
-            entity=self._db_type_name(),
+        return self._commands.create.to_data(
+            data=self.xml_fields(),
             db_name=self._tabular_model.db_name,
         )
 
@@ -114,10 +107,8 @@ class SsasDelete(SsasTable):
         data = {
             "ID": self.id,
         }
-        return CommandData(
-            data=data,  # pyright: ignore[reportArgumentType]
-            command=self._commands.delete,
-            entity=self._db_type_name(),
+        return self._commands.delete.to_data(
+            data=data,
             db_name=self._tabular_model.db_name,
         )
 
@@ -164,10 +155,8 @@ class SsasRefresh(SsasTable):
         This has been separated from the `refresh` method to allow for batch commands.
         """
         data = self.xml_fields() | {"RefreshType": (refresh_type or self._default_refresh_type).value}
-        return CommandData(
-            data=data,  # pyright: ignore[reportArgumentType]
-            command=self._commands.refresh,
-            entity=self._db_type_name(),
+        return self._commands.refresh.to_data(
+            data=data,
             db_name=self._tabular_model.db_name,
         )
 

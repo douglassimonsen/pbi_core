@@ -6,8 +6,8 @@ from attrs import field, setters
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
+from pbi_core.ssas.server import SsasCommands
 from pbi_core.ssas.server._commands import RenameCommands
-from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import ModelPermission
 

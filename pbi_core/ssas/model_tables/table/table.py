@@ -11,8 +11,8 @@ from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.measure import Measure
 from pbi_core.ssas.model_tables.partition import Partition
+from pbi_core.ssas.server import SsasCommands
 from pbi_core.ssas.server._commands import RefreshCommands
-from pbi_core.ssas.server.utils import SsasCommands
 from pbi_core.static_files.layout.sources.base import Entity
 
 from . import set_name

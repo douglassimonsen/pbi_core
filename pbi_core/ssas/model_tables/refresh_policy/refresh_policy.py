@@ -4,8 +4,8 @@ from git import TYPE_CHECKING
 from pbi_core.attrs import define
 from pbi_core.ssas.model_tables.base import SsasEditableRecord
 from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
+from pbi_core.ssas.server import SsasCommands
 from pbi_core.ssas.server._commands import BaseCommands
-from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import Granularity, PolicyType, RefreshMode
 

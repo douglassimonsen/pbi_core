@@ -1,12 +1,26 @@
+from typing import Any
+
 import attrs
 import bs4
 import jinja2
+
+from .utils import python_to_xml
 
 BATCH_TEMPLATE = jinja2.Template(
     """
 <Batch Transaction="false" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
 {{actions}}
 </Batch>
+""".lstrip(),
+)
+
+ROW_TEMPLATE = jinja2.Template(
+    """
+<row xmlns="urn:schemas-microsoft-com:xml-analysis:rowset">
+{%- for k, v in fields %}
+  <{{k}}>{{v}}</{{k}}>
+{%- endfor %}
+</row>
 """.lstrip(),
 )
 
@@ -69,20 +83,50 @@ class Command:
     entity_template: jinja2.Template
     action_template: jinja2.Template
     field_order: list[str]
-    name: str
+    action: str
+    entity: str
 
     def sort(self, fields: list[tuple[str, str]]) -> list[tuple[str, str]]:
         return sorted(fields, key=lambda k: self.field_order.index(k[0]))
 
+    def to_data(self, data: dict[str, Any], db_name: str) -> "CommandData":
+        return CommandData(
+            entity_template=self.entity_template,
+            action_template=self.action_template,
+            field_order=self.field_order,
+            action=self.action,
+            entity=self.entity,
+            data=data,
+            db_name=db_name,
+        )
+
+
+@attrs.define()
+class CommandData(Command):
+    data: dict[str, str | int | bool | None]
+    db_name: str
+
+    def _get_row_xml(self, values: dict[str, Any]) -> str:
+        fields: list[tuple[str, str]] = []
+        for field_name, field_value in values.items():
+            if field_name not in self.field_order:
+                continue
+            if field_value is None:
+                continue
+            fields.append((field_name, python_to_xml(field_value)))
+        fields = self.sort(fields)
+        return ROW_TEMPLATE.render(fields=fields)
+
 
 class NoCommands:
-    def __init__(self, **kwargs: str) -> None:
+    def __init__(self, entity: str, **kwargs: str) -> None:
         for field_name, template_text in kwargs.items():
             v = Command(
                 entity_template=jinja2.Template(template_text),
                 action_template=base_commands[field_name],
                 field_order=self.get_field_order(template_text),
-                name=field_name,
+                action=field_name,
+                entity=entity,
             )
             self.__setattr__(field_name, v)
 
@@ -110,11 +154,12 @@ class BaseCommands(NoCommands):
         return "BaseCommands(alter, create, delete)"
 
     @staticmethod
-    def new(data: dict[str, str]) -> "BaseCommands":
+    def new(entity: str, data: dict[str, str]) -> "BaseCommands":
         return BaseCommands(
             alter=data["alter.xml"],
             create=data["create.xml"],
             delete=data["delete.xml"],
+            entity=entity,
         )
 
 
@@ -125,12 +170,13 @@ class RenameCommands(BaseCommands):
         return "RenameCommands(alter, create, delete, rename)"
 
     @staticmethod
-    def new(data: dict[str, str]) -> "RenameCommands":
+    def new(entity: str, data: dict[str, str]) -> "RenameCommands":
         return RenameCommands(
             alter=data["alter.xml"],
             create=data["create.xml"],
             delete=data["delete.xml"],
             rename=data["rename.xml"],
+            entity=entity,
         )
 
 
@@ -141,13 +187,14 @@ class RefreshCommands(RenameCommands):
         return "RefreshCommands(alter, create, delete, rename, refresh)"
 
     @staticmethod
-    def new(data: dict[str, str]) -> "RefreshCommands":
+    def new(entity: str, data: dict[str, str]) -> "RefreshCommands":
         return RefreshCommands(
             alter=data["alter.xml"],
             create=data["create.xml"],
             delete=data["delete.xml"],
             rename=data["rename.xml"],
             refresh=data["refresh.xml"],
+            entity=entity,
         )
 
 
@@ -160,11 +207,12 @@ class ModelCommands(NoCommands):
         return "ModelCommands(alter, refresh, rename)"
 
     @staticmethod
-    def new(data: dict[str, str]) -> "ModelCommands":
+    def new(entity: str, data: dict[str, str]) -> "ModelCommands":
         return ModelCommands(
             alter=data["alter.xml"],
             refresh=data["refresh.xml"],
             rename=data["rename.xml"],
+            entity=entity,
         )
 
 

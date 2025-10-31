@@ -4,8 +4,7 @@ from collections.abc import Iterable
 from attrs import field
 
 from pbi_core.attrs import define
-from pbi_core.ssas.model_tables.base.ssas_tables import CommandData
-from pbi_core.ssas.server._commands import BATCH_TEMPLATE
+from pbi_core.ssas.server._commands import BATCH_TEMPLATE, CommandData
 
 
 @define(kw_only=False)
@@ -15,7 +14,7 @@ class Batch:
     def render_xml(self) -> str:
         command_entities: dict[str, dict[str, list[CommandData]]] = {}
         for cmd in self.commands:
-            command_entities.setdefault(cmd.command.name, {}).setdefault(cmd.entity, []).append(cmd)
+            command_entities.setdefault(cmd.action, {}).setdefault(cmd.entity, []).append(cmd)
 
         actions = []
         for action_data in command_entities.values():
@@ -27,13 +26,13 @@ class Batch:
                 action_cmd = cmd_data[0]
 
                 entities = textwrap.indent("\n".join([x._get_row_xml(x.data) for x in cmd_data]), " " * 2)
-                entity_xml = action_cmd.command.entity_template.render(rows=entities)
+                entity_xml = action_cmd.entity_template.render(rows=entities)
                 entity_xmls.append(entity_xml)
 
             assert action_cmd is not None
 
             entity_info = textwrap.indent("\n".join(entity_xmls), " " * 2)
-            action_xml = action_cmd.command.action_template.render(
+            action_xml = action_cmd.action_template.render(
                 db_name=action_cmd.db_name,
                 entity_def=entity_info,
             )

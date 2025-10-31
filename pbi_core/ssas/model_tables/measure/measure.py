@@ -9,8 +9,8 @@ from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.enums import DataState, DataType
+from pbi_core.ssas.server import SsasCommands
 from pbi_core.ssas.server._commands import RenameCommands
-from pbi_core.ssas.server.utils import SsasCommands
 from pbi_core.static_files.layout.sources.measure import MeasureSource
 
 from . import set_name

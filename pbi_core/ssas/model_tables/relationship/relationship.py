@@ -8,8 +8,8 @@ from pbi_core.logging import get_logger
 from pbi_core.ssas.model_tables.base import SsasRenameRecord
 from pbi_core.ssas.model_tables.base.lineage import LinkedEntity
 from pbi_core.ssas.model_tables.enums import DataState
+from pbi_core.ssas.server import SsasCommands
 from pbi_core.ssas.server._commands import RenameCommands
-from pbi_core.ssas.server.utils import SsasCommands
 
 from .enums import CrossFilteringBehavior, JoinOnDateBehavior, RelationshipType, SecurityFilteringBehavior
 

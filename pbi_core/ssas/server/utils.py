@@ -1,57 +1,17 @@
 import pathlib
 import socket
+from typing import Any
+from xml.sax.saxutils import escape  # nosec
 
 import attrs
 import jinja2
 import psutil
-
-from ._commands import BaseCommands, ModelCommands, RefreshCommands, RenameCommands
 
 COMMAND_DIR: pathlib.Path = pathlib.Path(__file__).parent / "command_templates"
 
 COMMAND_TEMPLATES: dict[str, jinja2.Template] = {
     f.name: jinja2.Template(f.read_text()) for f in COMMAND_DIR.iterdir() if f.is_file()
 }
-commands: dict[str, dict[str, str]] = {
-    folder.name: {f.name: f.read_text() for f in folder.iterdir() if f.is_file()}
-    for folder in (COMMAND_DIR / "schema").iterdir()
-    if folder.is_dir()
-}
-
-
-class SsasCommands:
-    annotation = RenameCommands.new(commands["Annotations"])
-    calculation_group = BaseCommands.new(commands["CalculationGroup"])
-    calculation_item = RenameCommands.new(commands["CalculationItems"])
-    column = RenameCommands.new(commands["Columns"])
-    column_permission = BaseCommands.new(commands["ColumnPermissions"])
-    culture = RenameCommands.new(commands["Cultures"])
-    data_source = RenameCommands.new(commands["DataSources"])
-    detail_row_definition = BaseCommands.new(commands["DetailRowsDefinition"])
-    expression = RenameCommands.new(commands["Expressions"])
-    extended_property = RenameCommands.new(commands["ExtendedProperties"])
-    format_string_definition = BaseCommands.new(commands["FormatStringDefinitions"])
-    hierarchy = RenameCommands.new(commands["Hierarchies"])
-    kpi = BaseCommands.new(commands["Kpis"])
-    level = RenameCommands.new(commands["Levels"])
-    linguistic_metadata = BaseCommands.new(commands["LinguisticMetadata"])
-    measure = RenameCommands.new(commands["Measures"])
-    model = ModelCommands.new(commands["Model"])
-    object_translation = BaseCommands.new(commands["ObjectTranslations"])
-    partition = RefreshCommands.new(commands["Partitions"])
-    perspective_column = BaseCommands.new(commands["PerspectiveColumns"])
-    perspective_hierarchy = BaseCommands.new(commands["PerspectiveHierarchies"])
-    perspective_measure = BaseCommands.new(commands["PerspectiveMeasures"])
-    perspective = RenameCommands.new(commands["Perspectives"])
-    perspective_table = BaseCommands.new(commands["PerspectiveTables"])
-    query_group = BaseCommands.new(commands["QueryGroups"])
-    refresh_policy = BaseCommands.new(commands["RefreshPolicy"])
-    relationship = RenameCommands.new(commands["Relationships"])
-    role_membership = BaseCommands.new(commands["RoleMemberships"])
-    role = RenameCommands.new(commands["Roles"])
-    table_permission = BaseCommands.new(commands["TablePermissions"])
-    table = RefreshCommands.new(commands["Tables"])
-    variation = RenameCommands.new(commands["Variations"])
 
 
 ROOT_FOLDER = pathlib.Path(__file__).parents[2]
@@ -104,3 +64,24 @@ def get_msmdsrv_info(process: psutil.Process) -> ServerInfo | None:
     if (workspace_dir := check_workspace(process)) is None:
         return None
     return ServerInfo(port, workspace_dir)
+
+
+def python_to_xml(text: Any) -> str:
+    """Implements basic XML transformation when returning data to SSAS backend.
+
+    Converts:
+
+    - True/False to true/false
+
+    Args:
+        text (Any): a value to be sent to SSAS
+
+    Returns:
+        str: A stringified, xml-safe version of the value
+
+    """
+    if text in {True, False}:
+        return str(text).lower()
+    if not isinstance(text, str):
+        text = str(text)
+    return escape(text)

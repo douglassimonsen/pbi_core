@@ -58,7 +58,7 @@ if TYPE_CHECKING:
         Variation,
     )
     from pbi_core.ssas.model_tables.base.ssas_tables import SsasAlter
-    from pbi_core.ssas.server._command_utils import CommandData
+    from pbi_core.ssas.server._commands import CommandData
     from pbi_core.ssas.server.server import BaseServer, LocalServer
 
 
