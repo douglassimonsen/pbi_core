@@ -27,6 +27,7 @@ class CalculationGroup(SsasEditableRecord):
 
     _commands: BaseCommands = field(default=SsasCommands.calculation_group, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_CALCULATION_GROUPS"
+    _discover_fields = ("precedence", "table_id")
 
     def table(self) -> "Table":
         return self._tabular_model.tables.find(self.table_id)

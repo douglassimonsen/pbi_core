@@ -24,7 +24,7 @@ class Role(SsasRenameRecord):
 
     description: str | None = field(default=None, eq=True)
     model_id: int = field(eq=True, repr=False)
-    model_permission: ModelPermission = field(eq=True)
+    model_permission: ModelPermission = field(eq=True, default=ModelPermission.READ)
     name: str = field(eq=True)
 
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)

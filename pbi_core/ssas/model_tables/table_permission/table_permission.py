@@ -24,7 +24,7 @@ class TablePermission(SsasEditableRecord):
 
     error_message: Final[str | None] = field(default=None, eq=False, on_setattr=setters.frozen)
     filter_expression: str | None = field(default=None, eq=True)
-    metadata_permission: MetadataPermission = field(eq=True)
+    metadata_permission: MetadataPermission = field(eq=True, default=MetadataPermission.DEFAULT)
     role_id: int = field(eq=True)
     state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
     table_id: int = field(eq=True)
@@ -33,6 +33,7 @@ class TablePermission(SsasEditableRecord):
 
     _commands: BaseCommands = field(default=SsasCommands.table_permission, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_TABLE_PERMISSIONS"
+    _discover_fields = ("metadata_permission", "role_id", "table_id")
 
     def pbi_core_name(self) -> str:
         return self.table().pbi_core_name()
