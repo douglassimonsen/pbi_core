@@ -31,6 +31,9 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b)
     """
 
+    _discover_category: str = "TMSCHEMA_COLUMNS"
+    _discover_fields: tuple[str, ...] = ("explicit_name", "table_id")
+
     _commands: RenameCommands = field(default=SsasCommands.column, init=False, repr=False)
 
     def __repr__(self) -> str:

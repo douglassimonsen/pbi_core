@@ -78,6 +78,7 @@ class Measure(SsasRenameRecord):
     )
 
     _commands: RenameCommands = field(default=SsasCommands.measure, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_MEASURES"
     _discover_fields: tuple[str, ...] = ("table_id", "name")
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
