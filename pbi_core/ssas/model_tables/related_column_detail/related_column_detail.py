@@ -9,6 +9,8 @@ class RelatedColumnDetail(SsasTable):
     SSAS spec:
     """
 
+    _discover_category: str = "TMSCHEMA_RELATED_COLUMN_DETAILS"
+
     @classmethod
     def _db_type_name(cls) -> str:
         return "RelatedColumnDetails"

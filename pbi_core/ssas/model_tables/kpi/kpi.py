@@ -34,6 +34,7 @@ class KPI(SsasEditableRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(default=SsasCommands.kpi, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_KPIS"
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""

@@ -46,7 +46,7 @@ class SsasAlter(SsasTable):
 
     def alter(self) -> BeautifulSoup:
         """Updates a non-name field of an object in SSAS."""
-        xml_command = Batch([self.alter_cmd()]).render_xml()
+        xml_command = Batch(commands=[self.alter_cmd()]).render_xml()
         logger.info("Syncing Alter Changes to SSAS", obj=self._db_type_name())
         return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
@@ -72,7 +72,7 @@ class SsasRename(SsasTable):
 
     def rename(self) -> BeautifulSoup:
         """Updates a name field of an object in SSAS."""
-        xml_command = Batch([self.rename_cmd()]).render_xml()
+        xml_command = Batch(commands=[self.rename_cmd()]).render_xml()
         logger.info("Syncing Rename Changes to SSAS", obj=self._db_type_name())
         return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
@@ -100,7 +100,7 @@ class SsasCreate(SsasTable):
 
     def create(self) -> BeautifulSoup:
         """Creates a new record in the SSAS DB based on the python object."""
-        xml_command = Batch([self.create_cmd()]).render_xml()
+        xml_command = Batch(commands=[self.create_cmd()]).render_xml()
         logger.info("Syncing Create Changes to SSAS", obj=self._db_type_name())
         # We return the result of the discover because the create command only returns a success/failure response
         self._tabular_model.server.query_xml(xml_command, db_name=self._tabular_model.db_name)
@@ -171,7 +171,7 @@ class SsasDelete(SsasTable):
         objects_to_delete = self.delete_objects()
         cmds = [obj.delete_cmd() for obj in objects_to_delete]
 
-        xml_command = Batch(cmds).render_xml()
+        xml_command = Batch(commands=cmds).render_xml()
         logger.info("Syncing Delete Changes to SSAS", objs=objects_to_delete)
         return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
@@ -214,7 +214,7 @@ class SsasRefresh(SsasTable):
         )
 
     def refresh(self, refresh_type: RefreshType | None = None) -> BeautifulSoup:
-        xml_command = Batch([self.refresh_cmd(refresh_type)]).render_xml()
+        xml_command = Batch(commands=[self.refresh_cmd(refresh_type)]).render_xml()
         logger.info("Syncing Refresh Changes to SSAS", obj=self)
         return self.query_xml(xml_command, db_name=self._tabular_model.db_name)
 

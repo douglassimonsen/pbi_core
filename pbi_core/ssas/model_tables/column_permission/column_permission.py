@@ -27,6 +27,7 @@ class ColumnPermission(SsasEditableRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(default=SsasCommands.column_permission, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_COLUMN_PERMISSIONS"
 
     def table_permission(self) -> TablePermission:
         return self._tabular_model.table_permissions.find(self.table_permission_id)

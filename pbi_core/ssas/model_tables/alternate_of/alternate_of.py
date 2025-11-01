@@ -8,3 +8,5 @@ class AlternateOf(SsasReadonlyRecord):
 
     SSAS spec:
     """
+
+    _discover_category: str = "TMSCHEMA_ALTERNATE_OF_DEFINITIONS"

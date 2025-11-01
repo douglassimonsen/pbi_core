@@ -36,6 +36,7 @@ class DetailRowDefinition(SsasEditableRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(default=SsasCommands.detail_row_definition, init=False, repr=False)
+    _discover_category: str = "TMSCHEMA_DETAIL_ROWS_DEFINITIONS"
 
     @classmethod
     def _db_type_name(cls) -> str:

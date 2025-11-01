@@ -32,6 +32,7 @@ class ObjectTranslation(SsasEditableRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(default=SsasCommands.object_translation, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_OBJECT_TRANSLATIONS"
 
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.

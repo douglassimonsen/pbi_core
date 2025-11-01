@@ -38,6 +38,7 @@ class FormatStringDefinition(SsasEditableRecord):
         repr=False,
         eq=False,
     )
+    _discover_category: str = "TMSCHEMA_FORMAT_STRING_DEFINITIONS"
 
     def pbi_core_name(self) -> str:
         return str(self.object_id)

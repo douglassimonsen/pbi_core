@@ -32,6 +32,7 @@ class TablePermission(SsasEditableRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: BaseCommands = field(default=SsasCommands.table_permission, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_TABLE_PERMISSIONS"
 
     def pbi_core_name(self) -> str:
         return self.table().pbi_core_name()

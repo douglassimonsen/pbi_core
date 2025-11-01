@@ -40,6 +40,7 @@ class DataSource(SsasRenameRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, repr=False)
 
     _commands: RenameCommands = field(default=SsasCommands.data_source, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_DATA_SOURCES"
 
     def model(self) -> "Model":
         return self._tabular_model.model

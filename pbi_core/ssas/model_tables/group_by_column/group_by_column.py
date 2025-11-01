@@ -8,3 +8,5 @@ class GroupByColumn(SsasTable):
 
     SSAS spec:
     """
+
+    _discover_category: str = "TMSCHEMA_GROUP_BY_COLUMNS"

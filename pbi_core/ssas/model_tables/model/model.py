@@ -76,6 +76,7 @@ class Model(SsasModelRecord):
     )
 
     _commands: ModelCommands = field(default=SsasCommands.model, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_MODEL"
 
     def default_measure(self) -> "Measure | None":
         if self.default_measure_id is None:

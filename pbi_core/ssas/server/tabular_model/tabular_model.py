@@ -188,7 +188,7 @@ class BaseTabularModel:
             update.alter_cmd() for updates in updated_objects.values() for update in updates.updated
         ]
 
-        command_str = Batch(commands).render_xml()
+        command_str = Batch(commands=commands).render_xml()
         self.server.query_xml(command_str, db_name=self.db_name)
         logger.info(
             "Completed sync to SSAS",

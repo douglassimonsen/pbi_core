@@ -27,6 +27,7 @@ class Perspective(SsasRenameRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(default=SsasCommands.perspective, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_PERSPECTIVES"
 
     def model(self) -> "Model":
         return self._tabular_model.model

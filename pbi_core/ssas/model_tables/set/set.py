@@ -8,3 +8,5 @@ class Set(SsasTable):
 
     SSAS spec:
     """
+
+    _discover_category: str = "TMSCHEMA_SETS"

@@ -25,7 +25,7 @@ drop_cmds = (
     + [r.delete_cmd() for r in ssas_report.ssas.relationships]
     + [tp.delete_cmd() for tp in ssas_report.ssas.table_permissions]
 )
-batch_command = Batch(drop_cmds).render_xml()
+batch_command = Batch(commands=drop_cmds).render_xml()
 ssas_report.ssas.server.query_xml(batch_command)
 ```
 
@@ -44,4 +44,4 @@ The output should look like
 
 !!! warn Differences with method calls
 
-    In the delete method of certain classes - such as variations, relationships and partitions - contain additional checks to drop dependent objects to ensure that the query resolves as expected. The delete_cmd method does not contain this logic, so you can get errors running `Batch(partition.delete_cmd())` when `partition_delete()` succeeds.
+    In the delete method of certain classes - such as variations, relationships and partitions - contain additional checks to drop dependent objects to ensure that the query resolves as expected. The delete_cmd method does not contain this logic, so you can get errors running `Batch(commands=[partition.delete_cmd()])` when `partition_delete()` succeeds.

@@ -53,6 +53,7 @@ class Relationship(SsasRenameRecord):
     refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(default=SsasCommands.relationship, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_RELATIONSHIPS"
 
     def from_table(self) -> "Table":
         """Returns the table the relationship is using as a filter.

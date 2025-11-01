@@ -27,6 +27,7 @@ class Culture(SsasRenameRecord):
     structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(default=SsasCommands.culture, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_CULTURES"
 
     def linguistic_metadata(self) -> "LinguisticMetadata | None":
         # Although standard cultures always have linguistic metadata, you are able to delete it's linguistic metadata

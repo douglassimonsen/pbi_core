@@ -28,6 +28,7 @@ class QueryGroup(SsasEditableRecord):
     model_id: int = field(eq=True)
 
     _commands: BaseCommands = field(default=SsasCommands.query_group, init=False, repr=False, eq=False)
+    _discover_category: str = "TMSCHEMA_QUERY_GROUPS"
 
     def expressions(self) -> set["Expression"]:
         return self._tabular_model.expressions.find_all({"query_group_id": self.id})

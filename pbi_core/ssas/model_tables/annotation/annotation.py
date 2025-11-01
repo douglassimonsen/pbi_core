@@ -24,6 +24,7 @@ class Annotation(SsasRenameRecord):
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RenameCommands = field(default=SsasCommands.annotation, init=False, repr=False)
+    _discover_category: str = "TMSCHEMA_ANNOTATIONS"
 
     def parents_base(self) -> frozenset[LinkedEntity]:
         """Returns the parent object the annotation is describing."""

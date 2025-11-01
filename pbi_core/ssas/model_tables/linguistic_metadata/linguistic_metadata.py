@@ -207,6 +207,7 @@ class LinguisticMetadata(SsasEditableRecord):
         repr=False,
         eq=False,
     )
+    _discover_category: str = "TMSCHEMA_LINGUISTIC_METADATA"
 
     def culture(self) -> "Culture":
         return self._tabular_model.cultures.find({"id": self.culture_id})
