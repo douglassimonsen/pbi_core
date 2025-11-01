@@ -13,11 +13,6 @@ if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
 
 
-# TODO: eventually only subclass from a MeasureDTO to emphasize that you
-# shouldn't do most things with this object until it's created in SSAS
-# We create a subclass rather than creating a .new method on Measure
-# to expose the nice type hinting of the original object and to avoid
-# bugs caused by trying to use a LocalMeasure where a Measure is expected.
 @define()
 class LocalColumn(Column):
     """Class for a Column that does not yet exist in SSAS.

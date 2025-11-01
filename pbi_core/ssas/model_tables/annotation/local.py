@@ -5,14 +5,14 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 
-from .format_string_definition import FormatStringDefinition
+from .annotation import Annotation
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
 
 
 @define()
-class LocalFormatStringDefinition(FormatStringDefinition):
+class LocalAnnotation(Annotation):
     """Class for a Measure that does not yet exist in SSAS.
 
     Generally created for it's load command which instantiates the remote object in SSAS
@@ -27,7 +27,7 @@ class LocalFormatStringDefinition(FormatStringDefinition):
         on_setattr=setters.frozen,
     )
 
-    def load(self, ssas: "BaseTabularModel") -> "FormatStringDefinition":
-        remote = FormatStringDefinition._create_helper(self, ssas)
-        ssas.format_string_definitions.append(remote)
+    def load(self, ssas: "BaseTabularModel") -> "Annotation":
+        remote = Annotation._create_helper(self, ssas)
+        ssas.annotations.append(remote)
         return remote
