@@ -45,7 +45,7 @@ class Measure(SsasRenameRecord):
     display_folder: str | None = field(default=None, eq=True)
     error_message: Final[str | None] = field(default=None, eq=False, on_setattr=setters.frozen)
     expression: str | int | float | None = field(default=None, eq=True)
-    format_string: str | int | None = field(default="0", eq=True)
+    format_string: str | int | None = field(default=None, eq=True)
     """A static definition for the formatting of the measure"""
 
     format_string_definition_id: int | None = field(default=None, eq=True)
