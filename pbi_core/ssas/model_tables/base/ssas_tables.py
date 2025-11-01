@@ -1,4 +1,5 @@
 import copy
+import enum
 import textwrap
 from typing import Self
 
@@ -132,6 +133,8 @@ class SsasCreate(SsasTable):
         for f in self._discover_fields:
             db_name = self._db_field_names.get(f, f)
             val = getattr(self, f)
+            if isinstance(val, enum.Enum):
+                val = val.value
             filter_fields.append(f"<{db_name}>{val}</{db_name}>")
         filter_expr = textwrap.indent("\n".join(filter_fields), " " * 8)
 
