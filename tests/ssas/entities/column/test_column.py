@@ -1,5 +1,6 @@
 from pbi_core import LocalReport
 from pbi_core.ssas.model_tables.column.enums import DataCategory
+from pbi_core.ssas.model_tables.column.local import LocalColumn
 
 
 def test_column_alteration(ssas_pbix: LocalReport) -> None:
@@ -36,3 +37,11 @@ def test_column_children(ssas_pbix: LocalReport) -> None:
     assert len(children) == 4
     assert {c.pbi_core_name() for c in children} == {"Measure 4", "complicated_measure", "Value", "SummarizationSetBy"}
     assert {c.__class__.__name__ for c in children} == {"Annotation", "Measure", "AttributeHierarchy"}
+
+
+def test_column_create(ssas_pbix: LocalReport) -> None:
+    LocalColumn(
+        explicit_name="New Column",
+        table_id=ssas_pbix.ssas.tables[0].id,
+        expression="1",
+    ).load(ssas_pbix.ssas)
