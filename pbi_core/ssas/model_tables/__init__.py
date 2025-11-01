@@ -23,7 +23,7 @@ from .hierarchy import Hierarchy
 from .kpi import KPI
 from .level import Level
 from .linguistic_metadata import LinguisticMetadata
-from .measure import Measure
+from .measure import LocalMeasure, Measure
 from .model import Model
 from .object_translation import ObjectTranslation
 from .partition import Partition
@@ -65,6 +65,7 @@ __all__ = [
     "Hierarchy",
     "Level",
     "LinguisticMetadata",
+    "LocalMeasure",
     "Measure",
     "Model",
     "ObjectTranslation",

@@ -26,7 +26,6 @@ if TYPE_CHECKING:
         PerspectiveMeasure,
         Table,
     )
-    from pbi_core.ssas.server import BaseTabularModel
     from pbi_core.static_files.layout import Layout
 
 
@@ -268,52 +267,3 @@ class Measure(SsasRenameRecord):
                 by="format_string_definition",
             )
         )
-
-    @classmethod
-    def new(  # noqa: PLR0913
-        cls,
-        name: str,
-        table: "Table | int",
-        ssas: "BaseTabularModel",
-        *,
-        data_category: str | None = None,
-        data_type: DataType = DataType.UNKNOWN,
-        description: str | None = None,
-        detail_rows_definition_id: int | None = None,
-        display_folder: str | None = None,
-        expression: str | None = None,
-        format_string: str | None = None,
-        format_string_definition_id: int | None = None,
-        is_hidden: bool = False,
-        is_simple_measure: bool = False,
-        kpi_id: int | None = None,
-        lineage_tag: UUID | None = None,
-        source_lineage_tag: UUID | None = None,
-    ) -> "Measure":
-        table_id = table if isinstance(table, int) else table.id
-        now = datetime.datetime.now(tz=datetime.UTC)
-
-        m = cls.model_validate({
-            "data_category": data_category,
-            "data_type": data_type,
-            "description": description,
-            "detail_rows_definition_id": detail_rows_definition_id,
-            "display_folder": display_folder,
-            "expression": expression,
-            "format_string": format_string,
-            "format_string_definition_id": format_string_definition_id,
-            "is_hidden": is_hidden,
-            "is_simple_measure": is_simple_measure,
-            "kpi_id": kpi_id,
-            "lineage_tag": lineage_tag or uuid4(),
-            "name": name,
-            "source_lineage_tag": source_lineage_tag or uuid4(),
-            "table_id": table_id,
-            # These fields below are required but will be overwritten on create
-            "modified_time": now,
-            "structure_modified_time": now,
-            "id": -1,
-        })
-        remote_m = cls._create_helper(m, ssas)
-        ssas.measures.append(remote_m)
-        return remote_m

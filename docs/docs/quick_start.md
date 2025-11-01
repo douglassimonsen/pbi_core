@@ -233,18 +233,17 @@ This example shows how to add a measure to a table in a report.
 
 ```python
 from pbi_core import LocalReport
-from pbi_core.ssas.model_tables.measure.measure import Measure
+from pbi_core.ssas.model_tables import LocalMeasure
 
 ssas_report = LocalReport.load_pbix("example_pbis/api.pbix")
-Measure.new(
-    "New Measure",
-    # We avoid hidden and private tables so that you can find the measure when you open the output report!
-    # In most reports, there are hidden tables for each auto-date hierarchy in the model
-    ssas_report.ssas.tables.find(lambda t: t.is_hidden is False and t.is_private is False),
-    ssas_report.ssas,
-    # This expression should be any valid DAX expression
-    expression="1 + 2",
-)
+# We avoid hidden and private tables so that you can find the measure when you open the output report!
+# In most reports, there are hidden tables for each auto-date hierarchy in the model
+table = ssas_report.ssas.tables.find(lambda t: t.is_hidden is False and t.is_private is False)
+m = LocalMeasure(
+    name="New Measure",
+    table_id=table.id,
+    # This expression could be any valid DAX expression
+    expression="1",
+).load(ssas_report.ssas)
 ssas_report.save_pbix("out.pbix")
-
 ```
