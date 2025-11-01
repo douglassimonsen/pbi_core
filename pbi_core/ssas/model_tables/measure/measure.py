@@ -1,4 +1,3 @@
-import copy
 import datetime
 from typing import TYPE_CHECKING, Final
 from uuid import UUID, uuid4
@@ -12,7 +11,6 @@ from pbi_core.ssas.model_tables.column import Column
 from pbi_core.ssas.model_tables.enums import DataState, DataType
 from pbi_core.ssas.server import SsasCommands
 from pbi_core.ssas.server._commands import RenameCommands
-from pbi_core.ssas.server.tabular_model.tabular_model import discover_xml_to_dict
 from pbi_core.static_files.layout.sources.measure import MeasureSource
 
 from . import set_name
@@ -272,41 +270,50 @@ class Measure(SsasRenameRecord):
         )
 
     @classmethod
-    def new(
+    def new(  # noqa: PLR0913
         cls,
         name: str,
-        expression: str,
-        table: "Table",
+        table: "Table | int",
         ssas: "BaseTabularModel",
+        *,
+        data_category: str | None = None,
+        data_type: DataType = DataType.UNKNOWN,
+        description: str | None = None,
+        detail_rows_definition_id: int | None = None,
+        display_folder: str | None = None,
+        expression: str | None = None,
+        format_string: str | None = None,
+        format_string_definition_id: int | None = None,
+        is_hidden: bool = False,
+        is_simple_measure: bool = False,
+        kpi_id: int | None = None,
+        lineage_tag: UUID | None = None,
+        source_lineage_tag: UUID | None = None,
     ) -> "Measure":
         table_id = table if isinstance(table, int) else table.id
-
         now = datetime.datetime.now(tz=datetime.UTC)
 
         m = cls.model_validate({
-            "name": name,
-            "is_simple_measure": True,
-            "data_type": DataType.UNKNOWN,
-            "state": DataState.READY,
+            "data_category": data_category,
+            "data_type": data_type,
+            "description": description,
+            "detail_rows_definition_id": detail_rows_definition_id,
+            "display_folder": display_folder,
             "expression": expression,
+            "format_string": format_string,
+            "format_string_definition_id": format_string_definition_id,
+            "is_hidden": is_hidden,
+            "is_simple_measure": is_simple_measure,
+            "kpi_id": kpi_id,
+            "lineage_tag": lineage_tag or uuid4(),
+            "name": name,
+            "source_lineage_tag": source_lineage_tag or uuid4(),
             "table_id": table_id,
+            # These fields below are required but will be overwritten on create
             "modified_time": now,
             "structure_modified_time": now,
             "id": -1,
         })
-        # Set the tabular model for the measure. Has to be done separately since attrs doesn't expect it
-        m._tabular_model = ssas
-        m._original_data = None
-        x = m.create()
-
-        # Due to the way the function was implemented, it assumes the last group is CalcDependency
-        # Since we always have a single group, it will always been CalcDependency
-        # It also has an extra "id" field because of this
-        row_info = discover_xml_to_dict(x)["CalcDependency"][0]
-        del row_info["id"]
-        remote_m = cls.model_validate(row_info)
-        remote_m._tabular_model = ssas
-        remote_m._original_data = copy.copy(remote_m)
-
+        remote_m = cls._create_helper(m, ssas)
         ssas.measures.append(remote_m)
         return remote_m

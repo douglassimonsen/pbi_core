@@ -31,7 +31,7 @@ def test_measure_delete():
 def test_measure_create(ssas_pbix):
     Measure.new(
         "New Measure",
-        "1",
         ssas_pbix.ssas.tables[0],
         ssas_pbix.ssas,
+        expression="1",
     )
