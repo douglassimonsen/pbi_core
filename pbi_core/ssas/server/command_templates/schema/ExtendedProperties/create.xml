@@ -28,6 +28,8 @@
         <xs:element minOccurs="0" name="ObjectID.RoleMembership" sql:field="ObjectID.RoleMembership" type="xs:string"/>
         <xs:element minOccurs="0" name="ObjectID.TablePermission" sql:field="ObjectID.TablePermission" type="xs:string"/>
         <xs:element minOccurs="0" name="ObjectID.Variation" sql:field="ObjectID.Variation" type="xs:string"/>
+        <xs:element minOccurs="0" name="ObjectID.Set" sql:field="ObjectID.Set" type="xs:string"/>
+        <xs:element minOccurs="0" name="ObjectID.PerspectiveSet" sql:field="ObjectID.PerspectiveSet" type="xs:string"/>
         <xs:element minOccurs="0" name="ObjectID.Expression" sql:field="ObjectID.Expression" type="xs:string"/>
         <xs:element minOccurs="0" name="ObjectID.ColumnPermission" sql:field="ObjectID.ColumnPermission" type="xs:string"/>
         <xs:element minOccurs="0" name="ObjectType" sql:field="ObjectType" type="xs:int"/>

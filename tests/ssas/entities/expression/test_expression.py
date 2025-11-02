@@ -1,4 +1,5 @@
 from pbi_core import LocalReport
+from pbi_core.ssas.model_tables.expression.local import LocalExpression
 
 
 def test_expression_children(ssas_pbix):
@@ -27,3 +28,12 @@ def test_expression_delete():
     ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.expressions.find(616)
     expr.delete()
+
+
+def test_expression_create():
+    ssas_report = LocalReport.load_pbix("test_ssas.pbix")
+    m = LocalExpression(
+        name="Test Expression",
+        expression="1",
+        model_id=ssas_report.ssas.model.id,
+    ).load(ssas_report.ssas)

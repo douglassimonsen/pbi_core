@@ -1,4 +1,5 @@
 from pbi_core import LocalReport
+from pbi_core.ssas.model_tables.culture.local import LocalCulture
 
 
 def test_culture_parents(ssas_pbix):
@@ -28,3 +29,12 @@ def test_culture_rename():
     culture = ssas_pbix.ssas.cultures.find({"name": "en-US"})
     culture.name = "de-DE"
     culture.rename()
+
+
+def test_culture_create():
+    ssas_report = LocalReport.load_pbix("test_ssas.pbix")
+
+    LocalCulture(
+        name="New Culture",
+        model_id=ssas_report.ssas.model.id,
+    ).load(ssas_report.ssas)

@@ -37,7 +37,14 @@ class DetailRowDefinition(SsasEditableRecord):
 
     _commands: BaseCommands = field(default=SsasCommands.detail_row_definition, init=False, repr=False)
     _discover_category: str = "TMSCHEMA_DETAIL_ROWS_DEFINITIONS"
-    _db_field_names = {}
+    _db_field_names = {
+        "error_message": "ErrorMessage",
+        "expression": "Expression",
+        "object_id": "ObjectID",
+        "object_type": "ObjectType",
+        "state": "State",
+        "modified_time": "ModifiedTime",
+    }
 
     @classmethod
     def _db_type_name(cls) -> str:

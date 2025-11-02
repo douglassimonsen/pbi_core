@@ -1,4 +1,5 @@
 import datetime
+from enum import Enum
 from typing import TYPE_CHECKING, Final
 
 from attrs import field, setters
@@ -33,6 +34,11 @@ class ExtendedPropertyValue(BaseValidation):
     binningMetadata: BinningMetadata | None = field(default=None, eq=True)
 
 
+class ExtendedPropertyType(Enum):
+    STRING = 0
+    JSON = 1
+
+
 @define()
 class ExtendedProperty(SsasRenameRecord):
     """TBD.
@@ -43,7 +49,7 @@ class ExtendedProperty(SsasRenameRecord):
     object_id: int = field(eq=True)
     object_type: ObjectType = field(eq=True)
     name: str = field(eq=True)
-    type: ObjectType = field(eq=True)
+    type: ExtendedPropertyType = field(eq=True)
     value: Json[ExtendedPropertyValue] = field(eq=True)
 
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
@@ -55,7 +61,15 @@ class ExtendedProperty(SsasRenameRecord):
         eq=False,
     )
     _discover_category: str = "TMSCHEMA_EXTENDED_PROPERTIES"
-    _db_field_names = {}
+    _db_field_names = {
+        "id": "ID",
+        "object_id": "ObjectID",
+        "object_type": "ObjectType",
+        "name": "Name",
+        "type": "Type",
+        "value": "Value",
+        "modified_time": "ModifiedTime",
+    }
 
     def object(self) -> "SsasTable":
         """Returns the object the property is describing."""

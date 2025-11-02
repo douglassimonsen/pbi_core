@@ -26,22 +26,39 @@ class DataSource(SsasRenameRecord):
     context_expression: str | None = field(default=None, eq=True)
     credential: str | None = field(default=None, eq=True)
     description: str | None = field(default=None, eq=True)
-    impersonation_mode: ImpersonationMode = field(eq=True)
-    isolation: Isolation = field(eq=True)
-    max_connections: int = field(eq=True)
+    impersonation_mode: ImpersonationMode = field(default=ImpersonationMode.DEFAULT, eq=True)
+    isolation: Isolation = field(default=Isolation.READ_COMMITTED, eq=True)
+    max_connections: int = field(default=1, eq=True)
     model_id: int = field(eq=True, repr=False)
     name: str = field(eq=True)
     options: str | None = field(default=None, eq=True)
     password: str | None = field(default=None, eq=True)
     provider: str | None = field(default=None, eq=True)
-    timeout: int = field(eq=True)
-    type: DataSourceType = field(eq=True)
+    timeout: int = field(default=300, eq=True)
+    type: DataSourceType = field(default=DataSourceType.PROVIDER, eq=True)
 
     modified_time: Final[datetime.datetime] = field(eq=False, repr=False)
 
     _commands: RenameCommands = field(default=SsasCommands.data_source, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_DATA_SOURCES"
-    _db_field_names = {}
+    _db_field_names = {
+        "account": "Account",
+        "connection_string": "ConnectionString",
+        "context_expression": "ContextExpression",
+        "credential": "Credential",
+        "description": "Description",
+        "impersonation_mode": "ImpersonationMode",
+        "isolation": "Isolation",
+        "max_connections": "MaxConnections",
+        "model_id": "ModelID",
+        "name": "Name",
+        "options": "Options",
+        "password": "Password",
+        "provider": "Provider",
+        "timeout": "Timeout",
+        "type": "Type",
+        "modified_time": "ModifiedTime",
+    }
 
     def model(self) -> "Model":
         return self._tabular_model.model
