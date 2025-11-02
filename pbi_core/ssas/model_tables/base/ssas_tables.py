@@ -8,7 +8,6 @@ from structlog import get_logger
 
 from pbi_core.attrs import define
 from pbi_core.ssas.server import (
-    DISCOVER_TEMPLATE,
     BaseCommands,
     CommandData,
     ModelCommands,
@@ -87,7 +86,6 @@ class SsasCreate(SsasTable):
     """  # noqa: E501
 
     _commands: BaseCommands
-    _discover_category: str = field(default="NOT_SET")
 
     def create_cmd(self) -> CommandData:
         """Prepares the command data for creating an object in SSAS.
@@ -131,13 +129,6 @@ class SsasCreate(SsasTable):
         remote_inst._original_data = copy.copy(remote_inst)
         group.append(remote_inst)  # pyright: ignore[reportAttributeAccessIssue]
         return remote_inst
-
-    def discover(self) -> BeautifulSoup:
-        xml_command = DISCOVER_TEMPLATE.render(
-            db_name=self._tabular_model.db_name,
-            discover_entity=self._discover_category,
-        )
-        return self._tabular_model.server.query_xml(xml_command, db_name=self._tabular_model.db_name)
 
 
 @define()
