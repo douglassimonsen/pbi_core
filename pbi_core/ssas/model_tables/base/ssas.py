@@ -11,7 +11,7 @@ logger = get_logger()
 @define()
 class SsasMixin(BaseValidation):
     id: int = field(eq=True, repr=True, on_setattr=setters.frozen)
-    _db_field_names: ClassVar[dict[str, str]] = {}
+    _db_field_names: ClassVar[dict[str, str]]
     """Mapping of python attribute names to database field names.
 
     Example:
@@ -55,7 +55,10 @@ class SsasMixin(BaseValidation):
     @classmethod
     def model_validate(cls, data: dict) -> Self:  # pyright: ignore[reportIncompatibleMethodOverride]
         field_mapping = cls.python_field_names()
-        print(cls.__name__)
-        formatted_data = {field_mapping[field_name]: field_value for field_name, field_value in data.items()}
+        try:
+            formatted_data = {field_mapping[field_name]: field_value for field_name, field_value in data.items()}
 
+        except KeyError:
+            logger.exception("Error formatting data for model validation", cls=cls.__name__, data=data)
+            raise
         return super().model_validate(formatted_data)

@@ -79,12 +79,12 @@ class Measure(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.measure, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_MEASURES"
-    _discover_fields: tuple[str, ...] = ("table_id", "name")
     _db_field_names = {
         "id": "ID",
         "table_id": "TableID",
         "name": "Name",
         "data_type": "DataType",
+        "error_message": "ErrorMessage",
         "expression": "Expression",
         "format_string": "FormatString",
         "is_hidden": "IsHidden",

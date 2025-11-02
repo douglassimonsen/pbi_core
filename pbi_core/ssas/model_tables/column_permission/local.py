@@ -27,6 +27,8 @@ class LocalColumnPermission(ColumnPermission):
     )
 
     def load(self, ssas: "BaseTabularModel") -> "ColumnPermission":
-        remote = ColumnPermission._create_helper(self, ssas)
-        ssas.column_permissions.append(remote)
-        return remote
+        return self._create_helper(ssas, ssas.column_permissions)
+
+    @classmethod
+    def _db_type_name(cls) -> str:
+        return "ColumnPermission"

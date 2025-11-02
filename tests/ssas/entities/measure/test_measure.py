@@ -28,7 +28,8 @@ def test_measure_delete():
     expr.delete()
 
 
-def test_measure_create(ssas_pbix):
+def test_measure_create():
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     LocalMeasure(
         name="New Measure",
         table_id=ssas_pbix.ssas.tables[0].id,

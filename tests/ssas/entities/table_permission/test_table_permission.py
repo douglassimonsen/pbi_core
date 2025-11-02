@@ -1,5 +1,7 @@
 from pbi_core import LocalReport
+from pbi_core.ssas.model_tables.role.local import LocalRole
 from pbi_core.ssas.model_tables.table_permission.enums import MetadataPermission
+from pbi_core.ssas.model_tables.table_permission.local import LocalTablePermission
 
 
 def test_table_permission_parents(ssas_pbix):
@@ -28,3 +30,18 @@ def test_table_permission_delete():
     ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     tp = ssas_pbix.ssas.table_permissions.find(2942)
     tp.delete()
+
+
+def test_table_permission_create():
+    ssas_report = LocalReport.load_pbix("test_ssas.pbix")
+    table = ssas_report.ssas.tables.find(lambda t: t.is_hidden is False and t.is_private is False)
+    r = LocalRole(
+        name="A local role",
+        model_id=ssas_report.ssas.model.id,
+        description="A local role description",
+    ).load(ssas_report.ssas)
+    LocalTablePermission(
+        table_id=table.id,
+        role_id=r.id,
+        filter_expression="TRUE()",
+    ).load(ssas_report.ssas)

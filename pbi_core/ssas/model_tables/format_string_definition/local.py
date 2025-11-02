@@ -28,6 +28,8 @@ class LocalFormatStringDefinition(FormatStringDefinition):
     )
 
     def load(self, ssas: "BaseTabularModel") -> "FormatStringDefinition":
-        remote = FormatStringDefinition._create_helper(self, ssas)
-        ssas.format_string_definitions.append(remote)
-        return remote
+        return self._create_helper(ssas, ssas.format_string_definitions)
+
+    @classmethod
+    def _db_type_name(cls) -> str:
+        return "FormatStringDefinition"

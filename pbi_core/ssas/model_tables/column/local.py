@@ -57,6 +57,8 @@ class LocalColumn(Column):
     )
 
     def load(self, ssas: "BaseTabularModel") -> "Column":
-        remote = Column._create_helper(self, ssas)
-        ssas.columns.append(remote)
-        return remote
+        return self._create_helper(ssas, ssas.columns)
+
+    @classmethod
+    def _db_type_name(cls) -> str:
+        return "Column"

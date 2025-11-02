@@ -27,6 +27,8 @@ class LocalCalculationItem(CalculationItem):
     )
 
     def load(self, ssas: "BaseTabularModel") -> "CalculationItem":
-        remote = CalculationItem._create_helper(self, ssas)
-        ssas.calculation_items.append(remote)
-        return remote
+        return self._create_helper(ssas, ssas.calculation_items)
+
+    @classmethod
+    def _db_type_name(cls) -> str:
+        return "CalculationItem"

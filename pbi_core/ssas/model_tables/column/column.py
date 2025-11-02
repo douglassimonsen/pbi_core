@@ -33,7 +33,6 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
 
     _commands: RenameCommands = field(default=SsasCommands.column, init=False, repr=False)
     _discover_category: str = "TMSCHEMA_COLUMNS"
-    _discover_fields: tuple[str, ...] = ("explicit_name", "table_id")
     _db_field_names = {
         "id": "ID",
         "table_id": "TableID",

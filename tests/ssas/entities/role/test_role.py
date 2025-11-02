@@ -1,4 +1,5 @@
 from pbi_core import LocalReport
+from pbi_core.ssas.model_tables.role.local import LocalRole
 
 
 def test_role_children(ssas_pbix):
@@ -28,3 +29,12 @@ def test_role_delete():
     ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.roles.find(2941)
     expr.delete()
+
+
+def test_role_create():
+    ssas_report = LocalReport.load_pbix("test_ssas.pbix")
+    LocalRole(
+        name="A local role",
+        model_id=ssas_report.ssas.model.id,
+        description="A local role description",
+    ).load(ssas_report.ssas)

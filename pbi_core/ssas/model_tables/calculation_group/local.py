@@ -27,6 +27,8 @@ class LocalCalculationGroup(CalculationGroup):
     )
 
     def load(self, ssas: "BaseTabularModel") -> "CalculationGroup":
-        remote = CalculationGroup._create_helper(self, ssas)
-        ssas.calculation_groups.append(remote)
-        return remote
+        return self._create_helper(ssas, ssas.calculation_groups)
+
+    @classmethod
+    def _db_type_name(cls) -> str:
+        return "CalculationGroup"

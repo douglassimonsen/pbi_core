@@ -27,6 +27,8 @@ class LocalTablePermission(TablePermission):
     )
 
     def load(self, ssas: "BaseTabularModel") -> "TablePermission":
-        remote = TablePermission._create_helper(self, ssas)
-        ssas.table_permissions.append(remote)
-        return remote
+        return self._create_helper(ssas, ssas.table_permissions)
+
+    @classmethod
+    def _db_type_name(cls) -> str:
+        return "TablePermission"

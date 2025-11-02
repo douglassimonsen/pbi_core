@@ -1,10 +1,9 @@
 import copy
-import enum
-import textwrap
 from typing import Self
 
 from attrs import field
 from bs4 import BeautifulSoup
+from git import TYPE_CHECKING
 from structlog import get_logger
 
 from pbi_core.attrs import define
@@ -23,6 +22,8 @@ from pbi_core.ssas.server.tabular_model.tabular_model import BaseTabularModel, d
 from .base_ssas_table import SsasTable
 from .enums import RefreshType
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 logger = get_logger()
 
 
@@ -86,7 +87,6 @@ class SsasCreate(SsasTable):
     """  # noqa: E501
 
     _commands: BaseCommands
-    _discover_fields: tuple[str, ...] = field(factory=tuple)
     _discover_category: str = field(default="NOT_SET")
 
     def create_cmd(self) -> CommandData:
@@ -107,41 +107,35 @@ class SsasCreate(SsasTable):
         self._tabular_model.server.query_xml(xml_command, db_name=self._tabular_model.db_name)
         return self.discover()
 
-    @classmethod
-    def _create_helper(cls: type[Self], inst: "SsasCreate", ssas: "BaseTabularModel") -> "Self":
+    def _create_helper(self: Self, ssas: "BaseTabularModel", group: "Iterable[SsasTable]") -> "Self":
         """Helper method to create an instance of the class in the SSAS DB and return the remote version.
 
         We return the remote version to ensure we have all fields populated as they exist in SSAS.
         """
         # Set the tabular model for the measure. Has to be done separately since attrs doesn't expect it
-        inst._tabular_model = ssas
-        inst._original_data = None
-        x = inst.create()
+        self._tabular_model = ssas
+        self._original_data = None
+        x = self.create()
 
         # Due to the way the function was implemented, it assumes the last group is CalcDependency
         # Since we always have a single group, it will always been CalcDependency
         # It also has an extra "id" field because of this
-        row_info = discover_xml_to_dict(x)["CalcDependency"][0]
-        del row_info["id"]
-        remote_inst = cls.model_validate(row_info)
+        all_rows = discover_xml_to_dict(x)[self._db_type_name()]
+        new_row = [r for r in all_rows if r["ID"] not in {e.id for e in group}]
+        assert len(new_row) == 1
+        row_info = new_row[0]
+
+        # TODO: Should be improved IMO
+        remote_inst = self.__class__.__bases__[0].model_validate(row_info)
         remote_inst._tabular_model = ssas
         remote_inst._original_data = copy.copy(remote_inst)
+        group.append(remote_inst)  # pyright: ignore[reportAttributeAccessIssue]
         return remote_inst
 
     def discover(self) -> BeautifulSoup:
-        filter_fields = []
-        for f in self._discover_fields:
-            db_name = self._db_field_names[f]
-            val = getattr(self, f)
-            if isinstance(val, enum.Enum):
-                val = val.value
-            filter_fields.append(f"<{db_name}>{val}</{db_name}>")
-        filter_expr = textwrap.indent("\n".join(filter_fields), " " * 8)
-
         xml_command = DISCOVER_TEMPLATE.render(
             db_name=self._tabular_model.db_name,
             discover_entity=self._discover_category,
-            filter_expr=filter_expr,
         )
         return self._tabular_model.server.query_xml(xml_command, db_name=self._tabular_model.db_name)
 

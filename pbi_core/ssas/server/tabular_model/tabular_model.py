@@ -256,7 +256,8 @@ def discover_xml_to_dict(xml: bs4.BeautifulSoup) -> dict[str, list[dict[Any, Any
     """
     assert xml.results is not None
     results = cast("list[bs4.element.Tag]", list(xml.results))
-    results[-1]["name"] = "CalcDependency"
+    if "name" not in results[-1].attrs:
+        results[-1]["name"] = "CalcDependency"
 
     ret = {}
     for table in results:
@@ -268,6 +269,7 @@ def discover_xml_to_dict(xml: bs4.BeautifulSoup) -> dict[str, list[dict[Any, Any
         ]
 
         ret[name] = table_results
-    for i, row in enumerate(ret["CalcDependency"]):
-        row["id"] = i
+    if "CalcDependency" in ret:
+        for i, row in enumerate(ret["CalcDependency"]):
+            row["id"] = i
     return ret

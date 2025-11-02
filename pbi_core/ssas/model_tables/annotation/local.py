@@ -28,6 +28,8 @@ class LocalAnnotation(Annotation):
     )
 
     def load(self, ssas: "BaseTabularModel") -> "Annotation":
-        remote = Annotation._create_helper(self, ssas)
-        ssas.annotations.append(remote)
-        return remote
+        return self._create_helper(ssas, ssas.annotations)
+
+    @classmethod
+    def _db_type_name(cls) -> str:
+        return "Annotation"

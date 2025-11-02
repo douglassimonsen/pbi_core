@@ -27,6 +27,9 @@ class LocalRole(Role):
     )
 
     def load(self, ssas: "BaseTabularModel") -> "Role":
-        remote = Role._create_helper(self, ssas)
-        ssas.roles.append(remote)
+        remote = self._create_helper(ssas, ssas.roles)
         return remote
+
+    @classmethod
+    def _db_type_name(cls) -> str:
+        return "Role"

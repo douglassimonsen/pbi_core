@@ -38,6 +38,8 @@ class LocalMeasure(Measure):
     )
 
     def load(self, ssas: "BaseTabularModel") -> "Measure":
-        remote = Measure._create_helper(self, ssas)
-        ssas.measures.append(remote)
-        return remote
+        return self._create_helper(ssas, ssas.measures)
+
+    @classmethod
+    def _db_type_name(cls) -> str:
+        return "Measure"
