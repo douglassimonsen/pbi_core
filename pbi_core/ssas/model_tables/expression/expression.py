@@ -40,6 +40,15 @@ class Expression(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.expression, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_EXPRESSIONS"
+    _db_field_names = {
+        "id": "ID",
+        "model_id": "ModelID",
+        "name": "Name",
+        "kind": "Kind",
+        "expression": "Expression",
+        "modified_time": "ModifiedTime",
+        "lineage_tag": "LineageTag",
+    }
 
     def model(self) -> "Model":
         return self._tabular_model.model

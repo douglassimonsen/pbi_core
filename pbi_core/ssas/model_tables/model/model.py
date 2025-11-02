@@ -77,6 +77,33 @@ class Model(SsasModelRecord):
 
     _commands: ModelCommands = field(default=SsasCommands.model, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_MODEL"
+    _db_field_names = {
+        "id": "ID",
+        "automatic_aggregation_options": "AutomaticAggregationOptions",
+        "collation": "Collation",
+        "culture": "Culture",
+        "data_access_options": "DataAccessOptions",
+        "data_source_default_max_connections": "DataSourceDefaultMaxConnections",
+        "data_source_variables_override_behavior": "DataSourceVariablesOverrideBehavior",
+        "default_data_view": "DefaultDataView",
+        "default_measure_id": "DefaultMeasureID",
+        "default_mode": "DefaultMode",
+        "default_powerbi_data_source_version": "DefaultPowerBIDataSourceVersion",
+        "description": "Description",
+        "discourage_composite_models": "DiscourageCompositeModels",
+        "discourage_implicit_measures": "DiscourageImplicitMeasures",
+        "disable_auto_exists": "DisableAutoExists",
+        "force_unique_names": "ForceUniqueNames",
+        "m_attributes": "MAttributes",
+        "max_parallelism_per_refresh": "MaxParallelismPerRefresh",
+        "max_parallelism_per_query": "MaxParallelismPerQuery",
+        "name": "Name",
+        "source_query_culture": "SourceQueryCulture",
+        "storage_location": "StorageLocation",
+        "version": "Version",
+        "modified_time": "ModifiedTime",
+        "structure_modified_time": "StructureModifiedTime",
+    }
 
     def default_measure(self) -> "Measure | None":
         if self.default_measure_id is None:

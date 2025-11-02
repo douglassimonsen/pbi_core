@@ -34,6 +34,15 @@ class TablePermission(SsasEditableRecord):
     _commands: BaseCommands = field(default=SsasCommands.table_permission, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_TABLE_PERMISSIONS"
     _discover_fields = ("metadata_permission", "role_id", "table_id")
+    _db_field_names = {
+        "id": "ID",
+        "role_id": "RoleID",
+        "table_id": "TableID",
+        "filter_expression": "FilterExpression",
+        "modified_time": "ModifiedTime",
+        "state": "State",
+        "metadata_permission": "MetadataPermission",
+    }
 
     def pbi_core_name(self) -> str:
         return self.table().pbi_core_name()

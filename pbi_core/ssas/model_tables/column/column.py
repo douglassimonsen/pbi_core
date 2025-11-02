@@ -34,6 +34,44 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
     _commands: RenameCommands = field(default=SsasCommands.column, init=False, repr=False)
     _discover_category: str = "TMSCHEMA_COLUMNS"
     _discover_fields: tuple[str, ...] = ("explicit_name", "table_id")
+    _db_field_names = {
+        "id": "ID",
+        "table_id": "TableID",
+        "inferred_name": "InferredName",
+        "explicit_name": "ExplicitName",
+        "data_category": "DataCategory",
+        "source_column": "SourceColumn",
+        "explicit_data_type": "ExplicitDataType",
+        "inferred_data_type": "InferredDataType",
+        "is_hidden": "IsHidden",
+        "state": "State",
+        "is_unique": "IsUnique",
+        "is_key": "IsKey",
+        "is_nullable": "IsNullable",
+        "alignment": "Alignment",
+        "table_detail_position": "TableDetailPosition",
+        "is_default_label": "IsDefaultLabel",
+        "is_default_image": "IsDefaultImage",
+        "lineage_tag": "LineageTag",
+        "source_lineage_tag": "SourceLineageTag",
+        "description": "Description",
+        "expression": "Expression",
+        "sort_by_column_id": "SortByColumnID",
+        "format_string": "FormatString",
+        "summarize_by": "SummarizeBy",
+        "format_string_definition_id": "FormatStringDefinitionID",
+        "column_storage_id": "ColumnStorageID",
+        "type": "Type",
+        "is_available_in_mdx": "IsAvailableInMDX",
+        "attribute_hierarchy_id": "AttributeHierarchyID",
+        "modified_time": "ModifiedTime",
+        "structure_modified_time": "StructureModifiedTime",
+        "refreshed_time": "RefreshedTime",
+        "system_flags": "SystemFlags",
+        "keep_unique_rows": "KeepUniqueRows",
+        "display_ordinal": "DisplayOrdinal",
+        "encoding_hint": "EncodingHint",
+    }
 
     def __repr__(self) -> str:
         return f"Column({self.id}: {self.full_name()})"

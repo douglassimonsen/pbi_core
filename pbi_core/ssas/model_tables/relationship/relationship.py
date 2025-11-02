@@ -54,6 +54,27 @@ class Relationship(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.relationship, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_RELATIONSHIPS"
+    _db_field_names = {
+        "id": "ID",
+        "model_id": "ModelID",
+        "name": "Name",
+        "is_active": "IsActive",
+        "type": "Type",
+        "cross_filtering_behavior": "CrossFilteringBehavior",
+        "join_on_date_behavior": "JoinOnDateBehavior",
+        "rely_on_referential_integrity": "RelyOnReferentialIntegrity",
+        "from_table_id": "FromTableID",
+        "from_column_id": "FromColumnID",
+        "from_cardinality": "FromCardinality",
+        "to_table_id": "ToTableID",
+        "to_column_id": "ToColumnID",
+        "to_cardinality": "ToCardinality",
+        "state": "State",
+        "relationship_storage_id": "RelationshipStorageID",
+        "modified_time": "ModifiedTime",
+        "refreshed_time": "RefreshedTime",
+        "security_filtering_behavior": "SecurityFilteringBehavior",
+    }
 
     def from_table(self) -> "Table":
         """Returns the table the relationship is using as a filter.

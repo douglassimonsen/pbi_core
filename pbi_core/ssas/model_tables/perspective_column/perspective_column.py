@@ -27,6 +27,7 @@ class PerspectiveColumn(SsasEditableRecord):
 
     _commands: BaseCommands = field(default=SsasCommands.perspective_column, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_PERSPECTIVE_COLUMNS"
+    _db_field_names = {}
 
     def perspective_table(self) -> "PerspectiveTable":
         return self._tabular_model.perspective_tables.find(self.perspective_table_id)

@@ -47,6 +47,19 @@ class Hierarchy(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.hierarchy, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_HIERARCHIES"
+    _db_field_names = {
+        "id": "ID",
+        "table_id": "TableID",
+        "name": "Name",
+        "is_hidden": "IsHidden",
+        "state": "State",
+        "hierarchy_storage_id": "HierarchyStorageID",
+        "modified_time": "ModifiedTime",
+        "structure_modified_time": "StructureModifiedTime",
+        "refreshed_time": "RefreshedTime",
+        "hide_members": "HideMembers",
+        "lineage_tag": "LineageTag",
+    }
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.

@@ -29,6 +29,16 @@ class Variation(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.variation, init=False, repr=False)
     _discover_category: str = "TMSCHEMA_VARIATIONS"
+    _db_field_names = {
+        "id": "ID",
+        "column_id": "ColumnID",
+        "default_column_id": "DefaultColumnID",
+        "default_hierarchy_id": "DefaultHierarchyID",
+        "description": "Description",
+        "name": "Name",
+        "relationship_id": "RelationshipID",
+        "is_default": "IsDefault",
+    }
 
     def column(self) -> "Column":
         """Name is bad to not consistent with other methods because the column field in this entity :(."""

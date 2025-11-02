@@ -10,3 +10,4 @@ class PerspectiveSet(SsasTable):
     """
 
     _discover_category: str = "TMSCHEMA_PERSPECTIVE_SETS"
+    _db_field_names = {}

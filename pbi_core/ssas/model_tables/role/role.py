@@ -31,6 +31,13 @@ class Role(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.role, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_ROLES"
+    _db_field_names = {
+        "id": "ID",
+        "model_id": "ModelID",
+        "name": "Name",
+        "model_permission": "ModelPermission",
+        "modified_time": "ModifiedTime",
+    }
 
     def model(self) -> "Model":
         return self._tabular_model.model

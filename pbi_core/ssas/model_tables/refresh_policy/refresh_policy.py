@@ -34,6 +34,7 @@ class RefreshPolicy(SsasEditableRecord):
 
     _commands: BaseCommands = field(default=SsasCommands.refresh_policy, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_REFRESH_POLICIES"
+    _db_field_names = {}
 
     def table(self) -> "Table":
         return self._tabular_model.tables.find(self.table_id)

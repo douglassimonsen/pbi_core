@@ -55,6 +55,7 @@ class ExtendedProperty(SsasRenameRecord):
         eq=False,
     )
     _discover_category: str = "TMSCHEMA_EXTENDED_PROPERTIES"
+    _db_field_names = {}
 
     def object(self) -> "SsasTable":
         """Returns the object the property is describing."""

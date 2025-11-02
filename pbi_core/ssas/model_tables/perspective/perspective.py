@@ -28,6 +28,7 @@ class Perspective(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.perspective, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_PERSPECTIVES"
+    _db_field_names = {}
 
     def model(self) -> "Model":
         return self._tabular_model.model

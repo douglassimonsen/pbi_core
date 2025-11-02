@@ -27,5 +27,18 @@ class CalcDependency(SsasReadonlyRecord):
     referenced_object: str = field(eq=True)
     referenced_expression: str | None = field(eq=True, default=None)
 
+    _db_field_names = {
+        "id": "id",
+        "database_name": "DATABASE_NAME",
+        "object_type": "OBJECT_TYPE",
+        "table": "TABLE",
+        "object": "OBJECT",
+        "expression": "EXPRESSION",
+        "referenced_expression": "REFERENCED_EXPRESSION",
+        "referenced_object_type": "REFERENCED_OBJECT_TYPE",
+        "referenced_table": "REFERENCED_TABLE",
+        "referenced_object": "REFERENCED_OBJECT",
+    }
+
     def pbi_core_name(self) -> str:
         return f"{self.object_type}[{self.object}] -> {self.referenced_object_type}[{self.referenced_object}]"

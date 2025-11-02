@@ -27,6 +27,14 @@ class AttributeHierarchy(SsasReadonlyRecord):
     refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _discover_category: str = "TMSCHEMA_ATTRIBUTE_HIERARCHIES"
+    _db_field_names = {
+        "id": "ID",
+        "column_id": "ColumnID",
+        "state": "State",
+        "attribute_hierarchy_storage_id": "AttributeHierarchyStorageID",
+        "modified_time": "ModifiedTime",
+        "refreshed_time": "RefreshedTime",
+    }
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""

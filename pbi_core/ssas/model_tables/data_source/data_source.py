@@ -41,6 +41,7 @@ class DataSource(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.data_source, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_DATA_SOURCES"
+    _db_field_names = {}
 
     def model(self) -> "Model":
         return self._tabular_model.model

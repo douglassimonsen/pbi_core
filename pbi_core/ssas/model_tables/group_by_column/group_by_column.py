@@ -10,3 +10,4 @@ class GroupByColumn(SsasTable):
     """
 
     _discover_category: str = "TMSCHEMA_GROUP_BY_COLUMNS"
+    _db_field_names = {}

@@ -72,7 +72,24 @@ class Table(SsasRefreshRecord):
     structure_modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
 
     _commands: RefreshCommands = field(default=SsasCommands.table, init=False, repr=False, eq=False)
-    _discover_category: str = ""
+    _discover_category: str = "TMSCHEMA_TABLES"
+    _db_field_names = {
+        "id": "ID",
+        "model_id": "ModelID",
+        "name": "Name",
+        "is_hidden": "IsHidden",
+        "table_storage_id": "TableStorageID",
+        "modified_time": "ModifiedTime",
+        "structure_modified_time": "StructureModifiedTime",
+        "system_flags": "SystemFlags",
+        "show_as_variations_only": "ShowAsVariationsOnly",
+        "is_private": "IsPrivate",
+        "alternate_source_precedence": "AlternateSourcePrecedence",
+        "exclude_from_model_refresh": "ExcludeFromModelRefresh",
+        "lineage_tag": "LineageTag",
+        "system_managed": "SystemManaged",
+        "exclude_from_automatic_aggregations": "ExcludeFromAutomaticAggregations",
+    }
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.

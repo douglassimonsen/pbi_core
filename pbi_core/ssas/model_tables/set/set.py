@@ -10,3 +10,4 @@ class Set(SsasTable):
     """
 
     _discover_category: str = "TMSCHEMA_SETS"
+    _db_field_names = {}

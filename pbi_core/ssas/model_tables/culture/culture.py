@@ -28,6 +28,14 @@ class Culture(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.culture, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_CULTURES"
+    _db_field_names = {
+        "id": "ID",
+        "model_id": "ModelID",
+        "name": "Name",
+        "linguistic_metadata_id": "LinguisticMetadataID",
+        "modified_time": "ModifiedTime",
+        "structure_modified_time": "StructureModifiedTime",
+    }
 
     def linguistic_metadata(self) -> "LinguisticMetadata | None":
         # Although standard cultures always have linguistic metadata, you are able to delete it's linguistic metadata

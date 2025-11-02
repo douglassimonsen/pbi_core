@@ -131,7 +131,7 @@ class SsasCreate(SsasTable):
     def discover(self) -> BeautifulSoup:
         filter_fields = []
         for f in self._discover_fields:
-            db_name = self._db_field_names.get(f, f)
+            db_name = self._db_field_names[f]
             val = getattr(self, f)
             if isinstance(val, enum.Enum):
                 val = val.value

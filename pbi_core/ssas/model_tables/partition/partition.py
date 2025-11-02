@@ -64,6 +64,23 @@ class Partition(SsasRefreshRecord):
 
     _commands: RefreshCommands = field(default=SsasCommands.partition, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_PARTITIONS"
+    _db_field_names = {
+        "id": "ID",
+        "table_id": "TableID",
+        "name": "Name",
+        "query_definition": "QueryDefinition",
+        "state": "State",
+        "type": "Type",
+        "partition_storage_id": "PartitionStorageID",
+        "mode": "Mode",
+        "query_group_id": "QueryGroupID",
+        "data_view": "DataView",
+        "modified_time": "ModifiedTime",
+        "refreshed_time": "RefreshedTime",
+        "system_flags": "SystemFlags",
+        "retain_data_till_force_calculate": "RetainDataTillForceCalculate",
+        "range_granularity": "RangeGranularity",
+    }
 
     def expression_ast(self) -> "dax.Expression | pq.Expression | None":
         from pbi_parsers import dax, pq  # noqa: PLC0415

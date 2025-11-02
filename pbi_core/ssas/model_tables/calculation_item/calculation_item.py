@@ -33,6 +33,7 @@ class CalculationItem(SsasRenameRecord):
     _commands: RenameCommands = field(default=SsasCommands.calculation_item, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_CALCULATION_ITEMS"
     _discover_fields = ("calculation_group_id", "name")
+    _db_field_names = {}
 
     def format_string_definition(self) -> "FormatStringDefinition":
         return self._tabular_model.format_string_definitions.find(self.format_string_definition_id)

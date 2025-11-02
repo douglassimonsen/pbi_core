@@ -29,6 +29,13 @@ class ColumnPermission(SsasEditableRecord):
     _commands: BaseCommands = field(default=SsasCommands.column_permission, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_COLUMN_PERMISSIONS"
     _discover_fields = ("column_id", "table_permission_id")
+    _db_field_names = {
+        "id": "ID",
+        "table_permission_id": "TablePermissionID",
+        "column_id": "ColumnID",
+        "metadata_permission": "MetadataPermission",
+        "modified_time": "ModifiedTime",
+    }
 
     def table_permission(self) -> TablePermission:
         return self._tabular_model.table_permissions.find(self.table_permission_id)

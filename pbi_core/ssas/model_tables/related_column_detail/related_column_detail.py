@@ -10,6 +10,7 @@ class RelatedColumnDetail(SsasTable):
     """
 
     _discover_category: str = "TMSCHEMA_RELATED_COLUMN_DETAILS"
+    _db_field_names = {}
 
     @classmethod
     def _db_type_name(cls) -> str:

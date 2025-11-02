@@ -33,6 +33,7 @@ class ObjectTranslation(SsasEditableRecord):
 
     _commands: BaseCommands = field(default=SsasCommands.object_translation, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_OBJECT_TRANSLATIONS"
+    _db_field_names = {}
 
     def object(self) -> SsasTable:
         """Returns the object the annotation is describing.

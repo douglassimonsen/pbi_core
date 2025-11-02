@@ -26,6 +26,14 @@ class Annotation(SsasRenameRecord):
     _commands: RenameCommands = field(default=SsasCommands.annotation, init=False, repr=False)
     _discover_category: str = "TMSCHEMA_ANNOTATIONS"
     _discover_fields: tuple[str, ...] = ("object_id", "object_type", "name", "value")
+    _db_field_names = {
+        "id": "ID",
+        "object_id": "ObjectID",
+        "object_type": "ObjectType",
+        "name": "Name",
+        "value": "Value",
+        "modified_time": "ModifiedTime",
+    }
 
     def parents_base(self) -> frozenset[LinkedEntity]:
         """Returns the parent object the annotation is describing."""

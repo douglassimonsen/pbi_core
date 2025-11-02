@@ -80,6 +80,21 @@ class Measure(SsasRenameRecord):
     _commands: RenameCommands = field(default=SsasCommands.measure, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_MEASURES"
     _discover_fields: tuple[str, ...] = ("table_id", "name")
+    _db_field_names = {
+        "id": "ID",
+        "table_id": "TableID",
+        "name": "Name",
+        "data_type": "DataType",
+        "expression": "Expression",
+        "format_string": "FormatString",
+        "is_hidden": "IsHidden",
+        "state": "State",
+        "modified_time": "ModifiedTime",
+        "structure_modified_time": "StructureModifiedTime",
+        "is_simple_measure": "IsSimpleMeasure",
+        "lineage_tag": "LineageTag",
+        "format_string_definition_id": "FormatStringDefinitionID",
+    }
 
     def set_name(self, new_name: str, layout: "Layout") -> None:
         """Renames the measure and update any dependent expressions to use the new name.

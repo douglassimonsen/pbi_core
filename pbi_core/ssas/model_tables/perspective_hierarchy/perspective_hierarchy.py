@@ -32,6 +32,7 @@ class PerspectiveHierarchy(SsasEditableRecord):
         eq=False,
     )
     _discover_category: str = "TMSCHEMA_PERSPECTIVE_HIERARCHIES"
+    _db_field_names = {}
 
     def perspective_table(self) -> "PerspectiveTable":
         return self._tabular_model.perspective_tables.find(self.perspective_table_id)

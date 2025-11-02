@@ -36,6 +36,15 @@ class Level(SsasRenameRecord):
 
     _commands: RenameCommands = field(default=SsasCommands.level, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_LEVELS"
+    _db_field_names = {
+        "id": "ID",
+        "hierarchy_id": "HierarchyID",
+        "ordinal": "Ordinal",
+        "name": "Name",
+        "column_id": "ColumnID",
+        "modified_time": "ModifiedTime",
+        "lineage_tag": "LineageTag",
+    }
 
     def column(self) -> "Column":
         return self._tabular_model.columns.find({"id": self.column_id})
