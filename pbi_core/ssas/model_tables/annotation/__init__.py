@@ -1,6 +1,4 @@
 from .annotation import Annotation
+from .local import LocalAnnotation
 
-# Auto-generated to make this a Python package
-
-
-__all__ = ["Annotation"]
+__all__ = ["Annotation", "LocalAnnotation"]

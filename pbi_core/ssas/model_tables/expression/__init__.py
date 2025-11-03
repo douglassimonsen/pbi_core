@@ -1,3 +1,4 @@
-from .expression import Expression
+from .expression import Expression, Kind
+from .local import LocalExpression
 
-__all__ = ["Expression"]
+__all__ = ["Expression", "Kind", "LocalExpression"]

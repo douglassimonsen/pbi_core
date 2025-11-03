@@ -1,4 +1,4 @@
-# Auto-generated to make this a Python package
+from .local import LocalQueryGroup
 from .query_group import QueryGroup
 
-__all__ = ["QueryGroup"]
+__all__ = ["LocalQueryGroup", "QueryGroup"]

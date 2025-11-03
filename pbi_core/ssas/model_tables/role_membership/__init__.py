@@ -1,4 +1,5 @@
-# Auto-generated to make this a Python package
+from .enums import MemberType
+from .local import LocalRoleMembership
 from .role_membership import RoleMembership
 
-__all__ = ["RoleMembership"]
+__all__ = ["LocalRoleMembership", "MemberType", "RoleMembership"]

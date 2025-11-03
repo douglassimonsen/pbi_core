@@ -1,4 +1,4 @@
-# Auto-generated to make this a Python package
+from .local import LocalRelationship
 from .relationship import Relationship
 
-__all__ = ["Relationship"]
+__all__ = ["LocalRelationship", "Relationship"]

@@ -1,4 +1,3 @@
-# Auto-generated to make this a Python package
-from .perspective import Perspective as Perspective
+from .perspective import Perspective
 
 __all__ = ["Perspective"]

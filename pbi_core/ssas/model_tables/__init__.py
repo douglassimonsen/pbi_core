@@ -5,44 +5,44 @@ if typing.TYPE_CHECKING:
 
 from ._group import Group, RowNotFoundError
 from .alternate_of import AlternateOf
-from .annotation import Annotation
+from .annotation import Annotation, LocalAnnotation
 from .attribute_hierarchy import AttributeHierarchy
 from .calc_dependency import CalcDependency
-from .calculation_group import CalculationGroup
-from .calculation_item import CalculationItem
-from .column import Column
-from .column_permission import ColumnPermission
-from .culture import Culture
-from .data_source import DataSource
-from .detail_row_definition import DetailRowDefinition
-from .expression import Expression
-from .extended_property import ExtendedProperty
-from .format_string_definition import FormatStringDefinition
+from .calculation_group import CalculationGroup, LocalCalculationGroup
+from .calculation_item import CalculationItem, LocalCalculationItem
+from .column import Column, LocalColumn
+from .column_permission import ColumnPermission, LocalColumnPermission
+from .culture import Culture, LocalCulture
+from .data_source import DataSource, LocalDataSource
+from .detail_row_definition import DetailRowDefinition, LocalDetailRowDefinition
+from .expression import Expression, LocalExpression
+from .extended_property import ExtendedProperty, LocalExtendedProperty
+from .format_string_definition import FormatStringDefinition, LocalFormatStringDefinition
 from .group_by_column import GroupByColumn
-from .hierarchy import Hierarchy
-from .kpi import KPI
-from .level import Level
-from .linguistic_metadata import LinguisticMetadata
+from .hierarchy import Hierarchy, LocalHierarchy
+from .kpi import KPI, LocalKPI
+from .level import Level, LocalLevel
+from .linguistic_metadata import LinguisticMetadata, LocalLinguisticMetadata
 from .measure import LocalMeasure, Measure
 from .model import Model
-from .object_translation import ObjectTranslation
-from .partition import Partition
+from .object_translation import LocalObjectTranslation, ObjectTranslation
+from .partition import LocalPartition, Partition
 from .perspective import Perspective
 from .perspective_column import PerspectiveColumn
 from .perspective_hierarchy import PerspectiveHierarchy
 from .perspective_measure import PerspectiveMeasure
 from .perspective_set import PerspectiveSet
 from .perspective_table import PerspectiveTable
-from .query_group import QueryGroup
-from .refresh_policy import RefreshPolicy
+from .query_group import LocalQueryGroup, QueryGroup
+from .refresh_policy import LocalRefreshPolicy, RefreshPolicy
 from .related_column_detail import RelatedColumnDetail
-from .relationship import Relationship
-from .role import Role
-from .role_membership import RoleMembership
+from .relationship import LocalRelationship, Relationship
+from .role import LocalRole, Role
+from .role_membership import LocalRoleMembership, RoleMembership
 from .set import Set
-from .table import Table
-from .table_permission import TablePermission
-from .variation import Variation
+from .table import LocalTable, Table
+from .table_permission import LocalTablePermission, TablePermission
+from .variation import LocalVariation, Variation
 
 __all__ = [
     "KPI",
@@ -65,7 +65,33 @@ __all__ = [
     "Hierarchy",
     "Level",
     "LinguisticMetadata",
+    "LocalAnnotation",
+    "LocalCalculationGroup",
+    "LocalCalculationItem",
+    "LocalColumn",
+    "LocalColumnPermission",
+    "LocalCulture",
+    "LocalDataSource",
+    "LocalDetailRowDefinition",
+    "LocalExpression",
+    "LocalExtendedProperty",
+    "LocalFormatStringDefinition",
+    "LocalHierarchy",
+    "LocalKPI",
+    "LocalLevel",
+    "LocalLinguisticMetadata",
     "LocalMeasure",
+    "LocalMeasure",
+    "LocalObjectTranslation",
+    "LocalPartition",
+    "LocalQueryGroup",
+    "LocalRefreshPolicy",
+    "LocalRelationship",
+    "LocalRole",
+    "LocalRoleMembership",
+    "LocalTable",
+    "LocalTablePermission",
+    "LocalVariation",
     "Measure",
     "Model",
     "ObjectTranslation",

@@ -1,4 +1,4 @@
-# Auto-generated to make this a Python package
+from .local import LocalVariation
 from .variation import Variation
 
-__all__ = ["Variation"]
+__all__ = ["LocalVariation", "Variation"]

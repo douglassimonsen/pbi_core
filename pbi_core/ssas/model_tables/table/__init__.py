@@ -1,4 +1,5 @@
-# Auto-generated to make this a Python package
+from .enums import DataCategory
+from .local import LocalTable
 from .table import Table
 
-__all__ = ["Table"]
+__all__ = ["DataCategory", "LocalTable", "Table"]
