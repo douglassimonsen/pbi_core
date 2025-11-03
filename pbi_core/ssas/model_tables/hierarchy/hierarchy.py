@@ -29,9 +29,11 @@ class Hierarchy(SsasRenameRecord):
 
     description: str | None = field(default=None, eq=True)
     display_folder: str | None = field(default=None, eq=True)
-    hide_members: HideMembers = field(eq=True)
-    hierarchy_storage_id: int = field(eq=True)
-    is_hidden: bool = field(eq=True)
+    hide_members: HideMembers = field(default=HideMembers.DEFAULT, eq=True)
+    # The hierarchy storage ID is used to link the hierarchy to its storage representation. It can be None if you
+    # create it without (running?) it. I'm not sure what running it would be.
+    hierarchy_storage_id: int | None = field(default=None, eq=True)
+    is_hidden: bool = field(default=False, eq=True)
     name: str = field(eq=True)
     state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
     table_id: int = field(eq=True)

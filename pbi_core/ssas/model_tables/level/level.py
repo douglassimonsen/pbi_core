@@ -27,7 +27,7 @@ class Level(SsasRenameRecord):
     hierarchy_id: int = field(eq=True)
     name: str = field(eq=True)
     """The name of the level, e.g. "Year", "Quarter", "Month", "Day" in a Date hierarchy."""
-    ordinal: int = field(eq=True)
+    ordinal: int = field(default=0, eq=True)
 
     lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)
     source_lineage_tag: UUID = field(factory=uuid4, eq=True, repr=False)

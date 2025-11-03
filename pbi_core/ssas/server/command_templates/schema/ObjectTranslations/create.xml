@@ -20,6 +20,8 @@
         <xs:element minOccurs="0" name="ObjectID.Perspective" sql:field="ObjectID.Perspective" type="xs:string"/>
         <xs:element minOccurs="0" name="ObjectID.Role" sql:field="ObjectID.Role" type="xs:string"/>
         <xs:element minOccurs="0" name="ObjectID.Variation" sql:field="ObjectID.Variation" type="xs:string"/>
+        <xs:element minOccurs="0" name="ObjectID.Set" sql:field="ObjectID.Set" type="xs:string"/>
+        <xs:element minOccurs="0" name="ObjectID.PerspectiveSet" sql:field="ObjectID.PerspectiveSet" type="xs:string"/>
         <xs:element minOccurs="0" name="ObjectID.Expression" sql:field="ObjectID.Expression" type="xs:string"/>
         <xs:element minOccurs="0" name="ObjectType" sql:field="ObjectType" type="xs:int"/>
         <xs:element minOccurs="0" name="Property" sql:field="Property" type="xs:long"/>

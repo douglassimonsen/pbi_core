@@ -23,11 +23,11 @@ class KPI(SsasEditableRecord):
     description: str | None = field(default=None, eq=True)
     measure_id: int = field(eq=True)
     status_description: str | None = field(default=None, eq=True)
-    status_expression: str = field(eq=True)
-    status_graphic: str = field(eq=True)
+    status_expression: str | None = field(default=None, eq=True)
+    status_graphic: str | None = field(default=None, eq=True)
     target_description: str | None = field(default=None, eq=True)
-    target_expression: str = field(eq=True)
-    target_format_string: str = field(eq=True)
+    target_expression: str | None = field(default=None, eq=True)
+    target_format_string: str | None = field(default=None, eq=True)
     trend_description: str | None = field(default=None, eq=True)
     trend_expression: str | None = field(default=None, eq=True)
 
@@ -35,7 +35,20 @@ class KPI(SsasEditableRecord):
 
     _commands: BaseCommands = field(default=SsasCommands.kpi, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_KPIS"
-    _db_field_names = {}
+    _db_field_names = {
+        "id": "ID",
+        "description": "Description",
+        "measure_id": "MeasureID",
+        "status_description": "StatusDescription",
+        "status_expression": "StatusExpression",
+        "status_graphic": "StatusGraphic",
+        "target_description": "TargetDescription",
+        "target_expression": "TargetExpression",
+        "target_format_string": "TargetFormatString",
+        "trend_description": "TrendDescription",
+        "trend_expression": "TrendExpression",
+        "modified_time": "ModifiedTime",
+    }
 
     def pbi_core_name(self) -> str:
         """Returns the name displayed in the PBIX report."""

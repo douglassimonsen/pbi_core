@@ -1,4 +1,6 @@
 from pbi_core import LocalReport
+from pbi_core.ssas.model_tables.hierarchy.local import LocalHierarchy
+from pbi_core.ssas.model_tables.level.local import LocalLevel
 
 
 def test_level_children(ssas_pbix):
@@ -32,3 +34,17 @@ def test_level_delete():
     ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.levels.find(1660)
     expr.delete()
+
+
+def test_level_create():
+    ssas_report = LocalReport.load_pbix("example_pbis/test_ssas.pbix")
+    column = next(c for c in ssas_report.ssas.columns if c.is_normal())
+    h = LocalHierarchy(
+        name="Test Hierarchy",
+        table_id=column.table_id,
+    ).load(ssas_report.ssas)
+    LocalLevel(
+        column_id=column.id,
+        hierarchy_id=h.id,
+        name="Test Level",
+    ).load(ssas_report.ssas)
