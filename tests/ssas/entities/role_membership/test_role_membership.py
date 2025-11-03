@@ -3,7 +3,7 @@ from pbi_core.ssas.model_tables.role_membership.enums import MemberType
 from pbi_core.ssas.model_tables.role_membership.local import LocalRoleMembership
 
 
-def test_role_membership_create(ssas_report):
+def test_role_membership_create():
     ssas_report = LocalReport.load_pbix("test_ssas.pbix")
 
     LocalRoleMembership(

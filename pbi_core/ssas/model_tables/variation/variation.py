@@ -23,7 +23,7 @@ class Variation(SsasRenameRecord):
     default_column_id: int | None = field(default=None, eq=True)
     default_hierarchy_id: int = field(eq=True)
     description: str | None = field(default=None, eq=True)
-    is_default: bool = field(eq=True)
+    is_default: bool = field(default=True, eq=True)
     name: str = field(eq=True)
     relationship_id: int = field(eq=True)
 

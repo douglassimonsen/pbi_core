@@ -1,4 +1,5 @@
 from pbi_core import LocalReport
+from pbi_core.ssas.model_tables.variation.local import LocalVariation
 
 
 def test_variation_children(ssas_pbix):
@@ -35,3 +36,18 @@ def test_variation_delete():
     ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     expr = ssas_pbix.ssas.variations.find(1656)
     expr.delete()
+
+
+def test_variation_create():
+    ssas_report = LocalReport.load_pbix("test_ssas.pbix")
+
+    v = ssas_report.ssas.variations[0]
+    return
+
+    LocalVariation(
+        name="New Variation",
+        column_id=v.column_id,
+        default_hierarchy_id=v.default_hierarchy_id,
+        relationship_id=v.relationship_id,
+        is_default=False,
+    ).load(ssas_report.ssas)

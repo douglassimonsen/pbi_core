@@ -37,7 +37,7 @@ def test_level_delete():
 
 
 def test_level_create():
-    ssas_report = LocalReport.load_pbix("example_pbis/test_ssas.pbix")
+    ssas_report = LocalReport.load_pbix("test_ssas.pbix")
     column = next(c for c in ssas_report.ssas.columns if c.is_normal())
     h = LocalHierarchy(
         name="Test Hierarchy",

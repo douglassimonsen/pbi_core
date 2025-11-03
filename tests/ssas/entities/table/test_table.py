@@ -56,7 +56,7 @@ def test_table_children(ssas_pbix):
 
 
 def test_table_create():
-    ssas_report = LocalReport.load_pbix("example_pbis/test_ssas.pbix")
+    ssas_report = LocalReport.load_pbix("test_ssas.pbix")
 
     LocalTable(
         name="New Table",

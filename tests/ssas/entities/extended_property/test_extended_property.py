@@ -5,7 +5,7 @@ from pbi_core.ssas.model_tables.extended_property.local import LocalExtendedProp
 
 
 def test_extended_property_create():
-    ssas_report = LocalReport.load_pbix("example_pbis/test_ssas.pbix")
+    ssas_report = LocalReport.load_pbix("test_ssas.pbix")
     column = next(c for c in ssas_report.ssas.columns if c.is_normal())
     LocalExtendedProperty(
         object_id=column.id,
