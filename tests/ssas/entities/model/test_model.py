@@ -23,3 +23,7 @@ def test_model_rename():
     model = ssas_pbix.ssas.model
     model.name = "Renamed Model"
     model.rename()
+
+
+def test_model_refresh(ssas_pbix):
+    ssas_pbix.ssas.model.refresh()

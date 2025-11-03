@@ -1,5 +1,5 @@
-from .enums import RolePermission
+from .enums import ModelPermission
 from .local import LocalRole
 from .role import Role
 
-__all__ = ["LocalRole", "Role", "RolePermission"]
+__all__ = ["LocalRole", "ModelPermission", "Role"]

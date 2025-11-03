@@ -37,3 +37,8 @@ def test_partition_create():
         table_id=p.table_id,
         query_definition=p.query_definition,
     ).load(ssas_report.ssas)
+
+
+def test_partition_refresh(ssas_pbix):
+    table = ssas_pbix.ssas.tables.find({"name": "Section"})
+    next(iter(table.partitions())).refresh()

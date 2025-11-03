@@ -62,3 +62,8 @@ def test_table_create():
         name="New Table",
         model_id=ssas_report.ssas.model.id,
     ).load(ssas_report.ssas)
+
+
+def test_table_refresh(ssas_pbix):
+    table = ssas_pbix.ssas.tables.find({"name": "Section"})
+    table.refresh()
