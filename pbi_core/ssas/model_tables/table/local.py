@@ -5,28 +5,27 @@ from attrs import field, setters
 
 from pbi_core.attrs import define
 
-from .hierarchy import Hierarchy
+from .table import Table
 
 if TYPE_CHECKING:
     from pbi_core.ssas.server import BaseTabularModel
 
 
+# TODO: eventually only subclass from a MeasureDTO to emphasize that you
+# shouldn't do most things with this object until it's created in SSAS
+# We create a subclass rather than creating a .new method on Measure
+# to expose the nice type hinting of the original object and to avoid
+# bugs caused by trying to use a LocalMeasure where a Measure is expected.
 @define()
-class LocalHierarchy(Hierarchy):
-    """Class for an Hierarchy that does not yet exist in SSAS.
+class LocalTable(Table):
+    """Class for a Table that does not yet exist in SSAS.
 
     Generally created for it's load command which instantiates the remote object in SSAS
     and then returns that remote object.
     """
 
     id: int = field(default=-1, on_setattr=setters.frozen)
-    hierarchy_storage_id: int = field(default=-1, on_setattr=setters.frozen)  # pyright: ignore[reportIncompatibleVariableOverride]
-
     modified_time: datetime.datetime = field(  # pyright: ignore[reportGeneralTypeIssues]
-        factory=lambda: datetime.datetime.now(datetime.UTC),
-        on_setattr=setters.frozen,
-    )
-    refreshed_time: datetime.datetime = field(  # pyright: ignore[reportGeneralTypeIssues]
         factory=lambda: datetime.datetime.now(datetime.UTC),
         on_setattr=setters.frozen,
     )
@@ -35,9 +34,9 @@ class LocalHierarchy(Hierarchy):
         on_setattr=setters.frozen,
     )
 
-    def load(self, ssas: "BaseTabularModel") -> "Hierarchy":
-        return self._create_helper(ssas, ssas.hierarchies)
+    def load(self, ssas: "BaseTabularModel") -> "Table":
+        return self._create_helper(ssas, ssas.tables)
 
     @classmethod
     def _db_type_name(cls) -> str:
-        return "Hierarchy"
+        return "Table"

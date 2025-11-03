@@ -32,7 +32,15 @@ class RoleMembership(SsasEditableRecord):
 
     _commands: BaseCommands = field(default=SsasCommands.role_membership, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_ROLE_MEMBERSHIPS"
-    _db_field_names = {}
+    _db_field_names = {
+        "id": "ID",
+        "identity_provider": "IdentityProvider",
+        "member_id": "MemberID",
+        "member_name": "MemberName",
+        "member_type": "MemberType",
+        "role_id": "RoleID",
+        "modified_time": "ModifiedTime",
+    }
 
     def role(self) -> "Role":
         return self._tabular_model.roles.find(self.role_id)

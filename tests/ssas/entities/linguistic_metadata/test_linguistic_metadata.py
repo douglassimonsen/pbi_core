@@ -36,7 +36,7 @@ def test_linguistic_metadata_create():
         name="New Culture",
         model_id=ssas_report.ssas.model.id,
     ).load(ssas_report.ssas)
-    h = LocalLinguisticMetadata(
+    LocalLinguisticMetadata(
         culture_id=c.id,
         content_type=ContentType.JSON,
         content=ssas_report.ssas.linguistic_metadata[0].content,

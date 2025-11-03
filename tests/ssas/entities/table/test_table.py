@@ -1,4 +1,5 @@
 from pbi_core import LocalReport
+from pbi_core.ssas.model_tables.table.local import LocalTable
 
 
 def test_table_alteration():
@@ -52,3 +53,12 @@ def test_table_children(ssas_pbix):
         "Partition",
         "Annotation",
     }
+
+
+def test_table_create():
+    ssas_report = LocalReport.load_pbix("example_pbis/test_ssas.pbix")
+
+    LocalTable(
+        name="New Table",
+        model_id=ssas_report.ssas.model.id,
+    ).load(ssas_report.ssas)

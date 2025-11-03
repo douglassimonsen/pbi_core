@@ -20,3 +20,13 @@ class SecurityFilteringBehavior(Enum):
     ONE_DIRECTION = 1
     BOTH_DIRECTIONS = 2
     NONE = 3
+
+
+class FromCardinality(Enum):
+    ONE = 1
+    MANY = 2
+
+
+class ToCardinality(Enum):
+    ONE = 1
+    MANY = 2

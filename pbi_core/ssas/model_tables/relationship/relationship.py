@@ -11,7 +11,14 @@ from pbi_core.ssas.model_tables.enums import DataState
 from pbi_core.ssas.server import SsasCommands
 from pbi_core.ssas.server._commands import RenameCommands
 
-from .enums import CrossFilteringBehavior, JoinOnDateBehavior, RelationshipType, SecurityFilteringBehavior
+from .enums import (
+    CrossFilteringBehavior,
+    FromCardinality,
+    JoinOnDateBehavior,
+    RelationshipType,
+    SecurityFilteringBehavior,
+    ToCardinality,
+)
 
 if TYPE_CHECKING:
     from pbi_core.ssas.model_tables import Column, Model, Table, Variation
@@ -28,12 +35,12 @@ class Relationship(SsasRenameRecord):
     This class represents a relationship between two tables in a Tabular model.
     """
 
-    cross_filtering_behavior: CrossFilteringBehavior = field(eq=True)
+    cross_filtering_behavior: CrossFilteringBehavior = field(default=CrossFilteringBehavior.ONE_DIRECTION, eq=True)
     from_column_id: int = field(eq=True)
-    from_cardinality: int = field(eq=True)
+    from_cardinality: FromCardinality = field(default=FromCardinality.ONE, eq=True)
     from_table_id: int = field(eq=True)
-    is_active: bool = field(eq=True)
-    join_on_date_behavior: JoinOnDateBehavior = field(eq=True)
+    is_active: bool = field(default=True, eq=True)
+    join_on_date_behavior: JoinOnDateBehavior = field(default=JoinOnDateBehavior.DATE_PART_ONLY, eq=True)
     model_id: int = field(eq=True)
     name: str = field(eq=True)
     relationship_storage_id: int | None = field(eq=True, default=None)
@@ -41,13 +48,16 @@ class Relationship(SsasRenameRecord):
     """wtf these are two different fields in the json??!!??"""
     relationship_storage2id: int | None = field(eq=True, default=None)
     """wtf these are two different fields in the json??!!??"""
-    rely_on_referential_integrity: bool = field(eq=True)
-    security_filtering_behavior: SecurityFilteringBehavior = field(eq=True)
+    rely_on_referential_integrity: bool = field(default=False, eq=True)
+    security_filtering_behavior: SecurityFilteringBehavior = field(
+        default=SecurityFilteringBehavior.ONE_DIRECTION,
+        eq=True,
+    )
     state: Final[DataState] = field(eq=False, on_setattr=setters.frozen, default=DataState.READY)
-    to_cardinality: int = field(eq=True)
+    to_cardinality: ToCardinality = field(default=ToCardinality.MANY, eq=True)
     to_column_id: int = field(eq=True)
     to_table_id: int = field(eq=True)
-    type: RelationshipType = field(eq=True)
+    type: RelationshipType = field(default=RelationshipType.SINGLE_COLUMN, eq=True)
 
     modified_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)
     refreshed_time: Final[datetime.datetime] = field(eq=False, on_setattr=setters.frozen, repr=False)

@@ -43,13 +43,13 @@ class Table(SsasRefreshRecord):
 
     _default_refresh_type: RefreshType = field(default=RefreshType.DATA_ONLY, init=False, repr=False, eq=False)
 
-    alternate_source_precedence: int = field(eq=True)
+    alternate_source_precedence: int = field(default=0, eq=True)
     calculation_group_id: int | None = field(default=None, eq=True)
     data_category: DataCategory | None = field(default=None, eq=True)
     default_detail_rows_defintion_id: int | None = field(default=None, eq=True)
     description: str | None = field(default=None, eq=True)
     """A description of the table, which may be used in the hover tooltip in edit mode"""
-    exclude_from_automatic_aggregations: bool = False
+    exclude_from_automatic_aggregations: bool = field(default=False, eq=True)
     exclude_from_model_refresh: bool = field(default=False, eq=True)
     """Controls whether this table is included in the model-wide refresh process"""
     is_hidden: bool = field(default=False, eq=True)
@@ -61,7 +61,7 @@ class Table(SsasRefreshRecord):
     """The name of the table as it appears in the report"""
     refresh_policy_id: int | None = field(default=None, eq=True)
     show_as_variations_only: bool = field(default=False, eq=True)
-    system_flags: int = field(eq=True)
+    system_flags: int = field(default=0, eq=True)
     system_managed: bool | None = field(default=None, eq=True)
     table_storage_id: int | None = field(default=None, eq=True)
 

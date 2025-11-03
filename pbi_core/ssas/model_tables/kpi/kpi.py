@@ -36,7 +36,6 @@ class KPI(SsasEditableRecord):
     _commands: BaseCommands = field(default=SsasCommands.kpi, init=False, repr=False, eq=False)
     _discover_category: str = "TMSCHEMA_KPIS"
     _db_field_names = {
-        "id": "ID",
         "description": "Description",
         "measure_id": "MeasureID",
         "status_description": "StatusDescription",
