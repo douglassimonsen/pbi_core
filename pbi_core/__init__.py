@@ -3,4 +3,4 @@ from .report import BaseReport, LocalReport
 from .static_files import layout
 
 __all__ = ["BaseReport", "LocalReport", "layout", "ssas"]
-__version__ = "0.6.6"
+__version__ = "0.7.0"
