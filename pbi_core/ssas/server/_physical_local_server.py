@@ -240,6 +240,7 @@ class SSASProcess:
         )
         logger.debug("Running PowerBI Desktop to initialize SSAS instance", desktop_exe=self.startup_config.desktop_exe)
         flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+        assert self.startup_config.desktop_exe.exists(), "PowerBI Desktop executable not found"
         subprocess.Popen(  # noqa: S603
             [self.startup_config.desktop_exe.as_posix()],
             stdout=subprocess.PIPE,
