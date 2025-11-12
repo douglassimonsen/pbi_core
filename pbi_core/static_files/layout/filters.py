@@ -224,6 +224,9 @@ class PrototypeQuery(LayoutNode):
 
     def get_data(self, model: "BaseTabularModel") -> PrototypeQueryResult:
         dax_query = self.get_dax(model)
+        assert dax_query.dax is not None, (
+            "DAX query generation failed likely due to a mismatch between model and layout."
+        )
         data = model.server.query_dax(dax_query.dax)
 
         return PrototypeQueryResult(

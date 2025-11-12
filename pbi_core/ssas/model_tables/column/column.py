@@ -145,6 +145,9 @@ class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompati
         set_name.fix_dax(self, new_name)
         self.explicit_name = new_name
 
+        # This is necessary to ensure later viz.get_data's (and other operations) work correctly
+        self.alter()
+
 
 def _get_matching_columns(n: "LayoutNode", entity_mapping: dict[str, str], column: "Column") -> list[ColumnSource]:
     columns = []
