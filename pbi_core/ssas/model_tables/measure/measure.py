@@ -109,6 +109,7 @@ class Measure(SsasRenameRecord):
                 m.NativeReferenceName = new_name
         set_name.fix_dax(self, new_name)
         self.name = new_name
+        self.alter()
 
     def expression_ast(self) -> "dax.Expression | None":
         from pbi_parsers import dax  # noqa: PLC0415
