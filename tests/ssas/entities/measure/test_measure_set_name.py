@@ -2,7 +2,7 @@ from pbi_core import LocalReport
 
 
 def test_measure_set_name():
-    ssas_pbix = LocalReport.load_pbix("example_pbis/test_ssas.pbix")
+    ssas_pbix = LocalReport.load_pbix("test_ssas.pbix")
     viz = ssas_pbix.static_files.layout.sections[0].visualContainers[1]
 
     old_data = []
