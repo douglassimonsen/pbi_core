@@ -1,4 +1,4 @@
-# Extended Property
+# Reference
 
 
 ::: pbi_core.ssas.model_tables.extended_property.ExtendedProperty

@@ -1,3 +1,3 @@
-# Column
+# Reference
 
 ::: pbi_core.ssas.model_tables.column.Column

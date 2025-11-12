@@ -1,4 +1,4 @@
-# Linguistic Metadata
+# Reference
 
 
 ::: pbi_core.ssas.model_tables.linguistic_metadata.LinguisticMetadata

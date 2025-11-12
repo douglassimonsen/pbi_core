@@ -1,4 +1,4 @@
-# Group By Column
+# Reference
 
 
 ::: pbi_core.ssas.model_tables.group_by_column.GroupByColumn
