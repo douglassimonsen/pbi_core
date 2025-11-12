@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 @define()
 class Culture(SsasRenameRecord):
-    """TBD.
+    """The Culture object represents a user culture.
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/d3770118-47bf-4304-9edf-8025f4820c45)
     """

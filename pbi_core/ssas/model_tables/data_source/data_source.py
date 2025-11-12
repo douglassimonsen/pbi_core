@@ -16,7 +16,10 @@ if TYPE_CHECKING:
 
 @define()
 class DataSource(SsasRenameRecord):
-    """TBD.
+    """The DataSource object represents an external source of data.
+
+    This entity is often used to define connections to databases, files, or other data repositories that are then used
+    to populate tables within the tabular model.
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ee12dcb7-096e-4e4e-99a4-47caeb9390f5)
     """

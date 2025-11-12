@@ -6,7 +6,7 @@ from pbi_core.ssas.model_tables.base import SsasReadonlyRecord
 
 @define()
 class CalcDependency(SsasReadonlyRecord):
-    """Calculation Dependency.
+    """Object identifying a computational dependency between two data or DAX elements.
 
     Represents a dependency between two DAX calculations in the model.
     This is recursive, so it connects non-direct dependencies.

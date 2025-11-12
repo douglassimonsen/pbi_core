@@ -11,10 +11,21 @@ from pbi_core.ssas.server import RenameCommands, SsasCommands
 
 @define()
 class Annotation(SsasRenameRecord):
-    """TBD.
+    """A key-value pair associated with a parent object.
+
+    The Annotation object represents application-specific name/value pairs for the parent object. The Analysis Services
+    server is not expected to interpret annotations. Annotations can generally be defined as child objects of any
+    logical metadata object in the Tabular model, as listed for the ObjectType property in the following table.
+
+    Examples:
+        ```python
+        Annotation(id=34, object_id=1, object_type=ObjectType.MODEL, name=__PBI_TimeIntelligenceEnabled, value=1)
+        Annotation(id=33, object_id=1, object_type=ObjectType.MODEL, name=PBI_QueryOrder, value=["country","Query1","main_table","Filter","Section","Visual"])
+        ```
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/7a16a837-cb88-4cb2-a766-a97c4d0e1f43)
-    """
+
+    """  # noqa: E501
 
     object_id: int = field(eq=True)
     object_type: ObjectType = field(eq=True)

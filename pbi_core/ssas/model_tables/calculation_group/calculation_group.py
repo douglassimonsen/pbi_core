@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 @define()
 class CalculationGroup(SsasEditableRecord):
-    """TBD.
+    """The CalculationGroup object represents a collection of CalculationItems.
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/ed9dcbcf-9910-455f-abc4-13c575157cfb)
     """

@@ -15,7 +15,11 @@ if TYPE_CHECKING:
 
 @define()
 class ColumnPermission(SsasEditableRecord):
-    """TBD.
+    """The ColumnPermission object defines the security rules of the Role object on the Column object.
+
+    No known way to create these via Power BI Desktop. Possibly allows report creators to limit access to specific
+    columns for certain roles. Users will not be able to see or query columns they do not have permission to access.
+    Visuals that reference restricted columns will show errors when viewed by users without access.
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/10566cbb-390d-470d-b0ff-fc2713277031)
     """

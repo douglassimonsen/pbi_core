@@ -26,6 +26,9 @@ logger = get_logger()
 class Column(CommandMixin, SsasRenameRecord):  # pyright: ignore[reportIncompatibleMethodOverride]
     """A column of an SSAS table.
 
+    A column can either be a physical column that maps to a source column in the data source, or a calculated column
+    that is defined by a DAX expression.
+
     PowerBI spec: [Power BI](https://learn.microsoft.com/en-us/analysis-services/tabular-models/column-properties-ssas-tabular?view=asallproducts-allversions)
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/00a9ec7a-5f4d-4517-8091-b370fe2dc18b)

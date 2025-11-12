@@ -7,6 +7,10 @@ theme:
     - content.code.select
     - content.code.annotate
 
+extra_css:
+  - "base.css"
+
+
 plugins:
   - search
   - glightbox

@@ -229,7 +229,7 @@ This example shows how to add a measure to a table in a report.
 
     This general setup works for all SSAS entities that can be created. There are some cases where the 
     relationships are not what you'd expect coming from working in the PowerBI Desktop. Be sure to visit
-    the [Layout ERD](/ssas/ssas_erd.md) page to see how various objects relate to each other!
+    the [Layout ERD](./SSAS/SSAS_ERD.md) page to see how various objects relate to each other!
 
 ```python
 from pbi_core import LocalReport

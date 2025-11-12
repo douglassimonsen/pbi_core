@@ -14,10 +14,12 @@ if TYPE_CHECKING:
 
 @define()
 class AttributeHierarchy(SsasReadonlyRecord):
-    """TBD.
+    """The AttributeHierarchy object represents the attribute hierarchy of a column in a table.
+
+    It is an optional child object of a Column object and is implicitly created by the server. When the attribute hierarchy is present, the column becomes available as a hierarchy and can be queried by using the MDX language.
 
     SSAS spec: [Microsoft](https://learn.microsoft.com/en-us/openspecs/sql_server_protocols/ms-ssas-t/93d1844f-a6c7-4dda-879b-2e26ed5cd297)
-    """
+    """  # noqa: E501
 
     attribute_hierarchy_storage_id: int = field(eq=True)
     column_id: int = field(eq=True)
@@ -41,9 +43,11 @@ class AttributeHierarchy(SsasReadonlyRecord):
         return self.column().pbi_core_name()
 
     def column(self) -> "Column":
+        """Returns the column this attribute hierarchy is for."""
         return self._tabular_model.columns.find({"id": self.column_id})
 
     def levels(self) -> set["Level"]:
+        """Returns the levels associated with this attribute hierarchy."""
         return self._tabular_model.levels.find_all({"hierarchy_id": self.id})
 
     def children_base(self) -> frozenset[LinkedEntity]:

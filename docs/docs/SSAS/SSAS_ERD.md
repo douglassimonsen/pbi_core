@@ -3,7 +3,6 @@
 flowchart TD
   attribute_hierarchy[Attribute Hierarchy]
   
-  
   column_permission[Column Permission]
   column[Column]
   culture[Culture]
@@ -40,4 +39,31 @@ flowchart TD
   variation --> relationship --> table
   role_membership --> role --> model
   table_permission --> table
+
+  classDef important fill:#90EE90;
+  class table,column,measure,relationship important;
+
+
+  click attribute_hierarchy "../entities/attribute_hierarchy/reference/"
+  click column_permission "../entities/column_permission/reference/"
+  click column "../entities/column/reference/"
+  click culture "../entities/culture/reference/"
+  click expression "../entities/expression/reference/"
+  click group_by_column "../entities/group_by_column/reference/"
+  click hierarchy "../entities/hierarchy/reference/"
+  click kpi "../entities/kpi/reference/"
+  click level "../entities/level/reference/"
+  click linguistic_metadata "../entities/linguistic_metadata/reference/"
+  click measure "../entities/measure/reference/"
+  click model "../entities/model/reference/"
+  click partition "../entities/partition/reference/"
+  click query_group "../entities/query_group/reference/"
+  click relationship "../entities/relationship/reference/"
+  click role_membership "../entities/role_membership/reference/"
+  click role "../entities/role/reference/"
+  click table_permission "../entities/table_permission/reference/"
+  click table "../entities/table/reference/"
+  click variation "../entities/variation/reference/"
 ```
+
+Note: the <span style="color:#90EE90">light-green</span> SSAS entities are the most common to work with
